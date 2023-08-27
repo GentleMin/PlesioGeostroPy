@@ -1,0 +1,13 @@
+# Jupyter notebook checkpoints
+.ipynb_checkpoints
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+# miscellaneous intermediate files for latex
+doc/*.gz
+doc/*.aux
+doc/*.bbl
+doc/*.bcf
+doc/*.log
+doc/*.out
+doc/*.xml
