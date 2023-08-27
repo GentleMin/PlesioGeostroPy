@@ -1,0 +1,659 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{doc_default}
+\usepackage{newtxtext, newtxmath}
+\usepackage[
+    backend=biber,
+    style=authoryear,
+    sorting=nyt
+]{biblatex}
+\addbibresource{references.bib}
+
+% \DeclareMathOperator{\arcsec}{arcsec}
+% \DeclareMathOperator{\arccot}{arccot}
+% \DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\sgn}{sgn}
+
+\newcommand{\todoitem}[1]{\textcolor{purple}{[#1]}}
+
+
+\title{Plesio-Geostrophy and Data Assimilation: Formulations}
+\author{Jingtao Min}
+\date{August 18, 2023, last update \today}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Extended expansion for magnetic moments}
+
+The three components of magnetic fields in cylindrical coordinates can be expanded as
+\begin{equation}
+\begin{aligned}
+    B_s &= s g_0 + \sum_{m\neq 0} \left(\lambda_m s^{|m|-1} + g_m s^{|m|+1}\right) e^{im\phi}, \\ 
+    B_\phi &= s h_0 + \sum_{m\neq 0} \left(i \sgn(m) \lambda_m s^{|m|-1} + h_m s^{|m|+1}\right) e^{im\phi}, \\ 
+    B_z &= f_0 + \sum_{m\neq 0} f_m s^{|m|} e^{im\phi},
+\end{aligned}
+\end{equation}
+where the regularity constraints from \textcite{lewis_physical_1990} is used. The coefficients are regular functions of $z$ and $s$, and according to symmetry arguments they are even functions of $s$. Therefore, the explicit dependency can be written as
+\begin{equation}
+    \lambda_m = \lambda_m(z),\quad g_m = g_m(z, s^2),\quad h_m = h_m(z, s^2),\quad f_m = f_m(z, s^2).
+\end{equation}
+Note for the quantities to be real, the Fourier coefficients should satisfy
+\[
+    \lambda_{-m}^* = \lambda_m,\quad g_{-m}^* = g_m,\quad h_{-m}^* = h_m,\quad f_{-m}^* = f_m.
+\]
+Here the asterik superscript $\cdot^*$ denotes complex conjugate. Of course, a corollary is that the zero-azimuthal-wavenumber terms, $g_0, h_0, f_0 \in \mathbb{R}$. Also, $(i \sgn(-m) \lambda_{-m})^* = i\sgn(m) \lambda_m$ is automatically satisified. Therefore, $c_m c_{-m} = c_m c_m^* = |c_m|^2$ for any coefficients.
+
+\subsection{Magnetic moment $B_s^2$ rederived}
+
+\begin{equation}
+\begin{aligned}
+    B_s^2 &= s^2 g_0^2 + 2s g_0 \sum_{m\neq 0} \left(\lambda_m s^{|m|-1} + g_m s^{|m|+1}\right) e^{im\phi} \\
+    &\quad + \sum_{n,k\neq 0} \left(\lambda_n \lambda_k s^{|n|+|k|-2} + \left(\lambda_n g_k + g_n \lambda_k\right) s^{|n| + |k|} + g_n g_k s^{|n|+|k|+2} \right) e^{i(n+k)\phi} \\ 
+    &= \left\{g_0^2 s^2 + \sum_{n\neq 0} \left[\lambda_n \lambda_{-n} s^{2|n|-2} + \left(\lambda_n g_{-n} + g_n \lambda_{-n}\right) s^{2|n|} + g_n g_{-n}  s^{2|n|+ 2} \right]\right\} \\ 
+    &\quad + \sum_{m\neq 0} e^{im\phi} \Bigg\{2g_0 \lambda_m s^{|m|} + 2 g_0 g_m s^{|m|+2} \\
+    &\qquad + \sum_{n\neq 0, m} \left[\lambda_n\lambda_{m-n} s^{|n|+|n-m|-2} + \left(\lambda_n g_{m-n} + g_n \lambda_{m-n}\right)s^{|n|+|n-m|} + g_n g_{m-n} s^{|n|+|n-m|+2}\right] \Bigg\}
+    % &= \left\{ g_0^2 s^2 + \sum_{n\neq 0} \left[|\lambda_n|^2 s^{2|n|-2} + \left(\lambda_n \overline{g_n} + g_n \overline{\lambda_n}\right)s^{2|n|} + |g_n|^2 s^{2|n|+2}\right]\right\} + \sum_{m\neq 0} e^{im\phi} \Bigg\{ 2s^{|m|} \left(g_0 \lambda_m + g_0 g_m s^2\right)\\
+    % &\qquad + \sum_{n\neq 0, m} \left[\lambda_n\lambda_{m-n} s^{|n|+|n-m|-2} + \left(\lambda_n g_{m-n} + g_n \lambda_{m-n}\right)s^{|n|+|n-m|} + g_n g_{m-n} s^{|n|+|n-m|+2}\right] \Bigg\}
+\end{aligned}
+\end{equation}
+There is further simplification that can be performed on the final term. By dividing the nontrivial azimuthal wavenumbers into positive and negative branches, the contribution from the cross-terms is apparently written as
+\begin{equation}
+\begin{aligned}
+    &\sum_{m > 0} e^{im\phi} \left[2 g_0 \lambda_m s^m + 2g_0 g_m s^{m+2}\right] + \sum_{m<0} e^{im\phi} \left[2 g_0 \lambda_m s^{-m} + 2g_0 g_m s^{-m+2}\right] \\ 
+    =& \sum_{m > 0} e^{im\phi} \left[2 g_0 \lambda_m s^m + 2g_0 g_m s^{m+2}\right] +\sum_{m>0} e^{-im\phi} \left[2 g_0 \lambda_{-m} s^m + 2g_0 g_{-m} s^{m+2}\right] \\
+    =& \sum_{m > 0} e^{im\phi} \left[2 g_0 \lambda_m s^m + 2g_0 g_m s^{m+2}\right] +\sum_{m>0} e^{-im\phi} \left[2 g_0 \lambda_m^* s^m + 2g_0 g_m^* s^{m+2}\right]
+\end{aligned}
+\end{equation}
+For the second contribution, we can further separate the inner summation into three parts: the part where $n$ and $m-n$ have the same sign, the part where $n > 0$ and $m-n < 0$, and the part where $n < 0$ and $m-n > 0$. Let us consider the case when $m>0$ first.
+\begin{equation}
+\begin{aligned}
+    &\sum_{n\neq 0, m} \left[\lambda_n\lambda_{m-n} s^{|n|+|n-m|-2} + \left(\lambda_n g_{m-n} + g_n \lambda_{m-n}\right)s^{|n|+|n-m|} + g_n g_{m-n} s^{|n|+|n-m|+2}\right] \\ 
+    =& \left(\sum_{n < 0} + \sum_{0 < n < m} + \sum_{n > m}\right) \left[\lambda_n\lambda_{m-n} s^{|n|+|n-m|-2} + \left(\lambda_n g_{m-n} + g_n \lambda_{m-n}\right)s^{|n|+|n-m|} + g_n g_{m-n} s^{|n|+|n-m|+2}\right] \\ 
+    =& \sum_{n < 0} \left[\lambda_n\lambda_{m-n} s^{m-2n-2} + \left(\lambda_n g_{m-n} + g_n \lambda_{m-n}\right)s^{m-2n} + g_n g_{m-n} s^{m-2n+2}\right] \\ 
+    &+ \sum_{0<n<m} \left[\lambda_n\lambda_{m-n} s^{m-2} + \left(\lambda_n g_{m-n} + g_n \lambda_{m-n}\right)s^{m} + g_n g_{m-n} s^{m+2}\right] \\ 
+    &+ \sum_{n > m} \left[\lambda_n\lambda_{m-n} s^{2n-m-2} + \left(\lambda_n g_{m-n} + g_n \lambda_{m-n}\right)s^{2n-m} + g_n g_{m-n} s^{2n-m+2}\right] \\ 
+    =& \sum_{0<n<m} \left[\lambda_n\lambda_{m-n} s^{m-2} + \left(\lambda_n g_{m-n} + g_n \lambda_{m-n}\right)s^{m} + g_n g_{m-n} s^{m+2}\right] \\ 
+    &+ \sum_{n > 0} \left[\lambda_{-n}\lambda_{m+n} s^{m+2n-2} + \left(\lambda_{-n} g_{m+n} + g_{-n} \lambda_{m+n}\right)s^{m+2n} + g_{-n} g_{m+n} s^{m+2n+2}\right] \\ 
+    &+ \sum_{n > 0} \left[\lambda_{n+m}\lambda_{-n} s^{2n+m-2} + \left(\lambda_{n+m} g_{-n} + g_{n+m} \lambda_{-n}\right)s^{2n+m} + g_{n+m} g_{-n} s^{2n+m+2}\right] \\ 
+    =& \sum_{0<n<m} \left[\lambda_n\lambda_{m-n} s^{m-2} + \left(\lambda_n g_{m-n} + g_n \lambda_{m-n}\right)s^{m} + g_n g_{m-n} s^{m+2}\right] \\ 
+    &+ 2\sum_{n > 0} \left[\lambda_{n+m} \lambda_n^* s^{m+2n-2} + \left(\lambda_{n+m} g_n^* + g_{n+m} \lambda_n^*\right) s^{m+2n} + g_{n+m} g_n^* s^{m+2n+2}\right]
+\end{aligned}
+\end{equation}
+The symmetry of $n$ and $m-n$ enables collapsing the two summations into one.
+This way it is even possible to write explicitly the coefficient of $e^{im\phi}$ as an expansion of $s$. For $m > 0$, the Fourier coefficient for $B_s^2$ therefore reads
+\begin{equation}
+\begin{aligned}
+    &s^{m-2} \sum_{0<n<m} \lambda_n \lambda_{m-n} + s^m \left(2g_0 \lambda_m + \sum_{0<n<m} (\lambda_n g_{m-n} + g_n \lambda_{m-n}) + 2 \lambda_{m+1} \lambda_1^*\right) \\ 
+    +& s^{m+2} \left(2g_0 g_m + \sum_{0 < n < m} g_n g_{m-n} + 2 \left(\lambda_{m+2} \lambda_2^* + \lambda_{m+1} g_1^* + g_{m+1} \lambda_1^*\right) \right) \\
+    +& \sum_{n > 1} s^{m+2n} \left[\lambda_{m+n+1} \lambda_{n+1}^* + \lambda_{m+n} g_n^* + g_{m+n} \lambda_n^* + g_{m+n-1} g_{n-1}^*\right].
+\end{aligned}
+\end{equation}
+The situation for $m < 0$ is fairly similar, and can be straightforwardly obtained again using the complex conjugate property of the Fourier coefficients of real fields,
+\begin{equation}
+    \begin{aligned}
+        &s^{|m|-2} \sum_{0<n<|m|} (\lambda_n \lambda_{|m|-n})^* + s^{|m|} \left(2g_0 \lambda_{|m|}^* + \sum_{0<n<|m|} ((\lambda_n g_{|m|-n})^* + (g_n \lambda_{|m|-n})^*) + 2 \lambda_{|m|+1}^* \lambda_1\right) \\ 
+        +& s^{|m|+2} \left(2g_0 g_{|m|}^* + \sum_{0 < n < |m|} (g_n g_{|m|-n})^* + 2 \left(\lambda_{|m|+2}^* \lambda_2 + \lambda_{|m|+1}^* g_1 + g_{|m|+1}^* \lambda_1\right) \right) \\
+        +& \sum_{n > 1} s^{|m|+2n} \left[\lambda_{|m|+n+1}^* \lambda_{n+1} + \lambda_{|m|+n}^* g_n + g_{|m|+n}^* \lambda_n + g_{|m|+n-1}^* g_{n-1}\right].
+    \end{aligned}
+\end{equation}
+The full expansion can then be written in terms of the Fourier coefficients of $B_s$ as
+\begin{equation}
+\begin{aligned}
+    B_s^2 &= \left\{2|\lambda_1|^2 + s^2\left(g_0^2 + 2|\lambda_2|^2 + 4 \Re[\lambda_1 g_1^*]\right) + 2\sum_{n>1} s^{2n} \left(|\lambda_{n+1}|^2 + |g_{n-1}|^2 + 2 \Re[\lambda_n g_n^*]\right)\right\} \\
+    + \sum_{m>0} &e^{im\phi} \Bigg\{s^{m-2} \sum_{0<n<m} \lambda_n \lambda_{m-n} + s^m \left(2g_0 \lambda_m + \sum_{0<n<m} (\lambda_n g_{m-n} + g_n \lambda_{m-n}) + 2 \lambda_{m+1} \lambda_1^* \right) \\ 
+    +& s^{m+2} \left(2g_0 g_m + \sum_{0 < n < m} g_n g_{m-n} + 2 \left(\lambda_{m+2} \lambda_2^* + \lambda_{m+1} g_1^* + g_{m+1} \lambda_1^*\right) \right) \\
+    +& \sum_{n > 1} s^{m+2n} \left[\lambda_{m+n+1} \lambda_{n+1}^* + \lambda_{m+n} g_n^* + g_{m+n} \lambda_n^* + g_{m+n-1} g_{n-1}^* \right]\Bigg\} + \sum_{m<0} e^{im\phi} \left(\cdots\right).
+\end{aligned}
+\end{equation}
+We therefore recover the asymptotic behaviour at $s=0$ for $B_s^2$,
+\begin{equation}
+\begin{aligned}
+    \left(B_s^2\right)_{m=0} &= 2 |\lambda_1|^2 + O(s^2) \\ 
+    \left(B_s^2\right)_{|m|=1} &= 2s \left(g_0 \lambda_1 + \lambda_{2} \lambda_1^*\right) e^{i\phi} + 2s \left(g_0 \lambda_1^* + \lambda_{2}^* \lambda_1\right) e^{-i\phi} + O(s^3) \\ 
+    &= 2s \left[\left(2g_0 \lambda_1^R + \lambda_2^R \lambda_1^R + \lambda_2^I \lambda_1^I\right)\cos\phi - \left(2g_0 \lambda_1^I + \lambda_2^I \lambda_1^R - \lambda_2^R \lambda_1^I \right) \sin\phi\right] + O(s^3) \\
+    \left(B_s^2\right)_{|m|>1} &= s^{|m|-2} \sum_{0 < n < |m|} \left(\lambda_n \lambda_{|m|-n} e^{i|m|\phi} + \lambda_n^* \lambda_{|m|-n}^* e^{-i|m|\phi}\right) + O\left(s^{|m|}\right) \\ 
+    = s^{|m|-2} &\sum_{0 < n < |m|} \left[ \left(\lambda_n^R \lambda_{|m|-n}^R - \lambda_n^I \lambda_{|m|-n}^I\right) \cos (|m|\phi) - \left(\lambda_n^R \lambda_{|m|-n}^I + \lambda_n^I \lambda_{|m|-n}^R\right) \sin(|m|\phi)\right] + O(s^{|m|})
+\end{aligned}
+\end{equation}
+Apart from a prefactor, this is the same as in \textcite{holdenried-chernoff_long_2021} for $|m|\neq 1$. For $|m|=1$, the contribution from the cross-term $g_0$ seems to be missing in Daria's dissertation. The summation $\sum_{n+k=m}$ (in \cite{holdenried-chernoff_long_2021}) is also misleading; it should technically be constrained to positive $n$ and $k$, so the summation is actually not an infinite sum. That being said, the leading order behaviour in $s$ is correct. The later analysis on the integral in $z$ is also not affected by this discrepancy.
+
+\subsection{General Fourier expansion formulae for moments}
+
+Let two vector components be expressed by
+\[
+    B_a = s a_0^+ + \sum_{m\neq 0} e^{im\phi} \left(a_m^- s^{|m|-1} + a_m^+ s^{|m|+1} \right),\quad
+    B_b = s b_0^+ + \sum_{m\neq 0} e^{im\phi} \left(b_m^- s^{|m|-1} + b_m^+ s^{|m|+1} \right)
+\]
+The expression applies to either of the two horizontal components of the magnetic fields in cylindrical coordinates. Using the same method, without assuming the complex conjugate property of the Fourier coefficients, we can write
+\begin{equation}
+\begin{aligned}
+    B_a B_b =& \bigg\{\left(a_1^- b_{-1}^- + a_{-1}^- b_1^-\right) + s^2 \left[a_0^+ b_0^+ + \left(a_2^- b_{-2}^- + a_{-2}^- b_2^-\right) + \left(a_1^- b_{-1}^+ + a_{1}^+ b_{-1}^- + a_{-1}^- b_{1}^+ + a_{-1}^+ b_1^-\right)\right]\\
+    + \sum_{n > 1}& s^{2n} \left[\left(a_{n+1}^- b_{-n-1}^- + a_{-n-1}^- b_{n+1}^-\right) + \left(a_n^- b_{-n}^+ + a_{n}^+ b_{-n}^- + a_{-n}^- b_{n}^+ + a_{-n}^+ b_n^-\right) + \left(a_{n-1}^+ b_{1-n}^+ + a_{1-n}^+ b_{n-1}^+\right) \right]\bigg\} \\ 
+    +\sum_{m > 0} e^{im\phi}& \Bigg\{ s^{m-2} \sum_{0\leq n\leq m} a_n^- b_{m-n}^- + s^m \left[a_{-1}^- b_{m+1}^- + a_{m+1}^- b_{-1}^- + \sum_{0\leq n\leq m} \left(a_n^- b_{m-n}^+ + a_n^+ b_{m-n}^-\right)\right] \\
+    + s^{m+2}& \left[a_{-2}^- b_{m+2}^- + a_{m+2}^- b_{-2}^- + a_{m+1}^- b_{-1}^+ + a_{m+1}^+ b_{-1}^- + a_{-1}^+ b_{m+1}^- + a_{-1}^- b_{m+1}^+ + \sum_{0\leq n\leq m} a_n^+ b_{m-n}^+ \right] \\
+    + s^m& \sum_{n \geq 2} s^{2n} \bigg[\left(a_{-n-1}^- b_{m+n+1}^- + a_{m+n+1}^- b_{-n-1}^-\right) + \left(a_{-n}^{-} b_{m+n}^+ + a_{-n}^{+} b_{m+n}^- + a_{m+n}^{-} b_{-n}^+ + a_{m+n}^{+} b_{-n}^-\right) \\
+    &\quad + \left(a_{-n+1}^+b_{m+n-1}^+ + a_{-n+1}^{-} b_{m+n-1}^+\right)\bigg] \Bigg\} \\ 
+    +\sum_{m < 0} e^{im\phi}& \Bigg\{ s^{|m|-2} \sum_{m\leq n\leq 0} a_n^- b_{m-n}^- + s^{|m|} \left[a_{1}^- b_{m-1}^- + a_{m-1}^- b_{1}^- + \sum_{m\leq n\leq 0} \left(a_n^- b_{m-n}^+ + a_n^+ b_{m-n}^-\right)\right] \\
+    + s^{|m|+2}& \left[a_{2}^- b_{m-2}^- + a_{m-2}^- b_{2}^- + a_{m-1}^- b_{1}^+ + a_{m-1}^+ b_{1}^- + a_{1}^+ b_{m-1}^- + a_{1}^- b_{m-1}^+ + \sum_{m\leq n\leq 0} a_n^+ b_{m-n}^+ \right] \\
+    + s^{|m|} & \sum_{n \geq 2} s^{2n} \bigg[\left(a_{n+1}^- b_{m-n-1}^- + a_{m-n-1}^- b_{n+1}^-\right) + \left(a_{n}^{-} b_{m-n}^+ + a_{n}^{+} b_{m-n}^- + a_{m-n}^{-} b_{n}^+ + a_{m-n}^{+} b_{n}^-\right) \\
+    &\quad + \left(a_{n-1}^+b_{m-n+1}^+ + a_{n-1}^{-} b_{m-n+1}^+\right)\bigg] \Bigg\}
+\end{aligned}
+\end{equation}
+Here we already used the property $a_0^- = b_0^- = 0$ to add trivial terms, and merged cross terms involving $a_0^+$, $b_0^+$ in the summation $\sum_{0\leq n \leq m}$ or $\sum_{m\leq n \leq 0}$. Plugging in $a_{n}^- = b_n^- = \lambda_n$ and $a_n^+ = b_n^+ = g_n$, and assuming $\lambda_{-n}^* = \lambda_n$, $g_{-n}^* = g_n$, one can easily verify that the equation leads to the expansion for $B_s^2$. The lowest order term in $s$ for arbitrary Fourier coefficient is also readily given as a corollary:
+\begin{equation}
+\begin{aligned}
+    \left(B_a B_b\right)_{m=0} &= a_1^- b_{-1}^- + a_{-1}^- b_{1}^- + O\left(s^2\right) \\ 
+    \left(B_a B_b\right)_{|m|=1} &= s e^{+i\phi}\left[a_{-1}^- b_{2}^- + a_{2}^- b_{-1}^- + a_1^- b_0^+ + a_0^+ b_1^-\right]\\
+    &+ s e^{-i\phi}\left[a_{1}^- b_{-2}^- + a_{-2}^- b_{1}^- + a_{-1}^- b_0^+ + a_0^+ b_{-1}^-\right] + O\left(s^3\right) \\ 
+    \left(B_a B_b\right)_{|m|>1} &= s^{|m|-2} e^{+i|m|\phi} \sum_{0\leq n \leq |m|} a_n^- b_{|m|-n}^- \\
+    &+ s^{|m|-2} e^{-i|m|\phi} \sum_{-|m| \leq n \leq 0} a_n^- b_{-|m|-n}^- + O\left(s^{|m|}\right)
+\end{aligned}
+\end{equation}
+On the other hand, a scalar that is regular in cylindrical coordinates takes the form
+\begin{equation}
+F = \sum_{m\in \mathbb{Z}} f_m s^{|m|} e^{im\phi} = f_0 + \sum_{m\neq 0} f_m s^{|m|} e^{im\phi}
+\end{equation}
+This applies to $B_z$. Its moment with any equatorial component takes the form
+\begin{equation}
+\begin{aligned}
+    F B_a &= s f_0 a_0^+ + \sum_{n\neq 0} \left(f_{-n} a_n^- s^{2|n|-1} + f_{-n} a_n^+ s^{2|n|+1}\right) + \sum_{m\neq 0} \left[f_0 a_{m}^- s^{|m|-1} + \left(f_0 a_m^+ + f_m a_0^+\right) s^{|m|+1}\right] e^{im\phi} \\
+    &+ \sum_{m > 0} e^{im\phi} \Bigg[s^{m-1} \sum_{0<n<m} f_{m-n} a_n^- + s^{m+1} \sum_{0<n<m} f_{m-n} a_n^+ \\
+    &+\quad  \sum_{n>0} \left(\left(f_{-n} a_{m+n}^- + f_{m+n} a_{-n}^- \right) s^{m+2n-1} + \left(f_{-n} a_{m+n}^+ + f_{m+n} a_{-n}^+ \right) s^{m+2n+1} \right) \Bigg] \\
+    &+ \sum_{m < 0} e^{im\phi} \Bigg[s^{|m|-1} \sum_{m<n<0} f_{m-n} a_n^- + s^{m+1} \sum_{m<n<0} f_{m-n} a_n^+ \\
+    &+\quad  \sum_{n>0} \left(\left(f_{n} a_{m-n}^- + f_{m-n} a_{n}^- \right) s^{|m|+2n-1} + \left(f_{n} a_{m-n}^+ + f_{m-n} a_{n}^+ \right) s^{|m|+2n+1} \right) \Bigg] \\
+    F B_a &= s \left(f_0 a_0^+ + f_{-1} a_1^- + f_1 a_{-1}^-\right) + \sum_{n\geq 1} s^{2n+1} \left(f_{-n-1} a_{n+1}^- + f_{n+1} a_{-n-1}^- + f_{-n} a_n^+ + f_n a_{-n}^+ \right) \\
+    &+ \sum_{m > 0} e^{im\phi} s^{m-1} \Bigg[ \left(\sum_{0\leq n\leq m} f_{m-n} a_n^-\right) + \left(\sum_{0\leq n\leq m} f_{m-n} a_n^+ + f_{-1}a_{m+1}^- + f_{m+1} a_{-1}^- \right) s^2 \\
+    &\qquad + \sum_{n\geq 2} s^{2n} \left(f_{-n} a_{m+n}^- + f_{m+n} a_{-n}^- + f_{1-n} a_{m+n-1}^+ + f_{m+n-1} a_{1-n}^+\right) \Bigg] \\ 
+    &+ \sum_{m < 0} e^{im\phi} s^{|m|-1} \Bigg[ \left(\sum_{m\leq n\leq 0} f_{m-n} a_n^-\right) + \left(\sum_{m\leq n\leq 0} f_{m-n} a_n^+ + f_{1}a_{m-1}^- + f_{m-1} a_{1}^- \right) s^2 \\
+    &\qquad + \sum_{n\geq 2} s^{2n} \left(f_{n} a_{m-n}^- + f_{m-n} a_{n}^- + f_{n-1} a_{m-n+1}^+ + f_{m-n+1} a_{n-1}^+\right) \Bigg]
+\end{aligned}
+\end{equation}
+The lowest order behaviour in $s$ at different azimuthal wavenumber:
+\begin{equation}
+\begin{aligned}
+    (FB_a)_{m=0} &= s \left(f_0 a_0^+ + f_{-1} a_1^- + f_1 a_{-1}^-\right) + O(s^3) \\ 
+    (FB_a)_{m\neq 0} &= s^{|m|-1} \sum_{0\leq n \leq |m|} \left( f_{|m|-n} a_n^- e^{i|m|\phi} + f_{-|m|+n} a_{-n}^- e^{-i|m|\phi}\right) + O(s^{|m|+1}).
+\end{aligned}
+\end{equation}
+
+\subsection{Axial asymptotic of magnetic moments}
+
+Here I write out the explicit form of the lowest order dependency on $s$ at different azimuthal wavenumber for magnetic moments. For $B_s^2$, we have $a_m^- = b_m^- = \lambda_m$, and $a_m^+ = b_m^+ = g_m$. The asymptotics at $s\rightarrow 0$ are as follows, which have already been derived in the first section:
+\begin{equation}
+\begin{aligned}
+    \left(B_s^2\right)_{m=0} &= 2(\lambda_1 \lambda_{-1}) + O\left(s^2\right) \\ 
+    \left(B_s^2\right)_{|m|=1} &= 2 s \left[\left(\lambda_2 \lambda_{-1} + g_0 \lambda_1\right) e^{i\phi} + \left(\lambda_{-2} \lambda_{1} + g_0 \lambda_{-1}\right) e^{-i\phi}\right] + O\left(s^3\right) \\ 
+    \left(B_s^2\right)_{|m|>1} &= s^{|m|-2} \left[e^{i|m|\phi} \sum_{0\leq n \leq |m|} \lambda_n \lambda_{|m|-n} + e^{-i|m|\phi} \sum_{-|m|\leq n\leq 0} \lambda_n \lambda_{-|m|-n}\right] + O\left(s^{|m|}\right).
+\end{aligned}
+\end{equation}
+Note that here I didn't assume the complex conjugate property between the positive and the negative wavenumbers. For $B_\phi^2$, we have $a_m^- = b_m^- = i\sgn(m)\lambda_m$, and $a_m^+ = b_m^+ = h_m$. We see that the product $a_m^- b_n^- = \lambda_m \lambda_n$ if $m$ and $n$ have different signs, but $-\lambda_m \lambda_n$ if $m$ and $n$ have the same signs. The asymptotics are then given by
+\begin{equation}
+    \begin{aligned}
+        \left(B_\phi^2\right)_{m=0} &= 2 (\lambda_1 \lambda_{-1}) + O\left(s^2\right) \\ 
+        \left(B_\phi^2\right)_{|m|=1} &= 2 s \left[\left(\lambda_2 \lambda_{-1} + i h_0 \lambda_1\right) e^{i\phi} + \left(\lambda_{-2} \lambda_{1} - i h_0 \lambda_{-1}\right) e^{-i\phi}\right] + O\left(s^3\right) \\ 
+        \left(B_\phi^2\right)_{|m|>1} &= -s^{|m|-2} \left[e^{i|m|\phi} \sum_{0\leq n \leq |m|} \lambda_n \lambda_{|m|-n} + e^{-i|m|\phi} \sum_{-|m|\leq n\leq 0} \lambda_n \lambda_{-|m|-n}\right] + O\left(s^{|m|}\right).
+\end{aligned}
+\end{equation}
+We see that these expressions already differ from those in \textcite{holdenried-chernoff_long_2021}. These include: a two prefactor difference (present in \cite{holdenried-chernoff_long_2021}, but not here) in $|m| > 1$; summation difference in $|m| > 1$; missing terms for $|m|=1$; and missing imaginary unit for one part of $|m|=1$. Nevertheless, the conclusions seem to be correct: lowest-order $s$-dependencies for $B_s^2$ and $B_\phi^2$ are coupled in $m=0$ and $|m|>1$, with prefactor $+1$ and $-1$, respectively. The coupling is not seen for $|m|=1$.
+
+For $B_s B_\phi$, we plug in $a_m^- = \lambda_m$, $b_m^- = i\sgn(m) \lambda_m$, $a_m^+ = g_m$ and $b_m^+ = h_m$. The asymptotics
+\begin{equation}
+    \begin{aligned}
+        \left(B_s B_\phi\right)_{m=0} &= (-i\lambda_1 \lambda_{-1} + i\lambda_{-1} \lambda_1) + O\left(s^2\right) = O\left(s^2\right) \\ 
+        \left(B_s B_\phi\right)_{|m|=1} &= s \left[\left(h_0 \lambda_1 + i g_0 \lambda_1\right) e^{i\phi} + \left(h_0 \lambda_{-1} - i g_0 \lambda_{-1}\right) e^{-i\phi}\right] + O\left(s^3\right) \\ 
+        \left(B_s B_\phi\right)_{|m|>1} &= i s^{|m|-2} \left[e^{i|m|\phi} \sum_{0\leq n \leq |m|} \lambda_n \lambda_{|m|-n} - e^{-i|m|\phi} \sum_{-|m|\leq n\leq 0} \lambda_n \lambda_{-|m|-n}\right] + O\left(s^{|m|}\right).
+    \end{aligned}
+\end{equation}
+Thus this moment is coupled to $B_s^2$ and $B_\phi^2$ by a factor $i\sgn(m)$ and $-i\sgn(m)$, respectively. Similar couplings are not apprent for $m=0$ and $|m|=1$.
+
+In the moments $B_z B_s$ and $B_z B_\phi$, $B_z$ is treated as scalar, and we need to use the formula involving one equatorial component and one scalar. Taking $a_{m}^- = \lambda_m$ and $a_m^+ = g_m$, we have 
+\begin{equation}
+\begin{aligned}
+    \left(B_z B_s\right)_{m=0} &= s \left(f_0 g_0 + f_{-1} \lambda_1 + f_1 \lambda_{-1}\right) \\ 
+    \left(B_z B_s\right)_{m\neq 0} &= s^{|m|-1} \sum_{0\leq n\leq |m|}\left(f_{|m|-n} \lambda_n e^{i|m|\phi} + f_{-|m|+n} \lambda_{-n} e^{-i|m|\phi}\right) + O\left(s^{|m|+1}\right)
+\end{aligned}
+\end{equation}
+Taking $a_m^- = i\sgn(m)\lambda_m$ and $a_m^+ = h_m$, we have
+\begin{equation}
+    \begin{aligned}
+        \left(B_z B_s\right)_{m=0} &= s \left(f_0 h_0 + i f_{-1} \lambda_1 - i f_1 \lambda_{-1}\right) \\ 
+        \left(B_z B_s\right)_{m\neq 0} &= s^{|m|-1} \sum_{0\leq n\leq |m|}\left(i f_{|m|-n} \lambda_n e^{i|m|\phi} - i f_{-|m|+n} \lambda_{-n} e^{-i|m|\phi}\right) + O\left(s^{|m|+1}\right)
+    \end{aligned}
+\end{equation}
+Thus these two moment are coupled in the lowest order of $s$ in $m\neq 0$ by a factor $i\sgn(m)$, while there is probably no such coupling in $m=0$. We can conclude that despite all the discrepancies in intermediate steps, the coupling between the moments are the same between this derivation and \textcite{holdenried-chernoff_long_2021}.
+
+\subsection{Axial integral of moment of Fourier coefficients}
+
+It is unsurprising that the Fourier coefficients for $B_s^2$ (and easily shown for all moments) are always summation of $c_n c_k$, where $c=f, g, h, \lambda$. In other words, \textbf{the Fourier coefficients for the magnetic moments are summations of moments of the Fourier coefficients for the magnetic fields.} In fact, I can write the magnetic moment in the general form
+\[
+    B_a B_b = \sum_m e^{im\phi} s^{m + \Delta_m^{a,b}} \sum_{k \geq 0} s^{2k} \left(\sum_{p,q\in S_{m,k}} c_p c_q\right).
+\]
+where $\Delta_m^{a,b}$ determines the correction to the lowest order of $s$ at azimuthal wavenumber $m$ (\textcite{holdenried-chernoff_long_2021} found a more concise expression: $s^{||m|-1|})$, given components $a$ and $b$, and $S_{m,k}$ gives the set of all coefficient pairs to sum over at given azimuthal wavenumber $m$ and radial degree index $k$. Among all these terms, however, the only terms with dependency on $z$ are $c_p c_q$. It follows that the axial integrals are
+\[
+    \overline{z^n B_a B_b} = \sum_m e^{im\phi} s^{m + \Delta} \sum_{k \geq 0} s^{2k} \sum_{p,q} \overline{z^n c_p c_q},\quad
+    \widetilde{z^n B_a B_b} = \sum_m e^{im\phi} s^{m + \Delta} \sum_{k \geq 0} s^{2k} \sum_{p,q} \widetilde{z^n c_p c_q}.
+\]
+If expanding the coefficients in power series of $z$, 
+\[
+    c_n (z) = \sum_{p \geq 0} c_n^p z^p
+\]
+the symmetric axial integral of the moments of coefficients are given by
+\begin{equation}
+\begin{aligned}
+    \overline{z^n c_a c_b} &= \int_{-H}^H z^n c_a c_b \, dz = \sum_{p, q \geq 0} c_a^p c_b^q \int_{-H}^H z^{p + q + n} \, dz \\
+    &= \sum_{p,q} c_a^p c_b^q \frac{H^{p+q+n+1} - (-H)^{p+q+n+1}}{p + q + n + 1} 
+    = \sum_{k\geq 0} \frac{2H^{2k+1}}{2k+1} \sum_{0\leq p \leq 2k-n} c_m^p c_n^{2k-n-p} \\ 
+    &= \sqrt{1-s^2} \sum_{k\geq 0} \frac{2}{2k+1} \sum_{0\leq p \leq 2k-n} c_a^p c_b^{2k-n-p} \left(1-s^2\right)^k \\
+    &= 2 \sqrt{1-s^2} \sum_{k\geq \lceil \frac{n}{2} \rceil} \frac{\left(c_a^{p} * c_b^p\right)_{2k-n}}{2k+1} \left(1 - s^2\right)^k \\ 
+    &= 2 \left(1 - s^2\right)^{\lceil \frac{n}{2} \rceil + \frac{1}{2}} \sum_{k\geq 0} \frac{\left(c_a^{p} * c_b^p\right)_{2k+2\lceil \frac{n}{2} \rceil-n}}{2k+2\lceil\frac{n}{2}\rceil + 1} \left(1 - s^2\right)^k
+\end{aligned}
+\end{equation}
+where $(c_a^p * c_b^p)_{k} = \sum_{0\leq p \leq k} c_a^p c_b^{k-p}$ is the k-th element of the (non-circular) convolution of the finite-length sequence $c_a^p$ and $c_b^p$, $p=0:k$. The only terms left in the integrands are the even powers of $z$. Similarly, the anti-symmetric axial integral is
+\begin{equation}
+    \begin{aligned}
+        \widetilde{z^n c_a c_b} &= \int_{-H}^H \sgn(z) z^n c_a c_b \, dz = \sum_{p, q \geq 0} c_a^p c_b^q \int_{-H}^H \sgn(z) z^{p + q + n} \, dz \\
+        &= \sum_{p,q} c_a^p c_b^q \frac{H^{p+q+n+1} + (-H)^{p+q+n+1}}{p + q + n + 1} 
+        = \sum_{k\geq 0} \frac{2H^{2k+2}}{2k+2} \sum_{0\leq p \leq 2k+1-n} c_a^p c_b^{2k+1-n-p} \\ 
+        &= \sum_{k\geq 0} \frac{1}{k+1} \sum_{0\leq p \leq 2k+1-n} c_a^p c_b^{2k+1-n-p} \left(1-s^2\right)^{k+1} \\
+        &= \left(1 - s^2\right) \sum_{k\geq \lceil \frac{n-1}{2}\rceil} \frac{\left(c_a^{p} * c_b^p\right)_{2k+1-n}}{k+1} \left(1 - s^2\right)^k \\ 
+        &= \left(1 - s^2\right)^{\lceil \frac{n+1}{2}\rceil} \sum_{k\geq 0} \frac{\left(c_a^{p} * c_b^p\right)_{2k+1+2\lceil \frac{n-1}{2} \rceil -n}}{k+\lceil \frac{n+1}{2}\rceil} \left(1 - s^2\right)^k
+    \end{aligned}
+\end{equation}
+Plugging $n=0$ in the symmetric integral, and $n=0,1$ in the anti-symmetric integral respectively. The symmetric and anti-symmetric integrals of coefficient moments in the symmetric and anti-symmetric integrals of magnetic moments read
+\begin{equation}
+    \begin{aligned}
+        \overline{c_a c_b} &= \left(1 - s^2\right)^{\frac{1}{2}} \sum_{k \geq 0} \frac{2(c_a^p * c_b^p)_{2k}}{2k+1} \left(1 - s^2\right)^k = \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2(c_a^p * c_b^p)_{2k}}{2k+1} + O\left(s^2\right)\right], \\ 
+        \widetilde{c_a c_b} &= \left(1 - s^2\right) \sum_{k \geq 0} \frac{(c_a^p * c_b^p)_{2k+1}}{k+1} \left(1 - s^2\right)^k = \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(c_a^p*c_b^p)_{2k+1}}{k+1} + O\left(s^2\right) \right], \\ 
+        \widetilde{z c_a c_b} &= \left(1 - s^2\right) \sum_{k \geq 0} \frac{(c_a^p * c_b^p)_{2k}}{k+1} \left(1 - s^2\right)^k = \left(1 - s^2\right) \left[\sum_{k \geq 0} \frac{(c_a^p * c_b^p)_{2k}}{k+1} + O\left(s^2\right)\right].
+    \end{aligned}
+\end{equation}
+Note that some coefficients (e.g. $g_m$, $h_m$ and $f_m$) are also functions of $s^2$. In these cases, the coefficients that are relevant in the leading order are the 0th-order coefficients in the power series of $s^2$, which will be written as $c_m^{p0}$. 
+
+\subsection{Axial asymptotic of integrated moments}
+
+With these formulae, we can derive the lowest order term in $s$ for the integrated $B_s^2$:
+\begin{equation}
+    \begin{aligned}
+        \overline{B_s^2}_{m=0} &= 2 \overline{\lambda_1 \lambda_{-1}} + O\left(\overline{c_a c_b} s^2\right) = 2\left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2 (\lambda_1^p * \lambda_{-1}^p)_{2k}}{2k+1} + O\left(s^2\right)\right] \\ 
+        \overline{B_s^2}_{|m|=1} &= 2 s \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2}{2k+1} \left((\lambda_2^p * \lambda_{-1}^p)_{2k} + (g_0^{p0} * \lambda_{1}^p)_{2k}\right) + O\left(s^2\right)\right] e^{+i\phi} \\ 
+        &+ 2 s \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2}{2k+1} \left((\lambda_{-2}^p * \lambda_{1}^p)_{2k} + (g_0^{p0} * \lambda_{-1}^p)_{2k}\right) + O\left(s^2\right)\right] e^{-i\phi} \\
+        \overline{B_s^2}_{|m|>1} &= s^{|m|-2} \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{0\leq n \leq m} \sum_{k\geq 0} \frac{2(\lambda_n^p * \lambda_{|m|-n}^p)_{2k}}{2k+1} + O\left(s^2\right)\right] e^{+i|m|\phi} \\ 
+        &+ s^{|m|-2} \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{-|m|\leq n \leq 0} \sum_{k\geq 0} \frac{2(\lambda_n^p * \lambda_{-|m|-n}^p)_{2k}}{2k+1} + O\left(s^2\right)\right] e^{-i|m|\phi} \\
+        &= s^{|m|-2} \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2(\lambda_n^p * \lambda_{n}^p)_{0\leq n \leq |m|}^{0\leq p \leq 2k}}{2k+1} + O\left(s^2\right)\right] e^{+i|m|\phi} \\ 
+        &+ s^{|m|-2} \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2(\lambda_n^p * \lambda_{n}^p)_{-|m|\leq n \leq 0}^{0\leq p \leq 2k}}{2k+1} + O\left(s^2\right)\right] e^{-i|m|\phi}
+    \end{aligned}
+\end{equation}
+where $(a_n^p * b_n^p)_{n\in S_n}^{p \in S_b}$ denotes the 2-D convolution on the 2-D sequences $a_n^p$ and $b_n^p$. It can be considered an example of more generalized convolution theorem, as $a_n^p$ can be considered the transform of the original field into the spectral domain, with Fourier basis in the azimuthal direction, and monomial basis in the $s$ and $z$ direction. Since moments are the products of fields, their spectral coefficients naturally consist of convolutions of spectral coefficients of the respective fields. The $\lambda_n^p * \lambda_n^p$ present here is the 2D "auto-convolution" of 2-D coefficients $\lambda_n^p$. Similarly, $\overline{B_\phi^2}$ has
+\begin{equation}
+    \begin{aligned}
+        \overline{B_\phi^2}_{m=0} &= 2\left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2 (\lambda_1^p * \lambda_{-1}^p)_{2k}}{2k+1} + O\left(s^2\right)\right] \\ 
+        \overline{B_\phi^2}_{|m|=1} &= 2 s \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2}{2k+1} \left((\lambda_2^p * \lambda_{-1}^p)_{2k} + i (h_0^{p0} * \lambda_{1}^p)_{2k}\right) + O\left(s^2\right)\right] e^{+i\phi} \\ 
+        &+ 2 s \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2}{2k+1} \left((\lambda_{-2}^p * \lambda_{1}^p)_{2k} - i(h_0^{p0} * \lambda_{-1}^p)_{2k}\right) + O\left(s^2\right)\right] e^{-i\phi} \\
+        \overline{B_\phi^2}_{|m|>1} &= -s^{|m|-2} \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2(\lambda_n^p * \lambda_{n}^p)_{0\leq n \leq |m|}^{0\leq p \leq 2k}}{2k+1} + O\left(s^2\right)\right] e^{+i|m|\phi} \\ 
+        &- s^{|m|-2} \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2(\lambda_n^p * \lambda_{n}^p)_{-|m|\leq n \leq 0}^{0\leq p \leq 2k}}{2k+1} + O\left(s^2\right)\right] e^{-i|m|\phi}
+    \end{aligned}
+\end{equation}
+and $\overline{B_s B_\phi}$ has
+\begin{equation}
+\begin{aligned}
+    \overline{B_s B_\phi}_{m=0} &= \left(1 - s^2\right)^{\frac{1}{2}} O\left(s^2\right) \\ 
+    \overline{B_s B_\phi}_{|m|=1} &= s \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2((h_0^{p0} + ig_0^{p0}) * \lambda_{1}^p)_{2k}}{2k+1} + O\left(s^2\right)\right] e^{+i\phi} \\ 
+    &+ s \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2((h_0^{p0} - ig_0^{p0}) * \lambda_{-1}^p)_{2k}}{2k+1} + O\left(s^2\right)\right] e^{-i\phi} \\
+    \overline{B_s B_\phi}_{|m|>1} &= i s^{|m|-2} \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2(\lambda_n^p * \lambda_{n}^p)_{0\leq n \leq |m|}^{0\leq p \leq 2k}}{2k+1} + O\left(s^2\right)\right] e^{+i|m|\phi} \\ 
+    &- is^{|m|-2} \left(1 - s^2\right)^{\frac{1}{2}} \left[\sum_{k\geq 0} \frac{2(\lambda_n^p * \lambda_{n}^p)_{-|m|\leq n \leq 0}^{0\leq p \leq 2k}}{2k+1} + O\left(s^2\right)\right] e^{-i|m|\phi}
+\end{aligned}
+\end{equation}
+The Fourier coefficients of the five anti-symmetric integrals of moments take the form
+\begin{equation}
+\begin{aligned}
+    \widetilde{B_z B_s}_{m=0} &= s \left(1 - s^2\right) \sum_{k\geq 0}\frac{1}{k+1}\left[(f_0^{p0}*g_0^{p0})_{2k+1} + (f_{-1}^{p0} * \lambda_{1}^p)_{2k+1} + (f_{1}^{p0} * \lambda_{-1}^p)_{2k+1} + O\left(s^2\right)\right] \\ 
+    \widetilde{B_z B_s}_{m\neq 0} &= s^{|m|-1} \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(f_n^{p0} * \lambda_n^p)_{0\leq n \leq |m|}^{0\leq p \leq 2k+1}}{k+1} + O\left(s^2\right)\right] e^{+i|m|\phi} \\ 
+    &+ s^{|m|-1} \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(f_n^{p0} * \lambda_n^p)_{-|m| \leq n \leq 0}^{0\leq p \leq 2k+1}}{k+1} + O\left(s^2\right)\right] e^{-i|m|\phi} \\ 
+    \widetilde{B_z B_\phi}_{m=0} &= s \left(1 - s^2\right) \sum_{k\geq 0}\frac{1}{k+1}\left[(f_0^{p0}*h_0^{p0})_{2k+1} + i(f_{-1}^{p0} * \lambda_{1}^p)_{2k+1} - i(f_{1}^{p0} * \lambda_{-1}^p)_{2k+1} + O\left(s^2\right)\right] \\ 
+    \widetilde{B_z B_\phi}_{m\neq 0} &= i s^{|m|-1} \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(f_n^{p0} * \lambda_n^p)_{0\leq n \leq |m|}^{0\leq p \leq 2k+1}}{k+1} + O\left(s^2\right)\right] e^{+i|m|\phi} \\ 
+    &-i s^{|m|-1} \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(f_n^{p0} * \lambda_n^p)_{-|m| \leq n \leq 0}^{0\leq p \leq 2k+1}}{k+1} + O\left(s^2\right)\right] e^{-i|m|\phi}
+\end{aligned}
+\end{equation}
+And the quantities with $z$ factors,
+\begin{equation}
+    \begin{aligned}
+        \widetilde{zB_s^2}_{m=0} &= 2\left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(\lambda_1^p * \lambda_{-1}^p)_{2k}}{k+1} + O\left(s^2\right)\right] \\ 
+        \widetilde{zB_s^2}_{|m|=1} &= 2 s \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{1}{k+1} \left((\lambda_2^p * \lambda_{-1}^p)_{2k} + (g_0^{p0} * \lambda_{1}^p)_{2k}\right) + O\left(s^2\right)\right] e^{+i\phi} \\ 
+        &+ 2 s \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{1}{k+1} \left((\lambda_{-2}^p * \lambda_{1}^p)_{2k} + (g_0^{p0} * \lambda_{-1}^p)_{2k}\right) + O\left(s^2\right)\right] e^{-i\phi} \\
+        \widetilde{zB_s^2}_{|m|>1} &= s^{|m|-2} \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(\lambda_n^p * \lambda_{n}^p)_{0\leq n \leq |m|}^{0\leq p \leq 2k}}{k+1} + O\left(s^2\right)\right] e^{+i|m|\phi} \\ 
+        &+ s^{|m|-2} \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(\lambda_n^p * \lambda_{n}^p)_{-|m|\leq n \leq 0}^{0\leq p \leq 2k}}{k+1} + O\left(s^2\right)\right] e^{-i|m|\phi}
+    \end{aligned}
+\end{equation}
+\begin{equation}
+    \begin{aligned}
+        \widetilde{zB_\phi^2}_{m=0} &= 2\left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(\lambda_1^p * \lambda_{-1}^p)_{2k}}{k+1} + O\left(s^2\right)\right] \\ 
+        \widetilde{zB_\phi^2}_{|m|=1} &= 2 s \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{1}{k+1} \left((\lambda_2^p * \lambda_{-1}^p)_{2k} + i (h_0^{p0} * \lambda_{1}^p)_{2k}\right) + O\left(s^2\right)\right] e^{+i\phi} \\ 
+        &+ 2 s \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{1}{k+1} \left((\lambda_{-2}^p * \lambda_{1}^p)_{2k} - i(h_0^{p0} * \lambda_{-1}^p)_{2k}\right) + O\left(s^2\right)\right] e^{-i\phi} \\
+        \widetilde{zB_\phi^2}_{|m|>1} &= -s^{|m|-2} \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(\lambda_n^p * \lambda_{n}^p)_{0\leq n \leq |m|}^{0\leq p \leq 2k}}{k+1} + O\left(s^2\right)\right] e^{+i|m|\phi} \\ 
+        &- s^{|m|-2} \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(\lambda_n^p * \lambda_{n}^p)_{-|m|\leq n \leq 0}^{0\leq p \leq 2k}}{k+1} + O\left(s^2\right)\right] e^{-i|m|\phi}
+    \end{aligned}
+\end{equation}
+\begin{equation}
+    \begin{aligned}
+        \widetilde{zB_s B_\phi}_{m=0} &= \left(1 - s^2\right) O\left(s^2\right) \\ 
+        \widetilde{zB_s B_\phi}_{|m|=1} &= s \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{((h_0^{p0} + ig_0^{p0}) * \lambda_{1}^p)_{2k}}{k+1} + O\left(s^2\right)\right] e^{+i\phi} \\ 
+        &+ s \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{((h_0^{p0} - ig_0^{p0}) * \lambda_{-1}^p)_{2k}}{k+1} + O\left(s^2\right)\right] e^{-i\phi} \\
+        \widetilde{zB_s B_\phi}_{|m|>1} &= i s^{|m|-2} \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(\lambda_n^p * \lambda_{n}^p)_{0\leq n \leq |m|}^{0\leq p \leq 2k}}{k+1} + O\left(s^2\right)\right] e^{+i|m|\phi} \\ 
+        &- is^{|m|-2} \left(1 - s^2\right) \left[\sum_{k\geq 0} \frac{(\lambda_n^p * \lambda_{n}^p)_{-|m|\leq n \leq 0}^{0\leq p \leq 2k}}{k+1} + O\left(s^2\right)\right] e^{-i|m|\phi}
+    \end{aligned}
+\end{equation}
+
+
+\subsection{Regularity constraints}
+
+Similar to \textcite{holdenried-chernoff_long_2021}, we can conclude some constraints that the moments or the fields have to satisfy if the underlying fields fulfill regularity constraints according to \textcite{lewis_physical_1990}. We notice that the relevant fields can be expressed as
+\[
+\Phi(s, \phi) = \sum_m e^{im\phi} \left(1-s^2\right)^\gamma s^{|m|+\Delta} \sum_{k\geq 0} \Phi_m^k s^{2k}
+\]
+with coefficients $\Phi_m^k$, which are coefficients of the power series in $s^{2k}$ for the Fourier coefficient at $m$, excluding the prefactors. These fields $\Phi$ can be $B_s(z = 0)$, $B_\phi(z=0)$, or moments $\overline{B_i B_j}$, $\widetilde{B_i B_j}$ or $\widetilde{z B_i B_j}$. First, all necessary prefactors are collected from derivations in previous sections (Table \ref{tab:prefactors}). These prefactors prescribe the lowest order of power series in $s$ (or $1-s^2$) such that the regularity constraints are satisfied.
+
+\begin{table}[h]
+    \centering
+    \caption{Prefactors for magnetic fields and moments due to regularity constraints}
+    \label{tab:prefactors}
+    \vspace{1em}
+    \begin{tabular}{l l l l l}
+        \toprule
+        Prefactors & $m=0$ & $|m| = 1$ & $|m| > 1$ & Alternative \\
+        \midrule
+        $B_s$ & $s$ & $\quad \rightarrow$ & $s^{|m|-1}$ & $s^{||m|-1|}$ \\
+        $B_\phi$ & $s$ & $\quad \rightarrow$ & $s^{|m|-1}$ & $s^{||m|-1|}$ \\
+        $\overline{B_s^2}$ & $\left(1 - s^2\right)^{\frac{1}{2}}$ & $\left(1 - s^2\right)^{\frac{1}{2}}s$ & $\left(1 - s^2\right)^{\frac{1}{2}}s^{|m|-2}$ & [$\left(1-s^2\right)^{\frac{1}{2}}s^{|||m|-1|-1|}$] \\
+        $\overline{B_\phi^2}$ & $\left(1 - s^2\right)^{\frac{1}{2}}$ & $\left(1 - s^2\right)^{\frac{1}{2}} s$ & $\left(1 - s^2\right)^{\frac{1}{2}} s^{|m|-2}$ & [$\left(1-s^2\right)^{\frac{1}{2}}s^{|||m|-1|-1|}$] \\
+        $\overline{B_s B_\phi}$ & $\left(1 - s^2\right)^{\frac{1}{2}} s^2$ & $\left(1 - s^2\right)^{\frac{1}{2}} s$ & $\left(1 - s^2\right)^{\frac{1}{2}} s^{|m|-2}$ & $\left(1-s^2\right)^{\frac{1}{2}}s^{||m|-2|}$ \\
+        $\widetilde{B_z B_s}$ & $\left(1 - s^2\right) s$ & $\quad \rightarrow$ & $\left(1 - s^2\right) s^{|m|-1}$ & $\left(1-s^2\right) s^{||m|-1|}$ \\
+        $\widetilde{B_z B_\phi}$ & $\left(1 - s^2\right) s$ & $\quad \rightarrow$ & $\left(1 - s^2\right) s^{|m|-1}$ & $\left(1-s^2\right) s^{||m|-1|}$ \\
+        $\widetilde{zB_s^2}$ & $\left(1 - s^2\right)$ & $\left(1 - s^2\right) s$ & $\left(1 - s^2\right)s^{|m|-2}$ & [$\left(1-s^2\right) s^{|||m|-1|-1|}$] \\
+        $\widetilde{zB_\phi^2}$ & $\left(1 - s^2\right)$ & $\left(1 - s^2\right)s$ & $\left(1 - s^2\right) s^{|m|-2}$ & [$\left(1-s^2\right) s^{|||m|-1|-1|}$] \\
+        $\widetilde{z B_s B_\phi}$ & $\left(1 - s^2\right) s^2$ & $\left(1 - s^2\right)s$ & $\left(1 - s^2\right)s^{|m|-2}$ & $\left(1-s^2\right) s^{||m|-2|}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+These prefactors (esp. the alternative expressions) are consistent with \textcite{holdenried-chernoff_long_2021} (see 4.113-4.120), although the latter only lists the prefactors for $m\geq 0$. Terms with square brackets give alternative expressions that are not included in \textcite{holdenried-chernoff_long_2021}. In theory, as long as prefactors of adjacent $m$ differ by $s^{\pm 1}$, it is always possible to write the prefactors uniformly using nested absolute functions. The usefulness of such expressions, however, is questionable.
+
+Coupling between different fields is a tricky business. For the magnetic field, this is simple, because all Fourier coefficients only involve a summation of one or two terms, and all coefficients are of degree one in $\lambda$, $g$ and $h$. The only coupling relation is
+\begin{equation}\label{eqn:coupling_bs-bphi}
+    \left(B_\phi\right)_m^0 = i \sgn(m) \lambda_m = i \sgn(m) \left(B_s\right)_m^0,\qquad (m\neq 0)
+\end{equation}
+This is of course unsurprising, as it is the regularity constraint discovered by \textcite{lewis_physical_1990}. The expansions in the forms of $\lambda$, $g$ and $h$ are in fact a \textit{result} of this regularity constraint. Therefore, it is straightforward to verify that the existence of such expansion is guaranteed by the coupling relation (eq.\ref{eqn:coupling_bs-bphi}). The relation is both \textit{necessary} and \textit{sufficient}.
+
+The interdependence of the moments is more tricky. Some of the relations concern coefficients of the exact same shape, and are thus easy to identify,
+\begin{equation}\label{eqn:coupling_bss-bpp_m0}
+    \left(\overline{B_s^2}\right)_{m=0}^{0} = 2 \sum_{k\geq 0} \frac{2 (\lambda_1^p * \lambda_{-1}^p)_{2k}}{2k+1} = \left(\overline{B_\phi^2}\right)_{m=0}^0
+\end{equation}
+\begin{equation}\label{eqn:coupling_bss-bpp_mg1}
+    \left(\overline{B_s^2}\right)_{|m|>1}^{0} = \sum_{k\geq 0} \frac{2 \left(\lambda_n^p * \lambda_n^p\right)_{n}^{p}}{2k+1} = - \left(\overline{B_\phi^2}\right)_{|m|>1}^0
+\end{equation}
+\begin{equation}\label{eqn:coupling_bsp-bss_mg1}
+    \left(\overline{B_sB_\phi}\right)_{|m|>1}^{0} = i\sgn(m)\sum_{k\geq 0} \frac{2 \left(\lambda_n^p * \lambda_n^p\right)_{n}^{p}}{2k+1} = i\sgn(m) \left(\overline{B_s^2}\right)_{|m|>1}^0
+\end{equation}
+\begin{equation}\label{eqn:coupling_bzp-bzs_mg0}
+    \left(\widetilde{B_zB_\phi}\right)_{|m|>0}^{0} = i\sgn(m) \sum_{k\geq 0} \frac{ (f_n^{p0} * \lambda_n^p)_n^p}{2k+1} = i \sgn(m) \left(\widetilde{B_z B_s}\right)_{|m|>0}^0
+\end{equation}
+\begin{equation}\label{eqn:coupling_bzss-bzpp_m0}
+    \left(\widetilde{zB_s^2}\right)_{m=0}^{0} = 2 \sum_{k\geq 0} \frac{2 (\lambda_1^p * \lambda_{-1}^p)_{2k}}{k+1} = \left(\widetilde{zB_\phi^2}\right)_{m=0}^0
+\end{equation}
+\begin{equation}\label{eqn:coupling_bzss-bzpp_mg1}
+    \left(\widetilde{zB_s^2}\right)_{|m|>1}^{0} = \sum_{k\geq 0} \frac{2 \left(\lambda_n^p * \lambda_n^p\right)_{n}^{p}}{k+1} = - \left(\widetilde{zB_\phi^2}\right)_{|m|>1}^0
+\end{equation}
+\begin{equation}\label{eqn:coupling_bzsp-bss_mg1}
+    \left(\widetilde{zB_sB_\phi}\right)_{|m|>1}^{0} = i\sgn(m)\sum_{k\geq 0} \frac{\left(\lambda_n^p * \lambda_n^p\right)_{n}^{p}}{k+1} = i\sgn(m) \left(\widetilde{B_s^2}\right)_{|m|>1}^0
+\end{equation}
+These seven relations, along with the relation on the magnetic field itself (eq.\ref{eqn:coupling_bs-bphi}), make up the eight relations involved in \textcite{holdenried-chernoff_long_2021} table 4.4 (notice there the $\widetilde{zB_s^2}$, $\widetilde{zB_sB_\phi}$, $\widetilde{zB_\phi^2}$ relations are omitted, but mentioned in the text that follows). However, these relations can only be considered as consequences of the magnetic field expansion that satisfy \textcite{lewis_physical_1990}. In other words, these are \textit{necessary}, but not \textit{sufficient}. We cannot guarantee that the underlying regular magnetic fields exist given some integrated moments that fulfill these conditions. In fact, my derivations indicate that these conditions are NOT sufficient, as there are at least two other conditions at play:
+\begin{equation}\label{eqn:coupling-bss-bpp-bsp-m1}
+    \left(\overline{B_s^2}\right)_{|m|=1} - \left(\overline{B_\phi^2}\right)_{|m|=1} = 2 \sum_{k \geq 0} \frac{2((g_0^{p0} - i\sgn(m) h_0^{p0}) * \lambda_m^p)_{2k}}{2k+1} = i 2 \sgn(m) \left(\overline{B_s B_\phi}\right)_{|m|=1},
+\end{equation}
+\begin{equation}\label{eqn:coupling-bzss-bzpp-bzsp-m1}
+    \left(\widetilde{zB_s^2}\right)_{|m|=1} - \left(\widetilde{z B_\phi^2}\right)_{|m|=1} = 2 \sum_{k \geq 0} \frac{((g_0^{p0} - i\sgn(m) h_0^{p0}) * \lambda_m^p)_{2k}}{k+1} = i 2 \sgn(m) \left(\widetilde{z B_s B_\phi}\right)_{|m|=1}.
+\end{equation}
+It makes one wonder how many missing relations are still out there. \todoitem{The ideal goal here is to come up with constraints on the moments, so that any moments that satisfy these constraints can be induced by some underlying regular magnetic field. In other words, we hope to find the constraints/configurations that make the mapping from the magnetic field to the function space of the moment surjective.}
+
+\clearpage
+
+\appendix
+
+\section{Regularity conditions on rank-2 tensor in cylindrical coordinates}
+
+Consider a rank-2 tensor field in 2-D space, denoted as $\mathbf{A} \in \mathbb{C}^{2\times 2}$. The tensor can be expressed in any locally orthogonal frame as
+\[
+    A_{ij} = \hat{\mathbf{e}}_i \cdot \mathbf{A} \cdot \hat{\mathbf{e}}_j.
+\]
+Its components can be expressed in Cartesian coordinates as well as cylindrical coordinates using matrices, which are related via transform
+\[
+    \begin{pmatrix} A_{xx} & A_{xy} \\ A_{yx} & A_{yy} \end{pmatrix} = 
+    \begin{pmatrix} \cos\phi & -\sin\phi \\ \sin\phi & \cos\phi \end{pmatrix}
+    \begin{pmatrix} A_{ss} & A_{s\phi} \\ A_{\phi s} & A_{\phi\phi} \end{pmatrix}
+    \begin{pmatrix} \cos\phi & \sin\phi \\ -\sin\phi & \cos\phi \end{pmatrix}
+\]
+The elements in Cartesian coordinates are thus related to the elements in the cylindrical coordinates via
+\[
+    \begin{aligned}
+        A_{xx} &= \cos^2\phi A_{ss} - \cos\phi \sin\phi \left(A_{s\phi} + A_{\phi s}\right) + \sin^2\phi A_{\phi\phi}, \\
+        A_{yy} &= \sin^2\phi A_{ss} + \cos\phi \sin\phi \left(A_{s\phi} + A_{\phi s}\right) + \cos^2\phi A_{\phi\phi}, \\
+        A_{xy} &= \cos\phi \sin\phi \left(A_{ss} - A_{\phi\phi}\right) + \cos^2\phi A_{s\phi} - \sin^2 A_{\phi s}, \\
+        A_{yx} &= \cos\phi \sin\phi \left(A_{ss} - A_{\phi\phi}\right) + \cos^2\phi A_{\phi s} - \sin^2 A_{s \phi}.
+    \end{aligned}
+\]
+Components of $\mathbf{A}$ are regular in cylindrical coordinates, which can be expanded in Fourier series of azimuthal wavenumber. For instance, the $A_{ss}$ component can be expressed as
+\[
+    A_{ss} = \sum_{m=-\infty}^{+\infty} A_{ss}^m(s) e^{im\phi}
+\]
+where $A_{ss}^m$ is the Fourier coefficient for azimuthal wavenumber $m$. Expansions of other components naturally follow. Expressing the cosines and sines also in Fourier basis
+\[
+\begin{gathered}
+    \cos\phi = \frac{e^{i\phi} + e^{-i\phi}}{2},\quad \sin\phi = \frac{e^{i\phi} - e^{-i\phi}}{2i},\\
+    \cos^2\phi = \frac{e^{i2\phi} + e^{-i2\phi} + 2}{4},\quad \sin^2\phi = -\frac{e^{i2\phi} + e^{-i2\phi} - 2}{4},\quad \cos\phi \sin\phi = \frac{e^{i2\phi} - e^{-i2\phi}}{4i}
+\end{gathered}
+\]
+We see that the tensor elements in Cartesian coordinates have the Fourier expansion
+\[\begin{aligned}
+    A_{xx} &= \sum_m \frac{e^{im\phi}}{4} \left\{2\left(A_{ss}^m + A_{\phi\phi}^m\right) + \left[A_{ss}^m - A_{\phi\phi}^m - i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{-i2\phi} + \left[A_{ss}^m - A_{\phi\phi}^m + i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{i2\phi} \right\} \\ 
+    A_{yy} &= \sum_m \frac{e^{im\phi}}{4} \left\{2\left(A_{ss}^m + A_{\phi\phi}^m\right) - \left[A_{ss}^m - A_{\phi\phi}^m - i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{-i2\phi} - \left[A_{ss}^m - A_{\phi\phi}^m + i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{i2\phi} \right\} \\ 
+    A_{xy} &= \sum_m \frac{e^{im\phi}}{4} \left\{2 \left(A_{s\phi}^m - A_{\phi s}^m\right) + \left[A_{s\phi}^m + A_{\phi s}^m + i \left(A_{ss}^m - A_{\phi\phi}^m\right)\right]e^{-i2\phi} + \left[A_{s\phi}^m + A_{\phi s}^m - i \left(A_{ss}^m - A_{\phi\phi}^m\right)\right]e^{i2\phi}\right\} \\
+    A_{yx} &= \sum_m \frac{e^{im\phi}}{4} \left\{2 \left(A_{\phi s}^m - A_{s\phi}^m\right) + \left[A_{s\phi}^m + A_{\phi s}^m + i \left(A_{ss}^m - A_{\phi\phi}^m\right)\right]e^{-i2\phi} + \left[A_{s\phi}^m + A_{\phi s}^m - i \left(A_{ss}^m - A_{\phi\phi}^m\right)\right]e^{i2\phi}\right\}
+\end{aligned}\]
+Using these relations, we can deduce from the regularity of $A_{xx}$, $A_{yy}$, $A_{xy}$ and $A_{yx}$ that the following fields must also be regular
+\[
+\begin{aligned}
+    A_{xx} + A_{yy} &= \sum_m \left(A_{ss}^m + A_{\phi\phi}^m\right) e^{im\phi} \\ 
+    A_{xy} - A_{yx} &= \sum_m \left(A_{s\phi}^m - A_{\phi s}^m\right) e^{im\phi} \\ 
+    \left(A_{xx} - A_{yy}\right) + i \left(A_{xy} + A_{yx}\right) &= \sum_m \left[A_{ss}^m - A_{\phi\phi}^m + i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{i(m+2)\phi} \\
+    \left(A_{xx} - A_{yy}\right) - i \left(A_{xy} + A_{yx}\right) &= \sum_m \left[A_{ss}^m - A_{\phi\phi}^m - i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{i(m-2)\phi}
+\end{aligned}
+\]
+Plugging in these relations back into the expansion of Cartesian components, we see that these are both necessary AND sufficient conditions for the regularity of the tensor elements under Cartesian coordinates. We can then safely further simplify the relations from here, feeling safe that no information is lost during the process. This procedure is, unfortunately, missing in \textcite{lewis_physical_1990}. Only the terms of $A_x$ are derived before the authors concluded that the respective terms must be regular. In fact, counterinstances are easy to find that does NOT fulfill the regularity constraints BUT yields regular $A_x$, say $A_s = \frac{1}{s} \left(1 - \cos 2\phi\right)$ and $A_\phi = \frac{1}{s} \sin 2\phi$. It is the extra constraints from $A_y$ that jointly pose the constraints. As in \textcite{lewis_physical_1990}, the exponentials can be written as
+\[
+    e^{im\phi} = \frac{\left(x + iy\right)^{|m|}}{s^{|m|}}.
+\]
+This allows us to pose constraints on the Fourier coefficients $A_{ij}^m(s)$ as functions of cylindrical radius $s$. The four relations are equivalent to the following four regularity constraints:
+\begin{equation}\label{eqn:regularity-constraint-tensor-all}
+\begin{aligned}
+    A_{ss}^m + A_{\phi\phi}^m &= s^{|m|} C(s^2) \\ 
+    A_{s\phi}^m - A_{\phi s}^m &= s^{|m|} C(s^2) \\ 
+    A_{ss}^m - A_{\phi\phi}^m + i \left(A_{s\phi}^m + A_{\phi s}^m\right) &= s^{|m+2|} C(s^2) \\ 
+    A_{ss}^m - A_{\phi\phi}^m - i \left(A_{s\phi}^m + A_{\phi s}^m\right) &= s^{|m-2|} C(s^2)
+\end{aligned}
+\end{equation}
+where we already used the symmetry or anti-symmetry in $s$ for Cartesian tensor components. Notation $C(s^2)$ denotes a function of $s^2$ that is regular at $s=0$, which can be expanded into Taylor series. Now it is time to split the domain of $k$, $\mathbb{Z}$, into intervals, so as to simplify the relations. We see that the absolute value functions can be completely removed in each scenario if we split the domain into $m \leq -2$, $m=-1$, $m=0$, $m=1$ and $m\geq 2$. The treaments of negative and positive $m$ are highly similar, and I shall only write out the positive branch in detail. For $m\geq 2$, we can substract the two latter equations in eq.(\ref{eqn:regularity-constraint-tensor-all}) and obtain $A_{s\phi}^m + A_{\phi s}^m \sim s^{m-2}$; combining this with the second equation,
+\[
+\left\{\begin{aligned}
+    A_{s\phi}^m + A_{\phi s}^m &= s^{m-2} C(s^2) \\ 
+    A_{s\phi}^m - A_{\phi s}^m &= s^m C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{s\phi}^m &= A_{s\phi}^{m0} s^{m-2} + A_{s\phi}^{m1} s^{m} + s^{m+2} C(s^2) \\ 
+    A_{\phi s}^m &= A_{\phi s}^{m0} s^{m-2} + A_{\phi s}^{m1} s^{m} + s^{m+2} C(s^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad A_{s\phi}^{m0} = A_{\phi s}^{m0}.
+\]
+Thus simultaneously we obtain the ansätze (this is in fact the required form for regularity) for $A_{s\phi}$ and $A_{\phi s}$, as well as a coupling condition. The second superscript on $A_{ij}^{mn}$ gives the index for power series expansion in $s$. On the other hand, we can add the latter two equations of eq.(\ref{eqn:regularity-constraint-tensor-all}) and combine with the first equation to similarly come up with 
+\[
+\left\{\begin{aligned}
+    A_{ss}^m + A_{\phi \phi}^m &= s^{m} C(s^2) \\ 
+    A_{ss}^m - A_{\phi \phi}^m &= s^{m-2} C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{ss}^m &= A_{ss}^{m0} s^{m-2} + A_{ss}^{m1} s^{m} + s^{m+2} C(s^2) \\ 
+    A_{\phi \phi}^m &= A_{\phi\phi}^{m0} s^{m-2} + A_{\phi\phi}^{m1} s^{m} + s^{m+2} C(s^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad A_{ss}^{m0} = - A_{\phi\phi}^{m0}.
+\]
+Finally, we reuse the third equation in eq.(\ref{eqn:regularity-constraint-tensor-all}) to establish the relation between the coefficients for the diagonal and the off-diagonal elements. To make sure both $s^{m-2}$ and $s^m$ vanishes on the LHS,
+\[
+\begin{aligned}
+    A_{ss}^{m0} - A_{\phi\phi}^{m0} + i \left(A_{s\phi}^{m0} + A_{\phi s}^{m0}\right) = 0, \quad \Longrightarrow\quad A_{s\phi}^{m0} = i A_{ss}^{m0} \\
+    A_{ss}^{m1} - A_{\phi\phi}^{m1} + i \left(A_{s\phi}^{m1} + A_{\phi s}^{m1}\right) = 0
+\end{aligned}
+\]
+These are the four regularity constraints for $m\geq 2$. With all the ansätze, it can be easily verified that as long as the coefficients fulfill these constraints, the target terms indeed satisfy eq.(\ref{eqn:regularity-constraint-tensor-all}), and thus these ansätze and constraints are also sufficient conditions.
+
+Next, we take a look at the situation where $m=1$. The latter two equations now yield
+\[
+\left\{\begin{aligned}
+    A_{s\phi}^1 + A_{\phi s}^1 &= s C(s^2) \\ 
+    A_{s\phi}^1 - A_{\phi s}^1 &= s C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{s\phi}^1 &= A_{s\phi}^{10} s + s^{3} C(s^2) \\ 
+    A_{\phi s}^1 &= A_{\phi s}^{10} s + s^{3} C(s^2). 
+\end{aligned}\right.
+\]
+Apparently, no constraints are required; the ansatz alone suffices to enforce the correct leading power of $s$. This is equally true for $A_{ss}$ and $A_{\phi\phi}$,
+\[
+\left\{\begin{aligned}
+    A_{ss}^1 + A_{\phi \phi}^1 &= s^{1} C(s^2) \\ 
+    A_{ss}^1 - A_{\phi \phi}^1 &= s^{1} C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{ss}^1 &= A_{ss}^{10} s + s^{3} C(s^2) \\ 
+    A_{\phi \phi}^1 &= A_{\phi\phi}^{10} s + s^{3} C(s^2) .
+\end{aligned}\right.
+\]
+However, the last constraint still holds, that is we still need that the first-order term in $s$ of $A_{ss}^1 - A_{\phi\phi}^1$ and $i \left(A_{s\phi}^1 + A_{\phi s}^1\right)$ cancel each other out,
+\[
+    A_{ss}^{10} - A_{\phi\phi}^{10} + i \left(A_{s\phi}^{10} + A_{\phi s}^{10}\right) = 0.
+\]
+This corresponds to the newly-derived constraint (eq.\ref{eqn:coupling-bss-bpp-bsp-m1} and \ref{eqn:coupling-bzss-bzpp-bzsp-m1}), absent from \textcite{holdenried-chernoff_long_2021} (note here we are not yet assuming $A_{s\phi} = A_{\phi s}$).
+
+Finally, we arrive at the $m=0$ case.
+\[
+\left\{\begin{aligned}
+    A_{s\phi}^0 + A_{\phi s}^0 &= s^2 C(s^2) \\ 
+    A_{s\phi}^0 - A_{\phi s}^0 &= C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{s\phi}^0 &= A_{s\phi}^{00} + s^2 C(s^2) \\ 
+    A_{\phi s}^0 &= A_{\phi s}^{00} + s^2 C(s^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad A_{s\phi}^{00} = -A_{\phi s}^{00}.
+\]
+\[
+\left\{\begin{aligned}
+    A_{ss}^0 + A_{\phi \phi}^0 &= C(s^2) \\ 
+    A_{ss}^0 - A_{\phi \phi}^0 &= s^2 C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{ss}^0 &= A_{ss}^{00} + s^2 C(s^2) \\ 
+    A_{\phi \phi}^0 &= A_{\phi\phi}^{00} + s^{2} C(s^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad A_{ss}^{00} = A_{\phi\phi}^{00}.
+\]
+The third and the fourth equation in eq.(\ref{eqn:regularity-constraint-tensor-all}) give the relations
+\[
+\left\{\begin{aligned}
+    &A_{ss}^{00} - A_{\phi\phi}^{00} + i \left(A_{s\phi}^{00} + A_{\phi s}^{00}\right) = 0 \\ 
+    &A_{ss}^{00} - A_{\phi\phi}^{00} - i \left(A_{s\phi}^{00} + A_{\phi s}^{00}\right) = 0
+\end{aligned}\right.
+\]
+which are automatically satisfied given the previous ansätze. The negative $m$ scenarios are also similarly derived. In the end, the required leading order and the constraints are summarized as follows
+\begin{equation}
+\begin{aligned}
+    m = 0 :& \quad \left\{\begin{aligned}
+        A_{ss}^0 &= A_{ss}^{00} + s^2 C(s^2) \\ 
+        A_{\phi\phi}^0 &= A_{\phi\phi}^{00} + s^2 C(s^2) \\ 
+        A_{s\phi}^0 &= A_{s\phi}^{00} + s^2 C(s^2) \\ 
+        A_{\phi s}^0 &= A_{\phi s}^{00} + s^2 C(s^2) \\ 
+    \end{aligned}\right.,\quad 
+    \left\{\begin{aligned}
+        A_{ss}^{00} = A_{\phi\phi}^{00} \\ 
+        A_{s\phi}^{00} = -A_{\phi s}^{00}
+    \end{aligned}\right. \\ 
+    |m| = 1 :& \quad \left\{\begin{aligned}
+        A_{ss}^m &= A_{ss}^{m0} s + s^3 C(s^2) \\
+        A_{\phi\phi}^m &= A_{\phi\phi}^{m0} s + s^{3} C(s^2) \\
+        A_{s\phi}^m &= A_{s\phi}^{m0} s + s^{3} C(s^2) \\
+        A_{\phi s}^m &= A_{\phi s}^{m0} s + s^{3} C(s^2) \\
+    \end{aligned}\right.,\quad \left\{\begin{aligned}
+        &A_{s\phi}^{m0} + A_{\phi s}^{m0} = i\sgn(m) \left(A_{ss}^{m0} - A_{\phi\phi}^{m0}\right)
+    \end{aligned}\right. \\
+    |m| \geq 2 :& \quad \left\{\begin{aligned}
+        A_{ss}^m &= A_{ss}^{m0} s^{|m|-2} + A_{ss}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+        A_{\phi\phi}^m &= A_{\phi\phi}^{m0} s^{|m|-2} + A_{\phi \phi}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+        A_{s\phi}^m &= A_{s\phi}^{m0} s^{|m|-2} + A_{s\phi}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+        A_{\phi s}^m &= A_{\phi s}^{m0} s^{|m|-2} + A_{\phi s}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+    \end{aligned}\right.,\quad \left\{\begin{aligned}
+        &A_{ss}^{m0} = - A_{\phi\phi}^{m0}\\
+        &A_{s\phi}^{m0} = A_{\phi s}^{m0} \\ 
+        &A_{s\phi}^{m0} = i \sgn(m) A_{ss}^{m0} \\ 
+        &A_{s\phi}^{m1} + A_{\phi s}^{m1} = i\sgn(m)\left(A_{ss}^{m1} - A_{\phi\phi}^{m1}\right).
+    \end{aligned}\right.
+\end{aligned}
+\end{equation}
+In many cases, it is further useful to assume symmetry of the tensor; this is the case with e.g. strain tensor $\bm{\varepsilon}$, strain-rate tensor $\dot{\bm{\varepsilon}}$, stress tensor $\bm{\sigma}$, and of course for our problem, Maxwell stress $\bm{\sigma}^M$. In this case $A_{s\phi} = A_{\phi s}$, and all coefficients of their power series in $s$ should match. However, for $m=0$ we have $A_{s\phi}^{00} = -A_{\phi s}^{00}$. The result is that $A_{s\phi}^0 = A_{\phi s}^0$, when expanded in power series of $s$, has leading order $s^2$ instead of $s^0$. In addition, some original constraints will render redundant. In the end, the ansätze and the regularity constraints for symmetric rank-2 tensors are given by
+\begin{equation}
+    \begin{aligned}
+        m = 0 :& \quad \left\{\begin{aligned}
+            A_{ss}^0 &= A_{ss}^{00} + s^2 C(s^2) \\ 
+            A_{\phi\phi}^0 &= A_{\phi\phi}^{00} + s^2 C(s^2) \\ 
+            A_{s\phi}^0 &= A_{s\phi}^{00} s^2 + s^4 C(s^2) 
+        \end{aligned}\right.,\quad 
+        \left\{\begin{aligned}
+            A_{ss}^{00} = A_{\phi\phi}^{00}
+        \end{aligned}\right. \\ 
+        |m| = 1 :& \quad \left\{\begin{aligned}
+            A_{ss}^m &= A_{ss}^{m0} s + s^3 C(s^2) \\
+            A_{\phi\phi}^m &= A_{\phi\phi}^{m0} s + s^{3} C(s^2) \\
+            A_{s\phi}^m &= A_{s\phi}^{m0} s + s^{3} C(s^2) 
+        \end{aligned}\right.,\quad \left\{\begin{aligned}
+            & 2A_{s\phi}^{m0} = i\sgn(m) \left(A_{ss}^{m0} - A_{\phi\phi}^{m0}\right)
+        \end{aligned}\right. \\
+        |m| \geq 2 :& \quad \left\{\begin{aligned}
+            A_{ss}^m &= A_{ss}^{m0} s^{|m|-2} + A_{ss}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+            A_{\phi\phi}^m &= A_{\phi\phi}^{m0} s^{|m|-2} + A_{\phi \phi}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+            A_{s\phi}^m &= A_{s\phi}^{m0} s^{|m|-2} + A_{s\phi}^{m1} s^{|m|} + s^{|m|+2} C(s^2)
+        \end{aligned}\right.,\quad \left\{\begin{aligned}
+            &A_{ss}^{m0} = - A_{\phi\phi}^{m0}\\
+            &A_{s\phi}^{m0} = i \sgn(m) A_{ss}^{m0} \\ 
+            &2 A_{s\phi}^{m1} = i\sgn(m)\left(A_{ss}^{m1} - A_{\phi\phi}^{m1}\right).
+        \end{aligned}\right.
+    \end{aligned}
+\end{equation}
+These ansätze are consistent with the leading order behaviour of the equatorial magnetic moments documented in \textcite{holdenried-chernoff_long_2021}. However, the five constraints on the equatorial magnetic moments derived here form a proper superset of the constraints in \textcite{holdenried-chernoff_long_2021}. Specficially, two of these relations are absent in the dissertation, namely
+\[
+\begin{aligned}
+    2 A_{s\phi}^{m0} = i\sgn(m) \left(A_{ss}^{m0} - A_{\phi\phi}^{m0}\right),\quad |m|=1;\\
+    2A_{s\phi}^{m1} = i\sgn(m) \left(A_{ss}^{m1} - A_{\phi\phi}^{m1}\right),\quad |m|\geq 2.
+\end{aligned}
+\]
+The first of these two has been rediscovered in the previous section by re-deriving the formulae. The second relation cannot be discovered as long as we only consider the relation between lowest order behaviours. In fact, from this we see that there are regularity constraints even on the second-order term in the Taylor expansion in $s$.
+
+\textcolor{red}{It should be noted that the derivations above ONLY considered regularity of the tensor fields. However, magnetic moments $\mathbf{B}\mathbf{B}$ are formed by outer product of the magnetic field $\mathbf{B}$.} In other words, the magnetic moment tensor is the rank-1 transformation of the magnetic field
+\[
+    \begin{pmatrix} B_x^2 & B_x B_y \\ B_y B_x & B_y^2 \end{pmatrix} = 
+    \begin{pmatrix} B_x \\ B_y \end{pmatrix}
+    \begin{pmatrix} B_x \\ B_y \end{pmatrix}^\intercal,\qquad
+    \begin{pmatrix} B_s^2 & B_s B_\phi \\ B_\phi B_s & B_\phi^2 \end{pmatrix} = 
+    \begin{pmatrix} B_s \\ B_\phi \end{pmatrix}
+    \begin{pmatrix} B_s \\ B_\phi \end{pmatrix}^\intercal
+\]
+This constraints is not imposed in the derivations above, which assumes arbitrary tensor field. It thus poses a question that if we expand $B_s^2$, $B_\phi^2$ and $B_sB_\phi$ separately, are we artificially expanding the image of field to moment mapping. Part of the space formed by the expansions might not have underlying magnetic fields (i.e. not surjective). \todoitem{This problem requires further notice.}
+
+\clearpage
+
+\printbibliography
+
+\end{document}
+
