@@ -4,10 +4,21 @@
 __pycache__/
 *.py[cod]
 # miscellaneous intermediate files for latex
+*.aux
+*.bbl
+*.bcf
+*.sty
 doc/*.gz
-doc/*.aux
-doc/*.bbl
-doc/*.bcf
 doc/*.log
 doc/*.out
 doc/*.xml
+presentation/*.gz
+presentation/*.log
+presentation/*.out
+presentation/*.xml
+presentation/*.snm
+presentation/*.nav
+presentation/*.vrb
+# unwanted local test scripts
+style_sheets_reference.py
+test.py
