@@ -1,0 +1,26 @@
+\section{Vorticity equation}
+
+In this section I derive an alternative form of the vorticity equation, which is the starting point of some eigenvalue problems.
+Starting from the dimensionless form of the vorticity equation, we have
+\begin{equation}
+\begin{aligned}
+    -2 \nabla_e^2 \frac{\partial \psi}{\partial t} &= \frac{dH}{ds} \left(\frac{4}{sH} \frac{\partial \psi}{\partial \phi} - \frac{2}{H}\frac{\partial}{\partial s} \frac{\partial \psi}{\partial t} - \frac{1}{sH}\frac{\partial^2}{\partial \phi^2}\frac{\partial \psi}{\partial t}\right) - \frac{dH}{ds} \left(2 f_\phi^e + \frac{1}{s}\frac{\partial \widetilde{f_z}}{\partial \phi}\right) + \hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e}.
+\end{aligned}
+\end{equation}
+The superscript $e$ means the field is evaluated on the equatorial plane. Here we used the dimensionless form as in \textcite{jackson_plesio-geostrophy_2020}, where the characteristic time scale is chosen to be the rotation time scale $\Omega^{-1}$ (the "inertial time scale"), instead of the Alfvén time scale $L/V_A$, as in \textcite{holdenried-chernoff_long_2021}. The force $\mathbf{f}$ contains all the external forces on the right-hand-side of the Navier-Stokes equation, e.g. Lorentz force, viscous force, buoyancy, etc. For the eigenvalue problem, it is convenient to move the terms involving all the time derivatives to one side, 
+\[\begin{aligned}
+    \left[-2 \nabla_e^2 + \frac{dH}{ds} \left(\frac{2}{H} \frac{\partial}{\partial s} + \frac{1}{sH} \frac{\partial^2}{\partial \phi^2}\right)\right] \frac{\partial \psi}{\partial t} &= \frac{4}{sH}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} - \frac{dH}{ds} \left(2 f_\phi^e + \frac{1}{s}\frac{\partial \widetilde{f_z}}{\partial \phi}\right) + \hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e} \\ 
+    \left[- \frac{1}{s}\frac{\partial}{\partial s}\left(s\frac{\partial}{\partial s}\right) + \frac{1}{H} \frac{dH}{ds} \frac{\partial}{\partial s} + \left(\frac{1}{2sH} \frac{dH}{ds} - \frac{1}{s^2}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial \psi}{\partial t} &= \frac{2}{sH}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} - \frac{dH}{ds} \left(f_\phi^e + \frac{1}{2s}\frac{\partial \widetilde{f_z}}{\partial \phi}\right) + \frac{\hat{\mathbf{z}}}{2}\cdot \nabla\times \overline{\mathbf{f}_e}
+\end{aligned}\]
+In cases where different azimuthal wavenumber separates (e.g. when the system has rotational invariance with respect to $\phi$), this equation will be readily converted to an ordinary differential equation (ODE) in $s$. In this case, it would be desirable to write the differential operators concerning $s$ in the self-adjoint form $\frac{d}{ds}(p(s)\frac{d}{ds})$, to form a standard Sturm-Liouville problem,
+\[
+    -\frac{1}{s}\frac{\partial}{\partial s} \left(s \frac{\partial}{\partial s}\right) + \frac{1}{H} \frac{dH}{ds} \frac{\partial}{\partial s} = - \frac{\partial^2}{\partial s^2} - \left(\frac{1}{s} - \frac{1}{H}\frac{dH}{ds}\right) \frac{\partial}{\partial s}
+\]
+and we can deduce the term $p(x)$ using the relation
+\[
+    \frac{1}{p(s)}\frac{d p(s)}{ds} = \frac{1}{s} - \frac{1}{H}\frac{dH}{ds}\quad \Longrightarrow \quad d \ln p = d\ln s - d\ln H = d \ln \frac{s}{H} \quad \Longrightarrow\quad p = \frac{s}{H}.
+\]
+And the original equation can be rewritten as 
+\begin{equation}
+    \left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial \psi}{\partial t} = - \frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + \frac{dH}{ds} \left(\frac{s}{H} f_\phi^e + \frac{1}{2H}\frac{\partial \widetilde{f_z}}{\partial \phi}\right) - \frac{s}{2H}\hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e}
+\end{equation}
