@@ -1,0 +1,235 @@
+\section{Regularity conditions on rank-2 tensor in cylindrical coordinates}
+
+In this section, I derive the regularity conditions for general rank-2 tensors in cylindrical coordinates.
+This approach has been more elaborately exploited for arbitrary ranks in \href{run:./regular_tensors_polar_coordinates.pdf}{\textit{Regularity conditions for the Fourier coefficients of tensors in polar coordinates}}. The excerpt here offers a more self-contained, explicit and easy-to-comprehend explanation.
+
+Consider a rank-2 tensor field in 2-D space, denoted as $\mathbf{A} \in \mathbb{C}^{2\times 2}$. The tensor can be expressed in any locally orthogonal frame as
+\[
+    A_{ij} = \hat{\mathbf{e}}_i \cdot \mathbf{A} \cdot \hat{\mathbf{e}}_j.
+\]
+Its components can be expressed in Cartesian coordinates as well as cylindrical coordinates using matrices, which are related via transform
+\[
+    \begin{pmatrix} A_{xx} & A_{xy} \\ A_{yx} & A_{yy} \end{pmatrix} = 
+    \begin{pmatrix} \cos\phi & -\sin\phi \\ \sin\phi & \cos\phi \end{pmatrix}
+    \begin{pmatrix} A_{ss} & A_{s\phi} \\ A_{\phi s} & A_{\phi\phi} \end{pmatrix}
+    \begin{pmatrix} \cos\phi & \sin\phi \\ -\sin\phi & \cos\phi \end{pmatrix}
+\]
+The elements in Cartesian coordinates are thus related to the elements in the cylindrical coordinates via
+\[
+    \begin{aligned}
+        A_{xx} &= \cos^2\phi A_{ss} - \cos\phi \sin\phi \left(A_{s\phi} + A_{\phi s}\right) + \sin^2\phi A_{\phi\phi}, \\
+        A_{yy} &= \sin^2\phi A_{ss} + \cos\phi \sin\phi \left(A_{s\phi} + A_{\phi s}\right) + \cos^2\phi A_{\phi\phi}, \\
+        A_{xy} &= \cos\phi \sin\phi \left(A_{ss} - A_{\phi\phi}\right) + \cos^2\phi A_{s\phi} - \sin^2 A_{\phi s}, \\
+        A_{yx} &= \cos\phi \sin\phi \left(A_{ss} - A_{\phi\phi}\right) + \cos^2\phi A_{\phi s} - \sin^2 A_{s \phi}.
+    \end{aligned}
+\]
+Components of $\mathbf{A}$ are regular in cylindrical coordinates, which can be expanded in Fourier series of azimuthal wavenumber. For instance, the $A_{ss}$ component can be expressed as
+\[
+    A_{ss} = \sum_{m=-\infty}^{+\infty} A_{ss}^m(s) e^{im\phi}
+\]
+where $A_{ss}^m$ is the Fourier coefficient for azimuthal wavenumber $m$. Expansions of other components naturally follow. Expressing the cosines and sines also in Fourier basis
+\[
+\begin{gathered}
+    \cos\phi = \frac{e^{i\phi} + e^{-i\phi}}{2},\quad \sin\phi = \frac{e^{i\phi} - e^{-i\phi}}{2i},\\
+    \cos^2\phi = \frac{e^{i2\phi} + e^{-i2\phi} + 2}{4},\quad \sin^2\phi = -\frac{e^{i2\phi} + e^{-i2\phi} - 2}{4},\quad \cos\phi \sin\phi = \frac{e^{i2\phi} - e^{-i2\phi}}{4i}
+\end{gathered}
+\]
+We see that the tensor elements in Cartesian coordinates have the Fourier expansion
+\[\begin{aligned}
+    A_{xx} &= \sum_m \frac{e^{im\phi}}{4} \left\{2\left(A_{ss}^m + A_{\phi\phi}^m\right) + \left[A_{ss}^m - A_{\phi\phi}^m - i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{-i2\phi} + \left[A_{ss}^m - A_{\phi\phi}^m + i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{i2\phi} \right\} \\ 
+    A_{yy} &= \sum_m \frac{e^{im\phi}}{4} \left\{2\left(A_{ss}^m + A_{\phi\phi}^m\right) - \left[A_{ss}^m - A_{\phi\phi}^m - i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{-i2\phi} - \left[A_{ss}^m - A_{\phi\phi}^m + i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{i2\phi} \right\} \\ 
+    A_{xy} &= \sum_m \frac{e^{im\phi}}{4} \left\{2 \left(A_{s\phi}^m - A_{\phi s}^m\right) + \left[A_{s\phi}^m + A_{\phi s}^m + i \left(A_{ss}^m - A_{\phi\phi}^m\right)\right]e^{-i2\phi} + \left[A_{s\phi}^m + A_{\phi s}^m - i \left(A_{ss}^m - A_{\phi\phi}^m\right)\right]e^{i2\phi}\right\} \\
+    A_{yx} &= \sum_m \frac{e^{im\phi}}{4} \left\{2 \left(A_{\phi s}^m - A_{s\phi}^m\right) + \left[A_{s\phi}^m + A_{\phi s}^m + i \left(A_{ss}^m - A_{\phi\phi}^m\right)\right]e^{-i2\phi} + \left[A_{s\phi}^m + A_{\phi s}^m - i \left(A_{ss}^m - A_{\phi\phi}^m\right)\right]e^{i2\phi}\right\}
+\end{aligned}\]
+Using these relations, we can deduce from the regularity of $A_{xx}$, $A_{yy}$, $A_{xy}$ and $A_{yx}$ that the following fields must also be regular
+\[
+\begin{aligned}
+    A_{xx} + A_{yy} &= \sum_m \left(A_{ss}^m + A_{\phi\phi}^m\right) e^{im\phi} \\ 
+    A_{xy} - A_{yx} &= \sum_m \left(A_{s\phi}^m - A_{\phi s}^m\right) e^{im\phi} \\ 
+    \left(A_{xx} - A_{yy}\right) + i \left(A_{xy} + A_{yx}\right) &= \sum_m \left[A_{ss}^m - A_{\phi\phi}^m + i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{i(m+2)\phi} \\
+    \left(A_{xx} - A_{yy}\right) - i \left(A_{xy} + A_{yx}\right) &= \sum_m \left[A_{ss}^m - A_{\phi\phi}^m - i \left(A_{s\phi}^m + A_{\phi s}^m\right)\right] e^{i(m-2)\phi}
+\end{aligned}
+\]
+Plugging in these relations back into the expansion of Cartesian components, we see that these are both necessary AND sufficient conditions for the regularity of the tensor elements under Cartesian coordinates. We can then safely further simplify the relations from here, feeling safe that no information is lost during the process. This procedure is, unfortunately, missing in \textcite{lewis_physical_1990}. Only the terms of $A_x$ are derived before the authors concluded that the respective terms must be regular. In fact, counterinstances are easy to find that does NOT fulfill the regularity constraints BUT yields regular $A_x$, say $A_s = \frac{1}{s} \left(1 - \cos 2\phi\right)$ and $A_\phi = \frac{1}{s} \sin 2\phi$. It is the extra constraints from $A_y$ that jointly pose the constraints. As in \textcite{lewis_physical_1990}, the exponentials can be written as
+\[
+    e^{im\phi} = \frac{\left(x + iy\right)^{|m|}}{s^{|m|}}.
+\]
+This allows us to pose constraints on the Fourier coefficients $A_{ij}^m(s)$ as functions of cylindrical radius $s$. The four relations are equivalent to the following four regularity constraints:
+\begin{equation}\label{eqn:regularity-constraint-tensor-all}
+\begin{aligned}
+    A_{ss}^m + A_{\phi\phi}^m &= s^{|m|} C(s^2) \\ 
+    A_{s\phi}^m - A_{\phi s}^m &= s^{|m|} C(s^2) \\ 
+    A_{ss}^m - A_{\phi\phi}^m + i \left(A_{s\phi}^m + A_{\phi s}^m\right) &= s^{|m+2|} C(s^2) \\ 
+    A_{ss}^m - A_{\phi\phi}^m - i \left(A_{s\phi}^m + A_{\phi s}^m\right) &= s^{|m-2|} C(s^2)
+\end{aligned}
+\end{equation}
+where we already used the symmetry or anti-symmetry in $s$ for Cartesian tensor components. Notation $C(s^2)$ denotes a function of $s^2$ that is regular at $s=0$, which can be expanded into Taylor series. Now it is time to split the domain of $k$, $\mathbb{Z}$, into intervals, so as to simplify the relations. We see that the absolute value functions can be completely removed in each scenario if we split the domain into $m \leq -2$, $m=-1$, $m=0$, $m=1$ and $m\geq 2$. The treaments of negative and positive $m$ are highly similar, and I shall only write out the positive branch in detail. For $m\geq 2$, we can substract the two latter equations in eq.(\ref{eqn:regularity-constraint-tensor-all}) and obtain $A_{s\phi}^m + A_{\phi s}^m \sim s^{m-2}$; combining this with the second equation,
+\[
+\left\{\begin{aligned}
+    A_{s\phi}^m + A_{\phi s}^m &= s^{m-2} C(s^2) \\ 
+    A_{s\phi}^m - A_{\phi s}^m &= s^m C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{s\phi}^m &= A_{s\phi}^{m0} s^{m-2} + A_{s\phi}^{m1} s^{m} + s^{m+2} C(s^2) \\ 
+    A_{\phi s}^m &= A_{\phi s}^{m0} s^{m-2} + A_{\phi s}^{m1} s^{m} + s^{m+2} C(s^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad A_{s\phi}^{m0} = A_{\phi s}^{m0}.
+\]
+Thus simultaneously we obtain the ansätze (this is in fact the required form for regularity) for $A_{s\phi}$ and $A_{\phi s}$, as well as a coupling condition. The second superscript on $A_{ij}^{mn}$ gives the index for power series expansion in $s$. On the other hand, we can add the latter two equations of eq.(\ref{eqn:regularity-constraint-tensor-all}) and combine with the first equation to similarly come up with 
+\[
+\left\{\begin{aligned}
+    A_{ss}^m + A_{\phi \phi}^m &= s^{m} C(s^2) \\ 
+    A_{ss}^m - A_{\phi \phi}^m &= s^{m-2} C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{ss}^m &= A_{ss}^{m0} s^{m-2} + A_{ss}^{m1} s^{m} + s^{m+2} C(s^2) \\ 
+    A_{\phi \phi}^m &= A_{\phi\phi}^{m0} s^{m-2} + A_{\phi\phi}^{m1} s^{m} + s^{m+2} C(s^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad A_{ss}^{m0} = - A_{\phi\phi}^{m0}.
+\]
+Finally, we reuse the third equation in eq.(\ref{eqn:regularity-constraint-tensor-all}) to establish the relation between the coefficients for the diagonal and the off-diagonal elements. To make sure both $s^{m-2}$ and $s^m$ vanishes on the LHS,
+\[
+\begin{aligned}
+    A_{ss}^{m0} - A_{\phi\phi}^{m0} + i \left(A_{s\phi}^{m0} + A_{\phi s}^{m0}\right) = 0, \quad \Longrightarrow\quad A_{s\phi}^{m0} = i A_{ss}^{m0} \\
+    A_{ss}^{m1} - A_{\phi\phi}^{m1} + i \left(A_{s\phi}^{m1} + A_{\phi s}^{m1}\right) = 0
+\end{aligned}
+\]
+These are the four regularity constraints for $m\geq 2$. With all the ansätze, it can be easily verified that as long as the coefficients fulfill these constraints, the target terms indeed satisfy eq.(\ref{eqn:regularity-constraint-tensor-all}), and thus these ansätze and constraints are also sufficient conditions.
+
+Next, we take a look at the situation where $m=1$. The latter two equations now yield
+\[
+\left\{\begin{aligned}
+    A_{s\phi}^1 + A_{\phi s}^1 &= s C(s^2) \\ 
+    A_{s\phi}^1 - A_{\phi s}^1 &= s C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{s\phi}^1 &= A_{s\phi}^{10} s + s^{3} C(s^2) \\ 
+    A_{\phi s}^1 &= A_{\phi s}^{10} s + s^{3} C(s^2). 
+\end{aligned}\right.
+\]
+Apparently, no constraints are required; the ansatz alone suffices to enforce the correct leading power of $s$. This is equally true for $A_{ss}$ and $A_{\phi\phi}$,
+\[
+\left\{\begin{aligned}
+    A_{ss}^1 + A_{\phi \phi}^1 &= s^{1} C(s^2) \\ 
+    A_{ss}^1 - A_{\phi \phi}^1 &= s^{1} C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{ss}^1 &= A_{ss}^{10} s + s^{3} C(s^2) \\ 
+    A_{\phi \phi}^1 &= A_{\phi\phi}^{10} s + s^{3} C(s^2) .
+\end{aligned}\right.
+\]
+However, the last constraint still holds, that is we still need that the first-order term in $s$ of $A_{ss}^1 - A_{\phi\phi}^1$ and $i \left(A_{s\phi}^1 + A_{\phi s}^1\right)$ cancel each other out,
+\[
+    A_{ss}^{10} - A_{\phi\phi}^{10} + i \left(A_{s\phi}^{10} + A_{\phi s}^{10}\right) = 0.
+\]
+These constraints are absent from \textcite{holdenried-chernoff_long_2021} (note here we are not yet assuming $A_{s\phi} = A_{\phi s}$).
+
+Finally, we arrive at the $m=0$ case.
+\[
+\left\{\begin{aligned}
+    A_{s\phi}^0 + A_{\phi s}^0 &= s^2 C(s^2) \\ 
+    A_{s\phi}^0 - A_{\phi s}^0 &= C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{s\phi}^0 &= A_{s\phi}^{00} + s^2 C(s^2) \\ 
+    A_{\phi s}^0 &= A_{\phi s}^{00} + s^2 C(s^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad A_{s\phi}^{00} = -A_{\phi s}^{00}.
+\]
+\[
+\left\{\begin{aligned}
+    A_{ss}^0 + A_{\phi \phi}^0 &= C(s^2) \\ 
+    A_{ss}^0 - A_{\phi \phi}^0 &= s^2 C(s^2)
+\end{aligned}\right. \quad \Longrightarrow\quad 
+\left\{\begin{aligned}
+    A_{ss}^0 &= A_{ss}^{00} + s^2 C(s^2) \\ 
+    A_{\phi \phi}^0 &= A_{\phi\phi}^{00} + s^{2} C(s^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad A_{ss}^{00} = A_{\phi\phi}^{00}.
+\]
+The third and the fourth equation in eq.(\ref{eqn:regularity-constraint-tensor-all}) give the relations
+\[
+\left\{\begin{aligned}
+    &A_{ss}^{00} - A_{\phi\phi}^{00} + i \left(A_{s\phi}^{00} + A_{\phi s}^{00}\right) = 0 \\ 
+    &A_{ss}^{00} - A_{\phi\phi}^{00} - i \left(A_{s\phi}^{00} + A_{\phi s}^{00}\right) = 0
+\end{aligned}\right.
+\]
+which are automatically satisfied given the previous ansätze. The negative $m$ scenarios are also similarly derived. In the end, the required leading order and the constraints are summarized as follows
+\begin{equation}
+\begin{aligned}
+    m = 0 :& \quad \left\{\begin{aligned}
+        A_{ss}^0 &= A_{ss}^{00} + s^2 C(s^2) \\ 
+        A_{\phi\phi}^0 &= A_{\phi\phi}^{00} + s^2 C(s^2) \\ 
+        A_{s\phi}^0 &= A_{s\phi}^{00} + s^2 C(s^2) \\ 
+        A_{\phi s}^0 &= A_{\phi s}^{00} + s^2 C(s^2) \\ 
+    \end{aligned}\right.,\quad 
+    \left\{\begin{aligned}
+        A_{ss}^{00} = A_{\phi\phi}^{00} \\ 
+        A_{s\phi}^{00} = -A_{\phi s}^{00}
+    \end{aligned}\right. \\ 
+    |m| = 1 :& \quad \left\{\begin{aligned}
+        A_{ss}^m &= A_{ss}^{m0} s + s^3 C(s^2) \\
+        A_{\phi\phi}^m &= A_{\phi\phi}^{m0} s + s^{3} C(s^2) \\
+        A_{s\phi}^m &= A_{s\phi}^{m0} s + s^{3} C(s^2) \\
+        A_{\phi s}^m &= A_{\phi s}^{m0} s + s^{3} C(s^2) \\
+    \end{aligned}\right.,\quad \left\{\begin{aligned}
+        &A_{s\phi}^{m0} + A_{\phi s}^{m0} = i\sgn(m) \left(A_{ss}^{m0} - A_{\phi\phi}^{m0}\right)
+    \end{aligned}\right. \\
+    |m| \geq 2 :& \quad \left\{\begin{aligned}
+        A_{ss}^m &= A_{ss}^{m0} s^{|m|-2} + A_{ss}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+        A_{\phi\phi}^m &= A_{\phi\phi}^{m0} s^{|m|-2} + A_{\phi \phi}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+        A_{s\phi}^m &= A_{s\phi}^{m0} s^{|m|-2} + A_{s\phi}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+        A_{\phi s}^m &= A_{\phi s}^{m0} s^{|m|-2} + A_{\phi s}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+    \end{aligned}\right.,\quad \left\{\begin{aligned}
+        &A_{ss}^{m0} = - A_{\phi\phi}^{m0}\\
+        &A_{s\phi}^{m0} = A_{\phi s}^{m0} \\ 
+        &A_{s\phi}^{m0} = i \sgn(m) A_{ss}^{m0} \\ 
+        &A_{s\phi}^{m1} + A_{\phi s}^{m1} = i\sgn(m)\left(A_{ss}^{m1} - A_{\phi\phi}^{m1}\right).
+    \end{aligned}\right.
+\end{aligned}
+\end{equation}
+In many cases, it is further useful to assume symmetry of the tensor; this is the case with e.g. strain tensor $\bm{\varepsilon}$, strain-rate tensor $\dot{\bm{\varepsilon}}$, stress tensor $\bm{\sigma}$, and of course for our problem, Maxwell stress $\bm{\sigma}^M$. In this case $A_{s\phi} = A_{\phi s}$, and all coefficients of their power series in $s$ should match. However, for $m=0$ we have $A_{s\phi}^{00} = -A_{\phi s}^{00}$. The result is that $A_{s\phi}^0 = A_{\phi s}^0$, when expanded in power series of $s$, has leading order $s^2$ instead of $s^0$. In addition, some original constraints will render redundant. In the end, the ansätze and the regularity constraints for symmetric rank-2 tensors are given by
+\begin{equation}
+    \begin{aligned}
+        m = 0 :& \quad \left\{\begin{aligned}
+            A_{ss}^0 &= A_{ss}^{00} + s^2 C(s^2) \\ 
+            A_{\phi\phi}^0 &= A_{\phi\phi}^{00} + s^2 C(s^2) \\ 
+            A_{s\phi}^0 &= A_{s\phi}^{00} s^2 + s^4 C(s^2) 
+        \end{aligned}\right.,\quad 
+        \left\{\begin{aligned}
+            A_{ss}^{00} = A_{\phi\phi}^{00}
+        \end{aligned}\right. \\ 
+        |m| = 1 :& \quad \left\{\begin{aligned}
+            A_{ss}^m &= A_{ss}^{m0} s + s^3 C(s^2) \\
+            A_{\phi\phi}^m &= A_{\phi\phi}^{m0} s + s^{3} C(s^2) \\
+            A_{s\phi}^m &= A_{s\phi}^{m0} s + s^{3} C(s^2) 
+        \end{aligned}\right.,\quad \left\{\begin{aligned}
+            & 2A_{s\phi}^{m0} = i\sgn(m) \left(A_{ss}^{m0} - A_{\phi\phi}^{m0}\right)
+        \end{aligned}\right. \\
+        |m| \geq 2 :& \quad \left\{\begin{aligned}
+            A_{ss}^m &= A_{ss}^{m0} s^{|m|-2} + A_{ss}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+            A_{\phi\phi}^m &= A_{\phi\phi}^{m0} s^{|m|-2} + A_{\phi \phi}^{m1} s^{|m|} + s^{|m|+2} C(s^2) \\
+            A_{s\phi}^m &= A_{s\phi}^{m0} s^{|m|-2} + A_{s\phi}^{m1} s^{|m|} + s^{|m|+2} C(s^2)
+        \end{aligned}\right.,\quad \left\{\begin{aligned}
+            &A_{ss}^{m0} = - A_{\phi\phi}^{m0}\\
+            &A_{s\phi}^{m0} = i \sgn(m) A_{ss}^{m0} \\ 
+            &2 A_{s\phi}^{m1} = i\sgn(m)\left(A_{ss}^{m1} - A_{\phi\phi}^{m1}\right).
+        \end{aligned}\right.
+    \end{aligned}
+\end{equation}
+These ansätze are consistent with the leading order behaviour of the equatorial magnetic moments documented in \textcite{holdenried-chernoff_long_2021}. However, the five constraints on the equatorial magnetic moments derived here form a proper superset of the constraints in \textcite{holdenried-chernoff_long_2021}. Specficially, two of these relations are absent in the dissertation, namely
+\[
+\begin{aligned}
+    2 A_{s\phi}^{m0} = i\sgn(m) \left(A_{ss}^{m0} - A_{\phi\phi}^{m0}\right),\quad |m|=1;\\
+    2A_{s\phi}^{m1} = i\sgn(m) \left(A_{ss}^{m1} - A_{\phi\phi}^{m1}\right),\quad |m|\geq 2.
+\end{aligned}
+\]
+The first of these two has been rediscovered in the previous section by re-deriving the formulae. The second relation cannot be discovered as long as we only consider the relation between lowest order behaviours. In fact, from this we see that there are regularity constraints even on the second-order term in the Taylor expansion in $s$.
+
+\textcolor{red}{It should be noted that the derivations above ONLY considered regularity of the tensor fields. However, magnetic moments $\mathbf{B}\mathbf{B}$ are formed by outer product of the magnetic field $\mathbf{B}$.} In other words, the magnetic moment tensor is the rank-1 transformation of the magnetic field
+\[
+    \begin{pmatrix} B_x^2 & B_x B_y \\ B_y B_x & B_y^2 \end{pmatrix} = 
+    \begin{pmatrix} B_x \\ B_y \end{pmatrix}
+    \begin{pmatrix} B_x \\ B_y \end{pmatrix}^\intercal,\qquad
+    \begin{pmatrix} B_s^2 & B_s B_\phi \\ B_\phi B_s & B_\phi^2 \end{pmatrix} = 
+    \begin{pmatrix} B_s \\ B_\phi \end{pmatrix}
+    \begin{pmatrix} B_s \\ B_\phi \end{pmatrix}^\intercal
+\]
+This constraints is not imposed in the derivations above, which assumes arbitrary tensor field. It thus poses a question that if we expand $B_s^2$, $B_\phi^2$ and $B_sB_\phi$ separately, are we artificially expanding the image of field to moment mapping. Part of the space formed by the expansions might not have underlying magnetic fields (i.e. not surjective). \todoitem{This problem requires further notice.}
+
