@@ -8,6 +8,7 @@ import sympy
 from sympy import diff
 from sympy import Derivative as diff_u
 from .pg_fields import *
+from .base_utils import linearize
 
 
 # Symbols for external forces
@@ -67,64 +68,35 @@ evo_dBp_dz_e = dBs_dz_e*diff(up, s) + 1/s*dBp_dz_e*diff(up, p) - us*diff(dBp_dz_
 evo_Br = -sph_op.surface_div((Br*ut, Br*up_sph), evaluate=False)
 
 
-
 """Linearized vorticity equation"""
 
-vorticity_var_perturbed = vorticity_var.subs(linearization_subs_map)
-vorticity_var_lin = vorticity_var_perturbed.simplify().expand().coeff(eps, 1)
-
-vorticity_forcing_perturbed = vorticity_forcing.subs(linearization_subs_map)
-vorticity_forcing_perturbed = vorticity_forcing_perturbed.subs({
+force_perturbation = {
     fp_sym: eps*fp_sym,
     fs_sym: eps*fs_sym,
     fz_asym: eps*fz_asym,
     fe_p: eps*fe_p
-})
-vorticity_forcing_lin = sympy.collect(vorticity_forcing_perturbed.simplify().expand(), eps).coeff(eps, 1)
+}
+
+vorticity_var_lin = linearize(vorticity_var, linearization_subs_map, perturb_var=eps)
+vorticity_forcing_lin = linearize(vorticity_forcing, linearization_subs_map, force_perturbation, perturb_var=eps)
 
 
 """Linearized induction equation"""
 # The induction term further requires perturbation in velocity
 velocity_map = {us: us_0 + eps*us_psi, up: up_0 + eps*up_psi, uz: uz_0 + eps*uz_psi}
 
-evo_mss = evo_Mss.subs(velocity_map).subs(linearization_subs_map)
-evo_mss = evo_mss.simplify().expand().coeff(eps, 1)
-
-evo_mpp = evo_Mpp.subs(velocity_map).subs(linearization_subs_map)
-evo_mpp = evo_mpp.simplify().expand().coeff(eps, 1)
-
-evo_msp = evo_Msp.subs(velocity_map).subs(linearization_subs_map)
-evo_msp = evo_msp.simplify().expand().coeff(eps, 1)
-
-evo_msz = evo_Msz.subs(velocity_map).subs(linearization_subs_map)
-evo_msz = evo_msz.simplify().expand().coeff(eps, 1)
-
-evo_mpz = evo_Mpz.subs(velocity_map).subs(linearization_subs_map)
-evo_mpz = evo_mpz.simplify().expand().coeff(eps, 1)
-
-evo_zmss = evo_zMss.subs(velocity_map).subs(linearization_subs_map)
-evo_zmss = evo_zmss.simplify().expand().coeff(eps, 1)
-
-evo_zmpp = evo_zMpp.subs(velocity_map).subs(linearization_subs_map)
-evo_zmpp = evo_zmpp.simplify().expand().coeff(eps, 1)
-
-evo_zmsp = evo_zMsp.subs(velocity_map).subs(linearization_subs_map)
-evo_zmsp = evo_zmsp.simplify().expand().coeff(eps, 1)
-
-evo_bs_e = evo_Bs_e.subs(velocity_map).subs(linearization_subs_map)
-evo_bs_e = evo_bs_e.simplify().expand().coeff(eps, 1)
-
-evo_bp_e = evo_Bp_e.subs(velocity_map).subs(linearization_subs_map)
-evo_bp_e = evo_bp_e.simplify().expand().coeff(eps, 1)
-
-evo_bz_e = evo_Bz_e.subs(velocity_map).subs(linearization_subs_map)
-evo_bz_e = evo_bz_e.simplify().expand().coeff(eps, 1)
-
-evo_dbs_dz_e = evo_dBs_dz_e.subs(velocity_map).subs(linearization_subs_map)
-evo_dbs_dz_e = evo_dbs_dz_e.simplify().expand().coeff(eps, 1)
-
-evo_dbp_dz_e = evo_dBp_dz_e.subs(velocity_map).subs(linearization_subs_map)
-evo_dbp_dz_e = evo_dbp_dz_e.simplify().expand().coeff(eps, 1)
-
+evo_mss = linearize(evo_Mss, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_mpp = linearize(evo_Mpp, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_msp = linearize(evo_Msp, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_msz = linearize(evo_Msz, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_mpz = linearize(evo_Mpz, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_zmss = linearize(evo_zMss, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_zmpp = linearize(evo_zMpp, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_zmsp = linearize(evo_zMsp, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_bs_e = linearize(evo_Bs_e, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_bp_e = linearize(evo_Bp_e, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_bz_e = linearize(evo_Bz_e, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_dbs_dz_e = linearize(evo_dBs_dz_e, velocity_map, linearization_subs_map, perturb_var=eps)
+evo_dbp_dz_e = linearize(evo_dBp_dz_e, velocity_map, linearization_subs_map, perturb_var=eps)
 
 
