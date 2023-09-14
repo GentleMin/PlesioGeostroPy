@@ -1,5 +1,8 @@
-
-# # Hydrodynamic and Hydromagnetic eigenmodes of Plesio-Geostrophy Model
+# -*- coding: utf-8 -*-
+"""
+Governing equations for Plesio-Geostrophy Model
+Jingtao Min @ ETH-EPM, 09.2023
+"""
 
 
 import sympy
