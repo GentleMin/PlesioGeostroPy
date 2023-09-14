@@ -26,13 +26,16 @@ def integrate_asym(field):
 def field_to_moment(B_field):
     """Convert magnetic field to integrated moments.
     
-    B_field should be given in cylindrical components, 
-    and the field components should be functions of cylindrical coordinates,
-    i.e. B_field = (
-        B_s(s, p, z),
-        B_p(s, p, z),
-        B_z(s, p, z)
-    )
+    :param B_field: tuple, magnetic field components
+        B_field should be given in cylindrical components, 
+        and the field components should be functions of cylindrical coordinates,
+        i.e. B_field = (
+            B_s(s, p, z),
+            B_p(s, p, z),
+            B_z(s, p, z)
+        )
+    :return: tuple of the sympy expressions of the eight moments,
+        Mss, Mpp, Msp, Msz, Mpz, zMss, zMpp, zMsp
     """
     assert len(B_field) == 3
     Mss = integrate_sym(B_field[0]*B_field[0])
@@ -47,6 +50,15 @@ def field_to_moment(B_field):
 
 
 def linearize(expr, *subs_maps, perturb_var=eps):
+    """Linearize expression
+    
+    :param expr: sympy expression, expression to be linearized
+    :param *subs_maps: dict, subtitution maps, takes the form
+        {A: A0 + eps*A1, B: B0 + eps*B1, ...}
+    :param perturb_var: perturbation number, 
+        default to be the symbol eps from pg_fields module
+    :return: sympy expression, linearized expression
+    """
     expr_lin = expr
     for subs_map in subs_maps:
         expr_lin = expr_lin.subs(subs_map)
