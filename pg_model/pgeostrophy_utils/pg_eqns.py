@@ -10,6 +10,14 @@ from sympy import Derivative as diff_u
 from .pg_fields import *
 from .base_utils import linearize
 
+from types import SimpleNamespace
+
+
+"""Container for equations"""
+eqs_mechanics = SimpleNamespace()
+eqs_induction = SimpleNamespace()
+eqs_mechanics_lin = SimpleNamespace()
+eqs_induction_lin = SimpleNamespace()
 
 # Symbols for external forces
 fs_sym = sympy.Function(r"\overline{f_s}")(s, p, t)
@@ -24,6 +32,8 @@ fe_p = sympy.Function(r"f_{e\phi}")(s, p, t)
 # Self-adjoint form
 vorticity_var = diff_u(s/H*diff(Psi, t, s), s) + (1/(s*H) - 1/(2*H**2)*diff(H, s))*diff(Psi, t, (p, 2))
 vorticity_forcing = -2/H**2*diff(H, s)*diff(Psi, p) + diff(H, s)*(s/H*fe_p + 1/(2*H)*diff(fz_asym, p)) - s/(2*H)*cyl_op.curl((fs_sym, fp_sym, 0))[2]
+
+eqs_mechanics.Psi = sympy.Eq(vorticity_var, vorticity_forcing)
 
 
 """Induction equation - the magnetic moments"""
@@ -67,6 +77,21 @@ evo_dBp_dz_e = dBs_dz_e*diff(up, s) + 1/s*dBp_dz_e*diff(up, p) - us*diff(dBp_dz_
 
 evo_Br = -sph_op.surface_div((Br*ut, Br*up_sph), evaluate=False)
 
+# Collecting
+eqs_induction.Mss = sympy.Eq(diff(Mss, t), evo_Mss)
+eqs_induction.Mpp = sympy.Eq(diff(Mpp, t), evo_Mpp)
+eqs_induction.Msp = sympy.Eq(diff(Msp, t), evo_Msp)
+eqs_induction.Msz = sympy.Eq(diff(Msz, t), evo_Msz)
+eqs_induction.Mpz = sympy.Eq(diff(Mpz, t), evo_Mpz)
+eqs_induction.zMss = sympy.Eq(diff(zMss, t), evo_zMss)
+eqs_induction.zMpp = sympy.Eq(diff(zMpp, t), evo_zMpp)
+eqs_induction.zMsp = sympy.Eq(diff(zMsp, t), evo_zMsp)
+eqs_induction.Bs_e = sympy.Eq(diff(Bs_e, t), evo_Bs_e)
+eqs_induction.Bp_e = sympy.Eq(diff(Bp_e, t), evo_Bp_e)
+eqs_induction.Bz_e = sympy.Eq(diff(Bz_e, t), evo_Bz_e)
+eqs_induction.dBs_dz_e = sympy.Eq(diff(dBs_dz_e, t), evo_dBs_dz_e)
+eqs_induction.dBp_dz_e = sympy.Eq(diff(dBp_dz_e, t), evo_dBp_dz_e)
+
 
 """Linearized vorticity equation"""
 
@@ -80,6 +105,7 @@ force_perturbation = {
 vorticity_var_lin = linearize(vorticity_var, linearization_subs_map, perturb_var=eps)
 vorticity_forcing_lin = linearize(vorticity_forcing, linearization_subs_map, force_perturbation, perturb_var=eps)
 
+eqs_mechanics_lin.psi = sympy.Eq(vorticity_var_lin, vorticity_forcing_lin)
 
 """Linearized induction equation"""
 # The induction term further requires perturbation in velocity
@@ -100,3 +126,17 @@ evo_dbs_dz_e = linearize(evo_dBs_dz_e, velocity_map, linearization_subs_map, per
 evo_dbp_dz_e = linearize(evo_dBp_dz_e, velocity_map, linearization_subs_map, perturb_var=eps)
 
 
+# Collection
+eqs_induction_lin.mss = sympy.Eq(diff(mss, t), evo_mss)
+eqs_induction_lin.mpp = sympy.Eq(diff(mpp, t), evo_mpp)
+eqs_induction_lin.msp = sympy.Eq(diff(msp, t), evo_msp)
+eqs_induction_lin.msz = sympy.Eq(diff(msz, t), evo_msz)
+eqs_induction_lin.mpz = sympy.Eq(diff(mpz, t), evo_mpz)
+eqs_induction_lin.zmss = sympy.Eq(diff(zmss, t), evo_zmss)
+eqs_induction_lin.zmpp = sympy.Eq(diff(zmpp, t), evo_zmpp)
+eqs_induction_lin.zmsp = sympy.Eq(diff(zmsp, t), evo_zmsp)
+eqs_induction_lin.bs_e = sympy.Eq(diff(bs_e, t), evo_bs_e)
+eqs_induction_lin.bp_e = sympy.Eq(diff(bp_e, t), evo_bp_e)
+eqs_induction_lin.bz_e = sympy.Eq(diff(bz_e, t), evo_bz_e)
+eqs_induction_lin.dbs_dz_e = sympy.Eq(diff(dbs_dz_e, t), evo_dbs_dz_e)
+eqs_induction_lin.dbp_dz_e = sympy.Eq(diff(dbp_dz_e, t), evo_dbp_dz_e)
