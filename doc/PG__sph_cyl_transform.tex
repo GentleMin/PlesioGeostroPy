@@ -1,0 +1,94 @@
+\section{Spherical-Cylindrical transformation}
+
+Spherical coordinates and cylindrical coordinates can be transformed to one another via
+\begin{equation}
+    \begin{pmatrix}
+        s \\ \phi \\ z
+    \end{pmatrix} = 
+    \begin{pmatrix}
+        r\sin\theta \\ \phi \\ r\cos\theta
+    \end{pmatrix},\quad 
+    \begin{pmatrix}
+        r \\ \theta \\ \phi
+    \end{pmatrix} = 
+    \begin{pmatrix}
+        \sqrt{s^2 + z^2} \\ \arccos \frac{z}{\sqrt{s^2 + z^2}} \\ \phi
+    \end{pmatrix}
+\end{equation}
+The vector components are converted using the rotation matrix
+\begin{equation}
+    \begin{pmatrix} A_s \\ A_\phi \\ A_z \end{pmatrix} = \mathbf{R} 
+    \begin{pmatrix} A_r \\ A_\theta \\ A_\phi \end{pmatrix},\quad
+    \begin{pmatrix} A_r \\ A_\theta \\ A_\phi \end{pmatrix} = \mathbf{R}^T 
+    \begin{pmatrix} A_s \\ A_\phi \\ A_z \end{pmatrix}
+\end{equation}
+where the rotation matrix is an orthogonal matrix
+\begin{equation}
+    \mathbf{R} = \begin{pmatrix}
+        \sin\theta & \cos\theta & 0 \\ 
+        0 & 0 & 1 \\ 
+        \cos\theta & -\sin\theta & 0
+    \end{pmatrix} = \begin{pmatrix}
+        \frac{s}{\sqrt{s^2 + z^2}} & \frac{z}{\sqrt{s^2 + z^2}} & 0 \\ 
+        0 & 0 & 1 \\ 
+        \frac{z}{\sqrt{s^2 + z^2}} & -\frac{s}{\sqrt{s^2 + z^2}} & 0
+    \end{pmatrix}.
+\end{equation}
+The Jacobian from spherical to cylindrical coordinates and its inverse, i.e. the Jacobian from cylindrical to spherical coordinates are given by
+\begin{equation}
+\begin{aligned}    
+    \mathbf{J} &= \frac{\partial (s, \phi, z)}{\partial (r, \theta, \phi)} = \begin{pmatrix}
+        \sin\theta & r\cos\theta & 0 \\ 
+        0 & 0 & 1 \\ 
+        \cos\theta & -r\sin\theta & 0
+    \end{pmatrix} = \begin{pmatrix}
+        \frac{s}{\sqrt{s^2 + z^2}} & z & 0 \\
+        0 & 0 & 1 \\
+        \frac{z}{\sqrt{s^2 + z^2}} & -s & 0
+    \end{pmatrix}, \\
+    \mathbf{J}^{-1} &= \frac{\partial (r, \theta, \phi)}{\partial (s, \phi, z)} = \begin{pmatrix}
+        \sin\theta & 0 & \cos\theta \\ 
+        r^{-1} \cos\theta & 0 & -r^{-1}\sin\theta \\ 
+        0 & 1 & 0
+    \end{pmatrix}
+    = \begin{pmatrix}
+        \frac{s}{\sqrt{s^2 + z^2}} & 0 & \frac{z}{\sqrt{s^2 + z^2}} \\ 
+        \frac{z}{s^2 + z^2} & 0 & - \frac{s}{s^2 + z^2} \\ 
+        0 & 1 & 0
+    \end{pmatrix}.
+\end{aligned}
+\end{equation}
+The derivatives in spherical harmonics are transformed into derivatives in cylindrical coordinates via
+\begin{equation}\label{eqn:diff-sph-to-diff-cyl}
+    \begin{pmatrix} \partial_r \\ \partial_\theta \\ \partial_\phi \end{pmatrix} 
+    = \frac{\partial(s, \phi, z)}{\partial (r, \theta, \phi)}^T
+    \begin{pmatrix} \partial_s \\ \partial_\phi \\ \partial_z \end{pmatrix} 
+    = \begin{pmatrix}
+        \sin\theta & 0 & \cos\theta \\ 
+        r\cos\theta & 0 & -r\sin\theta \\ 
+        0 & 1 & 0
+    \end{pmatrix} \begin{pmatrix} \partial_s \\ \partial_\phi \\ \partial_z \end{pmatrix}
+    = \begin{pmatrix}
+        \frac{s}{\sqrt{s^2 + z^2}} & 0 & \frac{z}{\sqrt{s^2 + z^2}} \\ 
+        z & 0 & -s \\ 
+        0 & 1 & 0
+    \end{pmatrix} \begin{pmatrix} \partial_s \\ \partial_\phi \\ \partial_z \end{pmatrix}
+\end{equation}
+where the matrix elements are already changed to cylindrical coordinates. Inversely, we have
+\begin{equation}
+    \begin{pmatrix} \partial_s \\ \partial_\phi \\ \partial_z \end{pmatrix} = \frac{\partial (r, \theta, \phi)}{\partial (s, \phi, z)}^T 
+    \begin{pmatrix} \partial_r \\ \partial_\theta \\ \partial_\phi \end{pmatrix}
+    = \begin{pmatrix}
+        \sin\theta & \frac{1}{r}\cos\theta & 0 \\
+        0 & 0 & 1 \\ 
+        \cos\theta & -\frac{1}{r}\sin\theta & 0
+    \end{pmatrix}
+    \begin{pmatrix} \partial_r \\ \partial_\theta \\ \partial_\phi \end{pmatrix}
+    = \begin{pmatrix}
+        \frac{s}{\sqrt{s^2 + z^2}} & \frac{z}{s^2 + z^2} & 0 \\
+        0 & 0 & 1 \\ 
+        \frac{z}{\sqrt{s^2 + z^2}} & -\frac{s}{s^2 + z^2} & 0
+    \end{pmatrix}
+    \begin{pmatrix} \partial_r \\ \partial_\theta \\ \partial_\phi \end{pmatrix}
+\end{equation}
+where the matrix elements in spherical coordinates are also shown.
