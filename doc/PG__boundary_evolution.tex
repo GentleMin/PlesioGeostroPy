@@ -1,10 +1,49 @@
 \section{Induction equation at the boundary}
 
 Induction equation for the radial component at the boundary
-\begin{equation}
+\begin{equation}\label{eqn:boundary-stirring}
     \frac{\partial B_r}{\partial t} = -\nabla_H \cdot (\mathbf{u}_H B_r)
 \end{equation}
 which can be expanded in spherical coordinates
 \[
-    \frac{\partial B_r}{\partial t} = - \frac{1}{\sin\theta} \left(\frac{\partial}{\partial\theta} \left(\sin\theta \, u_\theta B_r\right) + \frac{\partial}{\partial \phi} \left(u_\phi B_r\right)\right)
+    \frac{\partial B_r}{\partial t} = - \frac{1}{\sin\theta} \left(\frac{\partial}{\partial\theta} \left(\sin\theta \, u_\theta B_r\right) + \frac{\partial}{\partial \phi} \left(u_\phi B_r\right)\right).
 \]
+Alternatively, we can also use the induction equation in cylindrical coordinates at the boundary. These quantities are 
+\begin{equation}
+\begin{aligned}
+    \frac{\partial B_s}{\partial t} &= \left(\mathbf{B}\cdot \nabla \mathbf{u}\right)_s - \left(\mathbf{u}\cdot \nabla\mathbf{B}\right)_s
+    = B_s \frac{\partial u_s}{\partial s} + \frac{B_\phi}{s} \frac{\partial u_s}{\partial \phi} + B_z \frac{\partial u_s}{\partial z} - u_s \frac{\partial B_s}{\partial s} - \frac{u_\phi}{s} \frac{\partial B_s}{\partial \phi} - u_z \frac{\partial B_s}{\partial z} \\ 
+    \frac{\partial B_\phi}{\partial t} &= \left(\mathbf{B}\cdot \nabla \mathbf{u}\right)_\phi - \left(\mathbf{u}\cdot \nabla\mathbf{B}\right)_\phi
+    = B_s \frac{\partial u_\phi}{\partial s} + \frac{B_\phi}{s} \frac{\partial u_\phi}{\partial \phi} + B_z \frac{\partial u_\phi}{\partial z} - u_s \frac{\partial B_\phi}{\partial s} - \frac{u_\phi}{s} \frac{\partial B_\phi}{\partial \phi} - u_z \frac{\partial B_\phi}{\partial z} + \frac{B_\phi u_s - u_\phi B_s}{s}\\ 
+    \frac{\partial B_z}{\partial t} &= \left(\mathbf{B}\cdot \nabla \mathbf{u}\right)_z - \left(\mathbf{u}\cdot \nabla\mathbf{B}\right)_z
+    = B_s \frac{\partial u_z}{\partial s} + \frac{B_\phi}{s} \frac{\partial u_z}{\partial \phi} + B_z \frac{\partial u_z}{\partial z} - u_s \frac{\partial B_z}{\partial s} - \frac{u_\phi}{s} \frac{\partial B_z}{\partial \phi} - u_z \frac{\partial B_z}{\partial z}
+\end{aligned}
+\end{equation}
+At the boundary, the induction equation takes the form
+\[\begin{aligned}
+    \frac{\partial B_s^\pm}{\partial t} &= B_s^\pm \frac{\partial u_s}{\partial s}\bigg|_{\pm H} + \frac{B_\phi^{\pm}}{s} \frac{\partial u_s^\pm}{\partial \phi} + B_z^\pm \frac{\partial u_s}{\partial z}\bigg|_{\pm H} - u_s^\pm \frac{\partial B_s}{\partial s}\bigg|_{\pm H} - \frac{u_\phi^\pm}{s} \frac{\partial B_s^\pm}{\partial \phi} - u_z^\pm \frac{\partial B_s}{\partial z}\bigg|_{\pm H} \\ 
+    \frac{\partial B_\phi^\pm}{\partial t} &= B_s^\pm \frac{\partial u_\phi}{\partial s}\bigg|_{\pm H} + \frac{B_\phi^\pm}{s} \frac{\partial u_\phi^\pm}{\partial \phi} + B_z^\pm \frac{\partial u_\phi}{\partial z}\bigg|_{\pm H} - u_s^\pm \frac{\partial B_\phi}{\partial s}\bigg|_{\pm H} - \frac{u_\phi^\pm}{s} \frac{\partial B_\phi^\pm}{\partial \phi} - u_z^\pm \frac{\partial B_\phi}{\partial z}\bigg|_{\pm H} + \frac{B_\phi^\pm u_s^\pm - u^\pm_\phi B_s^\pm}{s}\\ 
+    \frac{\partial B_z^\pm}{\partial t} &= B_s^\pm \frac{\partial u_z}{\partial s}\bigg|_{\pm H} + \frac{B_\phi^\pm}{s} \frac{\partial u_z^\pm}{\partial \phi} + B_z^\pm \frac{\partial u_z}{\partial z}\bigg|_{\pm H} - u_s^\pm \frac{\partial B_z}{\partial s}\bigg|_{\pm H} - \frac{u_\phi^\pm}{s} \frac{\partial B_z^\pm}{\partial \phi} - u_z^\pm \frac{\partial B_z}{\partial z}\bigg|_{\pm H}
+\end{aligned}\]
+where the $\pm$ superscript shows that the quantity is evaluated at the boundary $z=\pm H$. Terms in the form $\frac{\partial}{\partial s}|_{\pm H}$ means the field has to be differentiated first and evaluated at the boundary later.
+Hence, we see that these evolution equations are not closed in themselves, in the sense that the derivatives $\partial_s \mathbf{B}$ and $\partial_z \mathbf{B}$ cannot be evaluated or represented unless the field $\mathbf{B}$ can be evaulated or represented in the entire volume in the parameterization. This is not the case with the PG model, where the parameterization of the magnetic quantities only involves the integrated moments, the boundary field, and the equatorial field. Therefore, these equations cannot be used for time stepping or simulation. The only way to move forward seems to use eq.(\ref{eqn:boundary-stirring}). This equation only involves surface operators (owing to the non-penetration condition $u_r = \hat{\mathbf{n}}\cdot u = 0$), and is closed on the surface of the sphere.
+
+Nevertheless, using the induction equation of the cylindrical components can be very useful in solving eigenvalue problems where the background velocity field is zero (it is almost the case with the eigenvalue problems of interest).
+In these problems, the linearized version of the equation will only involve cross terms of the background magnetic field, whose derivatives are known everywhere in space, and the perturbed velocity field. If we keep the notation $u$ for perturbational velocity, and introduce notation $b$ for perturbational magnetic field, the linearized induction equation takes the form
+\[\begin{aligned}
+    \frac{\partial b_s^\pm}{\partial t} &= B_s^{0\pm} \frac{\partial u_s}{\partial s}\bigg|_{\pm H} + \frac{B_\phi^{0\pm}}{s} \frac{\partial u_s^\pm}{\partial \phi} + B_z^{0\pm} \frac{\partial u_s}{\partial z}\bigg|_{\pm H} - u_s^\pm \frac{\partial B_s^0}{\partial s}\bigg|_{\pm H} - \frac{u_\phi^\pm}{s} \frac{\partial B_s^{0\pm}}{\partial \phi} - u_z^\pm \frac{\partial B_s^0}{\partial z}\bigg|_{\pm H} \\ 
+    \frac{\partial b_\phi^\pm}{\partial t} &= B_s^{0\pm} \frac{\partial u_\phi}{\partial s}\bigg|_{\pm H} + \frac{B_\phi^{0\pm}}{s} \frac{\partial u_\phi^\pm}{\partial \phi} + B_z^{0\pm} \frac{\partial u_\phi}{\partial z}\bigg|_{\pm H} - u_s^\pm \frac{\partial B_\phi^0}{\partial s}\bigg|_{\pm H} - \frac{u_\phi^\pm}{s} \frac{\partial B_\phi^{0\pm}}{\partial \phi} - u_z^\pm \frac{\partial B_\phi^0}{\partial z}\bigg|_{\pm H} + \frac{B_\phi^{0\pm} u_s^\pm - u^\pm_\phi B_s^{0\pm}}{s}\\ 
+    \frac{\partial b_z^\pm}{\partial t} &= B_s^{0\pm} \frac{\partial u_z}{\partial s}\bigg|_{\pm H} + \frac{B_\phi^{0\pm}}{s} \frac{\partial u_z^\pm}{\partial \phi} + B_z^{0\pm} \frac{\partial u_z}{\partial z}\bigg|_{\pm H} - u_s^\pm \frac{\partial B_z^0}{\partial s}\bigg|_{\pm H} - \frac{u_\phi^\pm}{s} \frac{\partial B_z^{0\pm}}{\partial \phi} - u_z^\pm \frac{\partial B_z^0}{\partial z}\bigg|_{\pm H}
+\end{aligned}\]
+Recall that in the plesio-geostrophic ansatz for the velocity field, $\mathbf{u}_e = \frac{1}{H}\nabla\times \psi \hat{\mathbf{z}}$, $u_z = \frac{z}{H}\frac{dH}{ds} u_s$ and the stream function $\psi$ is $z$-invariant. Therefore, the equations can be simplified as
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial b_s^\pm}{\partial t} &= B_s^{0\pm} \frac{\partial}{\partial s} \left(\frac{1}{sH}\frac{\partial \psi}{\partial \phi}\right) + \frac{B_\phi^{0\pm}}{s^2 H} \frac{\partial^2 \psi}{\partial \phi^2} - \frac{1}{sH} \frac{\partial \psi}{\partial \phi} \frac{\partial B_s^0}{\partial s}\bigg|_{\pm H} + \frac{1}{sH} \frac{\partial \psi}{\partial \phi} \frac{\partial B_s^{0\pm}}{\partial \phi} \mp \frac{1}{sH} \frac{dH}{ds}\frac{\partial \psi}{\partial \phi} \frac{\partial B_s^0}{\partial z}\bigg|_{\pm H}, \\ 
+        \frac{\partial b_\phi^\pm}{\partial t} &= -B_s^{0\pm} \frac{\partial}{\partial s}\left(\frac{1}{H}\frac{\partial \psi}{\partial s}\right) - \frac{B_\phi^{0\pm}}{sH} \frac{\partial^2 \psi}{\partial s \partial \phi} - \frac{1}{sH} \frac{\partial \psi}{\partial \phi} \frac{\partial B_\phi^0}{\partial s}\bigg|_{\pm H} + \frac{1}{sH} \frac{\partial \psi}{\partial \phi} \frac{\partial B_\phi^{0\pm}}{\partial \phi} \mp \frac{1}{sH} \frac{dH}{ds}\frac{\partial \psi}{\partial \phi} \frac{\partial B_\phi^0}{\partial z}\bigg|_{\pm H} \\
+        &\quad + \frac{1}{s}\left(\frac{B_\phi^{0\pm}}{sH}\frac{\partial \psi}{\partial \phi} + \frac{B_s^{0\pm}}{H}\frac{\partial \psi}{\partial \phi}\right), \\ 
+        \frac{\partial b_z^\pm}{\partial t} &= \pm H B_s^{0\pm} \frac{\partial}{\partial s}\left(\frac{1}{sH^2}\frac{dH}{ds}\frac{\partial \psi}{\partial \phi}\right) \pm \frac{B_\phi^{0\pm}}{s^2 H} \frac{dH}{ds} \frac{\partial^2 \psi}{\partial \phi^2} + \frac{B_z^{0\pm}}{sH^2}\frac{dH}{ds}\frac{\partial \psi}{\partial \phi} - \frac{1}{sH}\frac{\partial \psi}{\partial \phi} \frac{\partial B_z^0}{\partial s}\bigg|_{\pm H} \\
+        &\quad + \frac{1}{sH} \frac{\partial \psi}{\partial \phi} \frac{\partial B_z^{0\pm}}{\partial \phi} \mp \frac{1}{sH} \frac{dH}{ds}\frac{\partial \psi}{\partial \phi} \frac{\partial B_z^0}{\partial z}\bigg|_{\pm H}.
+    \end{aligned}
+\end{equation}
+
+As I have mentioned, the boundary induction equation in cylindrical coordinates cannot be used in a time-stepping solver with PG formulations. The only equation that seems to be closed in itself is eq.(\ref{eqn:boundary-stirring}). This, however, involves one complication and one limitation. First, as the equation is not in cylindrical coordinates, while all other equations are, we need an explicit spherical-cylindrical transform. Among other complications, this means the sparsity of the matrix or orthogonality of the basis might be partially destroyed. Second, noting that the Lorentz force involves only the $s$, $z$ and $\phi$ components of the boundary magnetic fields, we need to link the radial field to the three components. This can be easily done with an insulating boundary condition, where the magnetic field external to the sphere is harmonic. However, once this assumption is dropped, it will be much more challenging to derive a general link.
