@@ -100,7 +100,6 @@ Basis_std.trial_dBp_dz_e = H_s**2*s**(sympy.Abs(m_abs - 1))*jacobi(n, 2, sympy.A
 
 
 # Fourier ansatz
-omega = sympy.Symbol(r"\omega")
 fourier_basis = sympy.exp(sympy.I*(omega*t + m*p))
 fourier_ansatz = {list_perturb_fields[i_field]: list_coeffs_fields[i_field]*list_s_basis[i_field]*fourier_basis 
     for i_field in range(len(list_perturb_fields))}

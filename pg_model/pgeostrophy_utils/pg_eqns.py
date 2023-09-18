@@ -77,6 +77,11 @@ evo_dBp_dz_e = dBs_dz_e*diff(up, s) + 1/s*dBp_dz_e*diff(up, p) - us*diff(dBp_dz_
 
 evo_Br = -sph_op.surface_div((Br*ut, Br*up_sph), evaluate=False)
 
+evo_Bs_p = Bs_p*diff(us, s) + 1/s*Bp_p*diff(us, p) - us*diff(Bs_e, s) - 1/s*up*diff(Bs_e, p)
+evo_Bp_p = Bs_e*diff(up, s) + 1/s*Bp_e*diff(up, p) - us*diff(Bp_e, s) - 1/s*up*diff(Bp_e, p) + (Bp_e*us - up*Bs_e)/s
+evo_Bz_p = -us*diff(Bz_e, s) - 1/s*up*diff(Bz_e, p) + diff(uz, z)*Bz_e
+
+
 # Collecting
 eqs_induction.Mss = sympy.Eq(diff(Mss, t), evo_Mss)
 eqs_induction.Mpp = sympy.Eq(diff(Mpp, t), evo_Mpp)
