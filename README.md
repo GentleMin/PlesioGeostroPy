@@ -9,7 +9,8 @@ Ingredients of the system:
 - Magnetic induction equation (optionally with uniform magnetic diffusivity)
 - Plesio-geostrophy Ansatz (perhaps first proposed by Schaeffer and Cardin?)
 
-$$ \mathbf{u} = \frac{1}{H}\nabla\times \psi \hat{\mathbf{z}} + \frac{z}{sH^2}\frac{dH}{ds}\frac{\partial \psi}{\partial \phi} \hat{\mathbf{z}} $$
+$\mathbf{u} = \frac{1}{H}\nabla\times \psi \hat{\mathbf{z}} + \frac{z}{sH^2}\frac{dH}{ds}\frac{\partial \psi}{\partial \phi} \hat{\mathbf{z}}$
+
 Systems fulfilling these conditions can be exactly described using the PG model.
 
 ## Eigenvalue problems
