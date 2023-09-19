@@ -141,4 +141,7 @@ class SphericalCoordinates(OrthgonalCoordinates3D):
         scalar_out = 1/(self.x1*sympy.sin(self.x2))*diff(sympy.sin(self.x2)*vector_in[0], self.x2, **kwargs) + \
             1/(self.x1*sympy.sin(self.x2))*diff(vector_in[1], self.x3, **kwargs)
         return scalar_out
+
+
+# def toroidal_explicit(T, convention="")
         
