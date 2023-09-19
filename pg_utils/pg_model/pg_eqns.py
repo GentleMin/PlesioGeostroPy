@@ -75,11 +75,14 @@ evo_dBp_dz_e = dBs_dz_e*diff(up, s) + 1/s*dBp_dz_e*diff(up, p) - us*diff(dBp_dz_
 
 """Induction: boundary stirring"""
 
+# In non-linearized form, boundary induction equation must be written in Br to be closed
 evo_Br = -sph_op.surface_div((Br*ut, Br*up_sph), evaluate=False)
 
-evo_Bs_p = Bs_p*diff(us, s) + 1/s*Bp_p*diff(us, p) - us*diff(Bs_e, s) - 1/s*up*diff(Bs_e, p)
-evo_Bp_p = Bs_e*diff(up, s) + 1/s*Bp_e*diff(up, p) - us*diff(Bp_e, s) - 1/s*up*diff(Bp_e, p) + (Bp_e*us - up*Bs_e)/s
-evo_Bz_p = -us*diff(Bz_e, s) - 1/s*up*diff(Bz_e, p) + diff(uz, z)*Bz_e
+# The boundary induction in cylindrical coordinates involves magnetic fields in the volume, 
+# and is not closed in PG framework
+evo_Bs = Bs_tot*diff(us, s) + Bp_tot/s*diff(us, p) + Bz_tot*diff(us, z) - us*diff(Bs_tot, s) - up/s*diff(Bs_tot, p) - uz*diff(Bs_tot, z)
+evo_Bp = Bs_tot*diff(up, s) + Bp_tot/s*diff(up, p) + Bz_tot*diff(up, z) - us*diff(Bp_tot, s) - up/s*diff(Bp_tot, p) - uz*diff(Bp_tot, z) + (Bp_tot*us - up*Bs_tot)/s
+evo_Bz = Bs_tot*diff(uz, s) + Bp_tot/s*diff(uz, p) + Bz_tot*diff(uz, z) - us*diff(Bz_tot, s) - up/s*diff(Bz_tot, p) - uz*diff(Bz_tot, z)
 
 
 # Collecting
@@ -96,6 +99,7 @@ eqs_induction.Bp_e = sympy.Eq(diff(Bp_e, t), evo_Bp_e)
 eqs_induction.Bz_e = sympy.Eq(diff(Bz_e, t), evo_Bz_e)
 eqs_induction.dBs_dz_e = sympy.Eq(diff(dBs_dz_e, t), evo_dBs_dz_e)
 eqs_induction.dBp_dz_e = sympy.Eq(diff(dBp_dz_e, t), evo_dBp_dz_e)
+eqs_induction.Br = sympy.Eq(diff(Br, t), evo_Br)
 
 
 """Linearized vorticity equation"""
@@ -130,6 +134,12 @@ evo_bz_e = linearize(evo_Bz_e, velocity_map, linearization_subs_map, perturb_var
 evo_dbs_dz_e = linearize(evo_dBs_dz_e, velocity_map, linearization_subs_map, perturb_var=eps)
 evo_dbp_dz_e = linearize(evo_dBp_dz_e, velocity_map, linearization_subs_map, perturb_var=eps)
 
+# In linearized form with zero-background field, the boundary induction can be written in cylindrical coordinates
+velocity_map_bg0 = {us: eps*us_psi, up: eps*up_psi, uz: eps*uz_psi}
+magnetic_map_bg0 = {Bs_tot: Bs0, Bp_tot: Bp0, Bz_tot: Bz0}
+evo_bs = linearize(evo_Bs, velocity_map_bg0, magnetic_map_bg0)
+evo_bp = linearize(evo_Bp, velocity_map_bg0, magnetic_map_bg0)
+evo_bz = linearize(evo_Bz, velocity_map_bg0, magnetic_map_bg0)
 
 # Collection
 eqs_induction_lin.mss = sympy.Eq(diff(mss, t), evo_mss)
