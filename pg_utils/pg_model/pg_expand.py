@@ -28,8 +28,18 @@ basis_dBs_dz_e = sympy.Function(r"B_{es, z}^{mn}")(s)
 basis_dBp_dz_e = sympy.Function(r"B_{e\phi, z}^{mn}")(s)
 basis_V = sympy.Function(r"V^{mn}")(r, theta, p)
 
+# Addtional placeholders
+basis_Bs_p = sympy.Function(r"B_s^{mn+}")(s)
+basis_Bp_p = sympy.Function(r"B_\phi^{mn+}")(s)
+basis_Bz_p = sympy.Function(r"B_z^{mn+}")(s)
+basis_Bs_m = sympy.Function(r"B_s^{mn-}")(s)
+basis_Bp_m = sympy.Function(r"B_\phi^{mn-}")(s)
+basis_Bz_m = sympy.Function(r"B_z^{mn-}")(s)
+
 list_s_basis = [basis_psi, basis_Mss, basis_Mpp, basis_Msp, basis_Msz, basis_Mpz, 
     basis_zMss, basis_zMpp, basis_zMsp, basis_Bs_e, basis_Bp_e, basis_Bz_e, basis_dBs_dz_e, basis_dBp_dz_e, basis_V]
+
+list_s_basis_boundary_cyl = [basis_Bs_p, basis_Bp_p, basis_Bz_p, basis_Bs_m, basis_Bp_m, basis_Bz_m]
 
 C_psi = sympy.Symbol(r"C_{\psi}^{mn}")
 C_Mss = sympy.Symbol(r"C_{ss}^{mn}")
@@ -47,12 +57,21 @@ C_dBs_dz_e = sympy.Symbol(r"C_{es,z}^{mn}")
 C_dBp_dz_e = sympy.Symbol(r"C_{e\phi,z}^{mn}")
 C_V = sympy.Symbol(r"\iota^{mn}")
 
+C_Bs_p = sympy.Symbol(r"C_s^{mn+}")
+C_Bp_p = sympy.Symbol(r"C_\phi^{mn+}")
+C_Bz_p = sympy.Symbol(r"C_z^{mn+}")
+C_Bs_m = sympy.Symbol(r"C_s^{mn-}")
+C_Bp_m = sympy.Symbol(r"C_\phi^{mn-}")
+C_Bz_m = sympy.Symbol(r"C_z^{mn-}")
+
 list_coeffs_fields = [C_psi, C_Mss, C_Mpp, C_Msp, C_Msz, C_Mpz,
     C_zMss, C_zMpp, C_zMsp, C_Bs_e, C_Bp_e, C_Bz_e, C_dBs_dz_e, C_dBp_dz_e, C_V]
 
+list_coeffs_boundary_cyl = [C_Bs_p, C_Bp_p, C_Bz_p, C_Bs_m, C_Bp_m, C_Bz_m]
+
 def sort_coeffs(expr):
     expr_sorted = sympy.S.Zero
-    for coeff in list_coeffs_fields:
+    for coeff in list_coeffs_fields + list_coeffs_boundary_cyl:
         expr_sorted += coeff*expr.coeff(coeff, 1)
     return expr_sorted
     
@@ -103,6 +122,8 @@ Basis_std.trial_dBp_dz_e = H_s**2*s**(sympy.Abs(m_abs - 1))*jacobi(n, 2, sympy.A
 fourier_basis = sympy.exp(sympy.I*(omega*t + m*p))
 fourier_ansatz = {list_perturb_fields[i_field]: list_coeffs_fields[i_field]*list_s_basis[i_field]*fourier_basis 
     for i_field in range(len(list_perturb_fields))}
+fourier_ansatz.update({list_perturb_boundaries[i_field]: list_coeffs_boundary_cyl[i_field]*list_s_basis_boundary_cyl[i_field]*fourier_basis 
+    for i_field in range(len(list_perturb_boundaries))})
 
 def fourier_domain(expr):
     expr_fourier = expr.subs(fourier_ansatz).doit()/fourier_basis

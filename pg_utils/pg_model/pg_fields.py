@@ -191,3 +191,13 @@ linearization_subs_map.update({
     list_boundaries[idx_bound]: list_bg_boundaries[idx_bound] + eps*list_perturb_boundaries[idx_bound] for idx_bound in range(len(list_boundaries))
 })
 
+
+# The isolated, non-PG fields, just for derivation purpose
+Bs_tot = sympy.Function(r"B_s")(s, p, z, t)
+Bp_tot = sympy.Function(r"B_\phi")(s, p, z, t)
+Bz_tot = sympy.Function(r"B_z")(s, p, z, t)
+
+Bs0 = sympy.Function(r"B_s^0")(s, p, z, t)
+Bp0 = sympy.Function(r"B_\phi^0")(s, p, z, t)
+Bz0 = sympy.Function(r"B_z^0")(s, p, z, t)
+
