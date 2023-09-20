@@ -45,5 +45,42 @@ Recall that in the plesio-geostrophic ansatz for the velocity field, $\mathbf{u}
         &\quad + \frac{1}{sH} \frac{\partial \psi}{\partial s} \frac{\partial B_z^{0\pm}}{\partial \phi} \mp \frac{1}{sH} \frac{dH}{ds}\frac{\partial \psi}{\partial \phi} \frac{\partial B_z^0}{\partial z}\bigg|_{\pm H}.
     \end{aligned}
 \end{equation}
+If we look at the right-hand-side of these induction equations, we see that the right-hand-side is free of perturbed magnetic fields, but only involves background magnetic fields and perturbed velocity field. Therefore, when given the background field, the boundary terms can be written as
+\[
+    \frac{\partial b_a^{\pm}}{\partial t} = \mathcal{L}_i^{\pm} \psi \quad \Longrightarrow \quad b_a^{\pm} = \frac{1}{i\omega} \mathcal{L}_i^\pm \psi
+\]
+where $\mathcal{L}_i^{\pm}$ are some linear operators. In fact, this is a feature that applies to all induction equation, summarized in the following statement.
+\begin{proposition}
+    The ideal induction equations of the boundary magnetic field or the integrated magnetic moments, when linearized around a background field with zero velocity, involves only the background magnetic field / moment and the perturbed velocity. In other words, all of them can be written as
+    \[
+        \frac{\partial b_a}{\partial t} = \mathcal{L}_a \psi,
+    \]
+    or in the frequency domain
+    \[
+        i\omega b_a = \mathcal{L}_a \psi,
+    \]
+    where $b_a \in \{\overline{m_{ss}},\overline{m_{\phi\phi}},\overline{m_{s\phi}},\widetilde{m_{sz}},\widetilde{m_{\phi z}},\widetilde{zm_{ss}},\widetilde{zm_{\phi\phi}},\widetilde{zm_{s\phi}},b_{es},b_{e\phi},b_{ez},b_{es,z},b_{e\phi,z},b_s^\pm,b_\phi^\pm,b_z^\pm\}$.
+\end{proposition}
+This proposition leads to the following statement.
+\begin{corollary}
+    \label{corollary:reduced-eigen}
+    When linearized around a background field with zero velocity, the complete PG system with diffusionless vorticity and induction equations and boundary terms can always be reduced to a single equation
+    \[
+        \left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial^2 \psi}{\partial t^2} = - \frac{2}{H^2}\frac{dH}{ds} \frac{\partial}{\partial \phi}\frac{\partial \psi}{\partial t} + \mathcal{L}_\mathrm{tot} \psi
+    \]
+    where $\mathcal{L}_\mathrm{tot}$ is the combined linear operator that gives the Lorentz force. Furthermore, considering the forms of the induction equations and vorticity equation, $\mathcal{L}_\mathrm{tot}$ is at most 3rd order in $(s,\phi,z)$. In the frequency domain, it is written as
+    \[
+        -\omega^2\left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \psi = -i\omega \frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + \mathcal{L}_\mathrm{tot} \psi
+    \]
+\end{corollary}
+
+This gives a further \textcolor{red}{dilemma: the eigenvalue problem will be closed in the vorticity itself, regardless of the boundary condition.} In other words, changing the boundary condition does not even change the eigenvalue problem. How is that possible? Does that mean the eigenmode is not even affected by the choice of boundary conditions? Will the boundary condition be automatically satisfied by the perturbed magnetic field? For instance, will $b_s^\pm$, $b_\phi^\pm$ and $b_z^\pm$ solved in this way automatically match an insulating boundary condition, and if not, when will it or is it necessary?
+
+Corollary \ref{corollary:reduced-eigen} is useful conceptually, but cannot be directly implemented as an eigenvalue problem, since the right-hand-sides contain both first derivative and stream function itself. We must instead flatten out the second order derivative, and consider the augmented system. One way to achieve this is to write
+\[\begin{aligned}
+    \left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial \psi}{\partial t} &= - \frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + F \\ 
+    \frac{\partial F}{\partial t} &= \mathcal{L}_\mathrm{tot} \psi
+\end{aligned}\]
+This is similar to the velocity-stress formulation, often used in seismological simulations. From a spectral point of view, however, 
 
 As I have mentioned, the boundary induction equation in cylindrical coordinates cannot be used in a time-stepping solver with PG formulations. The only equation that seems to be closed in itself is eq.(\ref{eqn:boundary-stirring}). This, however, involves one complication and one limitation. First, as the equation is not in cylindrical coordinates, while all other equations are, we need an explicit spherical-cylindrical transform. Among other complications, this means the sparsity of the matrix or orthogonality of the basis might be partially destroyed. Second, noting that the Lorentz force involves only the $s$, $z$ and $\phi$ components of the boundary magnetic fields, we need to link the radial field to the three components. This can be easily done with an insulating boundary condition, where the magnetic field external to the sphere is harmonic. However, once this assumption is dropped, it will be much more challenging to derive a general link.
