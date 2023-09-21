@@ -81,6 +81,16 @@ Corollary \ref{corollary:reduced-eigen} is useful conceptually, but cannot be di
     \left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial \psi}{\partial t} &= - \frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + F \\ 
     \frac{\partial F}{\partial t} &= \mathcal{L}_\mathrm{tot} \psi
 \end{aligned}\]
-This is similar to the velocity-stress formulation, often used in seismological simulations. From a spectral point of view, however, 
+or in matrix form of the eigenvalue problem
+\[
+i\omega \begin{pmatrix}
+    \frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) - \frac{m^2}{sH} + \frac{m^2}{2H^2} \frac{dH}{ds} & 0 \\ 
+    0 & 1
+\end{pmatrix} \begin{pmatrix} \psi^m \\ F^m \end{pmatrix} = \begin{pmatrix} -\frac{2im}{H^2} \frac{dH}{ds} & 1 \\ \mathcal{L}_\mathrm{tot} & 0 \end{pmatrix} \begin{pmatrix}
+    \psi^m \\ F^m
+\end{pmatrix}
+\]
+This is similar to the velocity-stress formulation, often used in seismological simulations. Interestingly, since we know $\{\psi^{mn}(s) = s^{|m|}H^3 P_{n}^{(\frac{3}{2}, |m|)}(2s^2 - 1)\}$ are the eigenfunctions for the Sturm-Liouville problem (first equation, without $F$ contribution), we can conclude these $\{\psi^{mn}(s)\}$ form a complete orthogonal basis with respect to weight $\frac{2ism}{H^3} = -\frac{2im}{H^2}\frac{dH}{ds}$. In other words, we should expect that the appropriate expansion for $F$ that can be the solution to the eigenvalue problem should take the form
+\[F^{mn}(s) = \frac{s}{H^3} \psi^{mn}(s) = s^{|m|+1} P_n^{(\frac{3}{2},|m|)}(2s^2 - 1).\]
 
 As I have mentioned, the boundary induction equation in cylindrical coordinates cannot be used in a time-stepping solver with PG formulations. The only equation that seems to be closed in itself is eq.(\ref{eqn:boundary-stirring}). This, however, involves one complication and one limitation. First, as the equation is not in cylindrical coordinates, while all other equations are, we need an explicit spherical-cylindrical transform. Among other complications, this means the sparsity of the matrix or orthogonality of the basis might be partially destroyed. Second, noting that the Lorentz force involves only the $s$, $z$ and $\phi$ components of the boundary magnetic fields, we need to link the radial field to the three components. This can be easily done with an insulating boundary condition, where the magnetic field external to the sphere is harmonic. However, once this assumption is dropped, it will be much more challenging to derive a general link.
