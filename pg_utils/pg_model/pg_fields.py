@@ -8,6 +8,7 @@ Jingtao Min @ ETH-EPM, 09.2023
 import sympy
 from sympy import diff
 from ..sympy_supp import vector_calculus_3d as v3d
+from . import base
 
 
 
