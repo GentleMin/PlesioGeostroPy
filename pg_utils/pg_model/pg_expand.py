@@ -12,7 +12,7 @@ from .pg_fields import *
 
 
 # Symbolic expressions (placeholders)
-basis_psi = sympy.Function(r"\psi^{mn}")(s)
+basis_Psi = sympy.Function(r"\Psi^{mn}")(s)
 basis_Mss = sympy.Function(r"\overline{M_{ss}}^{mn}")(s)
 basis_Mpp = sympy.Function(r"\overline{M_{\phi\phi}}^{mn}")(s)
 basis_Msp = sympy.Function(r"\overline{M_{s\phi}}^{mn}")(s)
@@ -36,12 +36,12 @@ basis_Bs_m = sympy.Function(r"B_s^{mn-}")(s)
 basis_Bp_m = sympy.Function(r"B_\phi^{mn-}")(s)
 basis_Bz_m = sympy.Function(r"B_z^{mn-}")(s)
 
-list_s_basis = [basis_psi, basis_Mss, basis_Mpp, basis_Msp, basis_Msz, basis_Mpz, 
+list_s_basis = [basis_Psi, basis_Mss, basis_Mpp, basis_Msp, basis_Msz, basis_Mpz, 
     basis_zMss, basis_zMpp, basis_zMsp, basis_Bs_e, basis_Bp_e, basis_Bz_e, basis_dBs_dz_e, basis_dBp_dz_e, basis_V]
 
 list_s_basis_boundary_cyl = [basis_Bs_p, basis_Bp_p, basis_Bz_p, basis_Bs_m, basis_Bp_m, basis_Bz_m]
 
-C_psi = sympy.Symbol(r"C_{\psi}^{mn}")
+C_Psi = sympy.Symbol(r"C_{\Psi}^{mn}")
 C_Mss = sympy.Symbol(r"C_{ss}^{mn}")
 C_Mpp = sympy.Symbol(r"C_{\phi\phi}^{mn}")
 C_Msp = sympy.Symbol(r"C_{s\phi}^{mn}")
@@ -64,7 +64,7 @@ C_Bs_m = sympy.Symbol(r"C_s^{mn-}")
 C_Bp_m = sympy.Symbol(r"C_\phi^{mn-}")
 C_Bz_m = sympy.Symbol(r"C_z^{mn-}")
 
-list_coeffs_fields = [C_psi, C_Mss, C_Mpp, C_Msp, C_Msz, C_Mpz,
+list_coeffs_fields = [C_Psi, C_Mss, C_Mpp, C_Msp, C_Msz, C_Mpz,
     C_zMss, C_zMpp, C_zMsp, C_Bs_e, C_Bp_e, C_Bz_e, C_dBs_dz_e, C_dBp_dz_e, C_V]
 
 list_coeffs_boundary_cyl = [C_Bs_p, C_Bp_p, C_Bz_p, C_Bs_m, C_Bp_m, C_Bz_m]
@@ -97,7 +97,7 @@ beta_m = sympy.Piecewise(
     (m_abs - sympy.Rational(5, 2), m_abs > 1))
 
 # Field expansions
-Basis_std.trial_psi = H_s**3*s**m_abs*jacobi(n, sympy.Rational(3, 2), m_abs, xi)
+Basis_std.trial_Psi = H_s**3*s**m_abs*jacobi(n, sympy.Rational(3, 2), m_abs, xi)
 
 Basis_std.trial_Mss = H_s*prefactor_m*jacobi(n, 1, beta_m, xi)
 Basis_std.trial_Mpp = H_s*prefactor_m*jacobi(n, 1, beta_m, xi)
