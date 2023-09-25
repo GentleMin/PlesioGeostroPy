@@ -1,0 +1,110 @@
+%Please use LuaLaTeX or XeLaTeX
+\documentclass[11pt,aspectratio=169]{beamer}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage[
+    backend=biber,
+    style=authoryear,
+    sorting=nyt
+]{biblatex}
+\addbibresource{../doc/references.bib}
+\DeclareMathOperator{\sgn}{sgn}
+
+\title{Boundary conditions of the reduced systems}
+\date[Sept 2023]{regular updates}
+\author{MJT}
+\institute{EPM}
+
+\usetheme{eth}
+
+\colorlet{titlefgcolor}{ETHBlue}
+\colorlet{accentcolor}{ETHRed}
+
+\begin{document}
+
+%\def\titlefigure{elements/title-page-image}		% Default image
+%\def\titlefigure{elements/title-page-image-43}	% Use this for 4:3 presentations
+
+\titleframe
+
+% \colorlet{titlefgcolor}{ETHPurple}
+% \def\titlefigure{elements/title-page-image-alt}
+% \title{Different background}
+% \titleframe
+
+% \colorlet{titlebgcolor}{ETHGreen}
+% \def\titlefigure{}
+% \setlength{\titleboxwidth}{0.75\textwidth}			% Change box width
+% \title{Or even a plain color, especially if your title is very long and leaves no space for what's behind the colored box}
+% \titleframe
+
+% \tocframe
+
+\section{Linearized induction equation with zero background velocity}
+
+\begin{frame}{Linearized induction equation with zero background velocity}
+	\[\begin{aligned}
+		\frac{\partial \mathbf{B}}{\partial t} &= \nabla\times (\mathbf{u} \times \mathbf{B}) = \mathbf{B}\cdot \nabla \mathbf{u} - \mathbf{u}\cdot \nabla \mathbf{B} \\
+		\frac{\partial \mathbf{b}}{\partial t} &= \nabla\times (\mathbf{u} \times \mathbf{B}_0) = \mathbf{B}_0\cdot \nabla \mathbf{u} - \mathbf{u}\cdot \nabla \mathbf{B}_0 \\
+		\frac{\partial \mathbf{b}}{\partial t} &= \mathcal{L}({\mathbf{B}_0}) \mathbf{u} = \mathcal{L}(\mathbf{B}_0) \, \psi
+	\end{aligned}\]
+\end{frame}
+
+\begin{frame}{Linearized induction equation with zero background velocity}
+	\begin{block}{Proposition}
+		The ideal induction equations of the boundary magnetic field or the integrated magnetic moments, when linearized around a background field with zero velocity, involves only the background magnetic field / moment and the perturbed velocity. In other words, all of them can be written as
+		\[
+			\frac{\partial b_a}{\partial t} = \mathcal{L}_a \psi,
+		\]
+		or in the frequency domain
+		\[
+			i\omega b_a = \mathcal{L}_a \psi,
+		\]
+		where $b_a \in \{\overline{m_{ss}},\overline{m_{\phi\phi}},\overline{m_{s\phi}},\widetilde{m_{sz}},\widetilde{m_{\phi z}},\widetilde{zm_{ss}},\widetilde{zm_{\phi\phi}},\widetilde{zm_{s\phi}},b_{es},b_{e\phi},b_{ez},b_{es,z},b_{e\phi,z},b_s^\pm,b_\phi^\pm,b_z^\pm\}$.
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{Linearized induction equation with zero background velocity}
+	\begin{corollary}
+		When linearized around a background field with zero velocity, the complete PG system with diffusionless vorticity and induction equations and boundary terms can always be reduced to a single equation
+		\[
+			\left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial^2 \psi}{\partial t^2} = - \frac{2}{H^2}\frac{dH}{ds} \frac{\partial}{\partial \phi}\frac{\partial \psi}{\partial t} + \mathcal{L}_\mathrm{tot} \psi
+		\]
+		where $\mathcal{L}_\mathrm{tot}$ is the combined linear operator that gives the Lorentz force. Furthermore, considering the forms of the induction equations and vorticity equation, $\mathcal{L}_\mathrm{tot}$ is at most 3rd order in $(s,\phi,z)$. In the frequency domain, it is written as
+		\[
+			-\omega^2\left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \psi = -i\omega \frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + \mathcal{L}_\mathrm{tot} \psi
+		\]
+	\end{corollary}
+\end{frame}
+
+
+\section{Missing magnetic boundary condition?}
+
+\begin{frame}{Missing magnetic BC?}
+	The reduced system
+	\[
+		-\omega^2\left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \psi = -i\omega \frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + \mathcal{L}_\mathrm{tot} \psi
+	\]
+	subject to boundary condition
+	\[
+		\psi \sim s^{|m|} \quad (s \rightarrow 0),\qquad \psi \sim H^3 = (1 - s^2)^\frac{3}{2} \quad (s\rightarrow 1)
+	\]
+	The system is already closed. Where is the room for magnetic BC?
+\end{frame}
+
+\begin{frame}{Missing magnetic BC?}
+	Possibilities:
+	\begin{itemize}
+		\item Eigenmodes of the PG system are truly independent of magnetic boundary conditions. This could be due to that the BC residue induced by magnetic perturbations are second order effects compared to the background field.
+		\item Eigenmodes depend on magnetic BC, but the desired magnetic boundary conditions will be automatically satisfied as long as the background magnetic field satisfied the BC.
+		\item Eigenmodes depend on magnetic BC, so only the eigenmodes that \textit{a posteriori} fulfills a certain magnetic BC are the valid eigenmodes under that BC. However, it means that the reduced system contains all possible eigenmodes from different BCs, which seems unlikely.
+	\end{itemize}
+\end{frame}
+
+
+
+\end{document}

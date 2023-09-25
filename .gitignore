@@ -19,6 +19,11 @@ presentation/*.xml
 presentation/*.snm
 presentation/*.nav
 presentation/*.vrb
+presentation/*.toc
+presentation/*.blg
 # unwanted local test scripts
 style_sheets_reference.py
 test.py
+
+# VSCode utilities
+.VSCodeCounter
