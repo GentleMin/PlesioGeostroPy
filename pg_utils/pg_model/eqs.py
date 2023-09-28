@@ -7,17 +7,18 @@ Jingtao Min @ ETH-EPM, 09.2023
 import sympy
 from sympy import diff
 from sympy import Derivative as diff_u
-from .pg_fields import *
+from .base import CollectionPG
+from .core import *
 from .base_utils import linearize
 
-from types import SimpleNamespace
+# from .pg_fields import *
+# from types import SimpleNamespace
 
 
-"""Container for equations"""
-eqs_mechanics = SimpleNamespace()
-eqs_induction = SimpleNamespace()
-eqs_mechanics_lin = SimpleNamespace()
-eqs_induction_lin = SimpleNamespace()
+
+"""Collecting equations"""
+
+eqs_pg = CollectionPG()
 
 # Symbols for external forces
 fs_sym = sympy.Function(r"\overline{f_s}")(s, p, t)
@@ -25,133 +26,166 @@ fp_sym = sympy.Function(r"\overline{f_\phi}")(s, p, t)
 fz_asym = sympy.Function(r"\widetilde{f_z}")(s, p, t)
 fe_p = sympy.Function(r"f_{e\phi}")(s, p, t)
 
-
 """Vorticity equation"""
-# vorticity_var = -2*cyl_op.laplacian(diff(Psi, t)) + diff(H, s)*(2/H*diff(Psi, t, s) + 1/s/H*diff(Psi, t, (p, 2)))
-# vorticity_forcing = diff(H, s)*4/s/H*diff(Psi, p) - diff(H, s)*(2*fe_p + 1/s*diff(fz_asym, p)) + cyl_op.curl((fs_sym, fp_sym, 0))[2]
-# Self-adjoint form
-vorticity_var = diff_u(s/H*diff(Psi, t, s), s) + (1/(s*H) - 1/(2*H**2)*diff(H, s))*diff(Psi, t, (p, 2))
-vorticity_forcing = -2/H**2*diff(H, s)*diff(Psi, p) + diff(H, s)*(s/H*fe_p + 1/(2*H)*diff(fz_asym, p)) - s/(2*H)*cyl_op.curl((fs_sym, fp_sym, 0))[2]
+eqs_pg.Psi = sympy.Eq(
+    diff_u(s/H*diff(pgvar.Psi, t, s), s)
+    + (1/(s*H) - 1/(2*H**2)*diff(H, s))*diff(pgvar.Psi, t, (p, 2)), 
+    -2/H**2*diff(H, s)*diff(pgvar.Psi, p)
+    + diff(H, s)*(s/H*fe_p + 1/(2*H)*diff(fz_asym, p)) 
+    - s/(2*H)*cyl.curl((fs_sym, fp_sym, 0))[2])
 
-eqs_mechanics.Psi = sympy.Eq(vorticity_var, vorticity_forcing)
+# Equatorial velocity
+v_e = (U_vec.s, U_vec.p, 0)
 
+"""Induction equations for magnetic moments"""
+eqs_pg.Mss = sympy.Eq(
+    diff_u(pgvar.Mss, t), 
+    - H*v3d.dot(v_e, cyl.grad(pgvar.Mss/H, evaluate=False))
+    + 2*diff_u(U_vec.s, s)*pgvar.Mss
+    + 2/s*diff_u(U_vec.s, p)*pgvar.Msp)
 
-"""Induction equation - the magnetic moments"""
-v_e = (us, up, 0)
+eqs_pg.Mpp = sympy.Eq(
+    diff_u(pgvar.Mpp, t),
+    - 1/H*v3d.dot(v_e, cyl.grad(H*pgvar.Mpp, evaluate=False))
+    - 2*diff_u(U_vec.s, s)*pgvar.Mpp
+    + 2*s*diff_u(U_vec.p/s, s)*pgvar.Msp)
 
-evo_Mss = cyl_op.grad(Mss/H, evaluate=False)
-evo_Mss = -H*v3d.dot(v_e, evo_Mss) + 2*diff_u(us, s)*Mss + 2/s*diff_u(us, p)*Msp
+eqs_pg.Msp = sympy.Eq(
+    diff_u(pgvar.Msp, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.Msp, evaluate=False))
+    + s*diff_u(U_vec.p/s, s)*pgvar.Mss
+    + 1/s*diff_u(U_vec.s, p)*pgvar.Mpp)
 
-evo_Mpp = cyl_op.grad(H*Mpp, evaluate=False)
-evo_Mpp = -1/H*v3d.dot(v_e, evo_Mpp) - 2*diff_u(us, s)*Mpp + 2*s*diff_u(up/s, s)*Msp
+eqs_pg.Msz = sympy.Eq(
+    diff_u(pgvar.Msz, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.Msz, evaluate=False))
+    + (diff_u(U_vec.s, s) + 2*diff_u(U_vec.z, z))*pgvar.Msz
+    + 1/s*diff_u(U_vec.s, p)*pgvar.Mpz
+    + diff_u(U_vec.s/H*diff_u(H, s), s)*pgvar.zMss
+    + 1/(s*H)*diff_u(H, s)*diff_u(U_vec.s, p)*pgvar.zMsp)
 
-evo_Msp = cyl_op.grad(Msp, evaluate=False)
-evo_Msp = -v3d.dot(v_e, evo_Msp) + s*diff_u(up/s, s)*Mss + 1/s*diff_u(us, p)*Mpp
+eqs_pg.Mpz = sympy.Eq(
+    diff_u(pgvar.Mpz, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.Mpz, evaluate=False))
+    + (diff(U_vec.z, z) - diff(U_vec.s, s))*pgvar.Mpz
+    + s*diff_u(U_vec.p/s, s)*pgvar.Msz
+    + diff_u(U_vec.s/H*diff(H, s), s)*pgvar.zMsp
+    + 1/(s*H)*diff(H, s)*diff(U_vec.s, p)*pgvar.zMpp)
 
-evo_Msz = cyl_op.grad(Msz, evaluate=False)
-evo_Msz = -v3d.dot(v_e, evo_Msz) + (diff_u(us, s) + 2*diff_u(uz, z))*Msz + 1/s*diff_u(us, p)*Mpz + diff_u(us/H*diff_u(H, s), s)*zMss + 1/(s*H)*diff_u(H, s)*diff_u(us, p)*zMsp
+eqs_pg.zMss = sympy.Eq(
+    diff_u(pgvar.zMss, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.zMss, evaluate=False))
+    + 2*(diff(U_vec.s, s) + diff(U_vec.z, z))*pgvar.zMss
+    + 2/s*diff(U_vec.s, p)*pgvar.zMsp)
 
-evo_Mpz = cyl_op.grad(Mpz, evaluate=False)
-evo_Mpz = -v3d.dot(v_e, evo_Mpz) + (diff(uz, z) - diff(us, s))*Mpz + s*diff_u(up/s, s)*Msz + diff_u(us/H*diff(H, s), s)*zMsp + 1/(s*H)*diff(H, s)*diff(us, p)*zMpp
+eqs_pg.zMpp = sympy.Eq(
+    diff_u(pgvar.zMpp, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.zMpp, evaluate=False))
+    - 2*diff(U_vec.s, s)*pgvar.zMpp
+    + 2*s*diff_u(U_vec.p/s, s)*pgvar.zMsp)
 
-evo_zMss = cyl_op.grad(zMss, evaluate=False)
-evo_zMss = -v3d.dot(v_e, evo_zMss) + 2*(diff(us, s) + diff(uz, z))*zMss + 2/s*diff(us, p)*zMsp
+eqs_pg.zMsp = sympy.Eq(
+    diff_u(pgvar.zMsp, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.zMsp, evaluate=False))
+    + diff(U_vec.z, z)*pgvar.zMsp
+    + s*diff_u(U_vec.p/s, s)*pgvar.zMss
+    + 1/s*diff(U_vec.s, p)*pgvar.zMpp)
 
-evo_zMpp = cyl_op.grad(zMpp, evaluate=False)
-evo_zMpp = -v3d.dot(v_e, evo_zMpp) - 2*diff(us, s)*zMpp + 2*s*diff_u(up/s, s)*zMsp
+"""Induction equation for magnetic field in the equatorial plane"""
+eqs_pg.Bs_e = sympy.Eq(
+    diff(pgvar.Bs_e, t),
+    + pgvar.Bs_e*diff(U_vec.s, s) + 1/s*pgvar.Bp_e*diff(U_vec.s, p)
+    - U_vec.s*diff(pgvar.Bs_e, s) - 1/s*U_vec.p*diff(pgvar.Bs_e, p))
 
-evo_zMsp = cyl_op.grad(zMsp, evaluate=False)
-evo_zMsp = -v3d.dot(v_e, evo_zMsp) + diff(uz, z)*zMsp + s*diff_u(up/s, s)*zMss + 1/s*diff(us, p)*zMpp
+eqs_pg.Bp_e = sympy.Eq(
+    diff(pgvar.Bp_e, t), 
+    + pgvar.Bs_e*diff(U_vec.p, s) + 1/s*pgvar.Bp_e*diff(U_vec.p, p)
+    - U_vec.s*diff(pgvar.Bp_e, s) - 1/s*U_vec.p*diff(pgvar.Bp_e, p)
+    + (pgvar.Bp_e*U_vec.s - U_vec.p*pgvar.Bs_e)/s)
 
+eqs_pg.Bz_e = sympy.Eq(
+    diff(pgvar.Bz_e, t), 
+    - U_vec.s*diff(pgvar.Bz_e, s) - 1/s*U_vec.p*diff(pgvar.Bz_e, p)
+    + diff(U_vec.z, z)*pgvar.Bz_e)
 
-"""Induction: magnetic field in the equatorial plane"""
+eqs_pg.dBs_dz_e = sympy.Eq(
+    diff(pgvar.dBs_dz_e, t),
+    + pgvar.dBs_dz_e*diff(U_vec.s, s) + 1/s*pgvar.dBp_dz_e*diff(U_vec.s, p)
+    - U_vec.s*diff(pgvar.dBs_dz_e, s) - 1/s*U_vec.p*diff(pgvar.dBs_dz_e, p)
+    - diff(U_vec.z, z)*pgvar.dBs_dz_e)
 
-evo_Bs_e = Bs_e*diff(us, s) + 1/s*Bp_e*diff(us, p) - us*diff(Bs_e, s) - 1/s*up*diff(Bs_e, p)
-evo_Bp_e = Bs_e*diff(up, s) + 1/s*Bp_e*diff(up, p) - us*diff(Bp_e, s) - 1/s*up*diff(Bp_e, p) + (Bp_e*us - up*Bs_e)/s
-evo_Bz_e = -us*diff(Bz_e, s) - 1/s*up*diff(Bz_e, p) + diff(uz, z)*Bz_e
-evo_dBs_dz_e = dBs_dz_e*diff(us, s) + 1/s*dBp_dz_e*diff(us, p) - us*diff(dBs_dz_e, s) - 1/s*up*diff(dBs_dz_e, p) - diff(uz, z)*dBs_dz_e
-evo_dBp_dz_e = dBs_dz_e*diff(up, s) + 1/s*dBp_dz_e*diff(up, p) - us*diff(dBp_dz_e, s) - 1/s*up*diff(dBp_dz_e, p) + (dBp_dz_e*us - up*dBs_dz_e)/s - diff(uz, z)*dBp_dz_e
-
+eqs_pg.dBp_dz_e = sympy.Eq(
+    diff(pgvar.dBp_dz_e, t),
+    + pgvar.dBs_dz_e*diff(U_vec.p, s) + 1/s*pgvar.dBp_dz_e*diff(U_vec.p, p)
+    - U_vec.s*diff(pgvar.dBp_dz_e, s) - 1/s*U_vec.p*diff(pgvar.dBp_dz_e, p)
+    + (pgvar.dBp_dz_e*U_vec.s - U_vec.p*pgvar.dBs_dz_e)/s
+    - diff(U_vec.z, z)*pgvar.dBp_dz_e)
 
 """Induction: boundary stirring"""
+# In non-linearized form, boundary induction equation 
+# must be written in Br to be closed
+eqs_pg.Br_b = sympy.Eq(
+    diff(pgvar.Br_b, t),
+    -sph.surface_div((pgvar.Br_b*U_sph.t, pgvar.Br_b*U_sph.p), evaluate=False)
+)
 
-# In non-linearized form, boundary induction equation must be written in Br to be closed
-evo_Br = -sph_op.surface_div((Br*ut, Br*up_sph), evaluate=False)
+# Boundary induction in cylindrical coordinates 
+# involves magnetic fields in the volume, and is not closed at the surface
+eqs_pg.Bs_p = sympy.Eq(
+    diff(pgvar.Bs_p, t),
+    + pgvar.Bs_p*diff(U_vec.s, s) - U_vec.s*diff(B_vec.s, s)
+    + pgvar.Bp_p/s*diff(U_vec.s, p) - U_vec.p/s*diff(B_vec.s, p)
+    + pgvar.Bz_p*diff(U_vec.s, z)  - U_vec.z*diff(B_vec.s, z))
 
-# The boundary induction in cylindrical coordinates involves magnetic fields in the volume, 
-# and is not closed in PG framework
-evo_Bs = Bs_tot*diff(us, s) + Bp_tot/s*diff(us, p) + Bz_tot*diff(us, z) - us*diff(Bs_tot, s) - up/s*diff(Bs_tot, p) - uz*diff(Bs_tot, z)
-evo_Bp = Bs_tot*diff(up, s) + Bp_tot/s*diff(up, p) + Bz_tot*diff(up, z) - us*diff(Bp_tot, s) - up/s*diff(Bp_tot, p) - uz*diff(Bp_tot, z) + (Bp_tot*us - up*Bs_tot)/s
-evo_Bz = Bs_tot*diff(uz, s) + Bp_tot/s*diff(uz, p) + Bz_tot*diff(uz, z) - us*diff(Bz_tot, s) - up/s*diff(Bz_tot, p) - uz*diff(Bz_tot, z)
+eqs_pg.Bp_p = sympy.Eq(
+    diff(pgvar.Bp_p, t),
+    + pgvar.Bs_p*diff(U_vec.p, s) - U_vec.s*diff(B_vec.p, s) 
+    + pgvar.Bp_p/s*diff(U_vec.p, p) - U_vec.p/s*diff(B_vec.p, p) 
+    + pgvar.Bz_p*diff(U_vec.p, z) - U_vec.z*diff(B_vec.p, z)
+    + (pgvar.Bp_p*U_vec.s - U_vec.p*pgvar.Bs_p)/s)
+
+eqs_pg.Bz_p = sympy.Eq(
+    diff(pgvar.Bz_p, t),
+    + pgvar.Bs_p*diff(U_vec.z, s) - U_vec.s*diff(B_vec.z, s)  
+    + pgvar.Bp_p/s*diff(U_vec.z, p) - U_vec.p/s*diff(B_vec.z, p) 
+    + pgvar.Bz_p*diff(U_vec.z, z)- U_vec.z*diff(B_vec.z, z))
+
+eqs_pg.Bs_m = sympy.Eq(
+    diff(pgvar.Bs_m, t),
+    + pgvar.Bs_m*diff(U_vec.s, s) - U_vec.s*diff(B_vec.s, s)
+    + pgvar.Bp_m/s*diff(U_vec.s, p) - U_vec.p/s*diff(B_vec.s, p)
+    + pgvar.Bz_m*diff(U_vec.s, z)  - U_vec.z*diff(B_vec.s, z))
+
+eqs_pg.Bp_m = sympy.Eq(
+    diff(pgvar.Bp_m, t),
+    + pgvar.Bs_m*diff(U_vec.p, s) - U_vec.s*diff(B_vec.p, s) 
+    + pgvar.Bp_m/s*diff(U_vec.p, p) - U_vec.p/s*diff(B_vec.p, p) 
+    + pgvar.Bz_m*diff(U_vec.p, z) - U_vec.z*diff(B_vec.p, z)
+    + (pgvar.Bp_m*U_vec.s - U_vec.p*pgvar.Bs_m)/s)
+
+eqs_pg.Bz_m = sympy.Eq(
+    diff(pgvar.Bz_m, t),
+    + pgvar.Bs_m*diff(U_vec.z, s) - U_vec.s*diff(B_vec.z, s)  
+    + pgvar.Bp_m/s*diff(U_vec.z, p) - U_vec.p/s*diff(B_vec.z, p) 
+    + pgvar.Bz_m*diff(U_vec.z, z)- U_vec.z*diff(B_vec.z, z))
 
 
-# Collecting
-eqs_induction.Mss = sympy.Eq(diff(Mss, t), evo_Mss)
-eqs_induction.Mpp = sympy.Eq(diff(Mpp, t), evo_Mpp)
-eqs_induction.Msp = sympy.Eq(diff(Msp, t), evo_Msp)
-eqs_induction.Msz = sympy.Eq(diff(Msz, t), evo_Msz)
-eqs_induction.Mpz = sympy.Eq(diff(Mpz, t), evo_Mpz)
-eqs_induction.zMss = sympy.Eq(diff(zMss, t), evo_zMss)
-eqs_induction.zMpp = sympy.Eq(diff(zMpp, t), evo_zMpp)
-eqs_induction.zMsp = sympy.Eq(diff(zMsp, t), evo_zMsp)
-eqs_induction.Bs_e = sympy.Eq(diff(Bs_e, t), evo_Bs_e)
-eqs_induction.Bp_e = sympy.Eq(diff(Bp_e, t), evo_Bp_e)
-eqs_induction.Bz_e = sympy.Eq(diff(Bz_e, t), evo_Bz_e)
-eqs_induction.dBs_dz_e = sympy.Eq(diff(dBs_dz_e, t), evo_dBs_dz_e)
-eqs_induction.dBp_dz_e = sympy.Eq(diff(dBp_dz_e, t), evo_dBp_dz_e)
-eqs_induction.Br = sympy.Eq(diff(Br, t), evo_Br)
 
+"""Linearized equations"""
 
-"""Linearized vorticity equation"""
+eqs_pg_lin = CollectionPG()
 
-force_perturbation = {
+# Forcing terms are simply transferred to the linearized equations
+force_linmap = {
     fp_sym: eps*fp_sym,
     fs_sym: eps*fs_sym,
     fz_asym: eps*fz_asym,
     fe_p: eps*fe_p
 }
 
-vorticity_var_lin = linearize(vorticity_var, linearization_subs_map, perturb_var=eps)
-vorticity_forcing_lin = linearize(vorticity_forcing, linearization_subs_map, force_perturbation, perturb_var=eps)
+"""Linearize equation"""
+for idx, eq_tmp in enumerate(eqs_pg):
+    eqs_pg_lin[idx] = sympy.Eq(
+        linearize(eq_tmp.lhs, pg_linmap),
+        linearize(eq_tmp.rhs, u_linmap, b_linmap, pg_linmap, force_linmap))
 
-eqs_mechanics_lin.psi = sympy.Eq(vorticity_var_lin, vorticity_forcing_lin)
-
-"""Linearized induction equation"""
-# The induction term further requires perturbation in velocity
-velocity_map = {us: us_0 + eps*us_psi, up: up_0 + eps*up_psi, uz: uz_0 + eps*uz_psi}
-
-evo_mss = linearize(evo_Mss, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_mpp = linearize(evo_Mpp, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_msp = linearize(evo_Msp, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_msz = linearize(evo_Msz, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_mpz = linearize(evo_Mpz, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_zmss = linearize(evo_zMss, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_zmpp = linearize(evo_zMpp, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_zmsp = linearize(evo_zMsp, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_bs_e = linearize(evo_Bs_e, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_bp_e = linearize(evo_Bp_e, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_bz_e = linearize(evo_Bz_e, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_dbs_dz_e = linearize(evo_dBs_dz_e, velocity_map, linearization_subs_map, perturb_var=eps)
-evo_dbp_dz_e = linearize(evo_dBp_dz_e, velocity_map, linearization_subs_map, perturb_var=eps)
-
-# In linearized form with zero-background field, the boundary induction can be written in cylindrical coordinates
-velocity_map_bg0 = {us: eps*us_psi, up: eps*up_psi, uz: eps*uz_psi}
-magnetic_map_bg0 = {Bs_tot: Bs0, Bp_tot: Bp0, Bz_tot: Bz0}
-evo_bs = linearize(evo_Bs, velocity_map_bg0, magnetic_map_bg0)
-evo_bp = linearize(evo_Bp, velocity_map_bg0, magnetic_map_bg0)
-evo_bz = linearize(evo_Bz, velocity_map_bg0, magnetic_map_bg0)
-
-# Collection
-eqs_induction_lin.mss = sympy.Eq(diff(mss, t), evo_mss)
-eqs_induction_lin.mpp = sympy.Eq(diff(mpp, t), evo_mpp)
-eqs_induction_lin.msp = sympy.Eq(diff(msp, t), evo_msp)
-eqs_induction_lin.msz = sympy.Eq(diff(msz, t), evo_msz)
-eqs_induction_lin.mpz = sympy.Eq(diff(mpz, t), evo_mpz)
-eqs_induction_lin.zmss = sympy.Eq(diff(zmss, t), evo_zmss)
-eqs_induction_lin.zmpp = sympy.Eq(diff(zmpp, t), evo_zmpp)
-eqs_induction_lin.zmsp = sympy.Eq(diff(zmsp, t), evo_zmsp)
-eqs_induction_lin.bs_e = sympy.Eq(diff(bs_e, t), evo_bs_e)
-eqs_induction_lin.bp_e = sympy.Eq(diff(bp_e, t), evo_bp_e)
-eqs_induction_lin.bz_e = sympy.Eq(diff(bz_e, t), evo_bz_e)
-eqs_induction_lin.dbs_dz_e = sympy.Eq(diff(dbs_dz_e, t), evo_dbs_dz_e)
-eqs_induction_lin.dbp_dz_e = sympy.Eq(diff(dbp_dz_e, t), evo_dbp_dz_e)
