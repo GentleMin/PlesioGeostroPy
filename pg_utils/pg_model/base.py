@@ -11,27 +11,31 @@ from typing import Any
 class LabeledCollection:
     """Abstract base class for collections to be used in PG model
     
-    LabeledCollection is a base class that defines three kinds of behaviours:
-        (1) can be indexed by integer; in other words, the collection is sorted;
-        (2) can be indexed by string; in other words, the collection is labeled;
+    LabeledCollection is a base class that defines following behaviours
+        (1) indexing by integer; in other words, it is sorted;
+        (2) indexing by string; in other words, it is labeled;
         (3) the elements can be accessed as attributes.
-    In addition, LabeledCollection should support the following operations:
+    In addition, LabeledCollection supports the following operations
         (1) iteration: the object can be traversed as an iterator;
-        (2) subcollection: a subset can be extracted from LabeledCollection.
+        (2) subcollection: a subset can be extracted from it.
     """
     
     def __init__(self, names, **fields) -> None:
         """Initialization
         
-        :param names: list or array-like [str], list of names to be used as field attributes
-        :param \**fields: keyword arguments to be initiated as fields attributes;
-            the keys must be part of the `names`, otherwise the key-value pair is ignored;
-            fields in `names` that is unspecified in `**fields` will be initiated as None.
+        :param names: list or array-like [str], 
+            list of names to be used as field attributes
+        :param \**fields: keyword arguments to be initiated as attributes;
+            the keys must be part of the `names`, 
+            otherwise the key-value pair is ignored;
+            fields in `names` not in `fields` will be initiated as None;
+            keys in `fields` not in `names` raises an error.
         """
         # Allow attribute assignment
-        self.__isfrozen = False
+        super().__setattr__("_is_locked", False)
         # Generate fields and values
         self._field_names = names
+        self._validate_field_entries(**fields)
         for field_key in names:
             if field_key in fields:
                 setattr(self, field_key, fields[field_key])
@@ -41,15 +45,16 @@ class LabeledCollection:
         # Iterator mode
         self._iter_name = False
         self._iter_filter = False
+        self.n_iter = 0
     
-    def __setattr__(self, __name: str, __value: Any) -> None:
-        """Attribute setter
-        Overridden to prevent attribute addition when __isfrozen is True
+    def _validate_field_entries(self, **fields) -> None:
+        """Validate field keyword arguments
+        manually raise a TypeError if keyword in `fields` not in `names`
         """
-        if self.__isfrozen and not hasattr(self, __name):
-            raise AttributeError
-        super().__setattr__(__name, __value)
-    
+        for field_key in fields:
+            if field_key not in self._field_names:
+                raise TypeError
+  
     @property
     def iter_name(self):
         """iter_name: bool
@@ -76,6 +81,17 @@ class LabeledCollection:
             raise TypeError
         self._iter_filter = option
 
+    def __setattr__(self, __name: str, __value: Any) -> None:
+        """Attribute setter
+        Overridden to prevent attribute addition when _is_locked is True
+        """
+        if self._is_locked and not hasattr(self, __name):
+            raise AttributeError
+        super().__setattr__(__name, __value)
+        
+    def _disable_attribute_addition(self) -> None:
+        self._is_locked = True
+    
     def __getitem__(self, __key):
         """Indexed access
         
@@ -167,10 +183,11 @@ class LabeledCollection:
 class LabeledSubCollection:
     """Base class that gives a subset of the labeled collection.
     
-    LabeledSubCollection, similar to LabeledCollection, is a base class that defines following behaviours:
-        (1) indexing by integer; in other words, the subcollection is sorted;
-        (2) indexing by string; in other words, the subcollection is labeled.
-    In addition, LabeledSubCollection should support the following operations:
+    LabeledSubCollection, similar to LabeledCollection,
+    implements the following operations:
+        (1) indexing by integer; in other words, it is sorted;
+        (2) indexing by string; in other words, it is labeled.
+    In addition, LabeledSubCollection supports the following operations:
         (1) iteration: the object can be traversed as an iterator.
     """
     
@@ -238,7 +255,8 @@ class LabeledSubCollection:
         """Accessing items based on slice.
         """
         name_list = self._sub_names[__slice]
-        item_list = [self.base_collection._getitem_by_name(name) for name in name_list]
+        item_list = [self.base_collection._getitem_by_name(name) 
+            for name in name_list]
         return item_list
     
     def _getitem_by_name(self, name):
@@ -299,21 +317,26 @@ class LabeledSubCollection:
 
 
 class CollectionPG(LabeledCollection):
-    """Base class for the collection of Plesio-Geostrophy (PG) variables, fields, equations, etc.
+    """Base class for the collection of Plesio-Geostrophy (PG) variables, 
+    fields, equations, etc.
     """
     
-    # Arrangement of variables:
-    # Vorticity - Magnetic moments - Magnetic fields in the equatorial plane - Boundary fields
+    """Arrangement of variables:
+    Vorticity
+    Magnetic moments
+    Magnetic fields in the equatorial plane
+    Magnetic fields at the boundary
+    """
     pg_field_names = [
         "Psi", 
         "Mss", "Mpp", "Msp", "Msz", "Mpz", "zMss", "zMpp", "zMsp", 
         "Bs_e", "Bp_e", "Bz_e", "dBs_dz_e", "dBp_dz_e", 
-        "Br", "Bs_p", "Bp_p", "Bz_p", "Bs_m", "Bp_m", "Bz_m"]
+        "Br_b", "Bs_p", "Bp_p", "Bz_p", "Bs_m", "Bp_m", "Bz_m"]
     
     def __init__(self, **fields) -> None:
         super().__init__(self.pg_field_names, **fields)
         # No longer accepts attribution addition
-        self.__isfrozen = True
+        self._disable_attribute_addition()
     
     def vorticity(self):
         """Extract vorticity equation.
@@ -362,12 +385,4 @@ class CollectionPG(LabeledCollection):
     #     self.Br, self.Bs_p, self.Bp_p, self.Bz_p, self.Bs_m, self.Bp_m, self.Bz_m = Br, Bs_p, Bp_p, Bs_m, Bp_m, Bz_m
     #     # Update number of fields
     #     self.n_fields = len(self.list_names)
-        
-    
-
-    
-    
-
-
-
 
