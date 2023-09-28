@@ -6,7 +6,8 @@ Jingtao Min @ ETH-EPM, 09.2023
 
 import sympy
 from ..sympy_supp import vector_calculus_3d as v3d
-from .pg_fields import H, H_s, s, p, z, cyl_op, eps
+# from .pg_fields import H, H_s, s, p, z, cyl_op, eps
+from .core import *
 
 
 def integrate_sym(field):
