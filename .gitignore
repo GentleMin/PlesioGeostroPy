@@ -27,3 +27,6 @@ test.py
 
 # VSCode utilities
 .VSCodeCounter
+
+# Currently, ignore wolfram mathematica notebooks
+*.nb
