@@ -1,0 +1,48 @@
+@startuml classes_pg_model
+set namespaceSeparator none
+class "CollectionPG" as pg_utils.pg_model.base.CollectionPG {
+  Bp_e
+  Bp_m
+  Bp_p
+  Br_b
+  Bs_e
+  Bs_m
+  Bs_p
+  Bz_e
+  Bz_m
+  Bz_p
+  Mpp
+  Mpz
+  Msp
+  Mss
+  Msz
+  Psi
+  dBp_dz_e
+  dBs_dz_e
+  pg_field_names : list
+  zMpp
+  zMsp
+  zMss
+  subset_B_bound()
+  subset_B_bound_cyl()
+  subset_B_equator()
+  subset_mag()
+  subset_moments()
+  vorticity()
+}
+class "LabeledCollection" as pg_utils.pg_model.base.LabeledCollection {
+  iter_filter
+  iter_name
+  n_fields
+  n_iter : int
+}
+class "LabeledSubCollection" as pg_utils.pg_model.base.LabeledSubCollection {
+  base_collection
+  iter_filter
+  iter_name
+  n_fields
+  n_iter : int
+}
+pg_utils.pg_model.base.CollectionPG --|> pg_utils.pg_model.base.LabeledCollection
+pg_utils.pg_model.base.LabeledCollection --o pg_utils.pg_model.base.LabeledSubCollection : base_collection
+@enduml

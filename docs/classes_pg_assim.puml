@@ -1,0 +1,102 @@
+@startuml classes_pg_assim
+set namespaceSeparator none
+class "CartesianCoordinates3D" as pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D {
+  curl(vector_in)
+  div(vector_in)
+  grad(scalar_in)
+  laplacian(tensor_in, rank)
+  transform_to(tensor_in, new_sys: OrthogonalCoordinates3D, coeffs_new)
+}
+class "CollectionPG" as pg_utils.pg_model.base.CollectionPG {
+  Bp_e
+  Bp_m
+  Bp_p
+  Br_b
+  Bs_e
+  Bs_m
+  Bs_p
+  Bz_e
+  Bz_m
+  Bz_p
+  Mpp
+  Mpz
+  Msp
+  Mss
+  Msz
+  Psi
+  dBp_dz_e
+  dBs_dz_e
+  pg_field_names : list
+  zMpp
+  zMsp
+  zMss
+  subset_B_bound()
+  subset_B_bound_cyl()
+  subset_B_equator()
+  subset_mag()
+  subset_moments()
+  vorticity()
+}
+class "CylindricalCoordinates" as pg_utils.sympy_supp.vector_calculus_3d.CylindricalCoordinates {
+  curl(vector_in)
+  div(vector_in)
+  grad(scalar_in)
+  laplacian(tensor_in, rank)
+  transform_to(v_in, new_sys: OrthogonalCoordinates3D, coeffs_new) -> OrthogonalCoordinates3D
+}
+class "LabeledCollection" as pg_utils.pg_model.base.LabeledCollection {
+  iter_filter
+  iter_name
+  n_fields
+  n_iter : int
+}
+class "LabeledSubCollection" as pg_utils.pg_model.base.LabeledSubCollection {
+  base_collection
+  iter_filter
+  iter_name
+  n_fields
+  n_iter : int
+}
+class "OrthogonalCoordinates3D" as pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D {
+  coords
+  {abstract}curl(vector_in)
+  {abstract}div(vector_in)
+  {abstract}grad(scalar_in)
+  {abstract}laplacian(tensor_in, rank)
+  {abstract}transform_to(tensor_in, new_sys: 'OrthogonalCoordinates3D', coeffs_new)
+}
+class "Scalar3D" as pg_utils.sympy_supp.vector_calculus_3d.Scalar3D {
+  grad()
+  laplacian()
+  transform_to(new_sys: OrthogonalCoordinates3D) -> Tensor3D
+}
+class "SphericalCoordinates" as pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates {
+  curl(vector_in)
+  div(vector_in)
+  grad(scalar_in)
+  laplacian(tensor_in, rank)
+  surface_div(vector_in)
+  {abstract}surface_grad(scalar_in)
+  transform_to(v_in, new_sys: OrthogonalCoordinates3D, coeffs_new) -> OrthogonalCoordinates3D
+}
+class "Tensor3D" as pg_utils.sympy_supp.vector_calculus_3d.Tensor3D {
+  coord_sys
+  ndim : int
+  rank : int
+  tensor
+  transform_to(new_sys: OrthogonalCoordinates3D) -> 'Tensor3D'
+}
+class "Vector3D" as pg_utils.sympy_supp.vector_calculus_3d.Vector3D {
+  curl()
+  div()
+  laplacian()
+}
+pg_utils.pg_model.base.CollectionPG --|> pg_utils.pg_model.base.LabeledCollection
+pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D --|> pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D
+pg_utils.sympy_supp.vector_calculus_3d.CylindricalCoordinates --|> pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D
+pg_utils.sympy_supp.vector_calculus_3d.Scalar3D --|> pg_utils.sympy_supp.vector_calculus_3d.Tensor3D
+pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates --|> pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D
+pg_utils.sympy_supp.vector_calculus_3d.Vector3D --|> pg_utils.sympy_supp.vector_calculus_3d.Tensor3D
+pg_utils.pg_model.base.LabeledCollection --o pg_utils.pg_model.base.LabeledSubCollection : base_collection
+pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D --o pg_utils.sympy_supp.vector_calculus_3d.Tensor3D : coord_sys
+@enduml

@@ -1,0 +1,37 @@
+@startuml packages_pg_assim
+set namespaceSeparator none
+package "pg_utils" as pg_utils {
+}
+package "pg_utils.pg_model" as pg_utils.pg_model {
+}
+package "pg_utils.pg_model.base" as pg_utils.pg_model.base {
+}
+package "pg_utils.pg_model.base_utils" as pg_utils.pg_model.base_utils {
+}
+package "pg_utils.pg_model.core" as pg_utils.pg_model.core {
+}
+package "pg_utils.pg_model.eqs" as pg_utils.pg_model.eqs {
+}
+package "pg_utils.pg_model.forcing" as pg_utils.pg_model.forcing {
+}
+package "pg_utils.pg_model.params" as pg_utils.pg_model.params {
+}
+package "pg_utils.pg_model.pg_expand" as pg_utils.pg_model.pg_expand {
+}
+package "pg_utils.pg_model.pg_fields" as pg_utils.pg_model.pg_fields {
+}
+package "pg_utils.pg_model.pgeostrophy_eqns" as pg_utils.pg_model.pgeostrophy_eqns {
+}
+package "pg_utils.sympy_supp" as pg_utils.sympy_supp {
+}
+package "pg_utils.sympy_supp.vector_calculus_3d" as pg_utils.sympy_supp.vector_calculus_3d {
+}
+pg_utils.pg_model --> pg_utils.pg_model.core
+pg_utils.pg_model.base_utils --> pg_utils.pg_model.core
+pg_utils.pg_model.eqs --> pg_utils.pg_model.base
+pg_utils.pg_model.eqs --> pg_utils.pg_model.base_utils
+pg_utils.pg_model.eqs --> pg_utils.pg_model.core
+pg_utils.pg_model.forcing --> pg_utils.pg_model.base_utils
+pg_utils.pg_model.forcing --> pg_utils.pg_model.core
+pg_utils.pg_model.pg_expand --> pg_utils.pg_model.pg_fields
+@enduml
