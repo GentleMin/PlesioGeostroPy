@@ -1,57 +1,268 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="948px" preserveAspectRatio="none" style="width:191px;height:948px;background:#FFFFFF;" version="1.1" viewBox="0 0 191 948" width="191px" zoomAndPan="magnify"><defs/><g><!--MD5=[f1aef55aad04221093ce544da38573d1]
-class pg_utils.pg_model.base.CollectionPG--><g id="elem_pg_utils.pg_model.base.CollectionPG"><rect codeLine="2" fill="#F1F1F1" height="541.0625" id="pg_utils.pg_model.base.CollectionPG" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="154" x="15" y="7"/><ellipse cx="48" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M50.7656,18.875 Q50.9219,18.6563 51.1094,18.5469 Q51.2969,18.4375 51.5156,18.4375 Q51.8906,18.4375 52.125,18.6953 Q52.3594,18.9531 52.3594,19.5625 L52.3594,21.0156 Q52.3594,21.625 52.125,21.8906 Q51.8906,22.1563 51.5156,22.1563 Q51.1719,22.1563 50.9688,21.9531 Q50.7656,21.7656 50.6563,21.25 Q50.6094,20.8906 50.4219,20.7031 Q50.0938,20.3281 49.4844,20.1094 Q48.875,19.8906 48.25,19.8906 Q47.4844,19.8906 46.8516,20.2188 Q46.2188,20.5469 45.7266,21.2969 Q45.2344,22.0469 45.2344,23.0781 L45.2344,24.1719 Q45.2344,25.4063 46.125,26.2266 Q47.0156,27.0469 48.6094,27.0469 Q49.5469,27.0469 50.2031,26.7969 Q50.5938,26.6406 51.0156,26.2031 Q51.2813,25.9375 51.4297,25.8594 Q51.5781,25.7813 51.7813,25.7813 Q52.1094,25.7813 52.3672,26.0391 Q52.625,26.2969 52.625,26.6406 Q52.625,26.9844 52.2813,27.3906 Q51.7813,27.9688 50.9844,28.2969 Q49.9063,28.75 48.6094,28.75 Q47.0938,28.75 45.8906,28.125 Q44.9063,27.625 44.2188,26.5547 Q43.5313,25.4844 43.5313,24.2031 L43.5313,23.0469 Q43.5313,21.7188 44.1484,20.5703 Q44.7656,19.4219 45.8594,18.8047 Q46.9531,18.1875 48.1875,18.1875 Q48.9219,18.1875 49.5703,18.3516 Q50.2188,18.5156 50.7656,18.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82" x="66" y="28.7285">CollectionPG</text><line style="stroke:#181818;stroke-width:0.5;" x1="16" x2="168" y1="39" y2="39"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="21" y="57.5332">Bp_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36" x="21" y="75.1426">Bp_m</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="21" y="92.752">Bp_p</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30" x="21" y="110.3613">Br_b</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="21" y="127.9707">Bs_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="35" x="21" y="145.5801">Bs_m</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="21" y="163.1895">Bs_p</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="21" y="180.7988">Bz_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="34" x="21" y="198.4082">Bz_m</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="21" y="216.0176">Bz_p</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27" x="21" y="233.627">Mpp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25" x="21" y="251.2363">Mpz</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="21" y="268.8457">Msp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25" x="21" y="286.4551">Mss</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="24" x="21" y="304.0645">Msz</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19" x="21" y="321.6738">Psi</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="21" y="339.2832">dBp_dz_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="21" y="356.8926">dBs_dz_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="129" x="21" y="374.502">pg_field_names : list</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="21" y="392.1113">zMpp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="21" y="409.7207">zMsp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="21" y="427.3301">zMss</text><line style="stroke:#181818;stroke-width:0.5;" x1="16" x2="168" y1="434.4063" y2="434.4063"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="21" y="452.9395">subset_B_bound()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142" x="21" y="470.5488">subset_B_bound_cyl()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126" x="21" y="488.1582">subset_B_equator()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87" x="21" y="505.7676">subset_mag()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="21" y="523.377">subset_moments()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="58" x="21" y="540.9863">vorticity()</text></g><!--MD5=[fbe1b5a6a69e801a1f7451fe32c9ce86]
-class pg_utils.pg_model.base.LabeledCollection--><g id="elem_pg_utils.pg_model.base.LabeledCollection"><rect codeLine="32" fill="#F1F1F1" height="118.4375" id="pg_utils.pg_model.base.LabeledCollection" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="145" x="19.5" y="609"/><ellipse cx="34.5" cy="625" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M37.2656,620.875 Q37.4219,620.6563 37.6094,620.5469 Q37.7969,620.4375 38.0156,620.4375 Q38.3906,620.4375 38.625,620.6953 Q38.8594,620.9531 38.8594,621.5625 L38.8594,623.0156 Q38.8594,623.625 38.625,623.8906 Q38.3906,624.1563 38.0156,624.1563 Q37.6719,624.1563 37.4688,623.9531 Q37.2656,623.7656 37.1563,623.25 Q37.1094,622.8906 36.9219,622.7031 Q36.5938,622.3281 35.9844,622.1094 Q35.375,621.8906 34.75,621.8906 Q33.9844,621.8906 33.3516,622.2188 Q32.7188,622.5469 32.2266,623.2969 Q31.7344,624.0469 31.7344,625.0781 L31.7344,626.1719 Q31.7344,627.4063 32.625,628.2266 Q33.5156,629.0469 35.1094,629.0469 Q36.0469,629.0469 36.7031,628.7969 Q37.0938,628.6406 37.5156,628.2031 Q37.7813,627.9375 37.9297,627.8594 Q38.0781,627.7813 38.2813,627.7813 Q38.6094,627.7813 38.8672,628.0391 Q39.125,628.2969 39.125,628.6406 Q39.125,628.9844 38.7813,629.3906 Q38.2813,629.9688 37.4844,630.2969 Q36.4063,630.75 35.1094,630.75 Q33.5938,630.75 32.3906,630.125 Q31.4063,629.625 30.7188,628.5547 Q30.0313,627.4844 30.0313,626.2031 L30.0313,625.0469 Q30.0313,623.7188 30.6484,622.5703 Q31.2656,621.4219 32.3594,620.8047 Q33.4531,620.1875 34.6875,620.1875 Q35.4219,620.1875 36.0703,620.3516 Q36.7188,620.5156 37.2656,620.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="113" x="48.5" y="630.7285">LabeledCollection</text><line style="stroke:#181818;stroke-width:0.5;" x1="20.5" x2="163.5" y1="641" y2="641"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="25.5" y="659.5332">iter_filter</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="25.5" y="677.1426">iter_name</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="25.5" y="694.752">n_fields</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="25.5" y="712.3613">n_iter : int</text><line style="stroke:#181818;stroke-width:0.5;" x1="20.5" x2="163.5" y1="719.4375" y2="719.4375"/></g><!--MD5=[e644404bc47556349412949d56e4c1d2]
-class pg_utils.pg_model.base.LabeledSubCollection--><g id="elem_pg_utils.pg_model.base.LabeledSubCollection"><rect codeLine="38" fill="#F1F1F1" height="136.0469" id="pg_utils.pg_model.base.LabeledSubCollection" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="170" x="7" y="805"/><ellipse cx="22" cy="821" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M24.7656,816.875 Q24.9219,816.6563 25.1094,816.5469 Q25.2969,816.4375 25.5156,816.4375 Q25.8906,816.4375 26.125,816.6953 Q26.3594,816.9531 26.3594,817.5625 L26.3594,819.0156 Q26.3594,819.625 26.125,819.8906 Q25.8906,820.1563 25.5156,820.1563 Q25.1719,820.1563 24.9688,819.9531 Q24.7656,819.7656 24.6563,819.25 Q24.6094,818.8906 24.4219,818.7031 Q24.0938,818.3281 23.4844,818.1094 Q22.875,817.8906 22.25,817.8906 Q21.4844,817.8906 20.8516,818.2188 Q20.2188,818.5469 19.7266,819.2969 Q19.2344,820.0469 19.2344,821.0781 L19.2344,822.1719 Q19.2344,823.4063 20.125,824.2266 Q21.0156,825.0469 22.6094,825.0469 Q23.5469,825.0469 24.2031,824.7969 Q24.5938,824.6406 25.0156,824.2031 Q25.2813,823.9375 25.4297,823.8594 Q25.5781,823.7813 25.7813,823.7813 Q26.1094,823.7813 26.3672,824.0391 Q26.625,824.2969 26.625,824.6406 Q26.625,824.9844 26.2813,825.3906 Q25.7813,825.9688 24.9844,826.2969 Q23.9063,826.75 22.6094,826.75 Q21.0938,826.75 19.8906,826.125 Q18.9063,825.625 18.2188,824.5547 Q17.5313,823.4844 17.5313,822.2031 L17.5313,821.0469 Q17.5313,819.7188 18.1484,818.5703 Q18.7656,817.4219 19.8594,816.8047 Q20.9531,816.1875 22.1875,816.1875 Q22.9219,816.1875 23.5703,816.3516 Q24.2188,816.5156 24.7656,816.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="138" x="36" y="826.7285">LabeledSubCollection</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="176" y1="837" y2="837"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="98" x="13" y="855.5332">base_collection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="13" y="873.1426">iter_filter</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="13" y="890.752">iter_name</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="13" y="908.3613">n_fields</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="13" y="925.9707">n_iter : int</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="176" y1="933.0469" y2="933.0469"/></g><!--MD5=[dda1d092fd43db7073e19ce53cc21efc]
-link pg_utils.pg_model.base.CollectionPG to pg_utils.pg_model.base.LabeledCollection--><g id="link_pg_utils.pg_model.base.CollectionPG_pg_utils.pg_model.base.LabeledCollection"><path codeLine="45" d="M92,548.06 C92,562.36 92,576.01 92,588.63 " fill="none" id="pg_utils.pg_model.base.CollectionPG-to-pg_utils.pg_model.base.LabeledCollection" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="99,588.83,92,608.83,85,588.83,99,588.83" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[89539475c913562a5df6c0519710c391]
-link pg_utils.pg_model.base.LabeledCollection to pg_utils.pg_model.base.LabeledSubCollection--><g id="link_pg_utils.pg_model.base.LabeledCollection_pg_utils.pg_model.base.LabeledSubCollection"><path codeLine="46" d="M92,727.17 C92,747.26 92,770.13 92,791.66 " fill="none" id="pg_utils.pg_model.base.LabeledCollection-to-pg_utils.pg_model.base.LabeledSubCollection" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="92,804.87,96,798.87,92,792.87,88,798.87,92,804.87" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="90" x="93" y="771.4951">base_collection</text></g><!--MD5=[2f1c6787138e2620ac914ff4f9dd1d1c]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="928px" preserveAspectRatio="none" style="width:809px;height:928px;background:#FFFFFF;" version="1.1" viewBox="0 0 809 928" width="809px" zoomAndPan="magnify"><defs/><g><!--MD5=[f12f832c3ac0603ce526ef171d08d9c6]
+cluster base--><g id="cluster_base"><path d="M8.5,42 L43.5,42 A3.75,3.75 0 0 1 46,44.5 L53,65.6094 L508.5,65.6094 A2.5,2.5 0 0 1 511,68.1094 L511,918.5 A2.5,2.5 0 0 1 508.5,921 L8.5,921 A2.5,2.5 0 0 1 6,918.5 L6,44.5 A2.5,2.5 0 0 1 8.5,42 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="6" x2="53" y1="65.6094" y2="65.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="34" x="10" y="58.5332">base</text></g><!--MD5=[01435ace8273dc3cae88e7f376e4d373]
+cluster core--><g id="cluster_core"><path d="M588,364 L621,364 A3.75,3.75 0 0 1 623.5,366.5 L630.5,387.6094 L758,387.6094 A2.5,2.5 0 0 1 760.5,390.1094 L760.5,625.5 A2.5,2.5 0 0 1 758,628 L588,628 A2.5,2.5 0 0 1 585.5,625.5 L585.5,366.5 A2.5,2.5 0 0 1 588,364 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="585.5" x2="630.5" y1="387.6094" y2="387.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="32" x="589.5" y="380.5332">core</text></g><!--MD5=[2f19789fe3e13b0585352bcfe9304408]
+cluster equations--><g id="cluster_equations"><path d="M576,652 L647,652 A3.75,3.75 0 0 1 649.5,654.5 L656.5,675.6094 L770,675.6094 A2.5,2.5 0 0 1 772.5,678.1094 L772.5,831.5 A2.5,2.5 0 0 1 770,834 L576,834 A2.5,2.5 0 0 1 573.5,831.5 L573.5,654.5 A2.5,2.5 0 0 1 576,652 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="573.5" x2="656.5" y1="675.6094" y2="675.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="70" x="577.5" y="668.5332">equations</text></g><!--MD5=[fac3c2f9431aba507c32104e86dd2eb8]
+cluster expansion--><g id="cluster_expansion"><path d="M546.5,6 L620.5,6 A3.75,3.75 0 0 1 623,8.5 L630,29.6094 L799.5,29.6094 A2.5,2.5 0 0 1 802,32.1094 L802,337.5 A2.5,2.5 0 0 1 799.5,340 L546.5,340 A2.5,2.5 0 0 1 544,337.5 L544,8.5 A2.5,2.5 0 0 1 546.5,6 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="544" x2="630" y1="29.6094" y2="29.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="73" x="548" y="22.5332">expansion</text></g><!--MD5=[a3e0ee7539013ce32dd27469ed9846c2]
+class base.CollectionPG--><g id="elem_base.CollectionPG"><rect codeLine="6" fill="#F1F1F1" height="715.5469" id="base.CollectionPG" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="199" x="296" y="189"/><ellipse cx="333.5" cy="205" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M336.2656,200.875 Q336.4219,200.6563 336.6094,200.5469 Q336.7969,200.4375 337.0156,200.4375 Q337.3906,200.4375 337.625,200.6953 Q337.8594,200.9531 337.8594,201.5625 L337.8594,203.0156 Q337.8594,203.625 337.625,203.8906 Q337.3906,204.1563 337.0156,204.1563 Q336.6719,204.1563 336.4688,203.9531 Q336.2656,203.7656 336.1563,203.25 Q336.1094,202.8906 335.9219,202.7031 Q335.5938,202.3281 334.9844,202.1094 Q334.375,201.8906 333.75,201.8906 Q332.9844,201.8906 332.3516,202.2188 Q331.7188,202.5469 331.2266,203.2969 Q330.7344,204.0469 330.7344,205.0781 L330.7344,206.1719 Q330.7344,207.4063 331.625,208.2266 Q332.5156,209.0469 334.1094,209.0469 Q335.0469,209.0469 335.7031,208.7969 Q336.0938,208.6406 336.5156,208.2031 Q336.7813,207.9375 336.9297,207.8594 Q337.0781,207.7813 337.2813,207.7813 Q337.6094,207.7813 337.8672,208.0391 Q338.125,208.2969 338.125,208.6406 Q338.125,208.9844 337.7813,209.3906 Q337.2813,209.9688 336.4844,210.2969 Q335.4063,210.75 334.1094,210.75 Q332.5938,210.75 331.3906,210.125 Q330.4063,209.625 329.7188,208.5547 Q329.0313,207.4844 329.0313,206.2031 L329.0313,205.0469 Q329.0313,203.7188 329.6484,202.5703 Q330.2656,201.4219 331.3594,200.8047 Q332.4531,200.1875 333.6875,200.1875 Q334.4219,200.1875 335.0703,200.3516 Q335.7188,200.5156 336.2656,200.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="352.5" y="210.7285">base.CollectionPG</text><line style="stroke:#181818;stroke-width:0.5;" x1="297" x2="494" y1="221" y2="221"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="129" x="302" y="239.5332">pg_field_names : list</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19" x="302" y="278.752">Psi</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="297" x2="371.5" y1="255.4141" y2="255.4141"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48" x="371.5" y="260.6426">vorticity</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="419.5" x2="494" y1="255.4141" y2="255.4141"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27" x="302" y="317.9707">Mpp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25" x="302" y="335.5801">Mpz</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="302" y="353.1895">Msp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25" x="302" y="370.7988">Mss</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="24" x="302" y="388.4082">Msz</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="302" y="406.0176">zMpp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="302" y="423.627">zMsp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="302" y="441.2363">zMss</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="297" x2="336.5" y1="294.6328" y2="294.6328"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="118" x="336.5" y="299.8613">magnetic moments</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="454.5" x2="494" y1="294.6328" y2="294.6328"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="302" y="480.4551">Bs_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="302" y="498.0645">Bp_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="302" y="515.6738">Bz_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="302" y="533.2832">dBp_dz_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="302" y="550.8926">dBs_dz_e</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="297" x2="348.5" y1="457.1172" y2="457.1172"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="94" x="348.5" y="462.3457">B @ equatorial</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="442.5" x2="494" y1="457.1172" y2="457.1172"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30" x="302" y="590.1113">Br_b</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="302" y="607.7207">Bs_p</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="302" y="625.3301">Bp_p</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="302" y="642.9395">Bz_p</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="35" x="302" y="660.5488">Bs_m</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36" x="302" y="678.1582">Bp_m</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="34" x="302" y="695.7676">Bz_m</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="297" x2="350" y1="566.7734" y2="566.7734"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91" x="350" y="572.002">B @ boundary</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="441" x2="494" y1="566.7734" y2="566.7734"/><line style="stroke:#181818;stroke-width:1.0;" x1="297" x2="494" y1="702.8438" y2="702.8438"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="58" x="302" y="721.377">vorticity()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87" x="302" y="738.9863">subset_mag()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="334" y="756.5957">-&gt; LabeledSubCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="302" y="774.2051">subset_moments()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="334" y="791.8145">-&gt; LabeledSubCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126" x="302" y="809.4238">subset_B_equator()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="334" y="827.0332">-&gt; LabeledSubCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="302" y="844.6426">subset_B_bound()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="334" y="862.252">-&gt; LabeledSubCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142" x="302" y="879.8613">subset_B_bound_cyl()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="334" y="897.4707">-&gt; LabeledSubCollection</text></g><g id="elem_base.GMN4"><path d="M298.5,78.5 L298.5,153.9063 A0,0 0 0 0 298.5,153.9063 L391.5,153.9063 L395.5,188.82 L399.5,153.9063 L492.5,153.9063 A0,0 0 0 0 492.5,153.9063 L492.5,88.5 L482.5,78.5 L298.5,78.5 A0,0 0 0 0 298.5,78.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M482.5,78.5 L482.5,88.5 L492.5,88.5 L482.5,78.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="163" x="304.5" y="96.9951">Base class for collections of</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="131" x="304.5" y="113.3467">PG variable / equation.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="173" x="304.5" y="129.6982">Indexable (int or str) + iterable</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="166" x="304.5" y="146.0498">can extract arbitrary subsets</text></g><!--MD5=[3f81482eb680c194524adb438dbe6815]
+class base.LabeledCollection--><g id="elem_base.LabeledCollection"><rect codeLine="43" fill="#F1F1F1" height="236.0938" id="base.LabeledCollection" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="213" x="22" y="362"/><ellipse cx="51.85" cy="378" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M54.6156,373.875 Q54.7719,373.6563 54.9594,373.5469 Q55.1469,373.4375 55.3656,373.4375 Q55.7406,373.4375 55.975,373.6953 Q56.2094,373.9531 56.2094,374.5625 L56.2094,376.0156 Q56.2094,376.625 55.975,376.8906 Q55.7406,377.1563 55.3656,377.1563 Q55.0219,377.1563 54.8188,376.9531 Q54.6156,376.7656 54.5063,376.25 Q54.4594,375.8906 54.2719,375.7031 Q53.9438,375.3281 53.3344,375.1094 Q52.725,374.8906 52.1,374.8906 Q51.3344,374.8906 50.7016,375.2188 Q50.0688,375.5469 49.5766,376.2969 Q49.0844,377.0469 49.0844,378.0781 L49.0844,379.1719 Q49.0844,380.4063 49.975,381.2266 Q50.8656,382.0469 52.4594,382.0469 Q53.3969,382.0469 54.0531,381.7969 Q54.4438,381.6406 54.8656,381.2031 Q55.1313,380.9375 55.2797,380.8594 Q55.4281,380.7813 55.6313,380.7813 Q55.9594,380.7813 56.2172,381.0391 Q56.475,381.2969 56.475,381.6406 Q56.475,381.9844 56.1313,382.3906 Q55.6313,382.9688 54.8344,383.2969 Q53.7563,383.75 52.4594,383.75 Q50.9438,383.75 49.7406,383.125 Q48.7563,382.625 48.0688,381.5547 Q47.3813,380.4844 47.3813,379.2031 L47.3813,378.0469 Q47.3813,376.7188 47.9984,375.5703 Q48.6156,374.4219 49.7094,373.8047 Q50.8031,373.1875 52.0375,373.1875 Q52.7719,373.1875 53.4203,373.3516 Q54.0688,373.5156 54.6156,373.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148" x="69.15" y="383.7285">base.LabeledCollection</text><line style="stroke:#181818;stroke-width:0.5;" x1="23" x2="234" y1="394" y2="394"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="123" x="28" y="412.5332">Indexable + Iterable</text><line style="stroke:#181818;stroke-width:1.0;" x1="23" x2="234" y1="419.6094" y2="419.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="28" y="438.1426">n_fields</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="28" y="455.752">n_iter : int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="28" y="494.9707">iter_filter</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="28" y="512.5801">iter_name</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="23" x2="102" y1="471.6328" y2="471.6328"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="102" y="476.8613">property</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="155" x2="234" y1="471.6328" y2="471.6328"/><line style="stroke:#181818;stroke-width:1.0;" x1="23" x2="234" y1="519.6563" y2="519.6563"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="201" x="28" y="538.1895">__getitem__(key: [int, str, slice])</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="151" x="28" y="555.7988">__setitem__(key, value)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="28" y="573.4082">__iter__()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="28" y="591.0176">__next__()</text></g><!--MD5=[6cb84c92a424e6d29a22d3545f22fded]
+class base.LabeledSubCollection--><g id="elem_base.LabeledSubCollection"><rect codeLine="58" fill="#F1F1F1" height="253.7031" id="base.LabeledSubCollection" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="213" x="22" y="651"/><ellipse cx="40.6" cy="667" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M43.3656,662.875 Q43.5219,662.6563 43.7094,662.5469 Q43.8969,662.4375 44.1156,662.4375 Q44.4906,662.4375 44.725,662.6953 Q44.9594,662.9531 44.9594,663.5625 L44.9594,665.0156 Q44.9594,665.625 44.725,665.8906 Q44.4906,666.1563 44.1156,666.1563 Q43.7719,666.1563 43.5688,665.9531 Q43.3656,665.7656 43.2563,665.25 Q43.2094,664.8906 43.0219,664.7031 Q42.6938,664.3281 42.0844,664.1094 Q41.475,663.8906 40.85,663.8906 Q40.0844,663.8906 39.4516,664.2188 Q38.8188,664.5469 38.3266,665.2969 Q37.8344,666.0469 37.8344,667.0781 L37.8344,668.1719 Q37.8344,669.4063 38.725,670.2266 Q39.6156,671.0469 41.2094,671.0469 Q42.1469,671.0469 42.8031,670.7969 Q43.1938,670.6406 43.6156,670.2031 Q43.8813,669.9375 44.0297,669.8594 Q44.1781,669.7813 44.3813,669.7813 Q44.7094,669.7813 44.9672,670.0391 Q45.225,670.2969 45.225,670.6406 Q45.225,670.9844 44.8813,671.3906 Q44.3813,671.9688 43.5844,672.2969 Q42.5063,672.75 41.2094,672.75 Q39.6938,672.75 38.4906,672.125 Q37.5063,671.625 36.8188,670.5547 Q36.1313,669.4844 36.1313,668.2031 L36.1313,667.0469 Q36.1313,665.7188 36.7484,664.5703 Q37.3656,663.4219 38.4594,662.8047 Q39.5531,662.1875 40.7875,662.1875 Q41.5219,662.1875 42.1703,662.3516 Q42.8188,662.5156 43.3656,662.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="173" x="55.4" y="672.7285">base.LabeledSubCollection</text><line style="stroke:#181818;stroke-width:0.5;" x1="23" x2="234" y1="683" y2="683"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="123" x="28" y="701.5332">Indexable + Iterable</text><line style="stroke:#181818;stroke-width:1.0;" x1="23" x2="234" y1="708.6094" y2="708.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="98" x="28" y="727.1426">base_collection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="28" y="744.752">n_fields</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="28" y="762.3613">n_iter : int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="28" y="801.5801">iter_filter</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="28" y="819.1895">iter_name</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="23" x2="102" y1="778.2422" y2="778.2422"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="102" y="783.4707">property</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="155" x2="234" y1="778.2422" y2="778.2422"/><line style="stroke:#181818;stroke-width:1.0;" x1="23" x2="234" y1="826.2656" y2="826.2656"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="201" x="28" y="844.7988">__getitem__(key: [int, str, slice])</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="151" x="28" y="862.4082">__setitem__(key, value)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="28" y="880.0176">__iter__()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="28" y="897.627">__next__()</text></g><g id="elem_core.pgvar"><rect fill="#F1F1F1" height="47.2188" style="stroke:#181818;stroke-width:0.5;" width="129" x="608.5" y="400.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="639" y="417.0332">core.pgvar</text><line style="stroke:#181818;stroke-width:0.5;" x1="609.5" x2="736.5" y1="422.1094" y2="422.1094"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="614.5" y="440.6426">Total PG variables</text></g><g id="elem_core.pgvar_bg"><rect fill="#F1F1F1" height="47.2188" style="stroke:#181818;stroke-width:0.5;" width="141" x="602.5" y="482.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="627" y="499.0332">core.pgvar_bg</text><line style="stroke:#181818;stroke-width:0.5;" x1="603.5" x2="742.5" y1="504.1094" y2="504.1094"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="129" x="608.5" y="522.6426">PG background field</text></g><g id="elem_core.pgvar_ptb"><rect fill="#F1F1F1" height="47.2188" style="stroke:#181818;stroke-width:0.5;" width="143" x="601.5" y="564.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="625" y="581.0332">core.pgvar_ptb</text><line style="stroke:#181818;stroke-width:0.5;" x1="602.5" x2="743.5" y1="586.1094" y2="586.1094"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131" x="607.5" y="604.6426">PG perturbation field</text></g><g id="elem_equations.eqs_pg"><rect fill="#F1F1F1" height="47.2188" style="stroke:#181818;stroke-width:0.5;" width="127" x="609.5" y="688.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="113" x="616.5" y="705.0332">equations.eqs_pg</text><line style="stroke:#181818;stroke-width:0.5;" x1="610.5" x2="735.5" y1="710.1094" y2="710.1094"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="615.5" y="728.6426">PG equations</text></g><g id="elem_equations.eqs_pg_lin"><rect fill="#F1F1F1" height="47.2188" style="stroke:#181818;stroke-width:0.5;" width="167" x="589.5" y="770.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="135" x="605.5" y="787.0332">equations.eqs_pg_lin</text><line style="stroke:#181818;stroke-width:0.5;" x1="590.5" x2="755.5" y1="792.1094" y2="792.1094"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="595.5" y="810.6426">Linearized PG equations</text></g><!--MD5=[9aebd50a8a3984a4d98f6b275b6d00c9]
+class expansion.RadialExpansion--><g id="elem_expansion.RadialExpansion"><rect codeLine="97" fill="#FFC0CB" height="127.2422" id="expansion.RadialExpansion" rx="2.5" ry="2.5" style="stroke:#FF0000;stroke-width:2.0;" width="226" x="560" y="196.5"/><ellipse cx="584.45" cy="212.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M587.2156,208.375 Q587.3719,208.1563 587.5594,208.0469 Q587.7469,207.9375 587.9656,207.9375 Q588.3406,207.9375 588.575,208.1953 Q588.8094,208.4531 588.8094,209.0625 L588.8094,210.5156 Q588.8094,211.125 588.575,211.3906 Q588.3406,211.6563 587.9656,211.6563 Q587.6219,211.6563 587.4188,211.4531 Q587.2156,211.2656 587.1063,210.75 Q587.0594,210.3906 586.8719,210.2031 Q586.5438,209.8281 585.9344,209.6094 Q585.325,209.3906 584.7,209.3906 Q583.9344,209.3906 583.3016,209.7188 Q582.6688,210.0469 582.1766,210.7969 Q581.6844,211.5469 581.6844,212.5781 L581.6844,213.6719 Q581.6844,214.9063 582.575,215.7266 Q583.4656,216.5469 585.0594,216.5469 Q585.9969,216.5469 586.6531,216.2969 Q587.0438,216.1406 587.4656,215.7031 Q587.7313,215.4375 587.8797,215.3594 Q588.0281,215.2813 588.2313,215.2813 Q588.5594,215.2813 588.8172,215.5391 Q589.075,215.7969 589.075,216.1406 Q589.075,216.4844 588.7313,216.8906 Q588.2313,217.4688 587.4344,217.7969 Q586.3563,218.25 585.0594,218.25 Q583.5438,218.25 582.3406,217.625 Q581.3563,217.125 580.6688,216.0547 Q579.9813,214.9844 579.9813,213.7031 L579.9813,212.5469 Q579.9813,211.2188 580.5984,210.0703 Q581.2156,208.9219 582.3094,208.3047 Q583.4031,207.6875 584.6375,207.6875 Q585.3719,207.6875 586.0203,207.8516 Q586.6688,208.0156 587.2156,208.375 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="173" x="600.55" y="218.2285">expansion.RadialExpansion</text><line style="stroke:#FF0000;stroke-width:0.5;" x1="561" x2="785" y1="228.5" y2="228.5"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="214" x="566" y="247.0332">Radial expansion for PG variables</text><line style="stroke:#FF0000;stroke-width:1.0;" x1="561" x2="785" y1="254.1094" y2="254.1094"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="180" x="566" y="272.6426">coeffs: Array(sympy.Symbol)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144" x="566" y="290.252">rad_basis: RadialBasis</text><line style="stroke:#FF0000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="561" x2="593.5" y1="306.1328" y2="306.1328"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="159" x="593.5" y="311.3613">Explicit forms of PG fields</text><line style="stroke:#FF0000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="752.5" x2="785" y1="306.1328" y2="306.1328"/></g><!--MD5=[4b06f58e986b56acd4650a300d1c1860]
+class expansion.RadialBasis--><g id="elem_expansion.RadialBasis"><rect codeLine="105" fill="#FFC0CB" height="100.8281" id="expansion.RadialBasis" rx="2.5" ry="2.5" style="stroke:#FF0000;stroke-width:2.0;" width="206" x="570" y="42.5"/><ellipse cx="599.4" cy="58.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M602.1656,54.375 Q602.3219,54.1563 602.5094,54.0469 Q602.6969,53.9375 602.9156,53.9375 Q603.2906,53.9375 603.525,54.1953 Q603.7594,54.4531 603.7594,55.0625 L603.7594,56.5156 Q603.7594,57.125 603.525,57.3906 Q603.2906,57.6563 602.9156,57.6563 Q602.5719,57.6563 602.3688,57.4531 Q602.1656,57.2656 602.0563,56.75 Q602.0094,56.3906 601.8219,56.2031 Q601.4938,55.8281 600.8844,55.6094 Q600.275,55.3906 599.65,55.3906 Q598.8844,55.3906 598.2516,55.7188 Q597.6188,56.0469 597.1266,56.7969 Q596.6344,57.5469 596.6344,58.5781 L596.6344,59.6719 Q596.6344,60.9063 597.525,61.7266 Q598.4156,62.5469 600.0094,62.5469 Q600.9469,62.5469 601.6031,62.2969 Q601.9938,62.1406 602.4156,61.7031 Q602.6813,61.4375 602.8297,61.3594 Q602.9781,61.2813 603.1813,61.2813 Q603.5094,61.2813 603.7672,61.5391 Q604.025,61.7969 604.025,62.1406 Q604.025,62.4844 603.6813,62.8906 Q603.1813,63.4688 602.3844,63.7969 Q601.3063,64.25 600.0094,64.25 Q598.4938,64.25 597.2906,63.625 Q596.3063,63.125 595.6188,62.0547 Q594.9313,60.9844 594.9313,59.7031 L594.9313,58.5469 Q594.9313,57.2188 595.5484,56.0703 Q596.1656,54.9219 597.2594,54.3047 Q598.3531,53.6875 599.5875,53.6875 Q600.3219,53.6875 600.9703,53.8516 Q601.6188,54.0156 602.1656,54.375 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142" x="616.6" y="64.2285">expansion.RadialBasis</text><line style="stroke:#FF0000;stroke-width:0.5;" x1="571" x2="775" y1="74.5" y2="74.5"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="194" x="576" y="93.0332">Radial basis used for PG fields</text><line style="stroke:#FF0000;stroke-width:1.0;" x1="571" x2="775" y1="100.1094" y2="100.1094"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="180" x="576" y="118.6426">coeffs: Array(sympy.Symbol)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="162" x="576" y="136.252">bases: Array(sympy.Expr)</text></g><!--MD5=[075d4200c719f1df87f8c2fd061f4e89]
+reverse link base.LabeledCollection to base.CollectionPG--><g id="link_base.LabeledCollection_base.CollectionPG"><path codeLine="113" d="M255.16,511.77 C268.76,515.21 282.46,518.67 295.67,522.01 " fill="none" id="base.LabeledCollection-backto-base.CollectionPG" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="253.05,518.46,235.38,506.77,256.48,504.88,253.05,518.46" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[7344e3120c43df407f29532298891650]
+reverse link base.LabeledSubCollection to base.LabeledCollection--><g id="link_base.LabeledSubCollection_base.LabeledCollection"><path codeLine="114" d="M128.5,637.65 C128.5,624.49 128.5,611.24 128.5,598.32 " fill="none" id="base.LabeledSubCollection-backto-base.LabeledCollection" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="128.5,650.76,132.5,644.76,128.5,638.76,124.5,644.76,128.5,650.76" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="90" x="71.5" y="629.9951">base_collection</text></g><!--MD5=[8294c30667880f3fc5d75e0e2503bd61]
+reverse link base.CollectionPG to core.pgvar--><g id="link_base.CollectionPG_core.pgvar"><path codeLine="115" d="M499.62,482.75 C511.67,476.34 523.96,470.26 536,465 C558.94,454.97 585.06,446.45 608.25,439.82 " fill="none" id="base.CollectionPG-backto-core.pgvar" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="495.19,485.13,505.0114,484.3945,499.5946,482.7638,501.2254,477.347,495.19,485.13" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[a6679953865de74c0bf6582d04643752]
+reverse link base.CollectionPG to core.pgvar_bg--><g id="link_base.CollectionPG_core.pgvar_bg"><path codeLine="116" d="M500.2,531.57 C534.36,526.48 571.51,520.96 602.49,516.34 " fill="none" id="base.CollectionPG-backto-core.pgvar_bg" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="495.18,532.31,504.6745,534.928,500.1245,531.5669,503.4856,527.0168,495.18,532.31" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[e29224ea5f60e97699db1c301a58108a]
+reverse link base.CollectionPG to core.pgvar_ptb--><g id="link_base.CollectionPG_core.pgvar_ptb"><path codeLine="117" d="M500.14,562.42 C533.85,567.44 570.47,572.89 601.21,577.47 " fill="none" id="base.CollectionPG-backto-core.pgvar_ptb" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="495.18,561.69,503.4856,566.9832,500.1245,562.4331,504.6745,559.072,495.18,561.69" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[5b418545630f431f1ff42fcf4e4049b7]
+reverse link base.CollectionPG to equations.eqs_pg--><g id="link_base.CollectionPG_equations.eqs_pg"><path codeLine="118" d="M499.65,608.78 C545.95,636.51 597.83,667.58 632.46,688.32 " fill="none" id="base.CollectionPG-backto-equations.eqs_pg" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="495.18,606.1,500.8395,614.1604,499.4675,608.6725,504.9554,607.3005,495.18,606.1" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[070aae0209d793d531026f60cabca3a3]
+reverse link base.CollectionPG to equations.eqs_pg_lin--><g id="link_base.CollectionPG_equations.eqs_pg_lin"><path codeLine="119" d="M498.87,719.51 C510.37,731.86 522.76,743.26 536,753 C551.69,764.54 570.65,772.87 589.37,778.86 " fill="none" id="base.CollectionPG-backto-equations.eqs_pg_lin" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="495.33,715.65,498.4531,724.9906,498.7047,719.3393,504.356,719.591,495.33,715.65" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[797151bd50f07ce4bf0aff1e1dc834c9]
+reverse link base.CollectionPG to expansion.RadialExpansion--><g id="link_base.CollectionPG_expansion.RadialExpansion"><path codeLine="120" d="M508.39,413.47 C517.58,403.36 526.86,393.43 536,384 C555.68,363.69 578,342.61 598.8,323.71 " fill="none" id="base.CollectionPG-backto-expansion.RadialExpansion" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="513.58,418.17,495.01,428.38,503.16,408.82,513.58,418.17" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[5af74cb40e6a20dc0460e593378f611f]
+link expansion.RadialExpansion to expansion.RadialBasis--><g id="link_expansion.RadialExpansion_expansion.RadialBasis"><path codeLine="121" d="M673,196.39 C673,183.46 673,169.85 673,156.91 " fill="none" id="expansion.RadialExpansion-to-expansion.RadialBasis" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="673,143.72,669,149.72,673,155.72,677,149.72,673,143.72" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="56" x="633" y="175.4951">rad_basis</text></g><!--MD5=[8bc6de8671cd96b4bce91f55740ea257]
 @startuml classes_pg_model
-set namespaceSeparator none
-class "CollectionPG" as pg_utils.pg_model.base.CollectionPG {
-  Bp_e
-  Bp_m
-  Bp_p
-  Br_b
-  Bs_e
-  Bs_m
-  Bs_p
-  Bz_e
-  Bz_m
-  Bz_p
-  Mpp
-  Mpz
-  Msp
-  Mss
-  Msz
-  Psi
-  dBp_dz_e
-  dBs_dz_e
-  pg_field_names : list
-  zMpp
-  zMsp
-  zMss
-  subset_B_bound()
-  subset_B_bound_cyl()
-  subset_B_equator()
-  subset_mag()
-  subset_moments()
-  vorticity()
+set namespaceSeparator .
+!define COMMENT(x) <color:grey>x</color>
+left to right direction
+
+namespace base {
+  class "base.CollectionPG" as CollectionPG {
+    {static} pg_field_names : list
+    .. vorticity ..
+    Psi
+    .. magnetic moments ..
+    Mpp
+    Mpz
+    Msp
+    Mss
+    Msz
+    zMpp
+    zMsp
+    zMss
+    .. B @ equatorial ..
+    Bs_e
+    Bp_e
+    Bz_e
+    dBp_dz_e
+    dBs_dz_e
+    .. B @ boundary ..
+    Br_b
+    Bs_p
+    Bp_p
+    Bz_p
+    Bs_m
+    Bp_m
+    Bz_m
+    - -
+    vorticity()
+    subset_mag() \n\t-> LabeledSubCollection
+    subset_moments() \n\t-> LabeledSubCollection
+    subset_B_equator() \n\t-> LabeledSubCollection
+    subset_B_bound() \n\t-> LabeledSubCollection
+    subset_B_bound_cyl() \n\t-> LabeledSubCollection
+  }
+  note bottom of CollectionPG: Base class for collections of \nPG variable / equation.\nIndexable (int or str) + iterable\ncan extract arbitrary subsets
+
+  class "base.LabeledCollection" as LabeledCollection {
+    COMMENT(Indexable + Iterable)
+    - -
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    - -
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+  }
+  ' note bottom of pg_utils.pg_model.base.LabeledCollection: Indexable + iterable
+  class "base.LabeledSubCollection" as LabeledSubCollection {
+    COMMENT(Indexable + Iterable)
+    - -
+    base_collection
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    - -
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+  }
 }
-class "LabeledCollection" as pg_utils.pg_model.base.LabeledCollection {
-  iter_filter
-  iter_name
-  n_fields
-  n_iter : int
+
+namespace core {
+  object "core.pgvar" as core.pgvar {
+    COMMENT(Total PG variables)
+  }
+  object "core.pgvar_bg" as core.pgvar_bg {
+    COMMENT(PG background field)
+  }
+  object "core.pgvar_ptb" as core.pgvar_ptb {
+    COMMENT(PG perturbation field)
+  }
 }
-class "LabeledSubCollection" as pg_utils.pg_model.base.LabeledSubCollection {
-  base_collection
-  iter_filter
-  iter_name
-  n_fields
-  n_iter : int
+
+namespace equations {
+  object "equations.eqs_pg" as equations.eqs_pg {
+    COMMENT(PG equations)
+  }
+  object "equations.eqs_pg_lin" as equations.eqs_pg_lin {
+    COMMENT(Linearized PG equations)
+  }
 }
-pg_utils.pg_model.base.CollectionPG - -|> pg_utils.pg_model.base.LabeledCollection
-pg_utils.pg_model.base.LabeledCollection - -o pg_utils.pg_model.base.LabeledSubCollection : base_collection
-@enduml
+
+namespace expansion {
+  class "expansion.RadialExpansion" as RadialExpansion #pink ##[bold]red {
+    COMMENT(Radial expansion for PG variables)
+    - -
+    coeffs: Array(sympy.Symbol)
+    ' azm_basis: FourierBasis
+    rad_basis: RadialBasis
+    .. Explicit forms of PG fields ..
+  }
+  class "expansion.RadialBasis" as RadialBasis #pink ##[bold]red {
+    COMMENT(Radial basis used for PG fields)
+    - -
+    coeffs: Array(sympy.Symbol)
+    bases: Array(sympy.Expr)
+  }
+}
+
+base.LabeledCollection <|- - base.CollectionPG
+base.LabeledCollection -left-o base.LabeledSubCollection : base_collection
+base.CollectionPG <- - core.pgvar
+base.CollectionPG <- - core.pgvar_bg
+base.CollectionPG <- - core.pgvar_ptb
+base.CollectionPG <- - equations.eqs_pg
+base.CollectionPG <- - equations.eqs_pg_lin
+base.CollectionPG <|- - expansion.RadialExpansion
+expansion.RadialExpansion -right-o expansion.RadialBasis : rad_basis
+
+@end[bold]uml
+
+@startuml classes_pg_model
+set namespaceSeparator .
+left to right direction
+
+namespace base {
+  class "base.CollectionPG" as CollectionPG {
+    {static} pg_field_names : list
+    .. vorticity ..
+    Psi
+    .. magnetic moments ..
+    Mpp
+    Mpz
+    Msp
+    Mss
+    Msz
+    zMpp
+    zMsp
+    zMss
+    .. B @ equatorial ..
+    Bs_e
+    Bp_e
+    Bz_e
+    dBp_dz_e
+    dBs_dz_e
+    .. B @ boundary ..
+    Br_b
+    Bs_p
+    Bp_p
+    Bz_p
+    Bs_m
+    Bp_m
+    Bz_m
+    - -
+    vorticity()
+    subset_mag() \n\t-> LabeledSubCollection
+    subset_moments() \n\t-> LabeledSubCollection
+    subset_B_equator() \n\t-> LabeledSubCollection
+    subset_B_bound() \n\t-> LabeledSubCollection
+    subset_B_bound_cyl() \n\t-> LabeledSubCollection
+  }
+  note bottom of CollectionPG: Base class for collections of \nPG variable / equation.\nIndexable (int or str) + iterable\ncan extract arbitrary subsets
+
+  class "base.LabeledCollection" as LabeledCollection {
+    <color:grey>Indexable + Iterable</color>
+    - -
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    - -
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+  }
+  class "base.LabeledSubCollection" as LabeledSubCollection {
+    <color:grey>Indexable + Iterable</color>
+    - -
+    base_collection
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    - -
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+  }
+}
+
+namespace core {
+  object "core.pgvar" as core.pgvar {
+    <color:grey>Total PG variables</color>
+  }
+  object "core.pgvar_bg" as core.pgvar_bg {
+    <color:grey>PG background field</color>
+  }
+  object "core.pgvar_ptb" as core.pgvar_ptb {
+    <color:grey>PG perturbation field</color>
+  }
+}
+
+namespace equations {
+  object "equations.eqs_pg" as equations.eqs_pg {
+    <color:grey>PG equations</color>
+  }
+  object "equations.eqs_pg_lin" as equations.eqs_pg_lin {
+    <color:grey>Linearized PG equations</color>
+  }
+}
+
+namespace expansion {
+  class "expansion.RadialExpansion" as RadialExpansion #pink ##[bold]red {
+    <color:grey>Radial expansion for PG variables</color>
+    - -
+    coeffs: Array(sympy.Symbol)
+    rad_basis: RadialBasis
+    .. Explicit forms of PG fields ..
+  }
+  class "expansion.RadialBasis" as RadialBasis #pink ##[bold]red {
+    <color:grey>Radial basis used for PG fields</color>
+    - -
+    coeffs: Array(sympy.Symbol)
+    bases: Array(sympy.Expr)
+  }
+}
+
+base.LabeledCollection <|- - base.CollectionPG
+base.LabeledCollection -left-o base.LabeledSubCollection : base_collection
+base.CollectionPG <- - core.pgvar
+base.CollectionPG <- - core.pgvar_bg
+base.CollectionPG <- - core.pgvar_ptb
+base.CollectionPG <- - equations.eqs_pg
+base.CollectionPG <- - equations.eqs_pg_lin
+base.CollectionPG <|- - expansion.RadialExpansion
+expansion.RadialExpansion -right-o expansion.RadialBasis : rad_basis
+
+@end[bold]uml
 
 PlantUML version 1.2022.7(Mon Aug 22 19:01:30 CEST 2022)
 (GPL source distribution)

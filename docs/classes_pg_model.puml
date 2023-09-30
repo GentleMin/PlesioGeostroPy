@@ -1,48 +1,124 @@
 @startuml classes_pg_model
-set namespaceSeparator none
-class "CollectionPG" as pg_utils.pg_model.base.CollectionPG {
-  Bp_e
-  Bp_m
-  Bp_p
-  Br_b
-  Bs_e
-  Bs_m
-  Bs_p
-  Bz_e
-  Bz_m
-  Bz_p
-  Mpp
-  Mpz
-  Msp
-  Mss
-  Msz
-  Psi
-  dBp_dz_e
-  dBs_dz_e
-  pg_field_names : list
-  zMpp
-  zMsp
-  zMss
-  subset_B_bound()
-  subset_B_bound_cyl()
-  subset_B_equator()
-  subset_mag()
-  subset_moments()
-  vorticity()
+set namespaceSeparator .
+!define COMMENT(x) <color:grey>x</color>
+left to right direction
+
+namespace base {
+  class "base.CollectionPG" as CollectionPG {
+    {static} pg_field_names : list
+    .. vorticity ..
+    Psi
+    .. magnetic moments ..
+    Mpp
+    Mpz
+    Msp
+    Mss
+    Msz
+    zMpp
+    zMsp
+    zMss
+    .. B @ equatorial ..
+    Bs_e
+    Bp_e
+    Bz_e
+    dBp_dz_e
+    dBs_dz_e
+    .. B @ boundary ..
+    Br_b
+    Bs_p
+    Bp_p
+    Bz_p
+    Bs_m
+    Bp_m
+    Bz_m
+    --
+    vorticity()
+    subset_mag() \n\t-> LabeledSubCollection
+    subset_moments() \n\t-> LabeledSubCollection
+    subset_B_equator() \n\t-> LabeledSubCollection
+    subset_B_bound() \n\t-> LabeledSubCollection
+    subset_B_bound_cyl() \n\t-> LabeledSubCollection
+  }
+  note bottom of CollectionPG: Base class for collections of \nPG variable / equation.\nIndexable (int or str) + iterable\ncan extract arbitrary subsets
+
+  class "base.LabeledCollection" as LabeledCollection {
+    COMMENT(Indexable + Iterable)
+    --
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    --
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+  }
+  ' note bottom of pg_utils.pg_model.base.LabeledCollection: Indexable + iterable
+  class "base.LabeledSubCollection" as LabeledSubCollection {
+    COMMENT(Indexable + Iterable)
+    --
+    base_collection
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    --
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+  }
 }
-class "LabeledCollection" as pg_utils.pg_model.base.LabeledCollection {
-  iter_filter
-  iter_name
-  n_fields
-  n_iter : int
+
+namespace core {
+  object "core.pgvar" as core.pgvar {
+    COMMENT(Total PG variables)
+  }
+  object "core.pgvar_bg" as core.pgvar_bg {
+    COMMENT(PG background field)
+  }
+  object "core.pgvar_ptb" as core.pgvar_ptb {
+    COMMENT(PG perturbation field)
+  }
 }
-class "LabeledSubCollection" as pg_utils.pg_model.base.LabeledSubCollection {
-  base_collection
-  iter_filter
-  iter_name
-  n_fields
-  n_iter : int
+
+namespace equations {
+  object "equations.eqs_pg" as equations.eqs_pg {
+    COMMENT(PG equations)
+  }
+  object "equations.eqs_pg_lin" as equations.eqs_pg_lin {
+    COMMENT(Linearized PG equations)
+  }
 }
-pg_utils.pg_model.base.CollectionPG --|> pg_utils.pg_model.base.LabeledCollection
-pg_utils.pg_model.base.LabeledCollection --o pg_utils.pg_model.base.LabeledSubCollection : base_collection
-@enduml
+
+namespace expansion {
+  class "expansion.RadialExpansion" as RadialExpansion #pink ##[bold]red {
+    COMMENT(Radial expansion for PG variables)
+    --
+    coeffs: Array(sympy.Symbol)
+    ' azm_basis: FourierBasis
+    rad_basis: RadialBasis
+    .. Explicit forms of PG fields ..
+  }
+  class "expansion.RadialBasis" as RadialBasis #pink ##[bold]red {
+    COMMENT(Radial basis used for PG fields)
+    --
+    coeffs: Array(sympy.Symbol)
+    bases: Array(sympy.Expr)
+  }
+}
+
+base.LabeledCollection <|-- base.CollectionPG
+base.LabeledCollection -left-o base.LabeledSubCollection : base_collection
+base.CollectionPG <-- core.pgvar
+base.CollectionPG <-- core.pgvar_bg
+base.CollectionPG <-- core.pgvar_ptb
+base.CollectionPG <-- equations.eqs_pg
+base.CollectionPG <-- equations.eqs_pg_lin
+base.CollectionPG <|-- expansion.RadialExpansion
+expansion.RadialExpansion -right-o expansion.RadialBasis : rad_basis
+
+@end[bold]uml
