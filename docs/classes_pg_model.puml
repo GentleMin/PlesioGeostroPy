@@ -54,6 +54,7 @@ namespace base {
     __setitem__(key, value)
     __iter__()
     __next__()
+    <color:#red>apply(fun: Callable)
   }
   ' note bottom of pg_utils.pg_model.base.LabeledCollection: Indexable + iterable
   class "base.LabeledSubCollection" as LabeledSubCollection {
