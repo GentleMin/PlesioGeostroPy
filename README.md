@@ -20,3 +20,11 @@ Systems fulfilling these conditions can be exactly described using the PG model.
 
 *Future work*
 
+## Current code implementation
+
+Module vector calculus in 3D `pg_utils.sympy_supp`
+![uml_v3d](./out/docs/classes_vector_calculus/classes_vector_calculus.svg)
+
+Module PG model `pg_utils.pg_model`
+![uml_pg_model](./out/docs/classes_pg_model/classes_pg_model.svg)
+

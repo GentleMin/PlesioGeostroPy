@@ -1,0 +1,7 @@
+@startuml packages_vector_calculus
+set namespaceSeparator none
+package "pg_utils.sympy_supp" as pg_utils.sympy_supp {
+}
+package "pg_utils.sympy_supp.vector_calculus_3d" as pg_utils.sympy_supp.vector_calculus_3d {
+}
+@enduml
