@@ -27,13 +27,6 @@ sph = v3d.SphericalCoordinates(r, theta, p)
 H = sympy.Function("H")(s)
 H_s = sympy.sqrt(1 - s**2)
 
-# Integers
-n, m = sympy.symbols("n, m", integer=True)
-
-# Angular frequency
-omega = sympy.Symbol(r"\omega")
-
-
 
 """PG-independent physical fields"""
 
