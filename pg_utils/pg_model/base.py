@@ -5,7 +5,7 @@ Jingtao Min @ ETH-EPM, 09.2023
 """
 
 
-from typing import Any
+from typing import Any, Callable, Union
 
 
 class LabeledCollection:
@@ -177,6 +177,34 @@ class LabeledCollection:
     
     def _extract_subset(self, sub_slice):
         return LabeledSubCollection(self, sub_slice)
+    
+    def apply(self, fun: Callable[..., Any], 
+        inplace: bool = False, metadata: bool = False) -> "LabeledCollection":
+        """Apply a function to all collection items
+        
+        :param fun: Callable, determines how the collection entries
+            are processed. The signature of the function should take
+            the form `fun(type(self[i]))` when metadata is False, and
+            the form `fun(str, type(self[i]))` when metadata is True
+        :param inplace: bool, whether to write changes in situ.
+        :param metadata: bool, whether to pass metadata to the function
+        
+        :returns: LabeledCollection object. If inplace, then the 
+            current object itself is returned.
+        """
+        if inplace:
+            apply_to = self
+        else:
+            apply_to = self._new_obj()
+        for i_field in range(self.n_fields):
+            if metadata:
+                apply_to[i_field] = fun(self._field_names[i_field], self[i_field])
+            else:
+                apply_to[i_field] = fun(self[i_field])
+        return apply_to
+    
+    def _new_obj(self):
+        return LabeledCollection(self._field_names)
 
 
 
@@ -199,6 +227,7 @@ class LabeledSubCollection:
         tmp_idx = list(range(self.base_collection.n_fields))
         self._sub_names = self.base_collection._field_names[sub_slice]
         self._sub_idx = tmp_idx[sub_slice]
+        self.n_fields = len(self._sub_names)
         # Iteration modes
         self._iter_name = False
         self._iter_filter = False
@@ -369,20 +398,22 @@ class CollectionPG(LabeledCollection):
         """
         return self._extract_subset(slice(15, None))
     
-    # def __init__(self, 
-    #     Psi=None, 
-    #     Mss=None, Mpp=None, Msp=None, Msz=None, Mpz=None, zMss=None, zMpp=None, zMsp=None,
-    #     Bs_e=None, Bp_e=None, Bz_e=None, dBs_dz_e=None, dBp_dz_e=None,
-    #     Br=None, Bs_p=None, Bp_p=None, Bz_p=None, Bs_m=None, Bp_m=None, Bz_m=None) -> None:
-    #     """Initialization
-    #     """
-    #     # Base init
-    #     super().__init__()
-    #     # Collection variables / fields
-    #     self.Psi = Psi
-    #     self.Mss, self.Mpp, self.Msp, self.Msz, self.Mpz, self.zMss, self.zMpp, self.zMsp = Mss, Mpp, Msp, Msz, Mpz, zMss, zMpp, zMsp
-    #     self.Bs_e, self.Bp_e, self.Bz_e, self.dBs_dz_e, self.dBp_dz_e = Bs_e, Bp_e, Bz_e, dBs_dz_e, dBp_dz_e
-    #     self.Br, self.Bs_p, self.Bp_p, self.Bz_p, self.Bs_m, self.Bp_m, self.Bz_m = Br, Bs_p, Bp_p, Bs_m, Bp_m, Bz_m
-    #     # Update number of fields
-    #     self.n_fields = len(self.list_names)
+    def apply(self, fun: Callable[..., Any], inplace: bool = False,
+        metadata: bool = False) -> LabeledCollection:
+        return super().apply(fun, inplace, metadata)
+    
+    def _new_obj(self):
+        return CollectionPG()
+        
 
+
+def mapping_PG_fields(maps_from: CollectionPG, maps_to: CollectionPG):
+    """Create mapping from one CollectionPG object to another CollectionPG
+    
+    :param maps_from: CollectionPG of fields to be mapped from
+    :param maps_to: CollectionPG of fields to be mapped to
+    :returns: a dictionary
+    """
+    pg_map = {maps_from[i_field]: maps_to[i_field] 
+        for i_field in range(maps_from.n_fields)}
+    return pg_map
