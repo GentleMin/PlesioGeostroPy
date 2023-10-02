@@ -54,6 +54,7 @@ namespace base {
     __setitem__(key, value)
     __iter__()
     __next__()
+    _extract_subset(sub_slice)
     <color:#red>apply(fun: Callable)
   }
   ' note bottom of pg_utils.pg_model.base.LabeledCollection: Indexable + iterable
@@ -113,7 +114,7 @@ namespace expansion {
 }
 
 base.LabeledCollection <|-- base.CollectionPG
-base.LabeledCollection -left-o base.LabeledSubCollection : base_collection
+base.LabeledCollection -right-o base.LabeledSubCollection : base_collection
 base.CollectionPG <-- core.pgvar
 base.CollectionPG <-- core.pgvar_bg
 base.CollectionPG <-- core.pgvar_ptb

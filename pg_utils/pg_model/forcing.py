@@ -36,15 +36,19 @@ Le_p_expr = pgvar.Bs_e*diff(pgvar.Bp_e, s) + 1/s*pgvar.Bp_e*diff(pgvar.Bp_e, p) 
 
 """Linearized Lorentz force"""
 
-# Linearized in terms of magnetic fields (for $L_{e\phi}$) or in terms of magnetic moments (for integrated forces).
+# Linearized in terms of magnetic fields (for $L_{e\phi}$) 
+# or in terms of magnetic moments (for integrated forces).
 
 # Linearized form of Lorentz force in the equatorial plane $L_{e\phi}$
 # $L_{e\phi}$ is quadratic in the magnetic field components in the equatorial plane.
-# Linearized form involves cross terms between background and perturbational magnetic fields.
+# Linearized form involves cross terms 
+# between background and perturbational magnetic fields.
 Le_p_lin = linearize(Le_p_expr, pg_linmap, perturb_var=eps)
 
-# For the integrated quantities, the Lorentz force IS a linear function of magnetic moments. Essentially no linearization required.
-# However, the boundary terms and the equatorial terms are quadratic in magnetic fields. These terms need to be linearized.
+# For the integrated quantities, the Lorentz force IS a linear function 
+# of magnetic moments. Essentially no linearization required.
+# However, the boundary terms and the equatorial terms are quadratic 
+# in magnetic fields. These terms need to be linearized.
 
 # Linearized form for $\overline{L_s}$
 Ls_sym_lin = linearize(Ls_sym_expr, pg_linmap, perturb_var=eps)
