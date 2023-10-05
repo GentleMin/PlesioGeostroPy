@@ -1,14 +1,29 @@
 # -*- coding: utf-8 -*-
 
 """
-Define expansions of the PG fields in the unit circle
+Define expansions of the fields.
+The methods and classes in this file are mainly for expanding fields
+in polar coordinates, in the unit disk (s in (0, 1), phi in (0, pi)).
+
+These utilities depend on coordinate variables in the PG formulation,
+but are not directly linked to PG variables.
+As a result, classes and methods in this file will no longer be bound
+to use with PG-formulation-specific classes such as CollectionPG,
+but work with general LabeledCollection class and its instances.
+
+This is mostly for flexible implementation.
+For instance, in eigenvalue problems, the radial magnetic field at the
+boundary and the corresponding evolution equation is often replaced
+by B-fields in cylindrical coordinates at the boundary; Lorentz force
+terms may be combined into one single dynamical variable, etc.
 """
 
 
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Union
 import sympy
-from . import base, core
-from .core import s, p, t, H, H_s
+
+from . import base
+from .core import s
 
 
 
@@ -18,30 +33,53 @@ n, m = sympy.symbols("n, m", integer=True)
 # Angular frequency
 omega = sympy.Symbol(r"\omega")
 
-# Integration variable for the radial direction
+# Integration variable for the radial direction and transforms
 xi = sympy.Symbol(r"\xi")
-# xi_s = 
+xi_s = 2*s**2 - 1
+s_xi = sympy.sqrt((xi + 1)/2)
 
 
 
-class FourierExpansion:
-    """Fourier expansion for PG variables in 2D disk
+class SpectralExpansion(base.LabeledCollection):
+    """Base class for different kinds of spectral expansions
+    
+    :param fields: collection to be expanded
+    :param bases: collection of bases to be used
+    :param coeffs: collection of the corresponding coeffs.
+    """
+    
+    def __init__(self, fields: base.LabeledCollection, 
+        bases: Union[base.LabeledCollection, sympy.Expr], 
+        coeffs: base.LabeledCollection, 
+        **relations: sympy.Expr) -> None:
+        """Initialization
+        """
+        super().__init__(fields._field_names, **relations)
+        self.fields, self.bases, self.coeffs = fields, bases, coeffs
+    
+
+
+class FourierExpansions(SpectralExpansion):
+    """Fourier expansion for fields
     This class is used for reducing equations or expressions into the
     Fourier domain given specific arguments. The Fourier-domain eqs/
-    exprs are then processed using `RadialExpansion`
+    exprs are then processed using `RadialExpansions`
     
-    :param _fourier_basis: complex Fourier basis
-    :param _fourier_coeffs: Fourier coefficients
-    :param _fields: fields to use the Fourier expansion
-    :param _fourier_map
+    :param fields: fields to use the Fourier expansion
+    :param bases: the current basis would be the complex Fourier basis
+        Note: unlike RadialExpansions, the Fourier basis is assumed to
+        be shared among all fields. From another view, this basis has
+        the same form in the expansion of different fields.
+    :param coeffs: Fourier coefficients
+    :param ansatz: the Fourier ansatz
     """
         
-    def __init__(self, argument: sympy.Expr, fields: base.CollectionPG, 
-        fourier_coeffs: base.CollectionPG) -> None:
+    def __init__(self, argument: sympy.Expr, fields: base.LabeledCollection, 
+        fourier_coeffs: base.LabeledCollection) -> None:
         """Initiate Fourier expansion
         
         :param arguments: the complex argument of the Fourier basis
-        :param fields: PG fields to use the Fourier expansion on
+        :param fields: fields to use the Fourier expansion on
         :param fourier_coeffs: Fourier coefficients; these should be
             Fourier coefficients of the fields specified by `fields`
             expanded with argument specified by `argument`.
@@ -50,81 +88,66 @@ class FourierExpansion:
             takes the form omega*t + m*p, then fourier_coeffs should
             be functions of s and z.
         """
-        self._fourier_basis = sympy.exp(sympy.I*argument)
-        self._fourier_coeffs = fourier_coeffs
-        self._fields = fields
-        self._fourier_map = self._build_fourier_map()
+        assert fields._field_names == fourier_coeffs._field_names
+        fourier_basis = sympy.exp(sympy.I*argument)
+        map_tmp = self._build_fourier_map(fields, fourier_basis, fourier_coeffs)
+        super().__init__(fields, fourier_basis, fourier_coeffs, **map_tmp)
     
-    def _build_fourier_map(self):
+    @staticmethod
+    def _build_fourier_map(fields: base.LabeledCollection, 
+        fourier_basis: base.LabeledCollection, 
+        fourier_coeffs: base.LabeledCollection):
         """Create mapping from fields to their Fourier-domain expressions
         """
         fourier_map = {
-            self._fields[idx]: self._fourier_coeffs[idx]*self._fourier_basis
-            for idx in range(self._fourier_coeffs.n_fields)
-            if self._fourier_coeffs[idx] is not None}
+            fields._field_names[idx]: fourier_coeffs[idx]*fourier_basis
+            for idx in range(fields.n_fields)
+            if fourier_coeffs[idx] is not None}
         return fourier_map
     
-    def to_fourier_domain(self, expr):
+    @staticmethod
+    def to_fourier_domain(expr, ansatz, basis):
         """Convert an expression to Fourier domain
         """
-        expr_fourier = expr.subs(self._fourier_map).doit()/self._fourier_basis
+        expr_fourier = expr.subs(ansatz).doit()/basis
         return expr_fourier
 
 
 
-class RadialBases:
-    """Set of radial bases
+class RadialExpansions(SpectralExpansion):
+    """Radial expansions, a collection of radial expansions 
+    for each field in the collection of dynamical variables.
     
-    This class is especially used for the case when
-    the bases do not coincide with the PG variables
-    i.e. when PG variables are combinations of these
-    bases, rather than each PG variable is expanded
-    into a unique basis
+    In many (even most) spectral expansions, 
+    each field, or each component of the tensor are expanded using the 
+    same bases, only with different coefficients.
+    For PG applications, two complications arise:
+    - As we expand the elements of tensors, it would be desirable to
+    implement different forms of bases for each individual field, so
+    that the regularity constraints are fulfilled;
+    - we potentially have a mixture of quantities expressed in 
+    cylindrical and spherical coordinates.
     
-    :param _bases: list of radial bases to be used
-    :param _coeffs: list of coefficients corresponding
-        to the elements in _bases. Coefficients need 
-        to be unique. Coefficients and bases
-        and used in pair to extract the proper inner
-        products and compute the matrix elements.
+    The first point is tackled by using different bases and different
+    relations, hence this class assumes a collection of basis.
     """
     
-    def __init__(self, bases: List[Any], coeffs: List[sympy.Symbol]) -> None:
-        """There is not necessarily special meaning of the bases
-        and therefore it is only a wrapper class for two lists
-        """
-        # Forced check of uniqueness and correspondence
-        assert len(coeffs) == len(set(coeffs))
-        assert len(bases) == len(coeffs)
-        self._bases = bases
-        self._coeffs = coeffs
-    
-    def __getitem__(self, __key: int):
-        return self._coeffs[__key], self._bases[__key]
-    
-    def __setitem__(self, __key: int, __val: Any):
-        self._bases[__key] == __val
+    def __init__(self, fields: base.LabeledCollection, 
+        bases: base.LabeledCollection, 
+        coeffs: base.LabeledCollection, 
+        **relations: sympy.Expr) -> None:
+        super().__init__(fields, bases, coeffs, **relations)
 
 
 
-class RadialExpansionPG(base.CollectionPG):
-    """Radial expansion for PG variables
-    """
-    
-    def __init__(self, rad_basis: RadialBases) -> None:
-        super().__init__()
-        self.rad_basis = rad_basis
-
-
-
-class RadialTestPG(base.CollectionPG):
+class RadialTestFunctions(base.LabeledCollection):
     """Radial functions that are used as test functions for reducing
-    PG equations into algebraic form.
+    differential equations into algebraic form.
     """
     
-    def __init__(self, **fields) -> None:
-        super().__init__(**fields)
-
+    def __init__(self, names: List[str], **test_functions: sympy.Expr) -> None:
+        super().__init__(names, **test_functions)
+        
 
 
 class InnerProduct1D(sympy.Expr):
@@ -148,22 +171,13 @@ class InnerProduct1D(sympy.Expr):
         self._wt = wt
         self._int_var = int_var
         self._bound = (lower, upper)
-        self._print_mid = True
     
     def _latex(self, printer, *args):
-        if self._print_mid:
-            str_A = printer._print(self._opd_A, *args)
-            str_B = printer._print(self._opd_B, *args)
-            str_wt = printer._print(self._wt, *args)
-            str_var = printer._print(self._int_var, *args)
-            return r"\left\langle %s \, \big|\, %s \,\big|\, %s \right\rangle_{%s}" % (
-                str_A, str_wt, str_B, str_var)
-        else:
-            str_A = printer._print(self._opd_A, *args)
-            str_B = printer._print(self._wt*self._opd_B, *args)
-            str_var = printer._print(self._int_var, *args)
-            return r"\left\langle %s \, , \, %s \right\rangle_{%s}" % (
-                str_A, str_B, str_var)
+        str_A = printer._print(self._opd_A, *args)
+        str_B = printer._print(self._wt*self._opd_B, *args)
+        str_var = printer._print(self._int_var, *args)
+        return r"\left\langle %s \, , \, %s \right\rangle_{%s}" % (
+            str_A, str_B, str_var)
     
     def integral_form(self):
         """Get the explicit integral form
@@ -227,12 +241,12 @@ class InnerProductOp1D:
 
 
 
-class InnerProductPG(base.CollectionPG):
+class RadialInnerProducts(base.LabeledCollection):
     """Collection of inner products
     """
     
-    def __init__(self, **fields) -> None:
-        super().__init__(**fields)
+    def __init__(self, names: List[str], **inner_prod_op: InnerProductOp1D) -> None:
+        super().__init__(names, **inner_prod_op)
 
 
 
@@ -249,19 +263,26 @@ class ExpansionRecipe:
     :param inner_products: inner products associated with each eq
     """
     
-    def __init__(self, 
-        equations: base.CollectionPG, activated: List[bool],
-        fourier_ansatz: FourierExpansion, rad_expansion: RadialExpansionPG, 
-        rad_test: RadialTestPG, inner_products: InnerProductPG) -> None:
+    def __init__(self, equations: base.LabeledCollection, 
+        fourier_expand: FourierExpansions, rad_expand: RadialExpansions, 
+        rad_test: RadialTestFunctions, inner_prod_op: RadialInnerProducts) -> None:
         """Initialization
         """
         self.equations = equations
-        self.activated = activated
-        self.fourier_ansatz = fourier_ansatz
-        self.rad_expansion = rad_expansion
+        self.fourier_ansatz = fourier_expand
+        self.rad_expansion = rad_expand
         self.rad_test = rad_test
-        self.inner_products = inner_products
+        self.inner_prod_op = inner_prod_op
 
+
+
+def placeholder_collection(names, notation: str, *vars) -> base.LabeledCollection:
+    """Build collection of placeholder symbolic functions
+    """
+    placeholder = base.LabeledCollection(names,
+        **{fname: sympy.Symbol(r"%s_%d" % (notation, i_f))(*vars)
+            for i_f, fname in enumerate(names)})
+    return placeholder
 
 
 """Radial placeholder functions of PG fields in 2-D disk.
@@ -269,7 +290,7 @@ These are the Fourier coefficients for using in combination with
 core.pgvar or core.pgvar_lin, with omega*t+p*z the Fourier argument
 """
 pgvar_s = base.CollectionPG(
-    # Vorticity
+    # Stream function
     Psi = sympy.Function(r"\Psi^{m}")(s),
     # Integrated magnetic moments
     Mss = sympy.Function(r"\overline{M_{ss}}^{m}")(s),
