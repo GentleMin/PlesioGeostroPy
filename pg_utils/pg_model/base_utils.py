@@ -6,7 +6,6 @@ Jingtao Min @ ETH-EPM, 09.2023
 
 import sympy
 from ..sympy_supp import vector_calculus_3d as v3d
-# from .pg_fields import H, H_s, s, p, z, cyl_op, eps
 from .core import *
 
 
@@ -120,3 +119,17 @@ def linearize(expr, *subs_maps, perturb_var=eps):
         expr_lin = expr_lin.subs(subs_map)
     expr_lin = expr_lin.simplify().expand().coeff(perturb_var, 1)
     return expr_lin
+
+
+def fields_in_term(expr: sympy.Expr, field_collection: base.LabeledCollection):
+    """Extract all fields in a term from a collection.
+    
+    :param expr: the term from which the field will be extracted
+    :param field_collection: range of fields
+    :returns: set of fields
+    """
+    set_tmp = {field for field in field_collection}
+    expr_fields = expr.atoms(sympy.Function)
+    expr_fields = tuple(field for field in expr_fields if field in set_tmp)
+    return expr_fields
+

@@ -5,7 +5,7 @@ Jingtao Min @ ETH-EPM, 09.2023
 """
 
 
-from typing import Any, Callable, Union
+from typing import Any, Callable, List
 
 
 class LabeledCollection:
@@ -32,7 +32,7 @@ class LabeledCollection:
             keys in `fields` not in `names` raises an error.
         """
         # Allow attribute assignment
-        super().__setattr__("_is_locked", False)
+        self._enable_attribute_addition()
         # Generate fields and values
         self._field_names = names
         self._validate_field_entries(**fields)
@@ -85,10 +85,14 @@ class LabeledCollection:
         """Attribute setter
         Overridden to prevent attribute addition when _is_locked is True
         """
-        if self._is_locked and not hasattr(self, __name):
-            raise AttributeError
+        if hasattr(self, "_is_locked"):
+            if self._is_locked and not hasattr(self, __name):
+                raise AttributeError
         super().__setattr__(__name, __value)
-        
+    
+    def _enable_attribute_addition(self) -> None:
+        super().__setattr__("_is_locked", False)
+    
     def _disable_attribute_addition(self) -> None:
         self._is_locked = True
     
@@ -175,6 +179,9 @@ class LabeledCollection:
         else:
             raise StopIteration
     
+    def __len__(self):
+        return self.n_fields
+    
     def _extract_subset(self, sub_slice):
         return LabeledSubCollection(self, sub_slice)
     
@@ -205,6 +212,21 @@ class LabeledCollection:
     
     def _new_obj(self):
         return LabeledCollection(self._field_names)
+    
+    def copy(self):
+        """Deep copy
+        """
+        return LabeledCollection(self._field_names, 
+            **{fname: self[fname] for fname in self._field_names})
+
+    def generate_collection(self, index_array: List[bool]) -> "LabeledCollection":
+        """Generate a new collection based on indices
+        """
+        assert len(index_array) == self.n_fields
+        new_names = [fname for idx, fname in enumerate(self._field_names) 
+                     if index_array[idx]]
+        return LabeledCollection(new_names, **{fname: self[fname]
+            for idx, fname in enumerate(self._field_names) if index_array[idx]})
 
 
 
@@ -351,7 +373,7 @@ class CollectionPG(LabeledCollection):
     """
     
     """Arrangement of variables:
-    Vorticity
+    Stream function
     Magnetic moments
     Magnetic fields in the equatorial plane
     Magnetic fields at the boundary
@@ -404,10 +426,25 @@ class CollectionPG(LabeledCollection):
     
     def _new_obj(self):
         return CollectionPG()
-        
+    
+    def copy(self):
+        """Deep copy
+        """
+        return CollectionPG(**{fname: self[fname] for fname in self._field_names})        
 
 
-def mapping_PG_fields(maps_from: CollectionPG, maps_to: CollectionPG):
+def map_collection(maps_from: LabeledCollection, maps_to: LabeledCollection) -> dict:
+    """Create mapping from one Collection object to another Collection
+    
+    :param maps_from: CollectionPG of fields to be mapped from
+    :param maps_to: CollectionPG of fields to be mapped to
+    :returns: a dictionary
+    """
+    assert maps_from._field_names == maps_to._field_names
+    return {maps_from[fname]: maps_to[fname] for fname in maps_to._field_names}
+
+
+def map_PG_fields(maps_from: CollectionPG, maps_to: CollectionPG) -> dict:
     """Create mapping from one CollectionPG object to another CollectionPG
     
     :param maps_from: CollectionPG of fields to be mapped from

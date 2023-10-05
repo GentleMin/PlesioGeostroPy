@@ -71,7 +71,7 @@ U_sph = v3d.Vector3D(
 """Complete fields in PG"""
 
 pgvar = base.CollectionPG(
-    # Vorticity
+    # Stream function
     Psi = sympy.Function(r"\Psi")(s, p, t),
     # Magnetic moments
     Mss = sympy.Function(r"\overline{M_{ss}}")(s, p, t),
@@ -150,7 +150,7 @@ U0_sph = v3d.Vector3D(
 )
 
 pgvar_bg = base.CollectionPG(
-    # Vorticity
+    # Stream function
     Psi = sympy.Function(r"\Psi^0")(s, p),
     # Magnetic moments
     Mss = sympy.Function(r"\overline{M_{ss}}^0")(s, p),
@@ -218,7 +218,7 @@ u_sph = v3d.Vector3D(
 )
 
 pgvar_ptb = base.CollectionPG(
-    # Vorticity
+    # Stream function
     Psi = sympy.Function(r"\psi")(s, p, t),
     # Magnetic moments
     Mss = sympy.Function(r"\overline{m_{ss}}")(s, p, t),
