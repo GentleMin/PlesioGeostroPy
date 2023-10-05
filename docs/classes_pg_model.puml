@@ -55,7 +55,9 @@ namespace base {
     __iter__()
     __next__()
     _extract_subset(sub_slice)
-    <color:#red>apply(fun: Callable)
+    apply(fun: Callable)
+    copy()
+    generate_collections(index)
   }
   ' note bottom of pg_utils.pg_model.base.LabeledCollection: Indexable + iterable
   class "base.LabeledSubCollection" as LabeledSubCollection {
@@ -97,20 +99,55 @@ namespace equations {
 }
 
 namespace expansion {
-  class "expansion.RadialExpansion" as RadialExpansion #pink ##[bold]red {
-    COMMENT(Radial expansion for PG variables)
-    --
-    coeffs: Array(sympy.Symbol)
-    ' azm_basis: FourierBasis
-    rad_basis: RadialBasis
-    .. Explicit forms of PG fields ..
+  class "expansion.SpectralExpansion" as SpectralExpansion {
+    fields : LabeledCollection
+    bases : LabeledCollection
+    coeffs : LabeledCollection
+    .. Explicit expansions in bases ..
   }
-  class "expansion.RadialBasis" as RadialBasis #pink ##[bold]red {
-    COMMENT(Radial basis used for PG fields)
+  class "expansion.FourierExpansion" as FourierExpansion {
+    bases : sympy.Expr
+    .. Explicit Fourier expansion ..
     --
-    coeffs: Array(sympy.Symbol)
-    bases: Array(sympy.Expr)
+    {static} _build_fourier_map(fields, basis, coeffs)
+    {static} to_fourier_domain(expr, ansatz, basis)
   }
+  class "expansion.RadialExpansions" as RadialExpansions {
+    .. Explicit forms of fields ..
+  }
+  class "expansion.RadialInnerProducts" as RadialInnerProducts {
+    .. Inner product operators ..
+  }
+  class "expansion.RadialTestFunctions" as RadialTestFunctions
+  class "expansion.InnerProductOp1D" as InnerProductOp1D {
+    _int_var : sympy.Symbol
+    _wt: sympy.Expr
+    _bound: List[sympy.Expr]
+    _conj: int
+    __call__(opd_A, opd_B) \n\t-> InnerProduct1D
+  }
+  class "expansion.InnerProduct1D" as InnerProduct1D {
+    _opd_A: sympy.Expr
+    _opd_B: sympy.Expr
+    _int_var: sympy.Symbol
+    _wt: sympy.Expr
+    _bound: List[sympy.Expr]
+    _latex()
+    integral_form()
+    change_variable(new_var)
+  }
+  class "expansion.ExpansionRecipe" as ExpansionRecipe {
+    fields: LabeledCollection
+    fourier_ansatz: FourierExpansion
+    rad_expand: RadialExpansion
+    rad_test: RadialTestFunctions
+    inner_prod_op: RadialInnerProducts
+  }
+  InnerProductOp1D --o RadialInnerProducts
+  ' InnerProduct1D -left-o InnerProductOp1D
+  FourierExpansion --|> SpectralExpansion
+  RadialExpansions --|> SpectralExpansion
+  InnerProduct1D -[hidden]d-> ExpansionRecipe
 }
 
 base.LabeledCollection <|-- base.CollectionPG
@@ -120,7 +157,8 @@ base.CollectionPG <-- core.pgvar_bg
 base.CollectionPG <-- core.pgvar_ptb
 base.CollectionPG <-- equations.eqs_pg
 base.CollectionPG <-- equations.eqs_pg_lin
-base.CollectionPG <|-- expansion.RadialExpansion
-expansion.RadialExpansion -right-o expansion.RadialBasis : rad_basis
+expansion.SpectralExpansion --|> base.LabeledCollection
+expansion.RadialInnerProducts --|> base.LabeledCollection
+expansion.RadialTestFunctions --|> base.LabeledCollection
 
 @end[bold]uml
