@@ -24,6 +24,7 @@ import sympy
 
 from . import base
 from .core import s
+import numpy as np
 
 
 
@@ -179,6 +180,10 @@ class InnerProduct1D(sympy.Expr):
         return r"\left\langle %s \, , \, %s \right\rangle_{%s}" % (
             str_A, str_B, str_var)
     
+    def doit(self, **hints):
+        if hints.get("integral", False):
+            return self.integral_form()
+    
     def integral_form(self):
         """Get the explicit integral form
         """
@@ -187,21 +192,26 @@ class InnerProduct1D(sympy.Expr):
             (self._int_var, self._bound[0], self._bound[1]))
     
     def change_variable(self, new_var: sympy.Symbol, 
-        int_var_expr: sympy.Expr, inv_expr: sympy.Expr):
+        int_var_expr: sympy.Expr, inv_expr: sympy.Expr, 
+        assuming_positive: bool = True) -> "InnerProduct1D":
         """Change the integration variable
         
         :param new_var: the new variable to be integrated over
         :param int_var_expr: the current variable expressed in new variable
         :param inv_expr: one needs to explicitly state the inverse expression
         """
-        jac = sympy.Abs(sympy.diff(int_var_expr, new_var).doit())
-        self._opd_A = self._opd_A.subs({self._int_var: int_var_expr})
-        self._opd_B = self._opd_B.subs({self._int_var: int_var_expr})
-        self._wt = jac*self._wt.subs({self._int_var: int_var_expr})
-        self._bound = (
+        if assuming_positive:
+            jac = sympy.diff(int_var_expr, new_var).doit()
+        else:
+            jac = sympy.Abs(sympy.diff(int_var_expr, new_var).doit())
+        new_inner_prod = InnerProduct1D(
+            self._opd_A.subs({self._int_var: int_var_expr}),
+            self._opd_B.subs({self._int_var: int_var_expr}),
+            jac*self._wt.subs({self._int_var: int_var_expr}),
+            new_var, 
             inv_expr.subs({self._int_var: self._bound[0]}).doit(),
             inv_expr.subs({self._int_var: self._bound[1]}).doit())
-        self._int_var = new_var
+        return new_inner_prod
 
 
 
@@ -273,6 +283,68 @@ class ExpansionRecipe:
         self.rad_expansion = rad_expand
         self.rad_test = rad_test
         self.inner_prod_op = inner_prod_op
+
+
+
+class SystemMatrix:
+    
+    def __init__(self, exprs: base.LabeledCollection, 
+        coeffs: base.LabeledCollection) -> None:
+        assert exprs._field_names == coeffs._field_names
+        self._field_names = exprs._field_names
+        self._field_idx = {fname: idx for idx, fname in enumerate(self._field_names)}
+        self._matrix = self.build_matrix(exprs, coeffs)
+    
+    @staticmethod
+    def build_matrix(exprs: base.LabeledCollection, 
+        coeffs: base.LabeledCollection) -> List:
+        matrix = list()
+        for expr in exprs:
+            expr_row = list()
+            for coeff in coeffs:
+                expr_row.append(expr.coeff(coeff, 1))
+            matrix.append(expr_row)
+        return matrix
+    
+    def __getitem__(self, index):
+        if isinstance(index, int) or \
+            (isinstance(index, tuple) and isinstance(index[0], int)):
+            return self._getitem_by_int(index)
+        elif isinstance(index, str) or \
+            (isinstance(index, tuple) and isinstance(index[0], str)):
+            return self._getitem_by_name(index)
+        else:
+            raise IndexError
+    
+    def _getitem_by_int(self, index: Union[int, List[int]]):
+        if isinstance(index, int):
+            return self._matrix[index]
+        elif isinstance(index, tuple) and len(index) == 2:
+            return self._matrix[index[0]][index[1]]
+        else:
+            raise IndexError
+    
+    def _getitem_by_name(self, index: Union[str, List[str]]):
+        if isinstance(index, str):
+            return self._getitem_by_int(self._field_idx[index])
+        elif isinstance(index, tuple) and len(index) == 2:
+            return self._getitem_by_int(
+                (self._field_idx[index[0]], self._field_idx[index[1]]))
+        else:
+            raise IndexError
+    
+    def __setitem__(self, index: Union[List[int], List[str]], 
+        value: sympy.Expr):
+        if isinstance(index, tuple) and len(index) == 2:
+            if isinstance(index[0], int) and isinstance(index[1], int):
+                self._matrix[index[0]][index[1]] = value
+            elif isinstance(index[0], str) and isinstance(index[1], str):
+                row, col = self._field_idx[index[0]], self._field_idx[index[1]]
+                self._matrix[row][col] = value
+            else:
+                raise IndexError
+        else:
+            raise IndexError
 
 
 
