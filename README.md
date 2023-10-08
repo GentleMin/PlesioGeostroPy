@@ -1,4 +1,4 @@
-# Data Assimilation based on Plesio-Geostrophy (PG) Model
+# PlesioGeostroPy: Plesio-Geostrophy Model in Python
 
 
 This repo offers a realization for the Plesio-geostrophy (PG) model, a reduced dimensional model for MHD equations in an axisymmetric geometry with nearly geostrophic velocity ansatz. The model is proposed by [Jackson and Maffei, 2020](https://doi.org/10.1098/rspa.2020.0513).
@@ -19,4 +19,16 @@ Systems fulfilling these conditions can be exactly described using the PG model.
 ## Data Assimilation
 
 *Future work*
+
+## Current code implementation and design
+
+Module vector calculus in 3D `pg_utils.sympy_supp`:
+
+![uml_v3d](./out/docs/classes_vector_calculus/classes_vector_calculus.svg)
+
+Module PG model `pg_utils.pg_model`:
+
+![uml_pg_model](./out/docs/classes_pg_model/classes_pg_model.svg)
+
+Red items are items to be implemented.
 

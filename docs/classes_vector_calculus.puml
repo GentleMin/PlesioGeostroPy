@@ -1,0 +1,69 @@
+@startuml classes_vector_calculus
+set namespaceSeparator none
+' left to right direction
+!define COMMENT(x) <color:grey>x</color>
+
+class "CartesianCoordinates3D" as pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D {
+  curl(vector_in)
+  div(vector_in)
+  grad(scalar_in)
+  laplacian(tensor_in, rank)
+  transform_to(tensor_in, \n\tnew_sys: OrthogonalCoordinates3D, \n\tcoeffs_new) -> OrthogonalCoordinates3D
+}
+class "CylindricalCoordinates" as pg_utils.sympy_supp.vector_calculus_3d.CylindricalCoordinates {
+  curl(vector_in)
+  div(vector_in)
+  grad(scalar_in)
+  laplacian(tensor_in, rank)
+  transform_to(v_in, \n\tnew_sys: OrthogonalCoordinates3D, \n\tcoeffs_new) -> OrthogonalCoordinates3D
+}
+class "SphericalCoordinates" as pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates {
+  curl(vector_in)
+  div(vector_in)
+  grad(scalar_in)
+  laplacian(tensor_in, rank)
+  surface_div(vector_in)
+  {abstract}surface_grad(scalar_in)
+  transform_to(v_in, \n\tnew_sys: OrthogonalCoordinates3D, \n\tcoeffs_new) -> OrthogonalCoordinates3D
+}
+abstract class "OrthogonalCoordinates3D" as pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D {
+  COMMENT(Indexable (implements __getitem__))
+  --
+  {field}coords
+  --
+  __getitem__(key: int)
+  {abstract}curl(vector_in)
+  {abstract}div(vector_in)
+  {abstract}grad(scalar_in)
+  {abstract}laplacian(tensor_in, rank)
+  {abstract}transform_to(tensor_in, \n\tnew_sys: 'OrthogonalCoordinates3D', \n\tcoeffs_new)
+}
+note left of pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D: Indexable \n(implements ~__getitem__)
+
+class "Scalar3D" as pg_utils.sympy_supp.vector_calculus_3d.Scalar3D {
+  grad()
+  laplacian()
+  transform_to(\n\tnew_sys: OrthogonalCoordinates3D\n) -> Scalar3D
+}
+abstract class "Tensor3D" as pg_utils.sympy_supp.vector_calculus_3d.Tensor3D {
+  coord_sys : OrthogonalCoordinates3D
+  ndim : int
+  rank : int
+  tensor
+  transform_to(\n\tnew_sys: OrthogonalCoordinates3D\n) -> Tensor3D
+}
+class "Vector3D" as pg_utils.sympy_supp.vector_calculus_3d.Vector3D {
+  COMMENT(Indexable)
+  --
+  __getitem__(key:int)
+  curl()
+  div()
+  laplacian()
+}
+pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D --|> pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D
+pg_utils.sympy_supp.vector_calculus_3d.CylindricalCoordinates --|> pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D
+pg_utils.sympy_supp.vector_calculus_3d.Scalar3D -up-|> pg_utils.sympy_supp.vector_calculus_3d.Tensor3D
+pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates --|> pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D
+pg_utils.sympy_supp.vector_calculus_3d.Vector3D -up-|> pg_utils.sympy_supp.vector_calculus_3d.Tensor3D
+pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D -right-o pg_utils.sympy_supp.vector_calculus_3d.Tensor3D : coord_sys
+@enduml

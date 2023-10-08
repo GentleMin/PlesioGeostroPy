@@ -1,0 +1,164 @@
+@startuml classes_pg_model
+set namespaceSeparator .
+!define COMMENT(x) <color:grey>x</color>
+left to right direction
+
+namespace base {
+  class "base.CollectionPG" as CollectionPG {
+    {static} pg_field_names : list
+    .. vorticity ..
+    Psi
+    .. magnetic moments ..
+    Mpp
+    Mpz
+    Msp
+    Mss
+    Msz
+    zMpp
+    zMsp
+    zMss
+    .. B @ equatorial ..
+    Bs_e
+    Bp_e
+    Bz_e
+    dBp_dz_e
+    dBs_dz_e
+    .. B @ boundary ..
+    Br_b
+    Bs_p
+    Bp_p
+    Bz_p
+    Bs_m
+    Bp_m
+    Bz_m
+    --
+    vorticity()
+    subset_mag() \n\t-> LabeledSubCollection
+    subset_moments() \n\t-> LabeledSubCollection
+    subset_B_equator() \n\t-> LabeledSubCollection
+    subset_B_bound() \n\t-> LabeledSubCollection
+    subset_B_bound_cyl() \n\t-> LabeledSubCollection
+  }
+  note bottom of CollectionPG: Base class for collections of \nPG variable / equation.\nIndexable (int or str) + iterable\ncan extract arbitrary subsets
+
+  class "base.LabeledCollection" as LabeledCollection {
+    COMMENT(Indexable + Iterable)
+    --
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    --
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+    _extract_subset(sub_slice)
+    apply(fun: Callable)
+    copy()
+    generate_collections(index)
+  }
+  ' note bottom of pg_utils.pg_model.base.LabeledCollection: Indexable + iterable
+  class "base.LabeledSubCollection" as LabeledSubCollection {
+    COMMENT(Indexable + Iterable)
+    --
+    base_collection
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    --
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+  }
+}
+
+namespace core {
+  object "core.pgvar" as core.pgvar {
+    COMMENT(Total PG variables)
+  }
+  object "core.pgvar_bg" as core.pgvar_bg {
+    COMMENT(PG background field)
+  }
+  object "core.pgvar_ptb" as core.pgvar_ptb {
+    COMMENT(PG perturbation field)
+  }
+}
+
+namespace equations {
+  object "equations.eqs_pg" as equations.eqs_pg {
+    COMMENT(PG equations)
+  }
+  object "equations.eqs_pg_lin" as equations.eqs_pg_lin {
+    COMMENT(Linearized PG equations)
+  }
+}
+
+namespace expansion {
+  class "expansion.SpectralExpansion" as SpectralExpansion {
+    fields : LabeledCollection
+    bases : LabeledCollection
+    coeffs : LabeledCollection
+    .. Explicit expansions in bases ..
+  }
+  class "expansion.FourierExpansion" as FourierExpansion {
+    bases : sympy.Expr
+    .. Explicit Fourier expansion ..
+    --
+    {static} _build_fourier_map(fields, basis, coeffs)
+    {static} to_fourier_domain(expr, ansatz, basis)
+  }
+  class "expansion.RadialExpansions" as RadialExpansions {
+    .. Explicit forms of fields ..
+  }
+  class "expansion.RadialInnerProducts" as RadialInnerProducts {
+    .. Inner product operators ..
+  }
+  class "expansion.RadialTestFunctions" as RadialTestFunctions
+  class "expansion.InnerProductOp1D" as InnerProductOp1D {
+    _int_var : sympy.Symbol
+    _wt: sympy.Expr
+    _bound: List[sympy.Expr]
+    _conj: int
+    __call__(opd_A, opd_B) \n\t-> InnerProduct1D
+  }
+  class "expansion.InnerProduct1D" as InnerProduct1D {
+    _opd_A: sympy.Expr
+    _opd_B: sympy.Expr
+    _int_var: sympy.Symbol
+    _wt: sympy.Expr
+    _bound: List[sympy.Expr]
+    _latex()
+    integral_form()
+    change_variable(new_var)
+  }
+  class "expansion.ExpansionRecipe" as ExpansionRecipe {
+    fields: LabeledCollection
+    fourier_ansatz: FourierExpansion
+    rad_expand: RadialExpansion
+    rad_test: RadialTestFunctions
+    inner_prod_op: RadialInnerProducts
+  }
+  InnerProductOp1D --o RadialInnerProducts
+  ' InnerProduct1D -left-o InnerProductOp1D
+  FourierExpansion --|> SpectralExpansion
+  RadialExpansions --|> SpectralExpansion
+  InnerProduct1D -[hidden]d-> ExpansionRecipe
+}
+
+base.LabeledCollection <|-- base.CollectionPG
+base.LabeledCollection -right-o base.LabeledSubCollection : base_collection
+base.CollectionPG <-- core.pgvar
+base.CollectionPG <-- core.pgvar_bg
+base.CollectionPG <-- core.pgvar_ptb
+base.CollectionPG <-- equations.eqs_pg
+base.CollectionPG <-- equations.eqs_pg_lin
+expansion.SpectralExpansion --|> base.LabeledCollection
+expansion.RadialInnerProducts --|> base.LabeledCollection
+expansion.RadialTestFunctions --|> base.LabeledCollection
+
+@end[bold]uml

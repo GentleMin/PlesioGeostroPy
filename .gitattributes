@@ -1,2 +1,3 @@
 # Ignore ipython notebooks
 *.ipynb linguist-generated
+*.puml linguist-generated
