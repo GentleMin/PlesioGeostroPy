@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="919px" preserveAspectRatio="none" style="width:1381px;height:919px;background:#FFFFFF;" version="1.1" viewBox="0 0 1381 919" width="1381px" zoomAndPan="magnify"><defs/><g><!--MD5=[f12f832c3ac0603ce526ef171d08d9c6]
+cluster base--><g id="cluster_base"><path d="M639.5,6 L674.5,6 A3.75,3.75 0 0 1 677,8.5 L684,29.6094 L1139.5,29.6094 A2.5,2.5 0 0 1 1142,32.1094 L1142,882.5 A2.5,2.5 0 0 1 1139.5,885 L639.5,885 A2.5,2.5 0 0 1 637,882.5 L637,8.5 A2.5,2.5 0 0 1 639.5,6 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="637" x2="684" y1="29.6094" y2="29.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="34" x="641" y="22.5332">base</text></g><!--MD5=[01435ace8273dc3cae88e7f376e4d373]
+cluster core--><g id="cluster_core"><path d="M1189.5,287 L1222.5,287 A3.75,3.75 0 0 1 1225,289.5 L1232,310.6094 L1359.5,310.6094 A2.5,2.5 0 0 1 1362,313.1094 L1362,548.5 A2.5,2.5 0 0 1 1359.5,551 L1189.5,551 A2.5,2.5 0 0 1 1187,548.5 L1187,289.5 A2.5,2.5 0 0 1 1189.5,287 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="1187" x2="1232" y1="310.6094" y2="310.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="32" x="1191" y="303.5332">core</text></g><!--MD5=[2f19789fe3e13b0585352bcfe9304408]
+cluster equations--><g id="cluster_equations"><path d="M1177.5,575 L1248.5,575 A3.75,3.75 0 0 1 1251,577.5 L1258,598.6094 L1371.5,598.6094 A2.5,2.5 0 0 1 1374,601.1094 L1374,754.5 A2.5,2.5 0 0 1 1371.5,757 L1177.5,757 A2.5,2.5 0 0 1 1175,754.5 L1175,577.5 A2.5,2.5 0 0 1 1177.5,575 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="1175" x2="1258" y1="598.6094" y2="598.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="70" x="1179" y="591.5332">equations</text></g><!--MD5=[fac3c2f9431aba507c32104e86dd2eb8]
+cluster expansion--><g id="cluster_expansion"><path d="M8.5,134 L82.5,134 A3.75,3.75 0 0 1 85,136.5 L92,157.6094 L601.5,157.6094 A2.5,2.5 0 0 1 604,160.1094 L604,909.5 A2.5,2.5 0 0 1 601.5,912 L8.5,912 A2.5,2.5 0 0 1 6,909.5 L6,136.5 A2.5,2.5 0 0 1 8.5,134 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="6" x2="92" y1="157.6094" y2="157.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="73" x="10" y="150.5332">expansion</text></g><!--MD5=[a3e0ee7539013ce32dd27469ed9846c2]
+class base.CollectionPG--><g id="elem_base.CollectionPG"><rect codeLine="6" fill="#F1F1F1" height="715.5469" id="base.CollectionPG" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="199" x="927" y="153"/><ellipse cx="964.5" cy="169" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M967.2656,164.875 Q967.4219,164.6563 967.6094,164.5469 Q967.7969,164.4375 968.0156,164.4375 Q968.3906,164.4375 968.625,164.6953 Q968.8594,164.9531 968.8594,165.5625 L968.8594,167.0156 Q968.8594,167.625 968.625,167.8906 Q968.3906,168.1563 968.0156,168.1563 Q967.6719,168.1563 967.4688,167.9531 Q967.2656,167.7656 967.1563,167.25 Q967.1094,166.8906 966.9219,166.7031 Q966.5938,166.3281 965.9844,166.1094 Q965.375,165.8906 964.75,165.8906 Q963.9844,165.8906 963.3516,166.2188 Q962.7188,166.5469 962.2266,167.2969 Q961.7344,168.0469 961.7344,169.0781 L961.7344,170.1719 Q961.7344,171.4063 962.625,172.2266 Q963.5156,173.0469 965.1094,173.0469 Q966.0469,173.0469 966.7031,172.7969 Q967.0938,172.6406 967.5156,172.2031 Q967.7813,171.9375 967.9297,171.8594 Q968.0781,171.7813 968.2813,171.7813 Q968.6094,171.7813 968.8672,172.0391 Q969.125,172.2969 969.125,172.6406 Q969.125,172.9844 968.7813,173.3906 Q968.2813,173.9688 967.4844,174.2969 Q966.4063,174.75 965.1094,174.75 Q963.5938,174.75 962.3906,174.125 Q961.4063,173.625 960.7188,172.5547 Q960.0313,171.4844 960.0313,170.2031 L960.0313,169.0469 Q960.0313,167.7188 960.6484,166.5703 Q961.2656,165.4219 962.3594,164.8047 Q963.4531,164.1875 964.6875,164.1875 Q965.4219,164.1875 966.0703,164.3516 Q966.7188,164.5156 967.2656,164.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="983.5" y="174.7285">base.CollectionPG</text><line style="stroke:#181818;stroke-width:0.5;" x1="928" x2="1125" y1="185" y2="185"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="129" x="933" y="203.5332">pg_field_names : list</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19" x="933" y="242.752">Psi</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="928" x2="1002.5" y1="219.4141" y2="219.4141"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48" x="1002.5" y="224.6426">vorticity</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="1050.5" x2="1125" y1="219.4141" y2="219.4141"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27" x="933" y="281.9707">Mpp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25" x="933" y="299.5801">Mpz</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="933" y="317.1895">Msp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25" x="933" y="334.7988">Mss</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="24" x="933" y="352.4082">Msz</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="933" y="370.0176">zMpp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="933" y="387.627">zMsp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="933" y="405.2363">zMss</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="928" x2="967.5" y1="258.6328" y2="258.6328"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="118" x="967.5" y="263.8613">magnetic moments</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="1085.5" x2="1125" y1="258.6328" y2="258.6328"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="933" y="444.4551">Bs_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="933" y="462.0645">Bp_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="933" y="479.6738">Bz_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="933" y="497.2832">dBp_dz_e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="933" y="514.8926">dBs_dz_e</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="928" x2="979.5" y1="421.1172" y2="421.1172"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="94" x="979.5" y="426.3457">B @ equatorial</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="1073.5" x2="1125" y1="421.1172" y2="421.1172"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30" x="933" y="554.1113">Br_b</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="933" y="571.7207">Bs_p</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="933" y="589.3301">Bp_p</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="933" y="606.9395">Bz_p</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="35" x="933" y="624.5488">Bs_m</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36" x="933" y="642.1582">Bp_m</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="34" x="933" y="659.7676">Bz_m</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="928" x2="981" y1="530.7734" y2="530.7734"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91" x="981" y="536.002">B @ boundary</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="1072" x2="1125" y1="530.7734" y2="530.7734"/><line style="stroke:#181818;stroke-width:1.0;" x1="928" x2="1125" y1="666.8438" y2="666.8438"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="58" x="933" y="685.377">vorticity()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87" x="933" y="702.9863">subset_mag()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="965" y="720.5957">-&gt; LabeledSubCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="933" y="738.2051">subset_moments()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="965" y="755.8145">-&gt; LabeledSubCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126" x="933" y="773.4238">subset_B_equator()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="965" y="791.0332">-&gt; LabeledSubCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="933" y="808.6426">subset_B_bound()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="965" y="826.252">-&gt; LabeledSubCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142" x="933" y="843.8613">subset_B_bound_cyl()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="965" y="861.4707">-&gt; LabeledSubCollection</text></g><g id="elem_base.GMN4"><path d="M929.5,42.5 L929.5,117.9063 A0,0 0 0 0 929.5,117.9063 L1022.5,117.9063 L1026.5,152.82 L1030.5,117.9063 L1123.5,117.9063 A0,0 0 0 0 1123.5,117.9063 L1123.5,52.5 L1113.5,42.5 L929.5,42.5 A0,0 0 0 0 929.5,42.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1113.5,42.5 L1113.5,52.5 L1123.5,52.5 L1113.5,42.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="163" x="935.5" y="60.9951">Base class for collections of</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="131" x="935.5" y="77.3467">PG variable / equation.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="173" x="935.5" y="93.6982">Indexable (int or str) + iterable</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="166" x="935.5" y="110.0498">can extract arbitrary subsets</text></g><!--MD5=[3f81482eb680c194524adb438dbe6815]
+class base.LabeledCollection--><g id="elem_base.LabeledCollection"><rect codeLine="43" fill="#F1F1F1" height="306.5313" id="base.LabeledCollection" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="213" x="653" y="357.5"/><ellipse cx="682.85" cy="373.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M685.6156,369.375 Q685.7719,369.1563 685.9594,369.0469 Q686.1469,368.9375 686.3656,368.9375 Q686.7406,368.9375 686.975,369.1953 Q687.2094,369.4531 687.2094,370.0625 L687.2094,371.5156 Q687.2094,372.125 686.975,372.3906 Q686.7406,372.6563 686.3656,372.6563 Q686.0219,372.6563 685.8188,372.4531 Q685.6156,372.2656 685.5063,371.75 Q685.4594,371.3906 685.2719,371.2031 Q684.9438,370.8281 684.3344,370.6094 Q683.725,370.3906 683.1,370.3906 Q682.3344,370.3906 681.7016,370.7188 Q681.0688,371.0469 680.5766,371.7969 Q680.0844,372.5469 680.0844,373.5781 L680.0844,374.6719 Q680.0844,375.9063 680.975,376.7266 Q681.8656,377.5469 683.4594,377.5469 Q684.3969,377.5469 685.0531,377.2969 Q685.4438,377.1406 685.8656,376.7031 Q686.1313,376.4375 686.2797,376.3594 Q686.4281,376.2813 686.6313,376.2813 Q686.9594,376.2813 687.2172,376.5391 Q687.475,376.7969 687.475,377.1406 Q687.475,377.4844 687.1313,377.8906 Q686.6313,378.4688 685.8344,378.7969 Q684.7563,379.25 683.4594,379.25 Q681.9438,379.25 680.7406,378.625 Q679.7563,378.125 679.0688,377.0547 Q678.3813,375.9844 678.3813,374.7031 L678.3813,373.5469 Q678.3813,372.2188 678.9984,371.0703 Q679.6156,369.9219 680.7094,369.3047 Q681.8031,368.6875 683.0375,368.6875 Q683.7719,368.6875 684.4203,368.8516 Q685.0688,369.0156 685.6156,369.375 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148" x="700.15" y="379.2285">base.LabeledCollection</text><line style="stroke:#181818;stroke-width:0.5;" x1="654" x2="865" y1="389.5" y2="389.5"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="123" x="659" y="408.0332">Indexable + Iterable</text><line style="stroke:#181818;stroke-width:1.0;" x1="654" x2="865" y1="415.1094" y2="415.1094"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="659" y="433.6426">n_fields</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="659" y="451.252">n_iter : int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="659" y="490.4707">iter_filter</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="659" y="508.0801">iter_name</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="654" x2="733" y1="467.1328" y2="467.1328"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="733" y="472.3613">property</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="786" x2="865" y1="467.1328" y2="467.1328"/><line style="stroke:#181818;stroke-width:1.0;" x1="654" x2="865" y1="515.1563" y2="515.1563"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="201" x="659" y="533.6895">__getitem__(key: [int, str, slice])</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="151" x="659" y="551.2988">__setitem__(key, value)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="659" y="568.9082">__iter__()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="659" y="586.5176">__next__()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="169" x="659" y="604.127">_extract_subset(sub_slice)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="123" x="659" y="621.7363">apply(fun: Callable)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="659" y="639.3457">copy()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="174" x="659" y="656.9551">generate_collections(index)</text></g><!--MD5=[6cb84c92a424e6d29a22d3545f22fded]
+class base.LabeledSubCollection--><g id="elem_base.LabeledSubCollection"><rect codeLine="62" fill="#F1F1F1" height="253.7031" id="base.LabeledSubCollection" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="213" x="653" y="51"/><ellipse cx="671.6" cy="67" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M674.3656,62.875 Q674.5219,62.6563 674.7094,62.5469 Q674.8969,62.4375 675.1156,62.4375 Q675.4906,62.4375 675.725,62.6953 Q675.9594,62.9531 675.9594,63.5625 L675.9594,65.0156 Q675.9594,65.625 675.725,65.8906 Q675.4906,66.1563 675.1156,66.1563 Q674.7719,66.1563 674.5688,65.9531 Q674.3656,65.7656 674.2563,65.25 Q674.2094,64.8906 674.0219,64.7031 Q673.6938,64.3281 673.0844,64.1094 Q672.475,63.8906 671.85,63.8906 Q671.0844,63.8906 670.4516,64.2188 Q669.8188,64.5469 669.3266,65.2969 Q668.8344,66.0469 668.8344,67.0781 L668.8344,68.1719 Q668.8344,69.4063 669.725,70.2266 Q670.6156,71.0469 672.2094,71.0469 Q673.1469,71.0469 673.8031,70.7969 Q674.1938,70.6406 674.6156,70.2031 Q674.8813,69.9375 675.0297,69.8594 Q675.1781,69.7813 675.3813,69.7813 Q675.7094,69.7813 675.9672,70.0391 Q676.225,70.2969 676.225,70.6406 Q676.225,70.9844 675.8813,71.3906 Q675.3813,71.9688 674.5844,72.2969 Q673.5063,72.75 672.2094,72.75 Q670.6938,72.75 669.4906,72.125 Q668.5063,71.625 667.8188,70.5547 Q667.1313,69.4844 667.1313,68.2031 L667.1313,67.0469 Q667.1313,65.7188 667.7484,64.5703 Q668.3656,63.4219 669.4594,62.8047 Q670.5531,62.1875 671.7875,62.1875 Q672.5219,62.1875 673.1703,62.3516 Q673.8188,62.5156 674.3656,62.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="173" x="686.4" y="72.7285">base.LabeledSubCollection</text><line style="stroke:#181818;stroke-width:0.5;" x1="654" x2="865" y1="83" y2="83"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="123" x="659" y="101.5332">Indexable + Iterable</text><line style="stroke:#181818;stroke-width:1.0;" x1="654" x2="865" y1="108.6094" y2="108.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="98" x="659" y="127.1426">base_collection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="659" y="144.752">n_fields</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="659" y="162.3613">n_iter : int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="659" y="201.5801">iter_filter</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="659" y="219.1895">iter_name</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="654" x2="733" y1="178.2422" y2="178.2422"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="733" y="183.4707">property</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="786" x2="865" y1="178.2422" y2="178.2422"/><line style="stroke:#181818;stroke-width:1.0;" x1="654" x2="865" y1="226.2656" y2="226.2656"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="201" x="659" y="244.7988">__getitem__(key: [int, str, slice])</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="151" x="659" y="262.4082">__setitem__(key, value)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="659" y="280.0176">__iter__()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="659" y="297.627">__next__()</text></g><g id="elem_core.pgvar"><rect fill="#F1F1F1" height="47.2188" style="stroke:#181818;stroke-width:0.5;" width="129" x="1210" y="323.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="1240.5" y="340.0332">core.pgvar</text><line style="stroke:#181818;stroke-width:0.5;" x1="1211" x2="1338" y1="345.1094" y2="345.1094"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="1216" y="363.6426">Total PG variables</text></g><g id="elem_core.pgvar_bg"><rect fill="#F1F1F1" height="47.2188" style="stroke:#181818;stroke-width:0.5;" width="141" x="1204" y="405.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="1228.5" y="422.0332">core.pgvar_bg</text><line style="stroke:#181818;stroke-width:0.5;" x1="1205" x2="1344" y1="427.1094" y2="427.1094"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="129" x="1210" y="445.6426">PG background field</text></g><g id="elem_core.pgvar_ptb"><rect fill="#F1F1F1" height="47.2188" style="stroke:#181818;stroke-width:0.5;" width="143" x="1203" y="487.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="1226.5" y="504.0332">core.pgvar_ptb</text><line style="stroke:#181818;stroke-width:0.5;" x1="1204" x2="1345" y1="509.1094" y2="509.1094"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131" x="1209" y="527.6426">PG perturbation field</text></g><g id="elem_equations.eqs_pg"><rect fill="#F1F1F1" height="47.2188" style="stroke:#181818;stroke-width:0.5;" width="127" x="1211" y="611.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="113" x="1218" y="628.0332">equations.eqs_pg</text><line style="stroke:#181818;stroke-width:0.5;" x1="1212" x2="1337" y1="633.1094" y2="633.1094"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="1217" y="651.6426">PG equations</text></g><g id="elem_equations.eqs_pg_lin"><rect fill="#F1F1F1" height="47.2188" style="stroke:#181818;stroke-width:0.5;" width="167" x="1191" y="693.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="135" x="1207" y="710.0332">equations.eqs_pg_lin</text><line style="stroke:#181818;stroke-width:0.5;" x1="1192" x2="1357" y1="715.1094" y2="715.1094"/><text fill="#808080" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="1197" y="733.6426">Linearized PG equations</text></g><!--MD5=[2614cbeadfc5ba26b96dc7ae1fcb3db2]
+class expansion.SpectralExpansion--><g id="elem_expansion.SpectralExpansion"><rect codeLine="101" fill="#F1F1F1" height="119.2422" id="expansion.SpectralExpansion" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="217" x="359" y="306.5"/><ellipse cx="374" cy="322.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M376.7656,318.375 Q376.9219,318.1563 377.1094,318.0469 Q377.2969,317.9375 377.5156,317.9375 Q377.8906,317.9375 378.125,318.1953 Q378.3594,318.4531 378.3594,319.0625 L378.3594,320.5156 Q378.3594,321.125 378.125,321.3906 Q377.8906,321.6563 377.5156,321.6563 Q377.1719,321.6563 376.9688,321.4531 Q376.7656,321.2656 376.6563,320.75 Q376.6094,320.3906 376.4219,320.2031 Q376.0938,319.8281 375.4844,319.6094 Q374.875,319.3906 374.25,319.3906 Q373.4844,319.3906 372.8516,319.7188 Q372.2188,320.0469 371.7266,320.7969 Q371.2344,321.5469 371.2344,322.5781 L371.2344,323.6719 Q371.2344,324.9063 372.125,325.7266 Q373.0156,326.5469 374.6094,326.5469 Q375.5469,326.5469 376.2031,326.2969 Q376.5938,326.1406 377.0156,325.7031 Q377.2813,325.4375 377.4297,325.3594 Q377.5781,325.2813 377.7813,325.2813 Q378.1094,325.2813 378.3672,325.5391 Q378.625,325.7969 378.625,326.1406 Q378.625,326.4844 378.2813,326.8906 Q377.7813,327.4688 376.9844,327.7969 Q375.9063,328.25 374.6094,328.25 Q373.0938,328.25 371.8906,327.625 Q370.9063,327.125 370.2188,326.0547 Q369.5313,324.9844 369.5313,323.7031 L369.5313,322.5469 Q369.5313,321.2188 370.1484,320.0703 Q370.7656,318.9219 371.8594,318.3047 Q372.9531,317.6875 374.1875,317.6875 Q374.9219,317.6875 375.5703,317.8516 Q376.2188,318.0156 376.7656,318.375 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="185" x="388" y="328.2285">expansion.SpectralExpansion</text><line style="stroke:#181818;stroke-width:0.5;" x1="360" x2="575" y1="338.5" y2="338.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="158" x="365" y="357.0332">fields : LabeledCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="163" x="365" y="374.6426">bases : LabeledCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="163" x="365" y="392.252">coeffs : LabeledCollection</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="360" x2="380" y1="408.1328" y2="408.1328"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="175" x="380" y="413.3613">Explicit expansions in bases</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="555" x2="575" y1="408.1328" y2="408.1328"/></g><!--MD5=[88c30f9127025efde102e4ba2eacdd90]
+class expansion.FourierExpansion--><g id="elem_expansion.FourierExpansion"><rect codeLine="107" fill="#F1F1F1" height="127.2422" id="expansion.FourierExpansion" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="264" x="22" y="170.5"/><ellipse cx="60.85" cy="186.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M63.6156,182.375 Q63.7719,182.1563 63.9594,182.0469 Q64.1469,181.9375 64.3656,181.9375 Q64.7406,181.9375 64.975,182.1953 Q65.2094,182.4531 65.2094,183.0625 L65.2094,184.5156 Q65.2094,185.125 64.975,185.3906 Q64.7406,185.6563 64.3656,185.6563 Q64.0219,185.6563 63.8188,185.4531 Q63.6156,185.2656 63.5063,184.75 Q63.4594,184.3906 63.2719,184.2031 Q62.9438,183.8281 62.3344,183.6094 Q61.725,183.3906 61.1,183.3906 Q60.3344,183.3906 59.7016,183.7188 Q59.0688,184.0469 58.5766,184.7969 Q58.0844,185.5469 58.0844,186.5781 L58.0844,187.6719 Q58.0844,188.9063 58.975,189.7266 Q59.8656,190.5469 61.4594,190.5469 Q62.3969,190.5469 63.0531,190.2969 Q63.4438,190.1406 63.8656,189.7031 Q64.1313,189.4375 64.2797,189.3594 Q64.4281,189.2813 64.6313,189.2813 Q64.9594,189.2813 65.2172,189.5391 Q65.475,189.7969 65.475,190.1406 Q65.475,190.4844 65.1313,190.8906 Q64.6313,191.4688 63.8344,191.7969 Q62.7563,192.25 61.4594,192.25 Q59.9438,192.25 58.7406,191.625 Q57.7563,191.125 57.0688,190.0547 Q56.3813,188.9844 56.3813,187.7031 L56.3813,186.5469 Q56.3813,185.2188 56.9984,184.0703 Q57.6156,182.9219 58.7094,182.3047 Q59.8031,181.6875 61.0375,181.6875 Q61.7719,181.6875 62.4203,181.8516 Q63.0688,182.0156 63.6156,182.375 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="179" x="80.15" y="192.2285">expansion.FourierExpansion</text><line style="stroke:#181818;stroke-width:0.5;" x1="23" x2="285" y1="202.5" y2="202.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="122" x="28" y="221.0332">bases : sympy.Expr</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="23" x2="73.5" y1="236.9141" y2="236.9141"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="161" x="73.5" y="242.1426">Explicit Fourier expansion</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="234.5" x2="285" y1="236.9141" y2="236.9141"/><line style="stroke:#181818;stroke-width:1.0;" x1="23" x2="285" y1="254.5234" y2="254.5234"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="252" x="28" y="273.0566">_build_fourier_map(fields, basis, coeffs)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="242" x="28" y="290.666">to_fourier_domain(expr, ansatz, basis)</text></g><!--MD5=[4406c9185f81db51b019b2556df6bf2e]
+class expansion.RadialExpansions--><g id="elem_expansion.RadialExpansions"><rect codeLine="114" fill="#F1F1F1" height="66.4141" id="expansion.RadialExpansions" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="212" x="48" y="333"/><ellipse cx="63" cy="349" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M65.7656,344.875 Q65.9219,344.6563 66.1094,344.5469 Q66.2969,344.4375 66.5156,344.4375 Q66.8906,344.4375 67.125,344.6953 Q67.3594,344.9531 67.3594,345.5625 L67.3594,347.0156 Q67.3594,347.625 67.125,347.8906 Q66.8906,348.1563 66.5156,348.1563 Q66.1719,348.1563 65.9688,347.9531 Q65.7656,347.7656 65.6563,347.25 Q65.6094,346.8906 65.4219,346.7031 Q65.0938,346.3281 64.4844,346.1094 Q63.875,345.8906 63.25,345.8906 Q62.4844,345.8906 61.8516,346.2188 Q61.2188,346.5469 60.7266,347.2969 Q60.2344,348.0469 60.2344,349.0781 L60.2344,350.1719 Q60.2344,351.4063 61.125,352.2266 Q62.0156,353.0469 63.6094,353.0469 Q64.5469,353.0469 65.2031,352.7969 Q65.5938,352.6406 66.0156,352.2031 Q66.2813,351.9375 66.4297,351.8594 Q66.5781,351.7813 66.7813,351.7813 Q67.1094,351.7813 67.3672,352.0391 Q67.625,352.2969 67.625,352.6406 Q67.625,352.9844 67.2813,353.3906 Q66.7813,353.9688 65.9844,354.2969 Q64.9063,354.75 63.6094,354.75 Q62.0938,354.75 60.8906,354.125 Q59.9063,353.625 59.2188,352.5547 Q58.5313,351.4844 58.5313,350.2031 L58.5313,349.0469 Q58.5313,347.7188 59.1484,346.5703 Q59.7656,345.4219 60.8594,344.8047 Q61.9531,344.1875 63.1875,344.1875 Q63.9219,344.1875 64.5703,344.3516 Q65.2188,344.5156 65.7656,344.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="180" x="77" y="354.7285">expansion.RadialExpansions</text><line style="stroke:#181818;stroke-width:0.5;" x1="49" x2="259" y1="365" y2="365"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="49" x2="86.5" y1="381.8047" y2="381.8047"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="135" x="86.5" y="387.0332">Explicit forms of fields</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="221.5" x2="259" y1="381.8047" y2="381.8047"/></g><!--MD5=[fb083a984856b07b41b567a9c3d09399]
+class expansion.RadialInnerProducts--><g id="elem_expansion.RadialInnerProducts"><rect codeLine="117" fill="#F1F1F1" height="66.4141" id="expansion.RadialInnerProducts" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="228" x="353.5" y="478"/><ellipse cx="368.5" cy="494" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M371.2656,489.875 Q371.4219,489.6563 371.6094,489.5469 Q371.7969,489.4375 372.0156,489.4375 Q372.3906,489.4375 372.625,489.6953 Q372.8594,489.9531 372.8594,490.5625 L372.8594,492.0156 Q372.8594,492.625 372.625,492.8906 Q372.3906,493.1563 372.0156,493.1563 Q371.6719,493.1563 371.4688,492.9531 Q371.2656,492.7656 371.1563,492.25 Q371.1094,491.8906 370.9219,491.7031 Q370.5938,491.3281 369.9844,491.1094 Q369.375,490.8906 368.75,490.8906 Q367.9844,490.8906 367.3516,491.2188 Q366.7188,491.5469 366.2266,492.2969 Q365.7344,493.0469 365.7344,494.0781 L365.7344,495.1719 Q365.7344,496.4063 366.625,497.2266 Q367.5156,498.0469 369.1094,498.0469 Q370.0469,498.0469 370.7031,497.7969 Q371.0938,497.6406 371.5156,497.2031 Q371.7813,496.9375 371.9297,496.8594 Q372.0781,496.7813 372.2813,496.7813 Q372.6094,496.7813 372.8672,497.0391 Q373.125,497.2969 373.125,497.6406 Q373.125,497.9844 372.7813,498.3906 Q372.2813,498.9688 371.4844,499.2969 Q370.4063,499.75 369.1094,499.75 Q367.5938,499.75 366.3906,499.125 Q365.4063,498.625 364.7188,497.5547 Q364.0313,496.4844 364.0313,495.2031 L364.0313,494.0469 Q364.0313,492.7188 364.6484,491.5703 Q365.2656,490.4219 366.3594,489.8047 Q367.4531,489.1875 368.6875,489.1875 Q369.4219,489.1875 370.0703,489.3516 Q370.7188,489.5156 371.2656,489.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="196" x="382.5" y="499.7285">expansion.RadialInnerProducts</text><line style="stroke:#181818;stroke-width:0.5;" x1="354.5" x2="580.5" y1="510" y2="510"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="354.5" x2="393" y1="526.8047" y2="526.8047"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="149" x="393" y="532.0332">Inner product operators</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="542" x2="580.5" y1="526.8047" y2="526.8047"/></g><!--MD5=[a0949e8c3cf4b3f3a87808577687cff5]
+class expansion.RadialTestFunctions--><g id="elem_expansion.RadialTestFunctions"><rect codeLine="120" fill="#F1F1F1" height="48" id="expansion.RadialTestFunctions" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="230" x="39" y="848"/><ellipse cx="54" cy="864" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M56.7656,859.875 Q56.9219,859.6563 57.1094,859.5469 Q57.2969,859.4375 57.5156,859.4375 Q57.8906,859.4375 58.125,859.6953 Q58.3594,859.9531 58.3594,860.5625 L58.3594,862.0156 Q58.3594,862.625 58.125,862.8906 Q57.8906,863.1563 57.5156,863.1563 Q57.1719,863.1563 56.9688,862.9531 Q56.7656,862.7656 56.6563,862.25 Q56.6094,861.8906 56.4219,861.7031 Q56.0938,861.3281 55.4844,861.1094 Q54.875,860.8906 54.25,860.8906 Q53.4844,860.8906 52.8516,861.2188 Q52.2188,861.5469 51.7266,862.2969 Q51.2344,863.0469 51.2344,864.0781 L51.2344,865.1719 Q51.2344,866.4063 52.125,867.2266 Q53.0156,868.0469 54.6094,868.0469 Q55.5469,868.0469 56.2031,867.7969 Q56.5938,867.6406 57.0156,867.2031 Q57.2813,866.9375 57.4297,866.8594 Q57.5781,866.7813 57.7813,866.7813 Q58.1094,866.7813 58.3672,867.0391 Q58.625,867.2969 58.625,867.6406 Q58.625,867.9844 58.2813,868.3906 Q57.7813,868.9688 56.9844,869.2969 Q55.9063,869.75 54.6094,869.75 Q53.0938,869.75 51.8906,869.125 Q50.9063,868.625 50.2188,867.5547 Q49.5313,866.4844 49.5313,865.2031 L49.5313,864.0469 Q49.5313,862.7188 50.1484,861.5703 Q50.7656,860.4219 51.8594,859.8047 Q52.9531,859.1875 54.1875,859.1875 Q54.9219,859.1875 55.5703,859.3516 Q56.2188,859.5156 56.7656,859.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="198" x="68" y="869.7285">expansion.RadialTestFunctions</text><line style="stroke:#181818;stroke-width:0.5;" x1="40" x2="268" y1="880" y2="880"/><line style="stroke:#181818;stroke-width:0.5;" x1="40" x2="268" y1="888" y2="888"/></g><!--MD5=[b1b539986dd2cfc9fe67a8c5401955bf]
+class expansion.InnerProductOp1D--><g id="elem_expansion.InnerProductOp1D"><rect codeLine="121" fill="#F1F1F1" height="153.6563" id="expansion.InnerProductOp1D" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="218" x="45" y="434"/><ellipse cx="60" cy="450" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M62.7656,445.875 Q62.9219,445.6563 63.1094,445.5469 Q63.2969,445.4375 63.5156,445.4375 Q63.8906,445.4375 64.125,445.6953 Q64.3594,445.9531 64.3594,446.5625 L64.3594,448.0156 Q64.3594,448.625 64.125,448.8906 Q63.8906,449.1563 63.5156,449.1563 Q63.1719,449.1563 62.9688,448.9531 Q62.7656,448.7656 62.6563,448.25 Q62.6094,447.8906 62.4219,447.7031 Q62.0938,447.3281 61.4844,447.1094 Q60.875,446.8906 60.25,446.8906 Q59.4844,446.8906 58.8516,447.2188 Q58.2188,447.5469 57.7266,448.2969 Q57.2344,449.0469 57.2344,450.0781 L57.2344,451.1719 Q57.2344,452.4063 58.125,453.2266 Q59.0156,454.0469 60.6094,454.0469 Q61.5469,454.0469 62.2031,453.7969 Q62.5938,453.6406 63.0156,453.2031 Q63.2813,452.9375 63.4297,452.8594 Q63.5781,452.7813 63.7813,452.7813 Q64.1094,452.7813 64.3672,453.0391 Q64.625,453.2969 64.625,453.6406 Q64.625,453.9844 64.2813,454.3906 Q63.7813,454.9688 62.9844,455.2969 Q61.9063,455.75 60.6094,455.75 Q59.0938,455.75 57.8906,455.125 Q56.9063,454.625 56.2188,453.5547 Q55.5313,452.4844 55.5313,451.2031 L55.5313,450.0469 Q55.5313,448.7188 56.1484,447.5703 Q56.7656,446.4219 57.8594,445.8047 Q58.9531,445.1875 60.1875,445.1875 Q60.9219,445.1875 61.5703,445.3516 Q62.2188,445.5156 62.7656,445.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="186" x="74" y="455.7285">expansion.InnerProductOp1D</text><line style="stroke:#181818;stroke-width:0.5;" x1="46" x2="262" y1="466" y2="466"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="153" x="51" y="484.5332">_int_var : sympy.Symbol</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101" x="51" y="502.1426">_wt: sympy.Expr</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="158" x="51" y="519.752">_bound: List[sympy.Expr]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="51" y="537.3613">_conj: int</text><line style="stroke:#181818;stroke-width:0.5;" x1="46" x2="262" y1="544.4375" y2="544.4375"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="153" x="51" y="562.9707">__call__(opd_A, opd_B)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116" x="83" y="580.5801">-&gt; InnerProduct1D</text></g><!--MD5=[a4ba95600bec5ef58f05528b01eafb32]
+class expansion.InnerProduct1D--><g id="elem_expansion.InnerProduct1D"><rect codeLine="128" fill="#F1F1F1" height="188.875" id="expansion.InnerProduct1D" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="199" x="54.5" y="623.5"/><ellipse cx="69.5" cy="639.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M72.2656,635.375 Q72.4219,635.1563 72.6094,635.0469 Q72.7969,634.9375 73.0156,634.9375 Q73.3906,634.9375 73.625,635.1953 Q73.8594,635.4531 73.8594,636.0625 L73.8594,637.5156 Q73.8594,638.125 73.625,638.3906 Q73.3906,638.6563 73.0156,638.6563 Q72.6719,638.6563 72.4688,638.4531 Q72.2656,638.2656 72.1563,637.75 Q72.1094,637.3906 71.9219,637.2031 Q71.5938,636.8281 70.9844,636.6094 Q70.375,636.3906 69.75,636.3906 Q68.9844,636.3906 68.3516,636.7188 Q67.7188,637.0469 67.2266,637.7969 Q66.7344,638.5469 66.7344,639.5781 L66.7344,640.6719 Q66.7344,641.9063 67.625,642.7266 Q68.5156,643.5469 70.1094,643.5469 Q71.0469,643.5469 71.7031,643.2969 Q72.0938,643.1406 72.5156,642.7031 Q72.7813,642.4375 72.9297,642.3594 Q73.0781,642.2813 73.2813,642.2813 Q73.6094,642.2813 73.8672,642.5391 Q74.125,642.7969 74.125,643.1406 Q74.125,643.4844 73.7813,643.8906 Q73.2813,644.4688 72.4844,644.7969 Q71.4063,645.25 70.1094,645.25 Q68.5938,645.25 67.3906,644.625 Q66.4063,644.125 65.7188,643.0547 Q65.0313,641.9844 65.0313,640.7031 L65.0313,639.5469 Q65.0313,638.2188 65.6484,637.0703 Q66.2656,635.9219 67.3594,635.3047 Q68.4531,634.6875 69.6875,634.6875 Q70.4219,634.6875 71.0703,634.8516 Q71.7188,635.0156 72.2656,635.375 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="167" x="83.5" y="645.2285">expansion.InnerProduct1D</text><line style="stroke:#181818;stroke-width:0.5;" x1="55.5" x2="252.5" y1="655.5" y2="655.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="129" x="60.5" y="674.0332">_opd_A: sympy.Expr</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="129" x="60.5" y="691.6426">_opd_B: sympy.Expr</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="149" x="60.5" y="709.252">_int_var: sympy.Symbol</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101" x="60.5" y="726.8613">_wt: sympy.Expr</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="158" x="60.5" y="744.4707">_bound: List[sympy.Expr]</text><line style="stroke:#181818;stroke-width:0.5;" x1="55.5" x2="252.5" y1="751.5469" y2="751.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47" x="60.5" y="770.0801">_latex()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="93" x="60.5" y="787.6895">integral_form()</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="168" x="60.5" y="805.2988">change_variable(new_var)</text></g><!--MD5=[c7dc4914da7d8075805aa9633f84180b]
+class expansion.ExpansionRecipe--><g id="elem_expansion.ExpansionRecipe"><rect codeLine="138" fill="#F1F1F1" height="136.0469" id="expansion.ExpansionRecipe" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="241" x="347" y="650"/><ellipse cx="376.4" cy="666" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M379.1656,661.875 Q379.3219,661.6563 379.5094,661.5469 Q379.6969,661.4375 379.9156,661.4375 Q380.2906,661.4375 380.525,661.6953 Q380.7594,661.9531 380.7594,662.5625 L380.7594,664.0156 Q380.7594,664.625 380.525,664.8906 Q380.2906,665.1563 379.9156,665.1563 Q379.5719,665.1563 379.3688,664.9531 Q379.1656,664.7656 379.0563,664.25 Q379.0094,663.8906 378.8219,663.7031 Q378.4938,663.3281 377.8844,663.1094 Q377.275,662.8906 376.65,662.8906 Q375.8844,662.8906 375.2516,663.2188 Q374.6188,663.5469 374.1266,664.2969 Q373.6344,665.0469 373.6344,666.0781 L373.6344,667.1719 Q373.6344,668.4063 374.525,669.2266 Q375.4156,670.0469 377.0094,670.0469 Q377.9469,670.0469 378.6031,669.7969 Q378.9938,669.6406 379.4156,669.2031 Q379.6813,668.9375 379.8297,668.8594 Q379.9781,668.7813 380.1813,668.7813 Q380.5094,668.7813 380.7672,669.0391 Q381.025,669.2969 381.025,669.6406 Q381.025,669.9844 380.6813,670.3906 Q380.1813,670.9688 379.3844,671.2969 Q378.3063,671.75 377.0094,671.75 Q375.4938,671.75 374.2906,671.125 Q373.3063,670.625 372.6188,669.5547 Q371.9313,668.4844 371.9313,667.2031 L371.9313,666.0469 Q371.9313,664.7188 372.5484,663.5703 Q373.1656,662.4219 374.2594,661.8047 Q375.3531,661.1875 376.5875,661.1875 Q377.3219,661.1875 377.9703,661.3516 Q378.6188,661.5156 379.1656,661.875 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="177" x="393.6" y="671.7285">expansion.ExpansionRecipe</text><line style="stroke:#181818;stroke-width:0.5;" x1="348" x2="587" y1="682" y2="682"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="154" x="353" y="700.5332">fields: LabeledCollection</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="209" x="353" y="718.1426">fourier_ansatz: FourierExpansion</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="188" x="353" y="735.752">rad_expand: RadialExpansion</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="190" x="353" y="753.3613">rad_test: RadialTestFunctions</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="229" x="353" y="770.9707">inner_prod_op: RadialInnerProducts</text><line style="stroke:#181818;stroke-width:0.5;" x1="348" x2="587" y1="778.0469" y2="778.0469"/></g><!--MD5=[0b756ab0d49470861ba746d6cb6387f2]
+link expansion.InnerProductOp1D to expansion.RadialInnerProducts--><g id="link_expansion.InnerProductOp1D_expansion.RadialInnerProducts"><path codeLine="145" d="M263.07,511 C287.91,511 314.54,511 340.08,511 " fill="none" id="expansion.InnerProductOp1D-to-expansion.RadialInnerProducts" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="353.32,511,347.32,507,341.32,511,347.32,515,353.32,511" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[4baf905dda368a9415afdf4d0ae8c109]
+link expansion.FourierExpansion to expansion.SpectralExpansion--><g id="link_expansion.FourierExpansion_expansion.SpectralExpansion"><path codeLine="147" d="M286.2,289.6 C304,297.14 322.24,304.87 339.95,312.38 " fill="none" id="expansion.FourierExpansion-to-expansion.SpectralExpansion" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="342.87,306.01,358.55,320.26,337.41,318.9,342.87,306.01" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[e5f16a6a12c84f38305dd4f23ed83929]
+link expansion.RadialExpansions to expansion.SpectralExpansion--><g id="link_expansion.RadialExpansions_expansion.SpectralExpansion"><path codeLine="148" d="M260.03,366 C285.24,366 312.44,366 338.56,366 " fill="none" id="expansion.RadialExpansions-to-expansion.SpectralExpansion" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="338.74,359,358.74,366,338.74,373,338.74,359" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[e66b47a613f828d194c3a2b2f9ce689f]
+link expansion.InnerProduct1D to expansion.ExpansionRecipe--><!--MD5=[075d4200c719f1df87f8c2fd061f4e89]
+reverse link base.LabeledCollection to base.CollectionPG--><g id="link_base.LabeledCollection_base.CollectionPG"><path codeLine="152" d="M886.64,511 C900.08,511 913.61,511 926.67,511 " fill="none" id="base.LabeledCollection-backto-base.CollectionPG" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="886.38,518,866.38,511,886.38,504,886.38,518" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[133a4a89bf01121ef55c62dc6ee2a25a]
+link base.LabeledCollection to base.LabeledSubCollection--><g id="link_base.LabeledCollection_base.LabeledSubCollection"><path codeLine="153" d="M759.5,357.17 C759.5,344.27 759.5,331.27 759.5,318.48 " fill="none" id="base.LabeledCollection-to-base.LabeledSubCollection" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="759.5,305.23,755.5,311.23,759.5,317.23,763.5,311.23,759.5,305.23" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="90" x="702.5" y="336.7451">base_collection</text></g><!--MD5=[8294c30667880f3fc5d75e0e2503bd61]
+reverse link base.CollectionPG to core.pgvar--><g id="link_base.CollectionPG_core.pgvar"><path codeLine="154" d="M1130.33,413.37 C1142.25,404.19 1154.6,395.52 1167,388 C1180.21,379.99 1195.26,373.05 1209.8,367.28 " fill="none" id="base.CollectionPG-backto-core.pgvar" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="1126.3,416.5,1135.8581,414.1248,1130.2445,413.4273,1130.9419,407.8136,1126.3,416.5" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[a6679953865de74c0bf6582d04643752]
+reverse link base.CollectionPG to core.pgvar_bg--><g id="link_base.CollectionPG_core.pgvar_bg"><path codeLine="155" d="M1131.04,476.49 C1155.64,468.29 1181.3,459.73 1203.96,452.18 " fill="none" id="base.CollectionPG-backto-core.pgvar_bg" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="1126.14,478.12,1135.9439,479.0598,1130.882,476.5346,1133.4072,471.4726,1126.14,478.12" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[e29224ea5f60e97699db1c301a58108a]
+reverse link base.CollectionPG to core.pgvar_ptb--><g id="link_base.CollectionPG_core.pgvar_ptb"><path codeLine="156" d="M1131.27,511 C1155.39,511 1180.53,511 1202.84,511 " fill="none" id="base.CollectionPG-backto-core.pgvar_ptb" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="1126.14,511,1135.14,515,1131.14,511,1135.14,507,1126.14,511" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[5b418545630f431f1ff42fcf4e4049b7]
+reverse link base.CollectionPG to equations.eqs_pg--><g id="link_base.CollectionPG_equations.eqs_pg"><path codeLine="157" d="M1130.63,562.99 C1164.1,579.85 1199.57,597.74 1226.8,611.46 " fill="none" id="base.CollectionPG-backto-equations.eqs_pg" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="1126.14,560.72,1132.3815,568.3386,1130.6064,562.9675,1135.9775,561.1924,1126.14,560.72" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[070aae0209d793d531026f60cabca3a3]
+reverse link base.CollectionPG to equations.eqs_pg_lin--><g id="link_base.CollectionPG_equations.eqs_pg_lin"><path codeLine="158" d="M1129.93,644.88 C1141.7,656.22 1154.12,666.84 1167,676 C1176.45,682.72 1187.13,688.51 1198.01,693.44 " fill="none" id="base.CollectionPG-backto-equations.eqs_pg_lin" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="1126.31,641.33,1129.9382,650.4862,1129.8811,644.8296,1135.5376,644.7725,1126.31,641.33" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[97a83a81d69ddc6430aa9fe2ad0f8a1a]
+link expansion.SpectralExpansion to base.LabeledCollection--><g id="link_expansion.SpectralExpansion_base.LabeledCollection"><path codeLine="159" d="M576.07,419.79 C595.1,429.3 615.06,439.28 634.5,449 " fill="none" id="expansion.SpectralExpansion-to-base.LabeledCollection" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="637.79,442.82,652.55,458.02,631.53,455.34,637.79,442.82" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[3a654f3b4dd46f98c5118400a51501d4]
+link expansion.RadialInnerProducts to base.LabeledCollection--><g id="link_expansion.RadialInnerProducts_base.LabeledCollection"><path codeLine="160" d="M581.87,511 C598.56,511 615.84,511 632.77,511 " fill="none" id="expansion.RadialInnerProducts-to-base.LabeledCollection" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="632.79,504,652.79,511,632.79,518,632.79,504" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[fa804e302207e59cb56130f7e1dd946d]
+link expansion.RadialTestFunctions to base.LabeledCollection--><g id="link_expansion.RadialTestFunctions_base.LabeledCollection"><path codeLine="161" d="M269.16,882.5 C368.81,885.67 512.64,875.11 612,803 C653.04,773.21 683.28,728.62 705.26,683.19 " fill="none" id="expansion.RadialTestFunctions-to-base.LabeledCollection" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="699.03,680,713.74,664.74,711.75,685.84,699.03,680" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[a3f4715a4bcbfbc73fab4a2d46d564ae]
+@startuml classes_pg_model
+set namespaceSeparator .
+!define COMMENT(x) <color:grey>x</color>
+left to right direction
+
+namespace base {
+  class "base.CollectionPG" as CollectionPG {
+    {static} pg_field_names : list
+    .. vorticity ..
+    Psi
+    .. magnetic moments ..
+    Mpp
+    Mpz
+    Msp
+    Mss
+    Msz
+    zMpp
+    zMsp
+    zMss
+    .. B @ equatorial ..
+    Bs_e
+    Bp_e
+    Bz_e
+    dBp_dz_e
+    dBs_dz_e
+    .. B @ boundary ..
+    Br_b
+    Bs_p
+    Bp_p
+    Bz_p
+    Bs_m
+    Bp_m
+    Bz_m
+    - -
+    vorticity()
+    subset_mag() \n\t-> LabeledSubCollection
+    subset_moments() \n\t-> LabeledSubCollection
+    subset_B_equator() \n\t-> LabeledSubCollection
+    subset_B_bound() \n\t-> LabeledSubCollection
+    subset_B_bound_cyl() \n\t-> LabeledSubCollection
+  }
+  note bottom of CollectionPG: Base class for collections of \nPG variable / equation.\nIndexable (int or str) + iterable\ncan extract arbitrary subsets
+
+  class "base.LabeledCollection" as LabeledCollection {
+    COMMENT(Indexable + Iterable)
+    - -
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    - -
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+    _extract_subset(sub_slice)
+    apply(fun: Callable)
+    copy()
+    generate_collections(index)
+  }
+  ' note bottom of pg_utils.pg_model.base.LabeledCollection: Indexable + iterable
+  class "base.LabeledSubCollection" as LabeledSubCollection {
+    COMMENT(Indexable + Iterable)
+    - -
+    base_collection
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    - -
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+  }
+}
+
+namespace core {
+  object "core.pgvar" as core.pgvar {
+    COMMENT(Total PG variables)
+  }
+  object "core.pgvar_bg" as core.pgvar_bg {
+    COMMENT(PG background field)
+  }
+  object "core.pgvar_ptb" as core.pgvar_ptb {
+    COMMENT(PG perturbation field)
+  }
+}
+
+namespace equations {
+  object "equations.eqs_pg" as equations.eqs_pg {
+    COMMENT(PG equations)
+  }
+  object "equations.eqs_pg_lin" as equations.eqs_pg_lin {
+    COMMENT(Linearized PG equations)
+  }
+}
+
+namespace expansion {
+  class "expansion.SpectralExpansion" as SpectralExpansion {
+    fields : LabeledCollection
+    bases : LabeledCollection
+    coeffs : LabeledCollection
+    .. Explicit expansions in bases ..
+  }
+  class "expansion.FourierExpansion" as FourierExpansion {
+    bases : sympy.Expr
+    .. Explicit Fourier expansion ..
+    - -
+    {static} _build_fourier_map(fields, basis, coeffs)
+    {static} to_fourier_domain(expr, ansatz, basis)
+  }
+  class "expansion.RadialExpansions" as RadialExpansions {
+    .. Explicit forms of fields ..
+  }
+  class "expansion.RadialInnerProducts" as RadialInnerProducts {
+    .. Inner product operators ..
+  }
+  class "expansion.RadialTestFunctions" as RadialTestFunctions
+  class "expansion.InnerProductOp1D" as InnerProductOp1D {
+    _int_var : sympy.Symbol
+    _wt: sympy.Expr
+    _bound: List[sympy.Expr]
+    _conj: int
+    __call__(opd_A, opd_B) \n\t-> InnerProduct1D
+  }
+  class "expansion.InnerProduct1D" as InnerProduct1D {
+    _opd_A: sympy.Expr
+    _opd_B: sympy.Expr
+    _int_var: sympy.Symbol
+    _wt: sympy.Expr
+    _bound: List[sympy.Expr]
+    _latex()
+    integral_form()
+    change_variable(new_var)
+  }
+  class "expansion.ExpansionRecipe" as ExpansionRecipe {
+    fields: LabeledCollection
+    fourier_ansatz: FourierExpansion
+    rad_expand: RadialExpansion
+    rad_test: RadialTestFunctions
+    inner_prod_op: RadialInnerProducts
+  }
+  InnerProductOp1D - -o RadialInnerProducts
+  ' InnerProduct1D -left-o InnerProductOp1D
+  FourierExpansion - -|> SpectralExpansion
+  RadialExpansions - -|> SpectralExpansion
+  InnerProduct1D -[hidden]d-> ExpansionRecipe
+}
+
+base.LabeledCollection <|- - base.CollectionPG
+base.LabeledCollection -right-o base.LabeledSubCollection : base_collection
+base.CollectionPG <- - core.pgvar
+base.CollectionPG <- - core.pgvar_bg
+base.CollectionPG <- - core.pgvar_ptb
+base.CollectionPG <- - equations.eqs_pg
+base.CollectionPG <- - equations.eqs_pg_lin
+expansion.SpectralExpansion - -|> base.LabeledCollection
+expansion.RadialInnerProducts - -|> base.LabeledCollection
+expansion.RadialTestFunctions - -|> base.LabeledCollection
+
+@end[bold]uml
+
+@startuml classes_pg_model
+set namespaceSeparator .
+left to right direction
+
+namespace base {
+  class "base.CollectionPG" as CollectionPG {
+    {static} pg_field_names : list
+    .. vorticity ..
+    Psi
+    .. magnetic moments ..
+    Mpp
+    Mpz
+    Msp
+    Mss
+    Msz
+    zMpp
+    zMsp
+    zMss
+    .. B @ equatorial ..
+    Bs_e
+    Bp_e
+    Bz_e
+    dBp_dz_e
+    dBs_dz_e
+    .. B @ boundary ..
+    Br_b
+    Bs_p
+    Bp_p
+    Bz_p
+    Bs_m
+    Bp_m
+    Bz_m
+    - -
+    vorticity()
+    subset_mag() \n\t-> LabeledSubCollection
+    subset_moments() \n\t-> LabeledSubCollection
+    subset_B_equator() \n\t-> LabeledSubCollection
+    subset_B_bound() \n\t-> LabeledSubCollection
+    subset_B_bound_cyl() \n\t-> LabeledSubCollection
+  }
+  note bottom of CollectionPG: Base class for collections of \nPG variable / equation.\nIndexable (int or str) + iterable\ncan extract arbitrary subsets
+
+  class "base.LabeledCollection" as LabeledCollection {
+    <color:grey>Indexable + Iterable</color>
+    - -
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    - -
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+    _extract_subset(sub_slice)
+    apply(fun: Callable)
+    copy()
+    generate_collections(index)
+  }
+  class "base.LabeledSubCollection" as LabeledSubCollection {
+    <color:grey>Indexable + Iterable</color>
+    - -
+    base_collection
+    n_fields
+    n_iter : int
+    .. property ..
+    iter_filter
+    iter_name
+    - -
+    __getitem__(key: [int, str, slice])
+    __setitem__(key, value)
+    __iter__()
+    __next__()
+  }
+}
+
+namespace core {
+  object "core.pgvar" as core.pgvar {
+    <color:grey>Total PG variables</color>
+  }
+  object "core.pgvar_bg" as core.pgvar_bg {
+    <color:grey>PG background field</color>
+  }
+  object "core.pgvar_ptb" as core.pgvar_ptb {
+    <color:grey>PG perturbation field</color>
+  }
+}
+
+namespace equations {
+  object "equations.eqs_pg" as equations.eqs_pg {
+    <color:grey>PG equations</color>
+  }
+  object "equations.eqs_pg_lin" as equations.eqs_pg_lin {
+    <color:grey>Linearized PG equations</color>
+  }
+}
+
+namespace expansion {
+  class "expansion.SpectralExpansion" as SpectralExpansion {
+    fields : LabeledCollection
+    bases : LabeledCollection
+    coeffs : LabeledCollection
+    .. Explicit expansions in bases ..
+  }
+  class "expansion.FourierExpansion" as FourierExpansion {
+    bases : sympy.Expr
+    .. Explicit Fourier expansion ..
+    - -
+    {static} _build_fourier_map(fields, basis, coeffs)
+    {static} to_fourier_domain(expr, ansatz, basis)
+  }
+  class "expansion.RadialExpansions" as RadialExpansions {
+    .. Explicit forms of fields ..
+  }
+  class "expansion.RadialInnerProducts" as RadialInnerProducts {
+    .. Inner product operators ..
+  }
+  class "expansion.RadialTestFunctions" as RadialTestFunctions
+  class "expansion.InnerProductOp1D" as InnerProductOp1D {
+    _int_var : sympy.Symbol
+    _wt: sympy.Expr
+    _bound: List[sympy.Expr]
+    _conj: int
+    __call__(opd_A, opd_B) \n\t-> InnerProduct1D
+  }
+  class "expansion.InnerProduct1D" as InnerProduct1D {
+    _opd_A: sympy.Expr
+    _opd_B: sympy.Expr
+    _int_var: sympy.Symbol
+    _wt: sympy.Expr
+    _bound: List[sympy.Expr]
+    _latex()
+    integral_form()
+    change_variable(new_var)
+  }
+  class "expansion.ExpansionRecipe" as ExpansionRecipe {
+    fields: LabeledCollection
+    fourier_ansatz: FourierExpansion
+    rad_expand: RadialExpansion
+    rad_test: RadialTestFunctions
+    inner_prod_op: RadialInnerProducts
+  }
+  InnerProductOp1D - -o RadialInnerProducts
+  FourierExpansion - -|> SpectralExpansion
+  RadialExpansions - -|> SpectralExpansion
+  InnerProduct1D -[hidden]d-> ExpansionRecipe
+}
+
+base.LabeledCollection <|- - base.CollectionPG
+base.LabeledCollection -right-o base.LabeledSubCollection : base_collection
+base.CollectionPG <- - core.pgvar
+base.CollectionPG <- - core.pgvar_bg
+base.CollectionPG <- - core.pgvar_ptb
+base.CollectionPG <- - equations.eqs_pg
+base.CollectionPG <- - equations.eqs_pg_lin
+expansion.SpectralExpansion - -|> base.LabeledCollection
+expansion.RadialInnerProducts - -|> base.LabeledCollection
+expansion.RadialTestFunctions - -|> base.LabeledCollection
+
+@end[bold]uml
+
+PlantUML version 1.2022.7(Mon Aug 22 19:01:30 CEST 2022)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) Client VM
+Default Encoding: Cp1252
+Language: en
+Country: US
+--></g></svg>

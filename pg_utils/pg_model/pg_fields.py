@@ -12,7 +12,7 @@ from . import base
 
 
 
-"""Variables"""
+"""Independent variables"""
 
 # Coordinates
 x, y, z, t = sympy.symbols("x, y, z, t", real=True)
@@ -26,8 +26,8 @@ H = sympy.Function("H")(s)
 H_s = sympy.sqrt(1 - s**2)
 
 # Coordinate systems
-cyl_op = v3d.CylindricalCoordinates((s, p, z))
-sph_op = v3d.SphericalCoordinates((r, theta, p))
+cyl_op = v3d.CylindricalCoordinates(s, p, z)
+sph_op = v3d.SphericalCoordinates(r, theta, p)
 
 # Angular frequency
 omega = sympy.Symbol(r"\omega")
