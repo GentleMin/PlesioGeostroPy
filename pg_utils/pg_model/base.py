@@ -184,6 +184,18 @@ class LabeledCollection:
     
     def _extract_subset(self, sub_slice):
         return LabeledSubCollection(self, sub_slice)
+        
+    def copy(self):
+        """Deep copy
+        """
+        return LabeledCollection(self._field_names, 
+            **{fname: self[fname] for fname in self._field_names})
+    
+    def as_empty(self):
+        """Return an object with the same configuration of attributes
+        but with fields initiated as None. May be slightly faster than copy?
+        """
+        return LabeledCollection(self._field_names)
     
     def apply(self, fun: Callable[..., Any], 
         inplace: bool = False, metadata: bool = False) -> "LabeledCollection":
@@ -202,7 +214,7 @@ class LabeledCollection:
         if inplace:
             apply_to = self
         else:
-            apply_to = self._new_obj()
+            apply_to = self.as_empty()
         for i_field in range(self.n_fields):
             if metadata:
                 apply_to[i_field] = fun(self._field_names[i_field], self[i_field])
@@ -210,15 +222,9 @@ class LabeledCollection:
                 apply_to[i_field] = fun(self[i_field])
         return apply_to
     
-    def _new_obj(self):
-        return LabeledCollection(self._field_names)
+    def subs(self, sub_map: dict, inplace: bool = False):
+        return self.apply(lambda eq: eq.subs(sub_map), inplace=inplace)
     
-    def copy(self):
-        """Deep copy
-        """
-        return LabeledCollection(self._field_names, 
-            **{fname: self[fname] for fname in self._field_names})
-
     def generate_collection(self, index_array: List[bool]) -> "LabeledCollection":
         """Generate a new collection based on indices
         """
@@ -420,17 +426,19 @@ class CollectionPG(LabeledCollection):
         """
         return self._extract_subset(slice(15, None))
     
-    def apply(self, fun: Callable[..., Any], inplace: bool = False,
-        metadata: bool = False) -> LabeledCollection:
-        return super().apply(fun, inplace, metadata)
-    
-    def _new_obj(self):
-        return CollectionPG()
-    
     def copy(self):
         """Deep copy
         """
-        return CollectionPG(**{fname: self[fname] for fname in self._field_names})        
+        return CollectionPG(**{fname: self[fname] for fname in self._field_names})
+    
+    def as_empty(self):
+        """Overriding the as_empty method
+        """
+        return CollectionPG()
+    
+    def apply(self, fun: Callable[..., Any], inplace: bool = False,
+        metadata: bool = False) -> "CollectionPG":
+        return super().apply(fun, inplace, metadata)
 
 
 def map_collection(maps_from: LabeledCollection, maps_to: LabeledCollection) -> dict:

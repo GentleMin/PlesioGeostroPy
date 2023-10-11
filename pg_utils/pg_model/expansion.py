@@ -19,7 +19,7 @@ terms may be combined into one single dynamical variable, etc.
 """
 
 
-from typing import Any, List, Optional, Union
+from typing import Any, List, Optional, Union, Callable
 import sympy
 
 from . import base
@@ -30,6 +30,10 @@ import numpy as np
 
 # Integers denoting the radial and azimuthal basis
 n, m = sympy.symbols("n, m", integer=True)
+
+# Index for the orders of the radial test and trial functions
+n_test = sympy.Symbol(r"\ell'", integer=True)
+n_trial = sympy.Symbol(r"\ell", integer=True)
 
 # Angular frequency
 omega = sympy.Symbol(r"\omega")
@@ -184,6 +188,11 @@ class InnerProduct1D(sympy.Expr):
         if hints.get("integral", False):
             return self.integral_form()
     
+    def integrand(self):
+        """Get the explicit form of the integrand
+        """
+        return self._opd_A*self._opd_B*self._wt
+    
     def integral_form(self):
         """Get the explicit integral form
         """
@@ -193,22 +202,29 @@ class InnerProduct1D(sympy.Expr):
     
     def change_variable(self, new_var: sympy.Symbol, 
         int_var_expr: sympy.Expr, inv_expr: sympy.Expr, 
-        assuming_positive: bool = True) -> "InnerProduct1D":
+        jac_positive: bool = True, merge: bool = False, simplify: bool = False) -> "InnerProduct1D":
         """Change the integration variable
         
         :param new_var: the new variable to be integrated over
         :param int_var_expr: the current variable expressed in new variable
         :param inv_expr: one needs to explicitly state the inverse expression
         """
-        if assuming_positive:
+        if jac_positive:
             jac = sympy.diff(int_var_expr, new_var).doit()
         else:
             jac = sympy.Abs(sympy.diff(int_var_expr, new_var).doit())
+        opd_A = self._opd_A.subs({self._int_var: int_var_expr})
+        opd_B = self._opd_B.subs({self._int_var: int_var_expr})
+        wt = jac*self._wt.subs({self._int_var: int_var_expr})
+        if merge:
+            opd_B = wt*opd_B
+            wt = sympy.S.One
+        if simplify:
+            opd_A = opd_A.simplify()
+            opd_B = opd_B.simplify()
+            wt = wt.simplify()
         new_inner_prod = InnerProduct1D(
-            self._opd_A.subs({self._int_var: int_var_expr}),
-            self._opd_B.subs({self._int_var: int_var_expr}),
-            jac*self._wt.subs({self._int_var: int_var_expr}),
-            new_var, 
+            opd_A, opd_B, wt, new_var, 
             inv_expr.subs({self._int_var: self._bound[0]}).doit(),
             inv_expr.subs({self._int_var: self._bound[1]}).doit())
         return new_inner_prod
@@ -261,10 +277,9 @@ class RadialInnerProducts(base.LabeledCollection):
 
 
 class ExpansionRecipe:
-    """This is the top-level class used for spectral expansion,
+    """The top-level class used for spectral expansion,
     which defines the recipe concerning radial and azimuthal expansions.
     
-    :param equations: set of PG equations
     :param activated: bool array indicating activated equations
     :param fourier_ansatz: defines the fourier expansion part
         this is considered shared among all fields
@@ -273,20 +288,126 @@ class ExpansionRecipe:
     :param inner_products: inner products associated with each eq
     """
     
-    def __init__(self, equations: base.LabeledCollection, 
-        fourier_expand: FourierExpansions, rad_expand: RadialExpansions, 
-        rad_test: RadialTestFunctions, inner_prod_op: RadialInnerProducts) -> None:
+    def __init__(self, fourier_expand: FourierExpansions, 
+        rad_expand: RadialExpansions, rad_test: RadialTestFunctions, 
+        inner_prod_op: RadialInnerProducts) -> None:
         """Initialization
         """
-        self.equations = equations
-        self.fourier_ansatz = fourier_expand
-        self.rad_expansion = rad_expand
+        self.fourier_xpd = fourier_expand
+        self.rad_xpd = rad_expand
         self.rad_test = rad_test
         self.inner_prod_op = inner_prod_op
 
 
 
+class SystemEquations(base.LabeledCollection):
+    """The top-level class for system of equations to be solved
+    The equations are always assumed to be written in the first-order
+    form in time, i.e. LHS = d()/dt
+    
+    :param recipe: ExpansionRecipe, collection of expansion rules
+    :param \**fields: equations as attributes.
+    """
+    
+    def __init__(self, names: List[str], 
+        expansion_recipe: ExpansionRecipe, **fields) -> None:
+        """Initialization
+        """
+        self.recipe = expansion_recipe
+        super().__init__(names, **fields)
+    
+    def as_empty(self):
+        """Construct empty object with the same set of fields and recipe.
+        Overriden method.
+        """
+        return SystemEquations(self._field_names, self.recipe)
+    
+    def copy(self):
+        """Deep copy method, overriden due to a new attribute, recipe,
+        to be copied (copying of recipe is however shallow).
+        """
+        return SystemEquations(self._field_names, self.recipe, 
+            **{self[fname] for fname in self._field_names})
+    
+    def to_fourier_domain(self, inplace: bool = False) -> "SystemEquations":
+        """Convert expression into Fourier domain
+        using the bases and coefficients defined in recipe.fourier_ansatz
+        
+        :param inplace: bool, whether the operation is made in situ
+        """
+        f_map = base.map_collection(
+            self.recipe.fourier_xpd.fields, 
+            self.recipe.fourier_xpd)
+        new_sys = self.apply(
+            lambda eq: sympy.Eq(
+                FourierExpansions.to_fourier_domain(eq.lhs, f_map, self.recipe.fourier_xpd.bases), 
+                FourierExpansions.to_fourier_domain(eq.rhs, f_map, self.recipe.fourier_xpd.bases)), 
+            inplace=inplace, metadata=False)
+        return new_sys
+    
+    def to_radial(self, inplace: bool = False) -> "SystemEquations":
+        """Introduce radial expansion to the equations.
+        Note: functions/fields that are not expanded with an coefficient
+            (elements from recipe.rad_xpd.coeffs) will no longer be collected
+            properly and may be lost in linear system formation!
+        
+        :param inplace: bool, whether the operation is made in situ
+        """
+        f_map = base.map_collection(
+            self.recipe.rad_xpd.fields, 
+            self.recipe.rad_xpd)
+        new_sys = self.apply(
+            lambda eq: sympy.Eq(
+                eq.lhs.subs(f_map).doit().expand(), 
+                eq.rhs.subs(f_map).doit().expand()),
+            inplace=inplace, metadata=False)
+        return new_sys
+        
+    def to_inner_product(self, factor_lhs: sympy.Expr = sympy.S.One, 
+        factor_rhs: sympy.Expr = sympy.S.One, 
+        inplace: bool = False) -> "SystemEquations":
+        """Collect the radial equations to inner product form
+        
+        :param factor_lhs: sympy.Expr, allows the user to choose 
+            which factor should be moved out of the inner product on LHS
+        :param factor_rhs: ditto, but for RHS
+        :param inplace: bool, whether the operation is made in situ
+        """
+        def collect_inner_product(fname, eq):
+            ip_od = self.recipe.inner_prod_op[fname]
+            eq_test = self.recipe.rad_test[fname]
+            old_lhs = (eq.lhs/factor_lhs).doit().expand()
+            old_rhs = (eq.rhs/factor_rhs).doit().expand()
+            new_lhs, new_rhs = sympy.S.Zero, sympy.S.Zero
+            for coeff in self.recipe.rad_xpd.coeffs:
+                if not old_lhs.coeff(coeff, 1).equals(sympy.S.Zero):
+                    new_lhs += factor_lhs*coeff*ip_od(eq_test, old_lhs.coeff(coeff, 1))
+                if not old_rhs.coeff(coeff, 1).equals(sympy.S.Zero):
+                    new_rhs += factor_rhs*coeff*ip_od(eq_test, old_rhs.coeff(coeff, 1))
+            return sympy.Eq(new_lhs, new_rhs)
+        
+        return self.apply(collect_inner_product, inplace=inplace, metadata=True)
+    
+    def collect_matrices(self, factor_lhs: sympy.Expr = sympy.S.One, 
+        factor_rhs: sympy.Expr = sympy.S.One) -> List["SystemMatrix"]:
+        """Collect the coefficient matrices of the equations
+        
+        :param factor_lhs: sympy.Expr, allows the user to choose 
+            which factor should be moved out of the inner product on LHS
+        :param factor_rhs: ditto, but for RHS
+        """
+        exprs_m = base.LabeledCollection(self._field_names, 
+            **{fname: self[fname].lhs/factor_lhs for fname in self._field_names})
+        exprs_k = base.LabeledCollection(self._field_names,
+            **{fname: self[fname].rhs/factor_rhs for fname in self._field_names})
+        return (SystemMatrix(exprs_m, self.recipe.rad_xpd.coeffs), 
+                SystemMatrix(exprs_k, self.recipe.rad_xpd.coeffs))
+
+
+
 class SystemMatrix:
+    """System matrix
+    """
     
     def __init__(self, exprs: base.LabeledCollection, 
         coeffs: base.LabeledCollection) -> None:
@@ -302,49 +423,75 @@ class SystemMatrix:
         for expr in exprs:
             expr_row = list()
             for coeff in coeffs:
-                expr_row.append(expr.coeff(coeff, 1))
+                expr_row.append(expr.expand().coeff(coeff, 1))
             matrix.append(expr_row)
-        return matrix
+        return np.array(matrix)
     
-    def __getitem__(self, index):
-        if isinstance(index, int) or \
-            (isinstance(index, tuple) and isinstance(index[0], int)):
-            return self._getitem_by_int(index)
-        elif isinstance(index, str) or \
-            (isinstance(index, tuple) and isinstance(index[0], str)):
-            return self._getitem_by_name(index)
-        else:
-            raise IndexError
+    def __getitem__(self, index: List):
+        """Access by index (int or name)
+        """
+        assert len(index) == 2
+        idx_int = (
+            self._field_idx[index[0]] if isinstance(index[0], str) else index[0], 
+            self._field_idx[index[1]] if isinstance(index[1], str) else index[1])
+        return self._matrix[idx_int]
+        
+    #     if isinstance(index, int) or \
+    #         (isinstance(index, tuple) and isinstance(index[0], int)):
+    #         return self._getitem_by_int(index)
+    #     elif isinstance(index, str) or \
+    #         (isinstance(index, tuple) and isinstance(index[0], str)):
+    #         return self._getitem_by_name(index)
+    #     else:
+    #         raise IndexError
     
-    def _getitem_by_int(self, index: Union[int, List[int]]):
-        if isinstance(index, int):
-            return self._matrix[index]
-        elif isinstance(index, tuple) and len(index) == 2:
-            return self._matrix[index[0]][index[1]]
-        else:
-            raise IndexError
+    # def _getitem_by_int(self, index: Union[int, List[int]]):
+    #     """Access element by index ()
+    #     """
+    #     if isinstance(index, int):
+    #         return self._matrix[index]
+    #     elif isinstance(index, tuple) and len(index) == 2:
+    #         return self._matrix[index[0]][index[1]]
+    #     else:
+    #         raise IndexError
     
-    def _getitem_by_name(self, index: Union[str, List[str]]):
-        if isinstance(index, str):
-            return self._getitem_by_int(self._field_idx[index])
-        elif isinstance(index, tuple) and len(index) == 2:
-            return self._getitem_by_int(
-                (self._field_idx[index[0]], self._field_idx[index[1]]))
-        else:
-            raise IndexError
+    # def _getitem_by_name(self, index: Union[str, List[str]]):
+    #     """Access the element by name
+    #     """
+    #     if isinstance(index, str):
+    #         return self._getitem_by_int(self._field_idx[index])
+    #     elif isinstance(index, tuple) and len(index) == 2:
+    #         return self._getitem_by_int(
+    #             (self._field_idx[index[0]], self._field_idx[index[1]]))
+    #     else:
+    #         raise IndexError
     
     def __setitem__(self, index: Union[List[int], List[str]], 
         value: sympy.Expr):
-        if isinstance(index, tuple) and len(index) == 2:
-            if isinstance(index[0], int) and isinstance(index[1], int):
-                self._matrix[index[0]][index[1]] = value
-            elif isinstance(index[0], str) and isinstance(index[1], str):
-                row, col = self._field_idx[index[0]], self._field_idx[index[1]]
-                self._matrix[row][col] = value
-            else:
-                raise IndexError
-        else:
-            raise IndexError
+        """Set element by index (int or name)
+        """
+        assert len(index) == 2
+        idx_int = (
+            self._field_idx[index[0]] if isinstance(index[0], str) else index[0], 
+            self._field_idx[index[1]] if isinstance(index[1], str) else index[1])
+        self._matrix[idx_int] = value
+    
+        # if isinstance(index, tuple) and len(index) == 2:
+        #     if isinstance(index[0], int) and isinstance(index[1], int):
+        #         self._matrix[index[0]][index[1]] = value
+        #     elif isinstance(index[0], str) and isinstance(index[1], str):
+        #         row, col = self._field_idx[index[0]], self._field_idx[index[1]]
+        #         self._matrix[row][col] = value
+        #     else:
+        #         raise IndexError
+        # else:
+        #     raise IndexError
+
+    def block_sparsity(self):
+        return ~np.array([[self[ridx, cidx] == sympy.S.Zero
+                          for cidx in range(self._matrix.shape[1])]
+                         for ridx in range(self._matrix.shape[0])], dtype=bool)
+        
 
 
 
