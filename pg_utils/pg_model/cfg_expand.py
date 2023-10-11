@@ -94,22 +94,29 @@ rad_expand = expansion.RadialExpansions(fourier_expand.coeffs, bases_s, coeff_s,
 
 """Test functions"""
 
-test_s = expansion.RadialTestFunctions(field_names,
-    Psi = bases_s.Psi,
-    Mss = bases_s.Mss,
-    Mpp = bases_s.Mpp,
-    Msp = bases_s.Msp,
-    Msz = bases_s.Msz,
-    Mpz = bases_s.Mpz,
-    zMss = bases_s.zMss,
-    zMpp = bases_s.zMpp,
-    zMsp = bases_s.zMsp,
-    Bs_e = bases_s.Bs_e,
-    Bp_e = bases_s.Bp_e,
-    Bz_e = bases_s.Bz_e,
-    dBs_dz_e = bases_s.dBs_dz_e,
-    dBp_dz_e = bases_s.dBp_dz_e
-)
+# test_s = expansion.RadialTestFunctions(field_names,
+#     Psi = bases_s.Psi,
+#     Mss = bases_s.Mss,
+#     Mpp = bases_s.Mpp,
+#     Msp = bases_s.Msp,
+#     Msz = bases_s.Msz,
+#     Mpz = bases_s.Mpz,
+#     zMss = bases_s.zMss,
+#     zMpp = bases_s.zMpp,
+#     zMsp = bases_s.zMsp,
+#     Bs_e = bases_s.Bs_e,
+#     Bp_e = bases_s.Bp_e,
+#     Bz_e = bases_s.Bz_e,
+#     dBs_dz_e = bases_s.dBs_dz_e,
+#     dBp_dz_e = bases_s.dBp_dz_e
+# )
+
+# Even when the test functions are the same with the trial functions
+# It is required that they use different indices (or different placeholders)
+# so that the two can be distinguished.
+test_s = base.LabeledCollection(field_names,
+    **{fname: Function(r"\Phi_{%s}^{mn'}" % subscript_str[idx])(s) 
+       for idx, fname in enumerate(field_names)})
 
 
 """Inner products"""
@@ -129,5 +136,12 @@ inner_prod_op = expansion.RadialInnerProducts(field_names,
     Bz_e = expansion.InnerProductOp1D(s, S.One, (S.Zero, S.One)),
     dBs_dz_e = expansion.InnerProductOp1D(s, S.One, (S.Zero, S.One)),
     dBp_dz_e = expansion.InnerProductOp1D(s, S.One, (S.Zero, S.One))
+)
+
+recipe = expansion.ExpansionRecipe(
+    fourier_expand=fourier_expand,
+    rad_expand=rad_expand,
+    rad_test=test_s,
+    inner_prod_op=inner_prod_op
 )
 
