@@ -228,6 +228,46 @@ class InnerProduct1D(sympy.Expr):
             inv_expr.subs({self._int_var: self._bound[0]}).doit(),
             inv_expr.subs({self._int_var: self._bound[1]}).doit())
         return new_inner_prod
+    
+    def commute_factor_out(self, term: sympy.Expr, opd: int = 1) -> sympy.Expr:
+        """Move a factor out of the inner product
+        """
+        if opd == 0:
+            return term*InnerProduct1D(self._opd_A/term, self._opd_B, self._wt, 
+                self._int_var, self._bound[0], self._bound[1])
+        elif opd == 1:
+            return term*InnerProduct1D(self._opd_A, self._opd_B/term, self._wt, 
+                self._int_var, self._bound[0], self._bound[1])
+        else:
+            raise AttributeError
+    
+    def commute_factor_in(self, term: sympy.Expr, opd: int = 1) -> "InnerProduct1D":
+        """Move a factor into the inner product
+        """
+        if opd == 0:
+            return InnerProduct1D(term*self._opd_A, self._opd_B, self._wt, 
+                self._int_var, self._bound[0], self._bound[1])
+        elif opd == 1:
+            return InnerProduct1D(self._opd_A, term*self._opd_B, self._wt, 
+                self._int_var, self._bound[0], self._bound[1])
+        else:
+            raise AttributeError
+    
+    def split(self, opd: int = 1) -> sympy.Expr:
+        """Apply the distributive property of inner products to 
+        split the inner product whose argument is a sum of several terms
+        into the sum of several inner products.
+        """
+        if opd == 0 and isinstance(self._opd_A, sympy.Add):
+            return sympy.Add(**[InnerProduct1D(
+                arg, self._opd_B, self._wt, self._int_var, self._bound[0], self._bound[1])
+                for arg in self._opd_A.args])
+        elif opd == 1 and isinstance(self._opd_B, sympy.Add):
+            return sympy.Add(**[InnerProduct1D(
+                self._opd_A, arg, self._wt, self._int_var, self._bound[0], self._bound[1])
+                for arg in self._opd_B.args])
+        else:
+            return self
 
 
 
@@ -409,13 +449,6 @@ class SystemMatrix:
     """System matrix
     """
     
-    def __init__(self, exprs: base.LabeledCollection, 
-        coeffs: base.LabeledCollection) -> None:
-        assert exprs._field_names == coeffs._field_names
-        self._field_names = exprs._field_names
-        self._field_idx = {fname: idx for idx, fname in enumerate(self._field_names)}
-        self._matrix = self.build_matrix(exprs, coeffs)
-    
     @staticmethod
     def build_matrix(exprs: base.LabeledCollection, 
         coeffs: base.LabeledCollection) -> List:
@@ -427,44 +460,32 @@ class SystemMatrix:
             matrix.append(expr_row)
         return np.array(matrix)
     
+    def __init__(self, *args, **kwargs) -> None:
+        if isinstance(args[0], base.LabeledCollection):
+            # initiate from expression and coefficients
+            exprs, coeffs = args[0], args[1]
+            row_names = exprs._field_names
+            col_names = coeffs._field_names
+            matrix = self.build_matrix(exprs, coeffs)
+        else:
+            row_names = args[0]
+            col_names = args[1]
+            matrix = args[2]
+            assert matrix.shape == (len(row_names), len(col_names))
+        self._row_names = row_names
+        self._row_idx = {fname: idx for idx, fname in enumerate(self._row_names)}
+        self._col_names = col_names
+        self._col_idx = {fname: idx for idx, fname in enumerate(self._col_names)}
+        self._matrix = matrix
+    
     def __getitem__(self, index: List):
         """Access by index (int or name)
         """
         assert len(index) == 2
         idx_int = (
-            self._field_idx[index[0]] if isinstance(index[0], str) else index[0], 
-            self._field_idx[index[1]] if isinstance(index[1], str) else index[1])
+            self._row_idx[index[0]] if isinstance(index[0], str) else index[0], 
+            self._col_idx[index[1]] if isinstance(index[1], str) else index[1])
         return self._matrix[idx_int]
-        
-    #     if isinstance(index, int) or \
-    #         (isinstance(index, tuple) and isinstance(index[0], int)):
-    #         return self._getitem_by_int(index)
-    #     elif isinstance(index, str) or \
-    #         (isinstance(index, tuple) and isinstance(index[0], str)):
-    #         return self._getitem_by_name(index)
-    #     else:
-    #         raise IndexError
-    
-    # def _getitem_by_int(self, index: Union[int, List[int]]):
-    #     """Access element by index ()
-    #     """
-    #     if isinstance(index, int):
-    #         return self._matrix[index]
-    #     elif isinstance(index, tuple) and len(index) == 2:
-    #         return self._matrix[index[0]][index[1]]
-    #     else:
-    #         raise IndexError
-    
-    # def _getitem_by_name(self, index: Union[str, List[str]]):
-    #     """Access the element by name
-    #     """
-    #     if isinstance(index, str):
-    #         return self._getitem_by_int(self._field_idx[index])
-    #     elif isinstance(index, tuple) and len(index) == 2:
-    #         return self._getitem_by_int(
-    #             (self._field_idx[index[0]], self._field_idx[index[1]]))
-    #     else:
-    #         raise IndexError
     
     def __setitem__(self, index: Union[List[int], List[str]], 
         value: sympy.Expr):
@@ -472,25 +493,27 @@ class SystemMatrix:
         """
         assert len(index) == 2
         idx_int = (
-            self._field_idx[index[0]] if isinstance(index[0], str) else index[0], 
-            self._field_idx[index[1]] if isinstance(index[1], str) else index[1])
+            self._row_idx[index[0]] if isinstance(index[0], str) else index[0], 
+            self._col_idx[index[1]] if isinstance(index[1], str) else index[1])
         self._matrix[idx_int] = value
     
-        # if isinstance(index, tuple) and len(index) == 2:
-        #     if isinstance(index[0], int) and isinstance(index[1], int):
-        #         self._matrix[index[0]][index[1]] = value
-        #     elif isinstance(index[0], str) and isinstance(index[1], str):
-        #         row, col = self._field_idx[index[0]], self._field_idx[index[1]]
-        #         self._matrix[row][col] = value
-        #     else:
-        #         raise IndexError
-        # else:
-        #     raise IndexError
-
     def block_sparsity(self):
         return ~np.array([[self[ridx, cidx] == sympy.S.Zero
                           for cidx in range(self._matrix.shape[1])]
                          for ridx in range(self._matrix.shape[0])], dtype=bool)
+    
+    def apply(self, fun: Callable, inplace: bool=False, 
+        metadata: bool=False) -> "SystemMatrix":
+        sysm_out = self if inplace else SystemMatrix(
+            self._row_names, self._col_names, np.zeros(self._matrix.shape, dtype=object))
+        for i_row in range(self._matrix.shape[0]):
+            for i_col in range(self._matrix.shape[1]):
+                if metadata:
+                    sysm_out[i_row, i_col] = fun(self[i_row, i_col], 
+                        (self._row_names[i_row], self._col_names[i_col]))
+                else:
+                    sysm_out[i_row, i_col] = fun(self[i_row, i_col])
+        return sysm_out
         
 
 

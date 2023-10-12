@@ -8,18 +8,16 @@ The bridge between the symbolic expressions and numerical computations
 
 
 import warnings
+from typing import List, Union, Optional
 
 import sympy
 from sympy.integrals import quadrature as qdsym
-
-import numpy as np
-from scipy import special as specfun
-
-from ..pg_model import core
 from ..pg_model import expansion as xpd
 from ..pg_model.expansion import xi, n_test, n_trial
 
-from typing import List, Union, Optional
+import numpy as np
+from scipy import special as specfun
+from scipy import sparse
 
 
 def powers_of(expr: sympy.Expr, *args: sympy.Symbol):
@@ -62,26 +60,58 @@ def powers_of(expr: sympy.Expr, *args: sympy.Symbol):
 
 class InnerQuad_Rule:
     """Quadrature of inner product based on certain rule
-    Base class for inner product quad evaluators
+    Abstract base class for inner product quad evaluators
     """
     
     def __init__(self, inner_prod: xpd.InnerProduct1D) -> None:
         self.inner_prod = inner_prod
         self.int_var = self.inner_prod._int_var
     
-    def gram_matrix(self, nrange_trial: List[int], nrange_test: List[int],
+    def gramian(self, nrange_trial: List[int], nrange_test: List[int],
         *args, **kwargs) -> Union[np.ndarray, np.matrix, sympy.Matrix]:
+        """Calculate Gram matrix, the matrix formed by 
+        the inner products of trial and test functions.
+        Abstract method to be overriden for actual realization.
+        
+        Strictly speaking, Gram matrix may be a abuse of terminology,
+        as the inner product is usually not in the form <vi, vj>, but
+        rather in the form <ui, L(vj)>, i.e. the test and trial functions
+        are different, and the second operand may well involve a linear
+        operator on the trial expansion.
+        
+        :param nrange_trial: range of trial functions, an array of int
+            indices to be substituted into n_trial
+        :param nrange_test: range of test functions, an array of int
+            indices to be substituted into n_test
+        """
         raise NotImplementedError
 
 
 
 class InnerQuad_GaussJacobi(InnerQuad_Rule):
+    """Quadrature of inner product following Gauss-Jacobi quadrature
+    """
     
     def __init__(self, inner_prod: xpd.InnerProduct1D, automatic: bool = False,
         alpha: Union[float, int, sympy.Expr] = -sympy.Rational(1, 2), 
         beta: Union[float, int, sympy.Expr] = -sympy.Rational(1, 2), 
-        quadN: Optional[int] = None) -> None:
-        """
+        quadN: Optional[Union[int, sympy.Expr]] = n_test + n_trial) -> None:
+        """Initialization
+        
+        :param inner_prod: expansion.InnerProduct1D, inner prod to be evaluated
+        :param automatic: bool, whether to automatically deduce the orders
+            of Jacobi quadrature and the degree of polynomial to be integrated
+        :param alpha: float/int/sympy.Expr, preferably sympy.Expr, alpha index
+            of Jacobi quadrature. If automatic is True, the kwarg is ignored;
+            if automatic is False but kwarg is not explicitly given, default
+            is to use the Chebyshev alpha = -1/2
+        :param beta: float/int/sympy.Expr, preferably sympy.Expr, beta index.
+            Ignored when automatic is True, default to Chebyshev beta = -1/2 
+            when automatic deduction is turned off.
+        :param quadN: int/sympy.Expr, the quadrature degree. Ignored when
+            automatic deduction is True and the quantity not explicitly given, 
+            default to n_test + n_trial when automatic deduction turned off.
+            When a valid quadN is given, the input will always be used.
         """
         super().__init__(inner_prod)
         self.deduce = automatic
@@ -99,9 +129,16 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         else:
             self.alpha, self.beta = alpha, beta
             self.quadN = quadN
+        if quadN is not None:
+            self.quadN = quadN
         
     @classmethod
     def get_powers(cls, int_var: sympy.Symbol, expr: sympy.Expr) -> np.ndarray:
+        """Get the powers of p1=(1 - xi), p2=(1 + xi) and xi
+        
+        :param int_var: sympy.Symbol, integration variable
+        :param expr: sympy.Expr, the expression where the powers are retrieved
+        """
         p1 = sympy.Symbol(r"p_1", positive=True)
         p2 = sympy.Symbol(r"p_2", positive=True)
         replace_map = {1 - int_var: p1, int_var - 1: -p1, 
@@ -112,46 +149,78 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         return powers_of(expr, p1, p2, int_var)
     
     def deduce_params(self, Ntrial: int, Ntest: int):
+        """Determine the parameters of the quadrature
+        This method is called to determine the values of the parameters
+        during evaluation of Gram matrices.
+        
+        :param Ntrial: int, maximum value for n_trial
+        :param Ntest: int, maximum value for n_test
+            we assume that the maximum degree of the function to be
+            integrated will be reached at maximum n_trial and n_test
+        :returns: alpha, beta, quadN
+        """
         deduce_map = {n_trial: Ntrial, n_test: Ntest}
         if isinstance(self.alpha, list):
-            alpha = np.array([tmp.subs(deduce_map) for tmp in self.alpha])
-            beta = np.array([tmp.subs(deduce_map) for tmp in self.beta])
-            quadN = np.array([tmp.subs(deduce_map) for tmp in self.quadN])
-            alpha_min = alpha.min()
-            beta_min = beta.min()
-            quad_max = quadN.max()
-            pow_diff = [not term.is_integer for term in alpha - alpha_min] \
-                + [not term.is_integer for term in beta - beta_min]
+            # If alpha is a list, this means the integrand contains multiple
+            # terms, each term with some alpha, beta factors.
+            # The final alpha and beta will be given by the minimum of each
+            alpha_list = np.array([tmp.subs(deduce_map) for tmp in self.alpha])
+            beta_list = np.array([tmp.subs(deduce_map) for tmp in self.beta])
+            alpha = alpha_list.min()
+            beta = beta_list.min()
+            # If alpha and beta of each term in the summation differ by a 
+            # non-integer number, this means there will be endpoint singularities
+            # that cannot be simultaneously integrated using Gauss-Jacobi quad
+            pow_diff = [not term.is_integer for term in alpha_list - alpha] \
+                + [not term.is_integer for term in beta_list - beta]
             if np.array(pow_diff).sum() > 0:
                 warnings.warn("Incompatible singularities!"
-                    "The quadrature cannot integrate exactly.")
-            return alpha_min, beta_min, quad_max
+                    "The quadrature cannot integrate exactly."
+                    "Trying splitting the inner product instead.")
         else:
-            return (self.alpha.subs(deduce_map), 
-                    self.beta.subs(deduce_map), 
-                    self.quadN.subs(deduce_map))
+            alpha = self.alpha.subs(deduce_map)
+            beta = self.beta.subs(deduce_map)
+        if isinstance(self.quadN, list):
+            quadN = np.array([tmp.subs(deduce_map) for tmp in self.quadN]).max()
+        else:
+            quadN = self.quadN.subs(deduce_map)
+        return alpha, beta, quadN
     
-    def gram_matrix(self, nrange_trial: List[int], nrange_test: List[int], 
-        backend: str="sympy", output: str="sympy", int_opt: dict = {}, 
-        simp_opt: dict = {}) -> Union[np.ndarray, np.matrix, sympy.Matrix]:
-        """
+    def gramian(self, nrange_trial: List[int], nrange_test: List[int], 
+        backend: str="sympy", int_opt: dict={}, output: str="sympy", out_opt: dict={}, 
+        verbose: bool=True) -> Union[np.ndarray, np.matrix, sympy.Matrix]:
+        """Compute Gram matrix, concrete realization for Gauss Jacobi quadrature
+        
+        :param nrange_trial: idx range for trial func, see InnerQuadRule.gramian
+        :param nrange_test: idx range for test func, see InnerQuadRule.gramian
+        :param backend: str, which backend to use for integration.
+            "sympy": the evaluation will be done using sympy evalf
+            "scipy": the evaluation will be conducted using numpy/scipy funcs
+                the precision will be limited to platform support for np.float
+        :param int_opt: dict, kwargs passed to integration function
+        :param output: str, which form of matrix to output.
+            "sympy": the output will be cast to a sympy.Matrix
+            "numpy": the output will be cast to a numpy.ndarray
+        :param out_opt: dict, kwargs passed to _output_form method
         """
         alpha, beta, quadN = self.deduce_params(max(nrange_trial), max(nrange_test))
-        print(alpha, beta, quadN)
+        if verbose:
+            print("Integrating with alpha={}, beta={}, N={}".format(alpha, beta, quadN))
         if backend == "sympy":
-            M = self._quad_Jacobi_sympy(nrange_trial, nrange_test, 
+            M = self._quad_sympy(nrange_trial, nrange_test, 
                 alpha, beta, quadN, **int_opt)
         elif backend == "scipy":
-            M = self._quad_Jacobi_scipy(nrange_trial, nrange_test, 
+            M = self._quad_scipy(nrange_trial, nrange_test, 
                 alpha, beta, quadN)
         else:
             raise AttributeError
-        return self._output_form(M, output=output, **simp_opt)
+        return self._output_form(M, output=output, **out_opt)
     
-    def _quad_Jacobi_sympy(self, nrange_trial: List[int], nrange_test: List[int], 
+    def _quad_sympy(self, nrange_trial: List[int], nrange_test: List[int], 
         alpha: Union[float, int, sympy.Expr], beta: Union[float, int, sympy.Expr], 
         quad_N: int, precision: int = 16) -> sympy.Matrix:
-        """
+        """Quadrature using sympy utilities.
+        Concrete realization of the Gauss-Jacobi quadrature
         """
         xi_quad, wt_quad = qdsym.gauss_jacobi(quad_N, alpha, beta, precision)
         integrand = self.inner_prod.integrand()/(1 - xi)**alpha/(1 + xi)**beta
@@ -167,10 +236,11 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             M.append(M_row)
         return sympy.Matrix(M)
     
-    def _quad_Jacobi_scipy(self, nrange_trial: List[int], nrange_test: List[int], 
+    def _quad_scipy(self, nrange_trial: List[int], nrange_test: List[int], 
         alpha: Union[float, int, sympy.Expr], beta: Union[float, int, sympy.Expr], 
         quad_N: int) -> np.ndarray:
-        """
+        """Quadrature using scipy utilities
+        Concrete realization of the Gauss-Jacobi quadrature
         """
         xi_quad, wt_quad = specfun.roots_jacobi(quad_N, alpha, beta)
         integrand = self.inner_prod.integrand()/(1 - xi)**alpha/(1 + xi)**beta
@@ -187,7 +257,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             return sympy.nsimplify(M_in, **kwargs)
         elif output == "numpy":
             if isinstance(M_in, sympy.Matrix):
-                return np.array(M_in).astype(np.float64)
+                return np.array(M_in).astype(np.complex_)
             else:
                 return M_in
         else:
@@ -219,3 +289,60 @@ class InnerProdQuad:
             return InnerQuad_GaussJacobi(inner_prod, *args, **kwargs)
         else:
             return NotImplementedError
+
+
+
+class QuadRecipe:
+    
+    def __init__(self, init_opt: dict={}, gram_opt: dict={}) -> None:
+        self.init_opt = init_opt
+        self.gram_opt = gram_opt
+
+
+
+class MatrixExpander:
+    
+    def __init__(self, matrix: xpd.SystemMatrix, quad_recipes: np.ndarray,
+        ranges_trial: List, ranges_test: List) -> None:
+        assert matrix._matrix.shape == quad_recipes.shape
+        assert matrix._matrix.shape == (len(ranges_test), len(ranges_trial))
+        self.matrix = matrix
+        self.recipe = quad_recipes
+        self.n_trials = ranges_trial
+        self.n_tests = ranges_test
+    
+    def expand(self, sparse=False, verbose=False):
+        if sparse:
+            return self._expand_sparse(verbose=verbose)
+        else:
+            return self._expand_dense(verbose=verbose)
+    
+    def _expand_sparse(self, verbose=False) -> sparse.csr_array:
+        n_row = sum([len(nrange_test) for nrange_test in self.n_tests])
+        n_col = sum([len(nrange_trial) for nrange_trial in self.n_trials])
+        return sparse.csr_array((n_row, n_col))
+    
+    def _expand_dense(self, verbose=False) -> np.ndarray:
+        M_list = list()
+        for i_row in range(self.matrix._matrix.shape[0]):
+            M_row = list()
+            for i_col in range(self.matrix._matrix.shape[1]):
+                element = self.matrix[i_row, i_col]
+                if element is None or element == sympy.S.Zero or element == 0:
+                    M_row.append(np.zeros(
+                        (len(self.n_tests[i_row]), len(self.n_trials[i_col])), 
+                        dtype=np.complex_))
+                elif isinstance(element, xpd.InnerProduct1D):
+                    if verbose:
+                        print("Element (%s, %s)" % 
+                            (self.matrix._row_names[i_row], self.matrix._col_names[i_col]))
+                    recipe = self.recipe[i_row, i_col]
+                    M_tmp = InnerQuad_GaussJacobi(element, **recipe.init_opt)
+                    M_tmp = M_tmp.gramian(self.n_trials[i_col], self.n_tests[i_row], 
+                            verbose=verbose, **recipe.gram_opt)
+                    M_row.append(np.array(M_tmp).astype(np.complex_))
+                else:
+                    raise NotImplementedError
+            M_list.append(M_row)
+        return np.block(M_list)
+        
