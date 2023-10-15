@@ -62,8 +62,9 @@ bases_s_expression = base.LabeledCollection(field_names,
     zMsp = H_s**2*s**(Abs(m_abs - 2))*jacobi(n, 2, Abs(m_abs - 2) - Rational(1, 2), xi_s),
     # Coupling implemented for Bs_e, Bp_e,
     Bs_e = H_s**2*s**(Abs(m_abs - 1))*jacobi(n, 2, Abs(m_abs - 1) - Rational(1, 2), xi_s),
-    # Bp_e = H_s**2*s**(Abs(m_abs + 1))*jacobi(n, 2, Abs(m_abs - 1) + Rational(1, 2), xi_s),
-    Bp_e = s**(Abs(m_abs - 1) + 2)*jacobi(n, 0, Abs(m_abs - 1) + Rational(1, 2), xi_s),
+    # Bp_e = H_s**2*s**(Abs(m_abs - 1) + 2)*jacobi(n, 2, Abs(m_abs - 1) + Rational(1, 2), xi_s),
+    # Bp_e = s**(Abs(m_abs - 1) + 2)*jacobi(n, 0, Abs(m_abs - 1) + Rational(3, 2), xi_s),
+    Bp_e = s**(Abs(m_abs - 1) + 2)*jacobi(n, 2, Abs(m_abs - 2) + Rational(1, 2), xi_s),
     Bz_e = H_s**2*s**m_abs*jacobi(n, 2, m_abs - Rational(1, 2), xi_s),
     dBs_dz_e = H_s**2*s**(Abs(m_abs - 1))*jacobi(n, 2, Abs(m_abs - 1) - Rational(1, 2), xi_s),
     dBp_dz_e = H_s**2*s**(Abs(m_abs - 1))*jacobi(n, 2, Abs(m_abs - 1) - Rational(1, 2), xi_s)
@@ -71,7 +72,7 @@ bases_s_expression = base.LabeledCollection(field_names,
 
 # coefficients
 coeff_s = base.LabeledCollection(field_names,
-    **{fname: Function(r"C_{%s}^{mn}" % subscript_str[idx])(s) 
+    **{fname: Symbol(r"C_{%s}^{mn}" % subscript_str[idx])
        for idx, fname in enumerate(field_names)})
 
 rad_expand = expansion.RadialExpansions(fourier_expand.coeffs, bases_s, coeff_s,
@@ -86,7 +87,7 @@ rad_expand = expansion.RadialExpansions(fourier_expand.coeffs, bases_s, coeff_s,
     zMsp = coeff_s.zMsp*bases_s.zMsp,
     # For future reference, this is how the coupling can be implemented
     Bs_e = coeff_s.Bs_e*bases_s.Bs_e,
-    Bp_e = coeff_s.Bp_e*bases_s.Bp_e + coeff_s.Bs_e*bases_s.Bs_e,
+    Bp_e = coeff_s.Bp_e*bases_s.Bp_e + I*sign(m)*coeff_s.Bs_e*bases_s.Bs_e,
     Bz_e = coeff_s.Bz_e*bases_s.Bz_e,
     dBs_dz_e = coeff_s.dBs_dz_e*bases_s.dBs_dz_e,
     dBp_dz_e = coeff_s.dBp_dz_e*bases_s.dBp_dz_e
