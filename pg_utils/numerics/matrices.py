@@ -90,25 +90,31 @@ class InnerQuad_Rule:
 
 class InnerQuad_GaussJacobi(InnerQuad_Rule):
     """Quadrature of inner product following Gauss-Jacobi quadrature
+    
+    :param inner_prod: expansion.InnerProduct1D, inner prod to be evaluated
+    :param int_var: sympy.Symbol, integration variable
+    :param deduce: bool, whether to automatically deduce the indices
+    :param alpha: sympy.Expr, alpha idx of Jacobi quadrature
+    :param beta: sympy.Expr, beta idx of Jacobi quadrature
+    :param powerN: sympy.Expr, total degree to be integrated
     """
     
     def __init__(self, inner_prod: xpd.InnerProduct1D, automatic: bool = False,
-        alpha: Union[float, int, sympy.Expr] = -sympy.Rational(1, 2), 
-        beta: Union[float, int, sympy.Expr] = -sympy.Rational(1, 2), 
-        quadN: Optional[Union[int, sympy.Expr]] = n_test + n_trial) -> None:
+        alpha: sympy.Expr = -sympy.Rational(1, 2), 
+        beta: sympy.Expr = -sympy.Rational(1, 2), 
+        quadN: Optional[sympy.Expr] = None) -> None:
         """Initialization
         
         :param inner_prod: expansion.InnerProduct1D, inner prod to be evaluated
         :param automatic: bool, whether to automatically deduce the orders
             of Jacobi quadrature and the degree of polynomial to be integrated
-        :param alpha: float/int/sympy.Expr, preferably sympy.Expr, alpha index
-            of Jacobi quadrature. If automatic is True, the kwarg is ignored;
-            if automatic is False but kwarg is not explicitly given, default
-            is to use the Chebyshev alpha = -1/2
-        :param beta: float/int/sympy.Expr, preferably sympy.Expr, beta index.
+        :param alpha: sympy.Expr, alpha index of Jacobi quadrature. 
+            Ignored when automatic is True, default to Chebyshev alpha = -1/2 
+            when automatic deduction is turned off.
+        :param beta: sympy.Expr, beta index of Jacobi quadrature.
             Ignored when automatic is True, default to Chebyshev beta = -1/2 
             when automatic deduction is turned off.
-        :param quadN: int/sympy.Expr, the quadrature degree. Ignored when
+        :param quadN: int/sympy.Expr, no. of quadrature points. Ignored when 
             automatic deduction is True and the quantity not explicitly given, 
             default to n_test + n_trial when automatic deduction turned off.
             When a valid quadN is given, the input will always be used.
@@ -121,16 +127,16 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             if isinstance(powers_list[0], list):
                 self.alpha = [powers[0] for powers in powers_list]
                 self.beta = [powers[1] for powers in powers_list]
-                self.quadN = [powers[2] for powers in powers_list]
+                self.powerN = [powers[2] for powers in powers_list]
             else:
                 self.alpha = powers_list[0]
                 self.beta = powers_list[1]
-                self.quadN = powers_list[2]
+                self.powerN = powers_list[2]
         else:
             self.alpha, self.beta = alpha, beta
-            self.quadN = quadN
+            self.powerN = 2*quadN - 1
         if quadN is not None:
-            self.quadN = quadN
+            self.powerN = 2*quadN - 1
         
     @classmethod
     def get_powers(cls, int_var: sympy.Symbol, expr: sympy.Expr) -> np.ndarray:
@@ -180,10 +186,16 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         else:
             alpha = self.alpha.subs(deduce_map)
             beta = self.beta.subs(deduce_map)
-        if isinstance(self.quadN, list):
-            quadN = np.array([tmp.subs(deduce_map) for tmp in self.quadN]).max()
+        if isinstance(self.powerN, list):
+            if isinstance(self.alpha, list):
+                powerN = [tmp + self.alpha[idx] + self.beta[idx] - alpha - beta
+                    for idx, tmp in enumerate(self.powerN)]
+                powerN = np.array([tmp.subs(deduce_map) for tmp in powerN]).max()
+            else:
+                powerN = np.array([tmp.subs(deduce_map) for tmp in self.powerN]).max()
         else:
-            quadN = self.quadN.subs(deduce_map)
+            powerN = self.powerN.subs(deduce_map)
+        quadN = int(powerN) // 2 + 1
         return alpha, beta, quadN
     
     def gramian(self, nrange_trial: List[int], nrange_test: List[int], 
@@ -242,7 +254,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         """Quadrature using scipy utilities
         Concrete realization of the Gauss-Jacobi quadrature
         """
-        xi_quad, wt_quad = specfun.roots_jacobi(quad_N, alpha, beta)
+        xi_quad, wt_quad = specfun.roots_jacobi(int(quad_N), float(alpha), float(beta))
         integrand = self.inner_prod.integrand()/(1 - xi)**alpha/(1 + xi)**beta
         int_fun = sympy.lambdify([n_test, n_trial, xi], integrand.doit(), 
             modules=["scipy", "numpy"])
@@ -262,8 +274,8 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
                 return M_in
         else:
             raise AttributeError
-    
-    
+
+
 
 class InnerProdQuad:
     """Quadrature of inner product
@@ -300,10 +312,129 @@ class QuadRecipe:
 
 
 
+class LabeledBlockArray:
+    """Block 1-D array with labels assigned to blocks
+    
+    LabeledBlockMatrix wraps around an array, so that blocks of it
+    can be accessed using a single string
+    
+    :param _block_idx: dict, key=label(str) -> value=indices of the block (slice)
+    :param _array: np.ndarray, the underlying matrix
+    """
+    
+    def __init__(self, array: np.ndarray, 
+        block_names: List[str], block_ranges: List[int]) -> None:
+        """
+        :param block_names: array-like, names of the blocks
+        :param block_ranges: array of integers, the size of each block
+        
+        ..Example: for instance, 
+            LabeledBlockArray(np.arange(10), ["A", "B", "C"], [3, 4, 3])
+            will be interpreted in the following sense:
+            [---A---|-----B------|---C---]
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        """
+        assert len(block_names) == len(block_ranges)
+        idx_sums = np.r_[0, np.cumsum(block_ranges)]
+        self._block_idx = {name: slice(idx_sums[idx], idx_sums[idx+1])
+            for idx, name in enumerate(block_names)}
+        self._array = array
+    
+    def __getitem__(self, key):
+        if isinstance(key, str):
+            key = self._block_idx[key]
+        return self._array.__getitem__(key)
+    
+    def __setitem__(self, key, value):
+        if isinstance(key, str):
+            key = self._block_idx[key]
+        self._array.__setitem__(key, value)
+
+
+
+class LabeledBlockMatrix:
+    """Block matrix with labels assigned to row & col blocks
+    
+    Unlike functions e.g. numpy.block, LabeledBlockMatrix assumes the
+    matrix are segmented into block separated by fixed grid lines, i.e.
+        AAA BB
+        AAA BB
+        CCC DD
+    but not in the forms of
+        AAA BB      AAA BB
+        AAA BB  or  CCC BB
+        CC DDD      CCC DD
+    and so each block can be determined by one row and one column idx.
+    
+    :param _row_idx: dict, key=label(str) -> value=row indices of the block (slice)
+    :param _col_idx: dict, key=label(str) -> value=col indices of the block (slice)
+    :param _matrix: np.ndarray, the underlying matrix
+    """
+    
+    def __init__(self, matrix: np.ndarray, 
+        row_names: List[str], row_ranges: List[int], 
+        col_names: List[str], col_ranges: List[int]) -> None:
+        """Initialization
+        
+        :param row_names: array-like, names of the row blocks
+        :param row_ranges: array of integers, the size of each block in 
+            number of rows.
+        :param col_names: array-like, names of the col blocks
+        :param col_ranges: array of integers, the size of each block in 
+            number of cols.
+        """
+        assert matrix.shape == (sum(row_ranges), sum(col_ranges))
+        assert len(row_names) == len(row_ranges)
+        assert len(col_names) == len(col_ranges)
+        idx_sums = np.r_[0, np.cumsum(row_ranges)]
+        self._row_idx = {row_name: slice(idx_sums[idx], idx_sums[idx+1]) 
+            for idx, row_name in enumerate(row_names)}
+        idx_sums = np.r_[0, np.cumsum(col_ranges)]
+        self._col_idx = {col_name: slice(idx_sums[idx], idx_sums[idx+1]) 
+            for idx, col_name in enumerate(col_names)}
+        self._matrix = matrix
+    
+    def __getitem__(self, key):
+        if isinstance(key, str):
+            key = self._row_idx[key]
+        elif isinstance(key, tuple):
+            key = (self._row_idx[key[0]] if isinstance(key[0], str) else key[0], 
+                   self._col_idx[key[1]] if isinstance(key[1], str) else key[1])
+        return self._matrix.__getitem__(key)
+    
+    def __setitem__(self, key, value):
+        if isinstance(key, str):
+            key = self._row_idx[key]
+        elif isinstance(key, tuple):
+            key = (self._row_idx[key[0]] if isinstance(key[0], str) else key[0], 
+                   self._col_idx[key[1]] if isinstance(key[1], str) else key[1])
+        self._matrix.__setitem__(key, value)
+
+
+
 class MatrixExpander:
+    """Evaluation class for expanding system matrices 
+    with InnerProduct1D elements into actual numerical matrices.
+    
+    :param matrix: expansion.SystemMatrix, a system matrix with either zero
+        or InnerProduct1D as elements.
+    :param recipe: np.ndarray, collection of QuadRecipe objects.
+    :param n_trials: ranges of trial functions for the expansion
+    :param n_tests: ranges of test functions for the expansion
+    """
     
     def __init__(self, matrix: xpd.SystemMatrix, quad_recipes: np.ndarray,
         ranges_trial: List, ranges_test: List) -> None:
+        """Initialization
+        
+        :param matrix: expansion.SystemMatrix, a system matrix with either zero
+            or InnerProduct1D as elements. Ideally in the future, this should
+            also accept matrices containing elements written as a sum of inner
+            products, for robustness.
+        :param quad_recipes: np.ndarray, collection of QuadRecipe objects.
+        :param ranges_trial: ranges of trial functions for the expansion
+        :param ranges_test: ranges of test functions for the expansion
+        """
         assert matrix._matrix.shape == quad_recipes.shape
         assert matrix._matrix.shape == (len(ranges_test), len(ranges_trial))
         self.matrix = matrix
@@ -312,17 +443,24 @@ class MatrixExpander:
         self.n_tests = ranges_test
     
     def expand(self, sparse=False, verbose=False):
+        """Expand the matrix according to the recipes
+        """
         if sparse:
             return self._expand_sparse(verbose=verbose)
         else:
             return self._expand_dense(verbose=verbose)
     
     def _expand_sparse(self, verbose=False) -> sparse.csr_array:
+        """Form a sparse matrix during the expansion
+        """
+        raise NotImplementedError
         n_row = sum([len(nrange_test) for nrange_test in self.n_tests])
         n_col = sum([len(nrange_trial) for nrange_trial in self.n_trials])
         return sparse.csr_array((n_row, n_col))
     
     def _expand_dense(self, verbose=False) -> np.ndarray:
+        """Form a dense matrix during the expansion
+        """
         M_list = list()
         for i_row in range(self.matrix._matrix.shape[0]):
             M_row = list()
@@ -346,3 +484,12 @@ class MatrixExpander:
             M_list.append(M_row)
         return np.block(M_list)
         
+
+
+def invert_block_diag(matrix: np.ndarray, block_seg: List[int]) -> np.ndarray:
+    """Invert a block diagonal matrix
+    
+    The matrix is assumed to be square matrix,
+    and the block_seg gives the segmentation of the blocks on the diagonal.
+    """
+    assert matrix.shape[0] == matrix.shape[1]
