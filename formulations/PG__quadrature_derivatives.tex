@@ -1,0 +1,110 @@
+
+\section{Why does the quadrature works in SciPy?}
+
+This section is regarding a technical detail on the behaviour of \texttt{eval\_jacobi} in the scipy package, especially when the degree $n$ is negative.
+\vspace{1em}
+
+\noindent \textit{Why are there negative degrees in the Jacobi polynomials used in the code?}
+
+In computing the system matrices, stiffness matrix $\mathbf{K}$ in particular, it is often the case that we need to compute the inner product in the form of
+\[
+    \left\langle s^{m_1}(1-s^2)^{m_2}P_{n'}^{(\alpha', \beta')}(2s^2 - 1), \mathcal{L} \left(s^{m_3}(1-s^2)^{m_4}P_n^{(\alpha, \beta)}(2s^2 - 1)\right) \right\rangle.
+\]
+The result of the trial function being operated on by the linear operator $\mathcal{L}$ typically involves $P_n^{(\alpha, \beta)}(2s^2-1)$, its derivative with respect to s, i.e. $\frac{d^k}{ds^k} P_n^{(\alpha,\beta)}(2s^2 - 1)$, or in other words, involving derivatives of the Jacobi polynomial $\frac{d^k}{d\xi^k} P_n^{(\alpha, \beta)}(\xi)|_{\xi = 2s^2 - 1}$.
+This is not a problem in symbolic engines (actually, the only functioning way in \texttt{SymPy} to calculate such inner products is to keep the derivative as it is, unevaluated), but not acceptable for numerical routines. Typical numerical routines, whether using \texttt{SciPy} in Python or \texttt{MATLAB}, have no idea how to calculate the "derivative of a Jacobi polynomial".
+In order to use this numerical routines, the only remaining feasible way seems to be simplifying the expression into explicit polynomials at each given $n$ and $n'$ (using some symbolic engines), and then hand over the explicit polynomial to \texttt{SciPy}.
+However, this means that the most desirable feature of this numerical libraries, i.e. vectorized and parallelized operations, are out of the picture.
+Evaluating these inner products purely numerically thus seems to encounter a problem.
+
+There is, however, a robust workaround: the derivatives of Jacobi polynomials can always be converted to another Jacobi polynomial, using the relation
+\[
+    \frac{d^k}{dz^k} P_n^{(\alpha,\beta)}(z) = \frac{\Gamma(\alpha + \beta + n + 1 + k)}{2^k \Gamma(\alpha + \beta + n + 1)} P_{n-k}^{(\alpha+k,\beta+k)}(z).
+\]
+This can be easily done as soon as \texttt{SymPy} is asked to simplify or "evaluate" the derivatives concerning the Jacobi polynomials.
+Now the integrand can be safely converted to a series of algebraic calculations involving only the undifferentiated Jacobi polynomials.
+This expression can be handed over to numerical functions, that can be evaluated at multiple $n$, $n'$ as well as $z$ in a vectorized fashion very efficiently. 
+However, here comes another question: what is $P_{n-k}^{(\alpha+k,\beta+k)}(z)$, when $n < k$? How will the numerical routine handle this?
+\vspace{1em}
+
+\noindent\textit{Is there a Jacobi polynomial with negative degree?}
+
+Strictly/semantically speaking, there is no such a thing.
+A polynomial is really just a polynomial, and can only have non-negative degrees.
+In fact, if you ask \texttt{SymPy} to evaluate a Jacobi polynomial with negative degree:
+\begin{lstlisting}[language=Python]
+>>> sympy.jacobi(-1, 5/2, 4, -0.9).evalf()
+...
+ValueError: Cannot generate Jacobi polynomial of degree -1
+\end{lstlisting}
+Indeed, if we follow the definition on Wikipedia page,
+\[
+    P_n^{(\alpha,\beta)}(z) = \frac{(\alpha + 1)_n}{n!}\prescript{}{2}{F}_1\left(-n, 1+\alpha+\beta+n, 1+\alpha, \frac{1-z}{2}\right)
+\]
+where $\prescript{}{2}{F}_1$ is the hypergeometric function.
+The form of the prefactor is apparently only restricted to non-negative $n$, since factorial as well as Pochhammer's symbol usually only takes non-negative $n$ arguments.
+However, both \texttt{Mathematica} and \texttt{SciPy} are okay with evaluating Jacobi polynomials with negative degrees:
+\begin{lstlisting}[language=Mathematica]
+(*Mathematica*)
+In[1]=  N[JacobiP[-1, 5/2, 4, -0.9]]
+Out[1]= 0.
+\end{lstlisting}
+\begin{lstlisting}[language=Python]
+# Python
+>>> from scipy.special import eval_jacobi
+>>> eval_jacobi(-1, 5/2, 4, -0.9)
+0.
+\end{lstlisting}
+As long as... well, the polynomial with the negative degree is not evaluated at one specific point, $z=-1$:
+\begin{lstlisting}[language=Mathematica]
+(*Mathematica*)
+In[1]=  N[JacobiP[-1, 5/2, 4, -1]]
+   ... Power: Infinite expression 1/0^4 encountered
+   ... Infinity: Indeterminate expression 0 ComplexInfinity encountered
+Out[1]= Indeterminate
+\end{lstlisting}
+\begin{lstlisting}[language=Python]
+# Python
+>>> from scipy.special import eval_jacobi
+>>> eval_jacobi(-1, 5/2, 4, -1.)
+nan
+\end{lstlisting}
+But why is this the case, if the polynomial shouldn't even have negative degree?
+\vspace{1em}
+
+\noindent\textit{What is the implementation for the Jacobi polynomial with negative degree?}
+
+Now we have to understand what is happening behind the curtain: how is the Jacobi polynomial actually implemented, such that both Mathematica and \texttt{SciPy} allow negative degrees?
+Will this guarantee that the quadrature of the inner product is correct?
+The best way to answer these questions is to check the source code.
+Unfortunately, this does not work for \texttt{Mathematica}, a closed-source software.
+This can however be done for \texttt{SciPy}.
+It took me a while to find the relevant piece in the source code, as this part is in Cython:
+\begin{lstlisting}[language=Python]
+cdef inline number_t eval_jacobi(double n, double alpha, double beta, number_t x) noexcept nogil:
+    cdef double a, b, c, d
+    cdef number_t g
+
+    d = binom(n+alpha, n)
+    a = -n
+    b = n + alpha + beta + 1
+    c = alpha + 1
+    g = 0.5*(1-x)
+    return d * hyp2f1(a, b, c, g)
+\end{lstlisting}
+It turns out that instead of using the factorial and Pochhammer's symbol, \texttt{SciPy} implements the following relation
+\[
+    P_n^{(\alpha,\beta)}(z) = \begin{pmatrix}n+\alpha \\ n\end{pmatrix}\prescript{}{2}{F}_1\left(-n, 1+\alpha+\beta+n, 1+\alpha, \frac{1-z}{2}\right)
+\]
+where the prefactor is given by a binomial coefficient. Usually, the binomial coefficient does not make sense for negative $n$, but if one further looks at the source code for \texttt{binom}, one would realize that except for special occasions, the binomial coefficients is calculated as
+\[
+    \begin{pmatrix} n + \alpha \\ n \end{pmatrix} = \frac{1}{(n + \alpha + 1)B(1 + \alpha, 1 + n)} = \frac{1}{n + \alpha + 1} \frac{\Gamma(2 + \alpha + n)}{\Gamma(1 + \alpha) \Gamma(1 + n)}
+\]
+which gives $0$ for any $n\in \mathbb{Z}^- \cup \{0\}$ when $\alpha + n \notin \mathbb{Z}^-$ (because $\Gamma(1+n)\rightarrow \infty$). Now, the second criterion is always fulfilled. As $P_{n-k}^{(\alpha + k, \beta + k)}$ is the ultimate function to be evaluated, our $n+\alpha$ is actually $(n-k)+(\alpha +k) = n+\alpha$. Since the original Jacobi polynomial is a legitimate polynomial, $\alpha > -1$ and $n\geq 0$, therefore $n+\alpha \notin \mathbb{Z}^-$. In summary, \texttt{SciPy} will give $0$, which is the desired outcome, when a Jacobi polynomial with negative degree is encountered.
+
+On a related note, the Jacobi polynomial in the form of
+\begin{equation}
+    P_n^{(\alpha,\beta)}(z) = \frac{1}{n + \alpha + 1} \frac{\Gamma(2 + \alpha + n)}{\Gamma(1 + \alpha) \Gamma(1 + n)} \prescript{}{2}{F}_1\left(-n, 1+\alpha+\beta+n, 1+\alpha, \frac{1-z}{2}\right)
+\end{equation}
+might be a good formula for analytic continuation in $\alpha$, $\beta$, $n$. This formula seems to have finite value for any point, except for a zero-measure set in the 4-D space.
+
+So why does the evaluation fail at $z=-1$ for negative $n$? This is the branch point for the hypergeometric function at $n\in \mathbb{Z}^-$, and evaluation is not available even for the equation above.

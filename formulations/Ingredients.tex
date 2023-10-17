@@ -2,6 +2,7 @@
 \usepackage{doc_default}
 % \usepackage[outdir=./]{epstopdf}
 \usepackage{newtxtext, newtxmath}
+\usepackage{mathtools}
 \usepackage[
     backend=biber,
     style=authoryear,
@@ -17,6 +18,7 @@
     urlcolor=blue,
     filecolor=blue,
 }
+\lstset{style=stdcodestyle}
 
 % \DeclareMathOperator{\arcsec}{arcsec}
 % \DeclareMathOperator{\arccot}{arccot}
@@ -48,10 +50,20 @@
 % Regularity constraints on general rank-2 tensors
 \input{PG__regularity_rank2_tensor.tex}
 
+\input{PG__revised_xpd.tex}
+
+\clearpage
+
+\appendix
+
 \input{PG__code_design.tex}
+
+\clearpage
 
 % [Deprecated][Archived] Derivation of regularity constraints on magnetic moments, following Daria's approach
 % \input{PG__extended_expansions.tex}
+
+\input{PG__quadrature_derivatives.tex}
 
 \clearpage
 
