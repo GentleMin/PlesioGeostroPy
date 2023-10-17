@@ -1,0 +1,62 @@
+\section{Revised expansions for the magnetic moments}
+
+
+In her dissertation, Daria briefly described how to implement coupling between lowest order coefficients in $s$, namely by expanding some quantities starting from $n=1$, but adding manually the $n=0$ contribution as a coupling term. This implementation (as confirmed by her Mathematica notebook) is equivalent to the following expansion:
+\begin{equation}
+\begin{aligned}
+    B_{es} &= \sum_{n=0}^\infty C_{es}^{mn} \left[(1-s^2) s^{|m|-1} P_n^{(\alpha, \beta)}(2s^2 - 1)\right] \\ 
+    B_{e\phi} &= i\sgn(m)\sum_{n=0}^\infty C_{es}^{mn} \left[(1-s^2) s^{|m|-1} P_n^{(\alpha, \beta)}(2s^2 - 1)\right] + \sum_{n=0}^\infty C_{e\phi}^{mn} \left[(1-s^2) s^{|m|+1} P_n^{(\alpha', \beta')}(2s^2 - 1)\right]
+\end{aligned}
+\end{equation}
+for $|m|\geq 1$ (for $m=0$ there is no coupling between these coefficients). 
+Note that the bases corresponding to coefficients $C_{e\phi}^{mn}$ has the prefactor $s^{|m|+1}$ instead of $s^{|m|-1}$. 
+The Jacobi polynomial indices $\alpha$ and $\beta$ can be chosen relatively freely, so as to enforce maximal sparsity on the matrices. 
+For instance, if one uses $(1 - s^2) s^{|m|-1}P_n^{(\alpha, \beta)}(2s^2 - 1)$ and $(1 - s^2) s^{|m|+1}P_n^{(\alpha', \beta')}(2s^2 - 1)$ respectively as the test functions for $B_{es}$ and $B_{e\phi}$ induction equations, a reasonable choice of the indices will be
+\[
+    \left\{\begin{aligned}
+        \alpha &= 2 \\ 
+        \beta &= |m| - \frac{3}{2}
+    \end{aligned}\right.,\qquad 
+    \left\{\begin{aligned}
+        \alpha' &= 2 \\
+        \beta' &= |m| + \frac{1}{2}
+    \end{aligned}\right.
+\]
+This configuration will diagonalize the matrix blocks $(B_{es}, C_{es}^{mn})$ and $(B_{e\phi}, C_{e\phi}^{mn})$, which are the diagonal blocks in the mass matrix. By $(B, C)$ I denote the matrix block formed by taking the inner product of the test function corresponding to field $B$ and the bases corresponding to coefficient $C$. 
+However, the coupling block, i.e. $(B_{e\phi}, C_{es}^{mn})$ will not be diagonal. This will form a dense matrix as an off-diagonal block in the mass matrix.
+
+Although the previous expansion is only for $B_{es}$, $B_{e\phi}$, similar trick can also be used to implement the lowest-order coupling for $B_{es, z}$-$B_{e\phi,z}$ pair, $\widetilde{M_{sz}}$-$\widetilde{M_{\phi z}}$ pairs - basically any quantity pairs that behave like $(s,\phi)$ equatorial components of a vector. 
+Daria even applied the same method to implementing the low-order coupling of the rank-$2$ tensors. 
+Her implementation (see, e.g. \texttt{C1QP\_reg\_diff\_visc\_daria.nb}) is equivalent to the following expansion:
+\[\begin{aligned}
+    \overline{M_{s\phi}}^m &= \sum_n C_{s\phi}^{mn} \left[\sqrt{1-s^2}s^{|m|-2}P_n^{(\alpha, \beta)}(2s^2-1)\right] \\ 
+    \overline{M_{\phi\phi}}^m &= i\sgn(m)\sum_n C_{s\phi}^{mn} \left[\sqrt{1-s^2}s^{|m|-2}P_n^{(\alpha, \beta)}(2s^2-1)\right] + \sum_n C_{\phi\phi}^{mn} \left[\sqrt{1-s^2}s^{|m|}P_n^{(\alpha', \beta')}(2s^2-1)\right] \\ 
+    \widetilde{zM_{s\phi}}^m &= \sum_n C_{zs\phi}^{mn} \left[(1-s^2) s^{|m|-2}P_n^{(\alpha, \beta)}(2s^2-1)\right] \\ 
+    \widetilde{zM_{\phi\phi}}^m &= i\sgn(m)\sum_n C_{zs\phi}^{mn} \left[(1-s^2)s^{|m|-2}P_n^{(\alpha, \beta)}(2s^2-1)\right] + \sum_n C_{z\phi\phi}^{mn} \left[{(1-s^2)}s^{|m|}P_n^{(\alpha', \beta')}(2s^2-1)\right]
+\end{aligned}\]
+Once again, we are looking at $m\geq 2$, as the coupling for $m=0$ is different, and the coupling for $m=\pm 1$ is absent.
+This would have worked, had the coupling between tensorial elements in cylindrical coordinates only occurred in the lowest order $n=0$.
+However, the previous section has already shown otherwise. In addition to the coupling in $n=0$, we have additional three-component coupling in order $n=1$ for $m\geq 2$, as well as a previously ignored three-component coupling in order $n=0$ for $m=\pm 1$.
+Even if the same trick can be used for implementing the three-component coupling in order $n=0$ for $m=\pm 1$:
+\[
+    2M_{s\phi}^{m0} = i\sgn(m) \left(M_{ss}^{m0} - A_{\phi\phi}^{m0}\right)
+\]
+by taking the following expansion,
+\[\begin{aligned}
+    \overline{M_{ss}}^m &= \sum_n C_{ss}^{mn} \left[\sqrt{1-s^2}s P_n^{(\alpha, \beta)}(2s^2-1)\right] \\
+    \overline{M_{\phi\phi}}^m &= \sum_n C_{\phi\phi}^{mn} \left[\sqrt{1-s^2}s P_n^{(\alpha, \beta)}(2s^2-1)\right] \\
+    \overline{M_{s\phi}}^m &= \frac{i\sgn(m)}{2} \left\{\sum_n C_{ss}^{mn} \left[\sqrt{1-s^2}s P_n^{(\alpha, \beta)}(2s^2-1)\right] - \sum_n C_{\phi\phi}^{mn} \left[\sqrt{1-s^2}s P_n^{(\alpha, \beta)}(2s^2-1)\right]\right\} \\ 
+    &\quad + \sum_n C_{s\phi}^{mn} \left[\sqrt{1 - s^2} s^3 P_n^{(\alpha', \beta')}(2s^2 - 1)\right],
+\end{aligned}\]
+the coupling in order $n=1$ is just not feasible to be implemented in this way. Granted, it may be possible to write down the following expansion,
+\[\begin{aligned}
+    \overline{M_{ss}}^m &= s^{|m|-2}\sqrt{1-s^2}\left\{C_0 + C_1 s^2 + s^4\sum_n C_{ss}^{mn} \left[P_n^{(\alpha, \beta)}(2s^2-1)\right]\right\} \\
+    \overline{M_{\phi\phi}}^m &= s^{|m|-2}\sqrt{1-s^2}\left\{-C_0 + C_2 s^2 + s^4\sum_n C_{\phi\phi}^{mn} \left[P_n^{(\alpha, \beta)}(2s^2-1)\right]\right\} \\
+    \overline{M_{s\phi}}^m &= s^{|m|-2}\sqrt{1-s^2}\left\{i\sgn(m)C_0 + \frac{i\sgn(m)}{2}(C_1 - C_2) s^2 + s^4\sum_n C_{s\phi}^{mn} \left[P_n^{(\alpha, \beta)}(2s^2-1)\right]\right\},
+\end{aligned}\]
+but it then becomes a painstaking task to look for appropriate test functions. 
+Note that now we have three additional bases $s^{|m|-2}\sqrt{1 - s^2}$ and $s^{|m|}\sqrt{1 - s^2}$ (occuring twice) in addition to the bases $s^{|m|+2} \sqrt{1 - s^2} P_n^{(\alpha, \beta)}(2s^2 - 1)$. 
+Therefore, a total number of $3N+3$ test functions are needed to form a linear system. 
+Where exactly do we place the extra three test functions? It seems it doesn't make sense either way and always breaks the symmetry of the problem. 
+This difficulty calls for a new expansion of the fields.
+
