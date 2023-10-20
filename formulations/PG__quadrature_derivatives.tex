@@ -95,7 +95,7 @@ It turns out that instead of using the factorial and Pochhammer's symbol, \textt
 \[
     P_n^{(\alpha,\beta)}(z) = \begin{pmatrix}n+\alpha \\ n\end{pmatrix}\prescript{}{2}{F}_1\left(-n, 1+\alpha+\beta+n, 1+\alpha, \frac{1-z}{2}\right)
 \]
-where the prefactor is given by a binomial coefficient. Usually, the binomial coefficient does not make sense for negative $n$, but if one further looks at the source code for \texttt{binom}, one would realize that except for special occasions, the binomial coefficients is calculated as
+where the prefactor is given by a binomial coefficient. Usually, the binomial coefficient does not make sense for negative $n$, but if one further looks at the source code for \texttt{binom}, one would realize that except for special occasions, the binomial coefficients are calculated as
 \[
     \begin{pmatrix} n + \alpha \\ n \end{pmatrix} = \frac{1}{(n + \alpha + 1)B(1 + \alpha, 1 + n)} = \frac{1}{n + \alpha + 1} \frac{\Gamma(2 + \alpha + n)}{\Gamma(1 + \alpha) \Gamma(1 + n)}
 \]
