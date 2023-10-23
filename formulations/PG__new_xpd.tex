@@ -178,7 +178,7 @@ and the elements in $\mathbf{U} \mathbf{y}^\mathrm{Cyl}$ would give the $2^k$ \t
 
 As previously implied, a natural way to circumvent manually enforcing all regularity constraints is to instead expand the conjugate quantities.
 For the 12 magnetic quantities (except for $B_r$, which lives on the sphere, and $B_{ez}$, which is a scalar) in PG variables, the corresponding conjugate quantities are
-\begin{equation}
+\begin{equation}\label{eqn:conjugate-transform}
 \begin{aligned}
     &\left\{\begin{aligned}
         \overline{M_{ss}} \\ 
@@ -277,3 +277,48 @@ With every tensor component comprising of multiple bases, there is no straightfo
 
 One way to overcome the test function issue, and perhaps the most consistent way, is to expand the conjugate quantities in their evolution equations.
 In other words, the evolution equations in terms of magnetic field quantities should first be transformed into evolution equations in their conjugate quantities.
+I shall present here the explicit derivation of one set of these quantities, namely from $(\overline{M_{ss}}, \overline{M_{s\phi}}, \overline{M_{\phi\phi}})$ to $(\overline{M_1}, \overline{M_+}, \overline{M_-})$.
+Starting from the original evolution equations
+\[\begin{aligned}
+    \frac{\partial \overline{M_{ss}}}{\partial t} &= -H (\mathbf{u}\cdot \nabla_e) \frac{\overline{M_{ss}}}{H} + 2 \overline{M_{ss}} \frac{\partial u_s}{\partial s} + \frac{2}{s} \overline{M_{s\phi}} \frac{\partial u_s}{\partial \phi} \\ 
+    \frac{\partial \overline{M_{\phi\phi}}}{\partial t} &= -\frac{1}{H} (\mathbf{u}\cdot \nabla_e) \left(H \overline{M_{\phi\phi}}\right) - 2 \overline{M_{\phi\phi}} \frac{\partial u_s}{\partial s} + 2 s \overline{M_{s\phi}} \frac{\partial}{\partial s}\left(\frac{u_\phi}{s}\right) \\ 
+    \frac{\partial \overline{M_{s\phi}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \overline{M_{s\phi}} + s \overline{M_{ss}} \frac{\partial}{\partial s}\left(\frac{u_\phi}{s}\right) + \frac{1}{s} \overline{M_{\phi\phi}} \frac{\partial u_s}{\partial \phi}
+\end{aligned}\]
+Using the transforms (\ref{eqn:conjugate-transform}), the equations can be rewritten as
+\[\begin{aligned}
+    \frac{\partial \overline{M_{ss}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \overline{M_{ss}} + \frac{1}{4}\left(2\overline{M_1} + \overline{M_+} + \overline{M_-}\right) \left(2 \frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) - \frac{i}{2} \left(\overline{M_+} - \overline{M_-}\right) \frac{1}{s} \frac{\partial u_s}{\partial \phi} \\ 
+    \frac{\partial \overline{M_{\phi\phi}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \overline{M_{\phi\phi}} - \frac{1}{4}\left(2\overline{M_1} - \overline{M_+} - \overline{M_-}\right) \left(2 \frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) - \frac{i}{2} \left(\overline{M_+} - \overline{M_-}\right) s \frac{\partial}{\partial s} \frac{u_\phi}{s} \\ 
+    \frac{\partial \overline{M_{s\phi}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \overline{M_{s\phi}} + \frac{1}{4}\left(2\overline{M_1} + \overline{M_+} + \overline{M_-}\right) s \frac{\partial}{\partial s}\left(\frac{u_\phi}{s}\right) + \frac{1}{4}\left(2\overline{M_1} - \overline{M_+} - \overline{M_-}\right) \frac{1}{s} \frac{\partial u_s}{\partial \phi}
+\end{aligned}\]
+Re-combining these equations again using the transforms (\ref{eqn:conjugate-transform}), we obtain the evolution equations for the conjugate variables
+\[\begin{aligned}
+    \frac{\partial \overline{M_1}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_1} + \left(\overline{M_+} + \overline{M_-}\right) \left(\frac{\partial u_s}{\partial s} - \frac{su_s}{2H^2}\right) - \frac{i}{2} \left(\overline{M_+} - \overline{M_-}\right) \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) \\
+    \frac{\partial \overline{M_+}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_+} + \overline{M_1} \left(2\frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) + i\overline{M_1} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) + i \overline{M_+} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) \\ 
+    \frac{\partial \overline{M_-}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_-} + \overline{M_1} \left(2\frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) - i\overline{M_1} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) - i \overline{M_-} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right)
+\end{aligned}\]
+The complete list of evolution equations for the conjugate quantities (12$\times$) are given by
+\begin{align*}
+    \frac{\partial \overline{M_1}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_1} + \left(\overline{M_+} + \overline{M_-}\right) \left(\frac{\partial u_s}{\partial s} - \frac{su_s}{2H^2}\right) - \frac{i}{2} \left(\overline{M_+} - \overline{M_-}\right) \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) \\
+    \frac{\partial \overline{M_+}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_+} + \overline{M_1} \left(2\frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) + i\overline{M_1} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) + i \overline{M_+} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) \\ 
+    \frac{\partial \overline{M_-}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_-} + \overline{M_1} \left(2\frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) - i\overline{M_1} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) - i \overline{M_-} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) \\ 
+    %
+    \frac{\partial \widetilde{M_{z+}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \widetilde{M_{z+}} + \frac{1}{2}\left(3 \frac{\partial u_z}{\partial z} - \frac{i}{s}\frac{\partial u_s}{\partial \phi} + is \frac{\partial}{\partial s}\frac{u_\phi}{s}\right) \widetilde{M_{z+}} + \frac{1}{2} \left(\frac{\partial u_z}{\partial z} + 2 \frac{\partial u_s}{\partial s} + \frac{i}{s} \frac{\partial u_s}{\partial \phi} + is \frac{\partial}{\partial s}\frac{u_\phi}{s}\right) \widetilde{M_{z-}} \\
+    &\quad -\frac{1}{2} \left(\frac{\partial}{\partial s} \frac{su_s}{H^2} + \frac{i}{H^2} \frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_1} + \frac{1}{2} \left(-\frac{\partial}{\partial s}\frac{su_s}{H^2} + \frac{i}{H^2}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_+} \\
+    \frac{\partial \widetilde{M_{z-}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \widetilde{M_{z-}} + \frac{1}{2} \left(\frac{\partial u_z}{\partial z} + 2 \frac{\partial u_s}{\partial s} - \frac{i}{s} \frac{\partial u_s}{\partial \phi} - is \frac{\partial}{\partial s}\frac{u_\phi}{s}\right) \widetilde{M_{z+}} + \frac{1}{2}\left(3 \frac{\partial u_z}{\partial z} + \frac{i}{s}\frac{\partial u_s}{\partial \phi} - is \frac{\partial}{\partial s}\frac{u_\phi}{s}\right) \widetilde{M_{z-}} \\
+    &\quad -\frac{1}{2} \left(\frac{\partial}{\partial s} \frac{su_s}{H^2} - \frac{i}{H^2} \frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_1} + \frac{1}{2} \left(-\frac{\partial}{\partial s}\frac{su_s}{H^2} - \frac{i}{H^2}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_-} \\
+    %
+    \frac{\partial \widetilde{zM_1}}{\partial t} &= -(\mathbf{u}\cdot \nabla_e) \widetilde{zM_1} + \frac{\partial u_z}{\partial z} \widetilde{zM_1} + \frac{1}{2} \left(2\frac{\partial u_s}{\partial s} + \frac{\partial u_z}{\partial z}\right) \left(\widetilde{zM_+} + \widetilde{zM_-}\right) - \frac{i}{2}\left(\frac{1}{s}\frac{\partial u_s}{\partial \phi} + s \frac{\partial}{\partial s}\frac{u_\phi}{s}\right) \left(\widetilde{zM_+} - \widetilde{zM_-}\right) \\
+    \frac{\partial \widetilde{zM_+}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \widetilde{zM_+} + \frac{\partial u_z}{\partial z} \widetilde{zM_+} + i \left(s\frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_+} + \left(\frac{\partial u_s}{\partial s} + \frac{1}{2}\frac{\partial u_z}{\partial z} + is \frac{\partial}{\partial s}\frac{u_\phi}{s}+ \frac{i}{s}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_1} \\
+    \frac{\partial \widetilde{zM_-}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \widetilde{zM_-} + \frac{\partial u_z}{\partial z} \widetilde{zM_-} - i \left(s\frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_-} + \left(\frac{\partial u_s}{\partial s} + \frac{1}{2}\frac{\partial u_z}{\partial z} - is \frac{\partial}{\partial s}\frac{u_\phi}{s}- \frac{i}{s}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_1} \\
+    %
+    \frac{\partial B_{e+}}{\partial t} &= - \left(\mathbf{u}_e \cdot \nabla_e\right) B_{e+} + \frac{1}{2} B_{e+} \left[\left(\frac{\partial}{\partial s} - \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{es} + iu_{e\phi}\right) + \frac{1}{s} \left(u_{es} - i u_{e\phi}\right)\right] \\ 
+    &\qquad \qquad \qquad \quad \, + \frac{1}{2} B_{e-} \left[\left(\frac{\partial}{\partial s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{es} + iu_{e\phi}\right) - \frac{1}{s} \left(u_{es} + i u_{e\phi}\right)\right] \\ 
+    \frac{\partial B_{e-}}{\partial t} &= - \left(\mathbf{u}_e \cdot \nabla_e\right) B_{e-} + \frac{1}{2} B_{e+} \left[\left(\frac{\partial}{\partial s} - \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{es} - iu_{e\phi}\right) - \frac{1}{s} \left(u_{es} - i u_{e\phi}\right)\right] \\ 
+    &\qquad \qquad \qquad \quad \, + \frac{1}{2} B_{e-} \left[\left(\frac{\partial}{\partial s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{es} - iu_{e\phi}\right) + \frac{1}{s} \left(u_{es} + i u_{e\phi}\right)\right] \\ 
+    %
+    \frac{\partial B_{e+,z}}{\partial t} &= - \left(\mathbf{u}_e \cdot \nabla_e\right) B_{e+,z} + \frac{1}{2} B_{e+,z} \left[\left(\frac{\partial}{\partial s} - \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{es} + iu_{e\phi}\right) + \frac{1}{s} \left(u_{es} - i u_{e\phi}\right)\right] \\ 
+    &\qquad \quad - \frac{\partial u_z}{\partial z} B_{e+,z} + \frac{1}{2} B_{e-,z} \left[\left(\frac{\partial}{\partial s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{es} + iu_{e\phi}\right) - \frac{1}{s} \left(u_{es} + i u_{e\phi}\right)\right] \\ 
+    \frac{\partial B_{e-,z}}{\partial t} &= - \left(\mathbf{u}_e \cdot \nabla_e\right) B_{e-,z} + \frac{1}{2} B_{e+,z} \left[\left(\frac{\partial}{\partial s} - \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{es} - iu_{e\phi}\right) - \frac{1}{s} \left(u_{es} - i u_{e\phi}\right)\right] \\ 
+    &\qquad \quad - \frac{\partial u_z}{\partial z} B_{e-,z} + \frac{1}{2} B_{e-,z} \left[\left(\frac{\partial}{\partial s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{es} - iu_{e\phi}\right) + \frac{1}{s} \left(u_{es} + i u_{e\phi}\right)\right]
+\end{align*}
+

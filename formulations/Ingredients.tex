@@ -1,5 +1,6 @@
 \documentclass[a4paper, 11pt]{report}
 \usepackage{doc_default}
+\allowdisplaybreaks[1]
 % \usepackage[outdir=./]{epstopdf}
 \usepackage{newtxtext, newtxmath}
 \usepackage{mathtools}
@@ -39,7 +40,7 @@
 
 \maketitle
 
-\chapter{Theory and equations}
+\chapter{Theory and governing equations}
 
 \input{PG__sph_cyl_transform.tex}
 
@@ -48,6 +49,8 @@
 \input{PG__nondim_convert.tex}
 
 \input{PG__boundary_evolution.tex}
+
+\chapter{Regularity constraints on expansions, conjugate variables}
 
 % Regularity constraints on general rank-2 tensors
 \input{PG__regularity_rank2_tensor.tex}
