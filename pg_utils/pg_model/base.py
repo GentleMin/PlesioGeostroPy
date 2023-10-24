@@ -426,18 +426,89 @@ class CollectionPG(LabeledCollection):
         """
         return self._extract_subset(slice(15, None))
     
-    def copy(self):
+    def copy(self) -> "CollectionPG":
         """Deep copy
         """
         return CollectionPG(**{fname: self[fname] for fname in self._field_names})
     
-    def as_empty(self):
+    def as_empty(self) -> "CollectionPG":
         """Overriding the as_empty method
         """
         return CollectionPG()
     
     def apply(self, fun: Callable[..., Any], inplace: bool = False,
         metadata: bool = False) -> "CollectionPG":
+        return super().apply(fun, inplace, metadata)
+
+
+
+class CollectionConjugate(LabeledCollection):
+    """Base class for the collection of conjugate variables, 
+    fields, equations, etc, which are the conjugate counterpart
+    of PG variables, fields and equations.
+    """
+    
+    """Arrangement of variables:
+    Stream function
+    Conjugate magnetic moments
+    Conjugate magnetic fields in the equatorial plane
+    Magnetic fields at the boundary
+    """
+    cg_field_names = [
+        "Psi", 
+        "M_1", "M_p", "M_m", "M_zp", "M_zm", "zM_1", "zM_p", "zM_m", 
+        "B_ep", "B_em", "Bz_e", "dB_dz_ep", "dB_dz_em", 
+        "Br_b", "Bs_p", "Bp_p", "Bz_p", "Bs_m", "Bp_m", "Bz_m"]
+    
+    def __init__(self, **fields) -> None:
+        super().__init__(self.cg_field_names, **fields)
+        # No longer accepts attribution addition
+        self._disable_attribute_addition()
+    
+    def vorticity(self):
+        """Extract vorticity equation.
+        Basically an alias as Psi
+        """
+        return self.Psi
+    
+    def subset_mag(self):
+        """Extract subset of magnetic quantities.
+        """
+        return self._extract_subset(slice(1, None))
+    
+    def subset_moments(self):
+        """Extract subset of magnetic moments.
+        """
+        return self._extract_subset(slice(1, 9))
+    
+    def subset_B_equator(self):
+        """Extract subset of B field on equatorial plane.
+        """
+        return self._extract_subset(slice(9, 14))
+    
+    def subset_B_bound(self):
+        """Extract subset of B field at the boundary.
+        """
+        return self._extract_subset(slice(14, None))
+    
+    def subset_B_bound_cyl(self):
+        """Extract subset of B field at the boundary, cylindrical coordinates.
+        """
+        return self._extract_subset(slice(15, None))
+    
+    def copy(self) -> "CollectionConjugate":
+        """Deep copy
+        """
+        return CollectionConjugate(
+            **{fname: self[fname] for fname in self._field_names})
+    
+    def as_empty(self) -> "CollectionConjugate":
+        """Overriding the as_empty method
+        """
+        return CollectionConjugate()
+    
+    def apply(self, fun: Callable[..., Any], inplace: bool = False,
+        metadata: bool = False) -> "CollectionConjugate":
         return super().apply(fun, inplace, metadata)
 
 
