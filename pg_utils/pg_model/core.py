@@ -247,6 +247,187 @@ pgvar_ptb = base.CollectionPG(
 
 
 
+"""Conjugate variables"""
+
+cgvar = base.CollectionConjugate(
+    # Stream function, unchanged
+    Psi = pgvar.Psi,
+    # Conjugate variables for magnetic moments
+    M_1 = sympy.Function(r"\overline{M_1}")(s, p, t),
+    M_p = sympy.Function(r"\overline{M_+}")(s, p, t),
+    M_m = sympy.Function(r"\overline{M_-}")(s, p, t),
+    M_zp = sympy.Function(r"\widetilde{M_{z+}}")(s, p, t),
+    M_zm = sympy.Function(r"\widetilde{M_{z-}}")(s, p, t),
+    zM_1 = sympy.Function(r"\widetilde{zM_1}")(s, p, t),
+    zM_p = sympy.Function(r"\widetilde{zM_+}")(s, p, t),
+    zM_m = sympy.Function(r"\widetilde{zM_-}")(s, p, t),
+    # Conjugate variables for magnetic fields in equatorial plane
+    B_ep = sympy.Function(r"B_{e+}")(s, p, t),
+    B_em = sympy.Function(r"B_{e-}")(s, p, t),
+    Bz_e = pgvar.Bz_e,
+    dB_dz_ep = sympy.Function(r"B_{e+, z}")(s, p, t),
+    dB_dz_em = sympy.Function(r"B_{e-, z}")(s, p, t),
+    # Magnetic field at the boundary
+    Br_b = pgvar.Br_b,
+    Bs_p = pgvar.Bs_p,
+    Bp_p = pgvar.Bp_p,
+    Bz_p = pgvar.Bz_p,
+    Bs_m = pgvar.Bs_m,
+    Bp_m = pgvar.Bp_m,
+    Bz_m = pgvar.Bz_m
+)
+
+cgvar_ptb = base.CollectionConjugate(
+    # Stream function, unchanged
+    Psi = pgvar_ptb.Psi,
+    # Conjugate variables for magnetic moments
+    M_1 = sympy.Function(r"\overline{m_1}")(s, p, t),
+    M_p = sympy.Function(r"\overline{m_+}")(s, p, t),
+    M_m = sympy.Function(r"\overline{m_-}")(s, p, t),
+    M_zp = sympy.Function(r"\widetilde{m_{z+}}")(s, p, t),
+    M_zm = sympy.Function(r"\widetilde{m_{z-}}")(s, p, t),
+    zM_1 = sympy.Function(r"\widetilde{zm_1}")(s, p, t),
+    zM_p = sympy.Function(r"\widetilde{zm_+}")(s, p, t),
+    zM_m = sympy.Function(r"\widetilde{zm_-}")(s, p, t),
+    # Conjugate variables for magnetic fields in equatorial plane
+    B_ep = sympy.Function(r"b_{e+}")(s, p, t),
+    B_em = sympy.Function(r"b_{e-}")(s, p, t),
+    Bz_e = pgvar_ptb.Bz_e,
+    dB_dz_ep = sympy.Function(r"b_{e+, z}")(s, p, t),
+    dB_dz_em = sympy.Function(r"b_{e-, z}")(s, p, t),
+    # Magnetic field at the boundary
+    Br_b = pgvar_ptb.Br_b,
+    Bs_p = pgvar_ptb.Bs_p,
+    Bp_p = pgvar_ptb.Bp_p,
+    Bz_p = pgvar_ptb.Bz_p,
+    Bs_m = pgvar_ptb.Bs_m,
+    Bp_m = pgvar_ptb.Bp_m,
+    Bz_m = pgvar_ptb.Bz_m
+)
+
+
+# Conversion between PG and conjugate quantities
+def PG_to_conjugate(pg_comp: base.CollectionPG) -> base.CollectionConjugate:
+    """Convert PG collection to conjugate counterparts.
+    
+    :param pg_comp: PG components to be converted
+    :returns: base.CollectionConjugate object with conjugate quantities
+    """
+    # Decide how to form the conjugate object
+    # The method assumes all entries are of the same type
+    if isinstance(pg_comp.Psi, sympy.Expr):
+        cg_comp = base.CollectionConjugate(
+            Psi = pg_comp.Psi,
+            # Moments: conversion
+            M_1 = pg_comp.Mss + pg_comp.Mpp,
+            M_p = pg_comp.Mss - pg_comp.Mpp + 2*sympy.I*pg_comp.Msp,
+            M_m = pg_comp.Mss - pg_comp.Mpp - 2*sympy.I*pg_comp.Msp,
+            M_zp = pg_comp.Msz + sympy.I*pg_comp.Mpz,
+            M_zm = pg_comp.Msz - sympy.I*pg_comp.Mpz,
+            zM_1 = pg_comp.zMss + pg_comp.zMpp,
+            zM_p = pg_comp.zMss - pg_comp.zMpp + 2*sympy.I*pg_comp.zMsp,
+            zM_m = pg_comp.zMss - pg_comp.zMpp - 2*sympy.I*pg_comp.zMsp,
+            # Equatorial fields: conversion
+            B_ep = pg_comp.Bs_e + sympy.I*pg_comp.Bp_e,
+            B_em = pg_comp.Bs_e - sympy.I*pg_comp.Bp_e,
+            Bz_e = pg_comp.Bz_e,
+            dB_dz_ep = pg_comp.dBs_dz_e + sympy.I*pg_comp.dBp_dz_e,
+            dB_dz_em = pg_comp.dBs_dz_e - sympy.I*pg_comp.dBp_dz_e,
+            # Boundary: unchanged
+            Br_b = pg_comp.Br_b,
+            Bs_p = pg_comp.Bs_p,
+            Bp_p = pg_comp.Bp_p,
+            Bz_p = pg_comp.Bz_p,
+            Bs_m = pg_comp.Bs_m,
+            Bp_m = pg_comp.Bp_m,
+            Bz_m = pg_comp.Bz_m,
+        )
+        return cg_comp
+    elif isinstance(pg_comp.Psi, sympy.Eq):
+        cg_lhs = PG_to_conjugate(pg_comp.apply(lambda eq: eq.lhs, inplace=False))
+        cg_rhs = PG_to_conjugate(pg_comp.apply(lambda eq: eq.rhs, inplace=False))
+        cg_comp = base.CollectionConjugate(
+            **{fname: sympy.Eq(cg_lhs[fname], cg_rhs[fname]) 
+               for fname in base.CollectionConjugate.cg_field_names})
+        return cg_comp
+    else:
+        raise TypeError
+
+
+def conjugate_to_PG(cg_comp: base.CollectionConjugate) -> base.CollectionPG:
+    """Convert conjugate quantities to PG counterparts
+    
+    :param cg_comp: conjugate components to be converted
+    :returns: base.CollectionPG object with PG quantities
+    """
+    if isinstance(cg_comp.Psi, sympy.Expr):
+        pg_comp = base.CollectionPG(
+            Psi = cg_comp.Psi,
+            # Moments conversion
+            Mss = (2*cg_comp.M_1 + cg_comp.M_p + cg_comp.M_m)/sympy.Integer(4),
+            Mpp = (2*cg_comp.M_1 - cg_comp.M_p - cg_comp.M_m)/sympy.Integer(4),
+            Msp = (cg_comp.M_p - cg_comp.M_m)/sympy.Integer(4)/sympy.I,
+            Msz = (cg_comp.M_zp + cg_comp.M_zm)/sympy.Integer(2),
+            Mpz = (cg_comp.M_zp - cg_comp.M_zm)/sympy.Integer(2)/sympy.I,
+            zMss = (2*cg_comp.zM_1 + cg_comp.zM_p + cg_comp.zM_m)/sympy.Integer(4),
+            zMpp = (2*cg_comp.zM_1 - cg_comp.zM_p - cg_comp.zM_m)/sympy.Integer(4),
+            zMsp = (cg_comp.zM_p - cg_comp.zM_m)/sympy.Integer(4)/sympy.I,
+            # Equatorial magnetic field conversion
+            Bs_e = (cg_comp.B_ep + cg_comp.B_em)/sympy.Integer(2),
+            Bp_e = (cg_comp.B_ep - cg_comp.B_em)/sympy.Integer(2)/sympy.I,
+            Bz_e = cg_comp.Bz_e,
+            dBs_dz_e = (cg_comp.dB_dz_ep + cg_comp.dB_dz_em)/sympy.Integer(2),
+            dBp_dz_e = (cg_comp.dB_dz_ep - cg_comp.dB_dz_em)/sympy.Integer(2)/sympy.I,
+            # Boundary unchanged
+            Br_b = cg_comp.Br_b,
+            Bs_p = cg_comp.Bs_p,
+            Bp_p = cg_comp.Bp_p,
+            Bz_p = cg_comp.Bz_p,
+            Bs_m = cg_comp.Bs_m,
+            Bp_m = cg_comp.Bp_m,
+            Bz_m = cg_comp.Bz_m,
+        )
+        return pg_comp
+    elif isinstance(cg_comp.Psi, sympy.Eq):
+        cg_lhs = conjugate_to_PG(cg_comp.apply(lambda eq: eq.lhs, inplace=False))
+        cg_rhs = conjugate_to_PG(cg_comp.apply(lambda eq: eq.rhs, inplace=False))
+        pg_comp = base.CollectionPG(
+            **{fname: sympy.Eq(cg_lhs[fname], cg_rhs[fname]) 
+               for fname in base.CollectionPG.pg_field_names})
+        return pg_comp
+    else:
+        raise TypeError
+
+
+def map_pg_to_conjugate(pg_comp: base.CollectionPG, 
+    cg_comp: base.CollectionConjugate) -> dict:
+    """Build a dictionary that maps PG quantities to conjugates
+    
+    :param pg_comp: PG quantities collection
+        each entry should be a symbol, or at least an expression
+    :param cg_comp: conjugate quantities collection
+        each entry should be a symbol, or at least an expression
+    :returns: dict<PG quantity, expression in conjugates>
+    """
+    pg_expr = conjugate_to_PG(cg_comp)
+    return base.map_collection(pg_comp, pg_expr)
+
+
+def map_conjugate_to_pg(cg_comp: base.CollectionConjugate, 
+    pg_comp: base.CollectionPG) -> dict:
+    """Build a dictionary that maps conjugate quantities to PG quantities
+    
+    :param cg_comp: conjugate quantities collection
+        each entry should be a symbol, or at least an expression
+    :param pg_comp: PG quantities collection
+        each entry should be a symbol, or at least an expression
+    :returns: dict<conjugate quantity, expression in PG>
+    """
+    cg_expr = PG_to_conjugate(pg_comp)
+    return base.map_collection(cg_comp, cg_expr)
+
+
+
 """Linearization utilities"""
 
 # Introduce a small quantity $\epsilon$

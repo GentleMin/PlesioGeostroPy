@@ -7,12 +7,10 @@ Jingtao Min @ ETH-EPM, 09.2023
 import sympy
 from sympy import diff
 from sympy import Derivative as diff_u
+from . import base
 from .base import CollectionPG
 from .core import *
 from .base_utils import linearize
-
-# from .pg_fields import *
-# from types import SimpleNamespace
 
 
 
@@ -169,6 +167,17 @@ eqs_pg.Bz_m = sympy.Eq(
     + pgvar.Bp_m/s*diff(U_vec.z, p) - U_vec.p/s*diff(B_vec.z, p) 
     + pgvar.Bz_m*diff(U_vec.z, z)- U_vec.z*diff(B_vec.z, z))
 
+
+"""Conjugate equations"""
+
+def eqn_PG_to_conjugate(eqset_pg: CollectionPG, subs_map: dict):
+    eqset_pg = eqset_pg.apply(lambda eq: eq.subs(subs_map), inplace=False)
+    eqset_cg = PG_to_conjugate(eqset_pg)
+    return eqset_cg
+
+pg_cg_subs = map_pg_to_conjugate(pgvar, cgvar)
+eqs_cg = eqn_PG_to_conjugate(eqs_pg, pg_cg_subs).apply(
+    lambda eq: eq.doit().expand(), inplace=True)
 
 
 """Linearized equations"""
