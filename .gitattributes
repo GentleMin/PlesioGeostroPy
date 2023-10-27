@@ -1,6 +1,9 @@
 # Ignore ipython notebooks
 *.ipynb linguist-generated
+# Ignore UML files
 *.puml linguist-generated
+# Ignore JSON files
+*.json linguist-generated
 
 # Register .mtx, .h5 file as large binary files
 # that does not need to be version tracked as src files
