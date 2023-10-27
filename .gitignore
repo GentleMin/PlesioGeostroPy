@@ -12,15 +12,15 @@ formulations/*.gz
 formulations/*.log
 formulations/*.out
 formulations/*.xml
-presentation/*.gz
-presentation/*.log
-presentation/*.out
-presentation/*.xml
-presentation/*.snm
-presentation/*.nav
-presentation/*.vrb
-presentation/*.toc
-presentation/*.blg
+presentation/
+# presentation/*.log
+# presentation/*.out
+# presentation/*.xml
+# presentation/*.snm
+# presentation/*.nav
+# presentation/*.vrb
+# presentation/*.toc
+# presentation/*.blg
 # Ignore unnecessary documentation/uml files
 out/**/*.png
 # unwanted local test scripts
