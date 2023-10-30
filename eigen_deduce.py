@@ -2,24 +2,42 @@
 """Equation deduction of the eigenvalue problem.
 Jingtao Min @ ETH Zurich 2023
 
-This script is part of the routine to solve an eigenvalue problem
+This script is stage I of the routine to solve an eigenvalue problem
 in the framework of PG model.
 When in doubt, it is still recommended to use an interactive session
 such as IPython notebook (recommended), IDLE or IPython Console to
 interactively verify the correctness of the equations/elements.
 """
 
+PRECOMPUTE_EQN = True
 
-import os
-from sympy import *
+import os, h5py
+from typing import List, Any, Optional, Union
+from sympy import S, I, oo, Function, Eq, srepr, parse_expr, Integer, Rational
+import numpy as np
 import pg_utils.sympy_supp.vector_calculus_3d as v3d
 
 from pg_utils.pg_model import *
 from pg_utils.pg_model import base, core, params, forcing
 from pg_utils.pg_model import base_utils as pgutils
-from pg_utils.pg_model import equations as pgeq
+from pg_utils.pg_model import expansion as xpd
+from pg_utils.pg_model.expansion import omega, n, m, xi, n_test, n_trial
 
+from pg_utils.numerics import matrices as nmatrix
+
+# Background field setup
 import bg_malkus as bg_cfg
+# Radial expansion setup
+from pg_utils.pg_model import cfg_expand as xpd_cfg
+# Physical variables
+PHYS_PARAMS = {
+    m: Integer(3), 
+    params.Le: Rational(1, 10000), 
+    params.Lu: oo
+}
+
+if not PRECOMPUTE_EQN:
+    from pg_utils.pg_model import equations as pgeq
 
 
 def apply_components(eqs: base.LabeledCollection, *args: str, 
@@ -70,8 +88,8 @@ def apply_components(eqs: base.LabeledCollection, *args: str,
         term_coriolis = term_body_force = S.Zero
         for term in eqs.Psi.rhs.expand().args:
             funcs = term.atoms(Function)
-            if pgeq.fe_p in funcs or pgeq.fs_sym in funcs \
-                or pgeq.fp_sym in funcs or pgeq.fz_asym in funcs:
+            if core.fe_p in funcs or core.fs_sym in funcs \
+                or core.fp_sym in funcs or core.fz_asym in funcs:
                 term_body_force += term
             else:
                 term_coriolis += term
@@ -87,8 +105,8 @@ def apply_components(eqs: base.LabeledCollection, *args: str,
             eqs.Psi.lhs, 
             prefactor_coriolis*term_coriolis 
             + prefactor_f*term_body_force.subs({
-                pgeq.fe_p: fe_p, pgeq.fs_sym: fs_sym, 
-                pgeq.fp_sym: fp_sym, pgeq.fz_asym: fz_asym}).expand())
+                core.fe_p: fe_p, core.fs_sym: fs_sym, 
+                core.fp_sym: fp_sym, core.fz_asym: fz_asym}).expand())
     
     return eqs_new
 
@@ -138,6 +156,7 @@ def apply_bg_field(eqs: base.LabeledCollection, U0_val: v3d.Vector3D,
     """
     if verbose > 0:
         print("========== Applying background field ==========")
+    # Building the background field map
     pg0_val = pgutils.assemble_background(B0=B0_val)
     bg_sub = {u_comp: U0_val[i_c] for i_c, u_comp in enumerate(core.U0_vec)}
     bg_sub.update({b_comp: B0_val[i_c] for i_c, b_comp in enumerate(core.B0_vec)})
@@ -148,10 +167,277 @@ def apply_bg_field(eqs: base.LabeledCollection, U0_val: v3d.Vector3D,
     return eqs_new
 
 
-if __name__ == "__main__":
-    eqs = apply_components(pgeq.eqs_pg_lin, "Lorentz", timescale="Alfven", verbose=2)
+boundary_fnames = ("Bs_p", "Bp_p", "Bz_p", "Bs_m", "Bp_m", "Bz_m")
+
+
+def process_matrix_element(element: Any, map_trial: dict, map_test: dict) -> Any:
+    """Process matrix elements to desired form
+    
+    :param element: original element
+    :param map_trial: dictionary to substitute trial functions into the expr
+    :param map_test: dictionary to substitute test functions into the expr
+    :return element: new element
+    """
+    if element is None or element == S.Zero or element == 0:
+        return S.Zero
+    elif isinstance(element, xpd.InnerProduct1D):
+        element = element.subs(map_trial).subs(map_test)
+        element = element.subs({H_s: H, H_s**2: H**2}).expand().subs({H: H_s})
+        return element.change_variable(xi, xpd.s_xi, xpd.xi_s, 
+            jac_positive=True, merge=True, simplify=False)
+    else:
+        raise TypeError
+
+
+def collect_eigen_matrices(eqs: base.LabeledCollection, 
+    xpd_recipe: xpd.ExpansionRecipe, inplace: bool = False, 
+    verbose: int = 0) -> List[xpd.SystemMatrix]:
+    """Collect matrix elements
+    
+    :param eqs: LabeledCollection containing all equations
+    :param xpd_recipe: expansion recipe
+    :param inplace: whether allow modifying the eqs inplace
+    :returns: Mass matrix, stiffness matrix
+    """
+    if verbose > 0:
+        print("========== Converting eqn to matrices... ==========")
+    # Collect matrices
+    eqs_sys = xpd.SystemEquations(eqs._field_names, xpd_recipe, 
+        **{fname: eqs[fname] for fname in eqs._field_names})
+    if verbose > 2:
+        print("Converting equations to Fourier domain...")
+    eqs_sys = eqs_sys.to_fourier_domain(inplace=inplace)
+    if verbose > 2:
+        print("Converting equations to radial coordinates...")
+    eqs_sys = eqs_sys.to_radial(inplace=inplace)
+    if verbose > 2:
+        print("Converting equations to inner products...")
+    eqs_sys = eqs_sys.to_inner_product(factor_lhs=I*omega, inplace=inplace)
+    M_expr, K_expr = eqs_sys.collect_matrices(factor_lhs=I*omega)
+    # Convert matrix elements to desired form
+    if verbose > 1:
+        print("Collecting and converting mass matrix M elements...")
+    M_expr = M_expr.apply(
+        lambda x: process_matrix_element(x, xpd_recipe.base_expr, xpd_recipe.test_expr),
+        inplace=True, metadata=False
+    )
+    if verbose > 1:
+        print("Collecting and converting stiffness matrix K elements...")
+    K_expr = K_expr.apply(
+        lambda x: process_matrix_element(x, xpd_recipe.base_expr, xpd_recipe.test_expr),
+        inplace=True, metadata=False
+    )
+    return M_expr, K_expr
+
+
+
+"""Top-level functions
+Top level functions are mainly functions wrapped with input/output
+utilities to further simplify the procedure
+"""
+
+
+def routine_eqn_reduction(read_from: Optional[str]="./out/symbolic/eqs_pg_lin.json", 
+    save_to: Optional[str]=None) -> base.LabeledCollection:
+    """Top-level routine function
+    Stage 1: equation reduction
+    """
+    # Input
+    if PRECOMPUTE_EQN:
+        if read_from is not None:
+            with open(read_from, 'r') as fread:
+                eqs = base.CollectionPG.load_json(fread, parser=parse_expr)
+        else:
+            raise TypeError
+    else:
+        eqs = pgeq.eqs_pg_lin
+    # Body
+    eqs = apply_components(eqs, "Lorentz", timescale="Alfven", verbose=2)
     eqs.Psi = Eq(eqs.Psi.lhs, eqs.Psi.rhs.subs(forcing.force_explicit_lin))
     eqs = apply_bg_field(eqs, bg_cfg.U0_val, bg_cfg.B0_val, verbose=2)
-    with open("./out/symbolic/Malkus/eqs_ptb_deduce.json", 'x') as fwrite:
-        eqs.save_json(fwrite, serializer=srepr)
+    # Output
+    if save_to is not None:
+        fdir = os.path.dirname(save_to)
+        os.makedirs(fdir, exist_ok=True)
+        with open(save_to, 'x') as fwrite:
+            eqs.save_json(fwrite, serializer=srepr)
+    return eqs
+
+
+def routine_matrix_collection(read_from: Union[str, base.LabeledCollection], 
+    save_to: Optional[str]=None) -> List[xpd.SystemMatrix]:
+    """Top-level routine function
+    Stage 2: matrix collection
+    """
+    # Input
+    if isinstance(read_from, str):
+        with open(read_from, 'r') as fread:
+            eqs = base.LabeledCollection.load_json(fread, parser=parse_expr)
+    elif isinstance(read_from, base.LabeledCollection):
+        eqs = read_from
+    else:
+        raise TypeError
+    # Body
+    M_expr, K_expr = collect_eigen_matrices(eqs, 
+        xpd_cfg.recipe, inplace=False, verbose=5)
+    # Output
+    if save_to is not None:
+        fdir = os.path.dirname(save_to)
+        os.makedirs(fdir, exist_ok=True)
+        if save_to[-5:] == '.json':
+            save_to = save_to[:-5]
+        with open(save_to + "_M.json", 'x') as fwrite:
+            M_expr.save_json(fwrite)
+        with open(save_to + "_K.json", 'x') as fwrite:
+            K_expr.save_json(fwrite)
+    return M_expr, K_expr
+
+
+def routine_matrix_calculation(read_from: Union[str, List[xpd.SystemMatrix]], 
+    Ntrunc: int = 5, xpd_recipe: xpd.ExpansionRecipe = xpd_cfg.recipe,
+    save_to: Optional[str] = None) -> List[np.ndarray]:
+    """Top-level routine function
+    Stage 3: Routine calculation of matrix elements
+    """
+    
+    # Input
+    if isinstance(read_from, str):
+        if read_from[-5:] == '.json':
+            read_from = read_from[:-5]
+        with open(read_from + '_M.json', 'r') as fread:
+            M_expr = xpd.SystemMatrix.load_json(fread)
+        with open(read_from + '_K.json', 'r') as fread:
+            K_expr = xpd.SystemMatrix.load_json(fread)
+    else:
+        M_expr = read_from[0]
+        K_expr = read_from[1]
+    
+    # Pre-processing of elements
+    M_expr.apply(lambda ele: ele.subs(PHYS_PARAMS), inplace=True, metadata=False)
+    K_expr.apply(lambda ele: ele.subs(PHYS_PARAMS), inplace=True, metadata=False)
+    
+    # Configure expansions
+    fnames = xpd_recipe.rad_xpd.fields._field_names
+    cnames = xpd_recipe.rad_xpd.bases._field_names
+    ranges_trial = [np.arange(2*Ntrunc + 1) if 'M' in cname else np.arange(Ntrunc + 1)
+        for cname in cnames]
+    ranges_test = [np.arange(2*Ntrunc + 1) if 'M' in fname else np.arange(Ntrunc + 1)
+        for fname in fnames]
+    
+    # Configure quadrature
+    quad_recipe_list = np.array([
+        [nmatrix.QuadRecipe(
+            init_opt={"automatic": True, "quadN": None},
+            gram_opt={"backend": "scipy", "output": "numpy"}
+        ) for ele in row] for row in M_expr._matrix
+    ])
+    
+    # Computation
+    M_val = nmatrix.MatrixExpander(
+        M_expr, quad_recipe_list, ranges_trial, ranges_test).expand(verbose=True)
+    K_val = nmatrix.MatrixExpander(
+        K_expr, quad_recipe_list, ranges_trial, ranges_test).expand(verbose=True)
+    
+    # Output
+    if save_to is not None:
+        fdir = os.path.dirname(save_to)
+        os.makedirs(fdir, exist_ok=True)
+        with h5py.File(save_to, 'x') as fwrite:
+            str_type = h5py.string_dtype(encoding="utf-8")
+            fwrite.attrs["xpd"] = xpd_cfg.identifier
+            fwrite.attrs["azm"] = int(PHYS_PARAMS[m])
+            fwrite.attrs["Le"] = float(PHYS_PARAMS[params.Le])
+            fwrite.attrs["Lu"] = float(PHYS_PARAMS[params.Lu]) \
+                if not PHYS_PARAMS[params.Lu].equals(oo) else "+inf"
+            gp = fwrite.create_group("rows")
+            gp.create_dataset("names", data=fnames, dtype=str_type)
+            gp.create_dataset("ranges", 
+                data=np.array([len(nrange) for nrange in ranges_test]))
+            gp = fwrite.create_group("cols")
+            gp.create_dataset("names", data=cnames, dtype=str_type)
+            gp.create_dataset("ranges", 
+                data=np.array([len(nrange) for nrange in ranges_trial]))            
+            fwrite.create_dataset("M", data=M_val)
+            fwrite.create_dataset("K", data=K_val)
+    return M_val, K_val
+
+
+def routine_eigen_compute(read_from: Union[str, List[np.ndarray]], 
+    save_to: Optional[str]) -> List[np.ndarray]:
+    """Top-level routine function
+    Stage 4: Computing eigenvalues and eigenvectors from Matrices
+    """
+    # Input
+    if isinstance(read_from, str):
+        with h5py.File(read_from, 'r') as fread:
+            identifier = fread.attrs["xpd"]
+            m_val = fread.attrs["azm"]
+            Le = fread.attrs["Le"]
+            Lu = fread.attrs["Lu"]
+            fnames = list(fread["rows"]["names"].asstr()[()])
+            frange = fread["rows"]["ranges"][()]
+            cnames = list(fread["cols"]["names"].asstr()[()])
+            crange = fread["cols"]["ranges"][()]
+            M_val = fread["M"][()]
+            K_val = fread["K"][()]
+    else:
+        M_val = read_from[0]
+        K_val = read_from[1]
+    
+    # Convert to ordinary eigenvalue problem and solve
+    assert np.linalg.cond(M_val) < 1e+8
+    A_val = np.linalg.inv(M_val) @ K_val
+    eig_val, eig_vec = np.linalg.eig(A_val)
+    
+    # Sorting
+    eig_sort = np.argsort(-np.abs(eig_val))
+    eig_val = eig_val[eig_sort]
+    eig_vec = eig_vec[:, eig_sort]
+    
+    # Output
+    if save_to is not None:
+        fdir = os.path.dirname(save_to)
+        os.makedirs(fdir, exist_ok=True)
+        with h5py.File(save_to, 'x') as fwrite:
+            str_type = h5py.string_dtype(encoding="utf-8")
+            fwrite.attrs["xpd"] = identifier
+            fwrite.attrs["azm"] = m_val
+            fwrite.attrs["Le"] = Le
+            fwrite.attrs["Lu"] = Lu
+            gp = fwrite.create_group("bases")
+            gp.create_dataset("names", data=cnames, dtype=str_type)
+            gp.create_dataset("ranges", data=np.asarray(crange))            
+            fwrite.create_dataset("eigval", data=eig_val)
+            fwrite.create_dataset("eigvec", data=eig_vec)
+    return eig_val, eig_vec
+
+
+
+if __name__ == "__main__":
+    
+    fname_eqn = "./out/symbolic/eqs_pg_lin.json"
+    output_dir = "./out/cases/Malkus/"
+    fname_eqn_reduced = os.path.join(output_dir, "Eqs_ptb.json")
+    fname_matrix_expr = os.path.join(output_dir, "Matrix_expr.json")
+    fname_matrix_val = os.path.join(output_dir, "Matrix.h5")
+    fname_eig_result = os.path.join(output_dir, "Eigen.h5")
+    
+    """Stage 1: equation reduction"""
+    # routine_eqn_reduction(read_from=fname_eqn, save_to=fname_eqn_reduced)
+    
+    """Stage 2: matrix extraction"""
+    # Choose equations
+    # with open(fname_eqn_reduced, 'r') as fread:
+    #     eqs = base.CollectionPG.load_json(fread, parser=parse_expr)
+    # solve_idx = np.full(21, False)
+    # solve_idx[:14] = True
+    # eqs_solve = eqs.generate_collection(solve_idx)
+    # routine_matrix_collection(eqs_solve, save_to=fname_matrix_expr)
+    
+    """Stage 3: compute matrices"""
+    # routine_matrix_calculation(fname_matrix_expr, 
+    #     Ntrunc=5, xpd_recipe=xpd_cfg.recipe, save_to=fname_matrix_val)
+    
+    """Stage 4: compute eigenvalues"""
+    routine_eigen_compute(fname_matrix_val, save_to=fname_eig_result)
     
