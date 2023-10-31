@@ -19,12 +19,14 @@ terms may be combined into one single dynamical variable, etc.
 """
 
 
-from typing import Any, List, Optional, Union, Callable
+from typing import Any, List, Optional, Union, Callable, TextIO
 import sympy
 
 from . import base
 from .core import s
 import numpy as np
+
+import json
 
 
 
@@ -268,6 +270,13 @@ class InnerProduct1D(sympy.Expr):
                 for arg in self._opd_B.args])
         else:
             return self
+    
+    def serialize(self) -> dict:
+        return {"opd_A": sympy.srepr(self._opd_A), 
+                "opd_B": sympy.srepr(self._opd_B), "wt": sympy.srepr(self._wt), 
+                "int_var": sympy.srepr(self._int_var), 
+                "lower": sympy.srepr(self._bound[0]), 
+                "upper": sympy.srepr(self._bound[1])}
 
 
 
@@ -330,13 +339,25 @@ class ExpansionRecipe:
     
     def __init__(self, fourier_expand: FourierExpansions, 
         rad_expand: RadialExpansions, rad_test: RadialTestFunctions, 
-        inner_prod_op: RadialInnerProducts) -> None:
+        inner_prod_op: RadialInnerProducts, 
+        base_expr: Optional[base.LabeledCollection] = None, 
+        test_expr: Optional[base.LabeledCollection] = None) -> None:
         """Initialization
         """
         self.fourier_xpd = fourier_expand
         self.rad_xpd = rad_expand
         self.rad_test = rad_test
         self.inner_prod_op = inner_prod_op
+        if base_expr is not None:
+            assert base_expr._field_names == self.rad_xpd.bases._field_names
+            self.base_expr = base.map_collection(self.rad_xpd.bases, base_expr)
+        else:
+            self.base_expr = dict()
+        if test_expr is not None:
+            assert test_expr._field_names == self.rad_test._field_names
+            self.test_expr = base.map_collection(self.rad_test, test_expr)
+        else:
+            self.test_expr = dict()
 
 
 
@@ -514,7 +535,52 @@ class SystemMatrix:
                 else:
                     sysm_out[i_row, i_col] = fun(self[i_row, i_col])
         return sysm_out
-        
+    
+    @staticmethod
+    def serialize_element(element: Union[InnerProduct1D, sympy.Expr]) -> Any:
+        if isinstance(element, InnerProduct1D):
+            return element.serialize()
+        elif isinstance(element, sympy.Expr):
+            return sympy.srepr(element)
+        else:
+            raise TypeError
+    
+    def save_json(self, fp: TextIO) -> None:
+        """Save to json file
+        """
+        matrix_array = [
+            [self.serialize_element(element) for element in row] 
+            for row in self._matrix
+        ]
+        matrix_array = [self._row_names, self._col_names] + matrix_array
+        json.dump(matrix_array, fp, indent=4)
+    
+    @staticmethod
+    def load_serialized_element(element: Union[dict, str]) -> sympy.Expr:
+        if isinstance(element, dict):
+            return InnerProduct1D(
+                sympy.parse_expr(element["opd_A"]), 
+                sympy.parse_expr(element["opd_B"]), 
+                sympy.parse_expr(element["wt"]), 
+                sympy.parse_expr(element["int_var"]), 
+                sympy.parse_expr(element["lower"]), 
+                sympy.parse_expr(element["upper"]))
+        elif isinstance(element, str):
+            return sympy.parse_expr(element)
+    
+    @staticmethod
+    def load_json(fp: TextIO) -> "SystemMatrix":
+        """Load from json file
+        """
+        matrix_array = json.load(fp)
+        row_names = matrix_array[0]
+        col_names = matrix_array[1]
+        matrix_array = matrix_array[2:]
+        matrix_array = [
+            [SystemMatrix.load_serialized_element(element) for element in row]
+            for row in matrix_array
+        ]
+        return SystemMatrix(row_names, col_names, np.array(matrix_array))
 
 
 

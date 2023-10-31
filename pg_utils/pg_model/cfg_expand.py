@@ -10,6 +10,8 @@ from .core import s, p, t, H, H_s, pgvar_ptb
 from .expansion import n, m, xi, xi_s, s_xi
 from . import expansion, base
 
+identifier = "Daria_equatorial_coupling"
+
 
 # Which equations to use
 field_names = base.CollectionPG.pg_field_names[:14]
@@ -143,6 +145,8 @@ recipe = expansion.ExpansionRecipe(
     fourier_expand=fourier_expand,
     rad_expand=rad_expand,
     rad_test=test_s,
-    inner_prod_op=inner_prod_op
+    inner_prod_op=inner_prod_op,
+    base_expr=bases_s_expression.subs({n: expansion.n_trial}),
+    test_expr=bases_s_expression.subs({n: expansion.n_test})
 )
 
