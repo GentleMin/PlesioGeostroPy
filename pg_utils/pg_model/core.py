@@ -57,6 +57,8 @@ U_vec = v3d.Vector3D(
     ], 
     coord_sys=cyl
 )
+# Equatorial velocity
+v_e = (U_vec.s, U_vec.p, 0)
 # In spherical coordinates
 U_sph = v3d.Vector3D(
     [
@@ -269,11 +271,11 @@ cgvar = base.CollectionConjugate(
     dB_dz_em = sympy.Function(r"B_{e-, z}")(s, p, t),
     # Magnetic field at the boundary
     Br_b = pgvar.Br_b,
-    Bs_p = pgvar.Bs_p,
-    Bp_p = pgvar.Bp_p,
+    B_pp = sympy.Function(r"B_+^+")(s, p, t),
+    B_pm = sympy.Function(r"B_-^+")(s, p, t),
     Bz_p = pgvar.Bz_p,
-    Bs_m = pgvar.Bs_m,
-    Bp_m = pgvar.Bp_m,
+    B_mp = sympy.Function(r"B_+^-")(s, p, t),
+    B_mm = sympy.Function(r"B_-^-")(s, p, t),
     Bz_m = pgvar.Bz_m
 )
 
@@ -297,11 +299,11 @@ cgvar_ptb = base.CollectionConjugate(
     dB_dz_em = sympy.Function(r"b_{e-, z}")(s, p, t),
     # Magnetic field at the boundary
     Br_b = pgvar_ptb.Br_b,
-    Bs_p = pgvar_ptb.Bs_p,
-    Bp_p = pgvar_ptb.Bp_p,
+    B_pp = sympy.Function(r"b_+^+")(s, p, t),
+    B_pm = sympy.Function(r"b_-^+")(s, p, t),
     Bz_p = pgvar_ptb.Bz_p,
-    Bs_m = pgvar_ptb.Bs_m,
-    Bp_m = pgvar_ptb.Bp_m,
+    B_mp = sympy.Function(r"b_+^-")(s, p, t),
+    B_mm = sympy.Function(r"b_-^-")(s, p, t),
     Bz_m = pgvar_ptb.Bz_m
 )
 
@@ -335,11 +337,11 @@ def PG_to_conjugate(pg_comp: base.CollectionPG) -> base.CollectionConjugate:
             dB_dz_em = pg_comp.dBs_dz_e - sympy.I*pg_comp.dBp_dz_e,
             # Boundary: unchanged
             Br_b = pg_comp.Br_b,
-            Bs_p = pg_comp.Bs_p,
-            Bp_p = pg_comp.Bp_p,
+            B_pp = pg_comp.Bs_p + sympy.I*pg_comp.Bp_p,
+            B_pm = pg_comp.Bs_p - sympy.I*pg_comp.Bp_p,
             Bz_p = pg_comp.Bz_p,
-            Bs_m = pg_comp.Bs_m,
-            Bp_m = pg_comp.Bp_m,
+            B_mp = pg_comp.Bs_m + sympy.I*pg_comp.Bp_m,
+            B_mm = pg_comp.Bs_m - sympy.I*pg_comp.Bp_m,
             Bz_m = pg_comp.Bz_m,
         )
         return cg_comp
@@ -380,11 +382,11 @@ def conjugate_to_PG(cg_comp: base.CollectionConjugate) -> base.CollectionPG:
             dBp_dz_e = (cg_comp.dB_dz_ep - cg_comp.dB_dz_em)/sympy.Integer(2)/sympy.I,
             # Boundary unchanged
             Br_b = cg_comp.Br_b,
-            Bs_p = cg_comp.Bs_p,
-            Bp_p = cg_comp.Bp_p,
+            Bs_p = (cg_comp.B_pp + cg_comp.B_pm)/sympy.Integer(2),
+            Bp_p = (cg_comp.B_pp - cg_comp.B_pm)/sympy.Integer(2)/sympy.I,
             Bz_p = cg_comp.Bz_p,
-            Bs_m = cg_comp.Bs_m,
-            Bp_m = cg_comp.Bp_m,
+            Bs_m = (cg_comp.B_mp + cg_comp.B_mm)/sympy.Integer(2),
+            Bp_m = (cg_comp.B_mp - cg_comp.B_mm)/sympy.Integer(2)/sympy.I,
             Bz_m = cg_comp.Bz_m,
         )
         return pg_comp
@@ -428,10 +430,19 @@ def map_conjugate_to_pg(cg_comp: base.CollectionConjugate,
 
 
 
+"""Force placeholders"""
+
+# Symbols for external forces
+fs_sym = sympy.Function(r"\overline{f_s}")(s, p, t)
+fp_sym = sympy.Function(r"\overline{f_\phi}")(s, p, t)
+fz_asym = sympy.Function(r"\widetilde{f_z}")(s, p, t)
+fe_p = sympy.Function(r"f_{e\phi}")(s, p, t)
+
+
 """Linearization utilities"""
 
 # Introduce a small quantity $\epsilon$
-eps = sympy.Symbol("\epsilon")
+eps = sympy.Symbol(r"\epsilon")
 
 u_linmap = {U_vec[idx]: U0_vec[idx] + eps*U_pg[idx].subs(pgvar.Psi, pgvar_ptb.Psi)
     for idx in range(U_vec.ndim)}
@@ -443,6 +454,16 @@ b_linmap.update({B_sph[idx]: B0_sph[idx] + eps*b_sph[idx]
     for idx in range(B_sph.ndim)})
 pg_linmap = {pgvar[idx]: pgvar_bg[idx] + eps*pgvar_ptb[idx] 
     for idx in range(pgvar.n_fields)}
+cg_linmap = {cgvar[idx]: cgvar[idx] + eps*cgvar_ptb[idx]
+    for idx in range(cgvar.n_fields)}
+
+# Forcing terms are simply transferred to the linearized equations
+force_linmap = {
+    fp_sym: eps*fp_sym,
+    fs_sym: eps*fs_sym,
+    fz_asym: eps*fz_asym,
+    fe_p: eps*fe_p
+}
 
 def pg_ansatz(expr, formal_vel=U_vec, PG_Psi=pgvar.Psi):
     """Replace formal velocity with PG ansatz

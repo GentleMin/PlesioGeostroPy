@@ -49,7 +49,7 @@ def field_to_moment(B_field):
     return Mss, Mpp, Msp, Msz, Mpz, zMss, zMpp, zMsp
 
 
-def assemble_background(B0, Psi0=None):
+def assemble_background(B0, Psi0=None, mode="PG"):
     """Assemble background PG fields
     
     :param B0: array-like or Vector3D, iterable and indexable
@@ -61,6 +61,9 @@ def assemble_background(B0, Psi0=None):
         absent from the vorticity equation, Psi0 will in general
         not be involved in any of these equations. Background
         velocity in all induction equations uses U instead of Psi
+    :param mode: str, the mode, what kind of background fields to
+        assemble. Supports Plesio-Geostrophy "PG", or conjugate 
+        variables "CG". Default is PG.
     
     :returns: CollectionPG, collection of background PG fields
     
@@ -101,7 +104,10 @@ def assemble_background(B0, Psi0=None):
         Bp_m = B0[1],
         Bz_m = B0[2]
     )
-    return pg_background
+    if mode.lower() == "pg":
+        return pg_background
+    elif mode.lower() == "cg":
+        return PG_to_conjugate(pg_background)
 
 
 def linearize(expr, *subs_maps, perturb_var=eps):
@@ -117,7 +123,7 @@ def linearize(expr, *subs_maps, perturb_var=eps):
     expr_lin = expr
     for subs_map in subs_maps:
         expr_lin = expr_lin.subs(subs_map)
-    expr_lin = expr_lin.simplify().expand().coeff(perturb_var, 1)
+    expr_lin = expr_lin.doit().expand().coeff(perturb_var, 1)
     return expr_lin
 
 

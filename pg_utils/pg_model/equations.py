@@ -8,7 +8,7 @@ import sympy
 from sympy import diff
 from sympy import Derivative as diff_u
 from . import base
-from .base import CollectionPG
+from .base import CollectionPG, CollectionConjugate
 from .core import *
 from .base_utils import linearize
 
@@ -18,12 +18,6 @@ from .base_utils import linearize
 
 eqs_pg = CollectionPG()
 
-# Symbols for external forces
-fs_sym = sympy.Function(r"\overline{f_s}")(s, p, t)
-fp_sym = sympy.Function(r"\overline{f_\phi}")(s, p, t)
-fz_asym = sympy.Function(r"\widetilde{f_z}")(s, p, t)
-fe_p = sympy.Function(r"f_{e\phi}")(s, p, t)
-
 """Vorticity equation"""
 eqs_pg.Psi = sympy.Eq(
     diff_u(s/H*diff(pgvar.Psi, t, s), s)
@@ -31,9 +25,6 @@ eqs_pg.Psi = sympy.Eq(
     -2/H**2*diff(H, s)*diff(pgvar.Psi, p)
     + diff(H, s)*(s/H*fe_p + 1/(2*H)*diff(fz_asym, p)) 
     - s/(2*H)*cyl.curl((fs_sym, fp_sym, 0))[2])
-
-# Equatorial velocity
-v_e = (U_vec.s, U_vec.p, 0)
 
 """Induction equations for magnetic moments"""
 eqs_pg.Mss = sympy.Eq(
@@ -182,19 +173,16 @@ eqs_cg = eqn_PG_to_conjugate(eqs_pg, pg_cg_subs).apply(
 
 """Linearized equations"""
 
+# Linearize equation
 eqs_pg_lin = CollectionPG()
-
-# Forcing terms are simply transferred to the linearized equations
-force_linmap = {
-    fp_sym: eps*fp_sym,
-    fs_sym: eps*fs_sym,
-    fz_asym: eps*fz_asym,
-    fe_p: eps*fe_p
-}
-
-"""Linearize equation"""
 for idx, eq_tmp in enumerate(eqs_pg):
     eqs_pg_lin[idx] = sympy.Eq(
         linearize(eq_tmp.lhs, pg_linmap),
         linearize(eq_tmp.rhs, u_linmap, b_linmap, pg_linmap, force_linmap))
+
+eqs_cg_lin = CollectionConjugate()
+for idx, eq_tmp in enumerate(eqs_cg):
+    eqs_cg_lin[idx] = sympy.Eq(
+        linearize(eq_tmp.lhs, cg_linmap), 
+        linearize(eq_tmp.rhs, u_linmap, b_linmap, cg_linmap, force_linmap))
 
