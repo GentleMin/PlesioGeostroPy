@@ -32,6 +32,13 @@ Lz_asym_expr = 1/s*diff(s*pgvar.Msz, s) + 1/s*diff(pgvar.Mpz, p) \
 Le_p_expr = pgvar.Bs_e*diff(pgvar.Bp_e, s) + 1/s*pgvar.Bp_e*diff(pgvar.Bp_e, p) \
     + pgvar.Bz_e*pgvar.dBp_dz_e + 1/s*pgvar.Bs_e*pgvar.Bp_e
 
+# Mapping for placeholder symbol - explicit expressions for forces
+force_explicit = {
+    Ls_sym: Ls_sym_expr,
+    Lp_sym: Lp_sym_expr,
+    Lz_asym: Lz_asym_expr,
+    Le_p: Le_p_expr
+}
 
 
 """Linearized Lorentz force"""
@@ -61,5 +68,13 @@ Lz_asym_lin = linearize(Lz_asym_expr, pg_linmap, perturb_var=eps)
 
 # Curl of horizontal components $\nabla \times \mathbf{L}_e$
 # Curl is linear, linearize (curl (field)) = curl (linearize (field))
-curl_L = cyl.curl((Ls_sym_lin, Lp_sym_lin, 0))[2]
+# curl_L = cyl.curl((Ls_sym_lin, Lp_sym_lin, 0))[2]
 
+
+# Mapping for placeholder symbol - explicit expressions for linearized forces
+force_explicit_lin = {
+    Ls_sym: Ls_sym_lin,
+    Lp_sym: Lp_sym_lin,
+    Lz_asym: Lz_asym_lin,
+    Le_p: Le_p_lin
+}
