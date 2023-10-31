@@ -5,7 +5,8 @@ Jingtao Min @ ETH-EPM, 09.2023
 """
 
 
-from typing import Any, Callable, List
+from typing import Any, Callable, List, TextIO
+import json
 
 
 class LabeledCollection:
@@ -234,6 +235,21 @@ class LabeledCollection:
         return LabeledCollection(new_names, **{fname: self[fname]
             for idx, fname in enumerate(self._field_names) if index_array[idx]})
 
+    def save_json(self, fp: TextIO, serializer: Callable[[Any], str] = str) -> None:
+        """Serialize the object in string format and save to json file
+        """
+        save_array = [(fname, serializer(self[fname])) for fname in self._field_names]
+        json.dump(save_array, fp, indent=4)
+    
+    @staticmethod
+    def load_json(fp: TextIO, 
+        parser: Callable[[str], Any] = lambda x: x) -> "LabeledCollection":
+        """Load LabeledCollection object from json
+        """
+        load_array = json.load(fp)
+        field_names = [field[0] for field in load_array]
+        field_dict = {field[0]: parser(field[1]) for field in load_array}
+        return LabeledCollection(field_names, **field_dict)
 
 
 class LabeledSubCollection:
@@ -439,6 +455,17 @@ class CollectionPG(LabeledCollection):
     def apply(self, fun: Callable[..., Any], inplace: bool = False,
         metadata: bool = False) -> "CollectionPG":
         return super().apply(fun, inplace, metadata)
+    
+    @staticmethod
+    def load_json(fp: TextIO, 
+        parser: Callable[[str], Any] = lambda x: x) -> "CollectionPG":
+        """Load CollectionPG object from json
+        """
+        load_array = json.load(fp)
+        field_names = [field[0] for field in load_array]
+        assert field_names == CollectionPG.pg_field_names
+        field_dict = {field[0]: parser(field[1]) for field in load_array}
+        return CollectionPG(**field_dict)
 
 
 
@@ -458,7 +485,7 @@ class CollectionConjugate(LabeledCollection):
         "Psi", 
         "M_1", "M_p", "M_m", "M_zp", "M_zm", "zM_1", "zM_p", "zM_m", 
         "B_ep", "B_em", "Bz_e", "dB_dz_ep", "dB_dz_em", 
-        "Br_b", "Bs_p", "Bp_p", "Bz_p", "Bs_m", "Bp_m", "Bz_m"]
+        "Br_b", "B_pp", "B_pm", "Bz_p", "B_mp", "B_mm", "Bz_m"]
     
     def __init__(self, **fields) -> None:
         super().__init__(self.cg_field_names, **fields)
@@ -510,6 +537,17 @@ class CollectionConjugate(LabeledCollection):
     def apply(self, fun: Callable[..., Any], inplace: bool = False,
         metadata: bool = False) -> "CollectionConjugate":
         return super().apply(fun, inplace, metadata)
+
+    @staticmethod
+    def load_json(fp: TextIO, 
+        parser: Callable[[str], Any] = lambda x: x) -> "CollectionConjugate":
+        """Load CollectionConjugate object from json
+        """
+        load_array = json.load(fp)
+        field_names = [field[0] for field in load_array]
+        assert field_names == CollectionConjugate.pg_field_names
+        field_dict = {field[0]: parser(field[1]) for field in load_array}
+        return CollectionConjugate(**field_dict)
 
 
 def map_collection(maps_from: LabeledCollection, maps_to: LabeledCollection) -> dict:
