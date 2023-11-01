@@ -11,7 +11,7 @@ interactively verify the correctness of the equations/elements.
 
 PRECOMPUTE_EQN = True
 
-import os, h5py
+import os, h5py, json
 from typing import List, Any, Optional, Union
 from sympy import S, I, oo, Function, Eq, srepr, parse_expr, Integer, Rational
 import numpy as np
@@ -28,7 +28,8 @@ from pg_utils.numerics import matrices as nmatrix
 # Background field setup
 import bg_malkus as bg_cfg
 # Radial expansion setup
-from pg_utils.pg_model import cfg_expand as xpd_cfg
+# from pg_utils.pg_model import expand_daria_malkus as xpd_cfg
+from pg_utils.pg_model import expand_daria_thesis as xpd_cfg
 # Physical variables
 PHYS_PARAMS = {
     m: Integer(3), 
@@ -284,12 +285,19 @@ def routine_matrix_collection(read_from: Union[str, base.LabeledCollection],
     if save_to is not None:
         fdir = os.path.dirname(save_to)
         os.makedirs(fdir, exist_ok=True)
-        if save_to[-5:] == '.json':
-            save_to = save_to[:-5]
-        with open(save_to + "_M.json", 'x') as fwrite:
-            M_expr.save_json(fwrite)
-        with open(save_to + "_K.json", 'x') as fwrite:
-            K_expr.save_json(fwrite)
+        # if save_to[-5:] == '.json':
+        #     save_to = save_to[:-5]
+        # with open(save_to + "_M.json", 'x') as fwrite:
+        #     M_expr.save_json(fwrite)
+        # with open(save_to + "_K.json", 'x') as fwrite:
+        #     K_expr.save_json(fwrite)
+        serialized_obj = {
+            "xpd": xpd_cfg.identifier,
+            "M": M_expr.serialize(),
+            "K": K_expr.serialize()
+        }
+        with open(save_to, 'x') as fwrite:
+            json.dump(serialized_obj, fwrite, indent=4)
     return M_expr, K_expr
 
 
@@ -302,12 +310,16 @@ def routine_matrix_calculation(read_from: Union[str, List[xpd.SystemMatrix]],
     
     # Input
     if isinstance(read_from, str):
-        if read_from[-5:] == '.json':
-            read_from = read_from[:-5]
-        with open(read_from + '_M.json', 'r') as fread:
-            M_expr = xpd.SystemMatrix.load_json(fread)
-        with open(read_from + '_K.json', 'r') as fread:
-            K_expr = xpd.SystemMatrix.load_json(fread)
+        # if read_from[-5:] == '.json':
+        #     read_from = read_from[:-5]
+        # with open(read_from + '_M.json', 'r') as fread:
+        #     M_expr = xpd.SystemMatrix.load_json(fread)
+        # with open(read_from + '_K.json', 'r') as fread:
+        #     K_expr = xpd.SystemMatrix.load_json(fread)
+        with open(read_from, 'r') as fread:
+            matrix_obj = json.load(fread)
+        M_expr = xpd.SystemMatrix.deserialize(matrix_obj["M"])
+        K_expr = xpd.SystemMatrix.deserialize(matrix_obj["K"])
     else:
         M_expr = read_from[0]
         K_expr = read_from[1]
@@ -418,25 +430,25 @@ if __name__ == "__main__":
     fname_eqn = "./out/symbolic/eqs_pg_lin.json"
     output_dir = "./out/cases/Malkus/"
     fname_eqn_reduced = os.path.join(output_dir, "Eqs_ptb.json")
-    fname_matrix_expr = os.path.join(output_dir, "Matrix_expr.json")
-    fname_matrix_val = os.path.join(output_dir, "Matrix.h5")
-    fname_eig_result = os.path.join(output_dir, "Eigen.h5")
+    fname_matrix_expr = os.path.join(output_dir, "Matrix_expr_2.json")
+    fname_matrix_val = os.path.join(output_dir, "Matrix_eval_2.h5")
+    fname_eig_result = os.path.join(output_dir, "Eigen_2.h5")
     
     """Stage 1: equation reduction"""
     # routine_eqn_reduction(read_from=fname_eqn, save_to=fname_eqn_reduced)
     
     """Stage 2: matrix extraction"""
     # Choose equations
-    # with open(fname_eqn_reduced, 'r') as fread:
-    #     eqs = base.CollectionPG.load_json(fread, parser=parse_expr)
-    # solve_idx = np.full(21, False)
-    # solve_idx[:14] = True
-    # eqs_solve = eqs.generate_collection(solve_idx)
-    # routine_matrix_collection(eqs_solve, save_to=fname_matrix_expr)
+    with open(fname_eqn_reduced, 'r') as fread:
+        eqs = base.CollectionPG.load_json(fread, parser=parse_expr)
+    solve_idx = np.full(21, False)
+    solve_idx[:14] = True
+    eqs_solve = eqs.generate_collection(solve_idx)
+    routine_matrix_collection(eqs_solve, save_to=fname_matrix_expr)
     
     """Stage 3: compute matrices"""
-    # routine_matrix_calculation(fname_matrix_expr, 
-    #     Ntrunc=5, xpd_recipe=xpd_cfg.recipe, save_to=fname_matrix_val)
+    routine_matrix_calculation(fname_matrix_expr, 
+        Ntrunc=5, xpd_recipe=xpd_cfg.recipe, save_to=fname_matrix_val)
     
     """Stage 4: compute eigenvalues"""
     routine_eigen_compute(fname_matrix_val, save_to=fname_eig_result)
