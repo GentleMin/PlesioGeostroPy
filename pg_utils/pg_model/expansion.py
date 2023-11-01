@@ -21,9 +21,10 @@ terms may be combined into one single dynamical variable, etc.
 
 from typing import Any, List, Optional, Union, Callable, TextIO
 import sympy
+from sympy import Rational, jacobi
 
 from . import base
-from .core import s
+from .core import s, H_s
 import numpy as np
 
 import json
@@ -545,15 +546,20 @@ class SystemMatrix:
         else:
             raise TypeError
     
-    def save_json(self, fp: TextIO) -> None:
-        """Save to json file
+    def serialize(self) -> List[List]:
+        """Serialize object
         """
         matrix_array = [
             [self.serialize_element(element) for element in row] 
             for row in self._matrix
         ]
         matrix_array = [self._row_names, self._col_names] + matrix_array
-        json.dump(matrix_array, fp, indent=4)
+        return matrix_array
+    
+    def save_json(self, fp: TextIO) -> None:
+        """Save to json file
+        """
+        json.dump(self.serialize(), fp, indent=4)
     
     @staticmethod
     def load_serialized_element(element: Union[dict, str]) -> sympy.Expr:
@@ -569,19 +575,27 @@ class SystemMatrix:
             return sympy.parse_expr(element)
     
     @staticmethod
-    def load_json(fp: TextIO) -> "SystemMatrix":
-        """Load from json file
+    def deserialize(matrix_obj: List[List]) -> "SystemMatrix":
+        """Construct system matrix from object
         """
-        matrix_array = json.load(fp)
-        row_names = matrix_array[0]
-        col_names = matrix_array[1]
-        matrix_array = matrix_array[2:]
+        row_names = matrix_obj[0]
+        col_names = matrix_obj[1]
+        matrix_array = matrix_obj[2:]
         matrix_array = [
             [SystemMatrix.load_serialized_element(element) for element in row]
             for row in matrix_array
         ]
         return SystemMatrix(row_names, col_names, np.array(matrix_array))
+    
+    @staticmethod
+    def load_json(fp: TextIO) -> "SystemMatrix":
+        """Load from json file
+        """
+        matrix_array = json.load(fp)
+        return SystemMatrix.deserialize(matrix_array)
 
+
+"""Auxiliary functions"""
 
 
 def placeholder_collection(names, notation: str, *vars) -> base.LabeledCollection:
@@ -591,6 +605,20 @@ def placeholder_collection(names, notation: str, *vars) -> base.LabeledCollectio
         **{fname: sympy.Symbol(r"%s_%d" % (notation, i_f))(*vars)
             for i_f, fname in enumerate(names)})
     return placeholder
+
+
+def orth_pref_jacobi(pow_H: Union[sympy.Expr, int], 
+    pow_s: Union[sympy.Expr, int]) -> sympy.Expr:
+    """Form the basis given on the power of s and H
+    This set of bases is guaranteed to form an orthogonal bases
+    in an approriate Hilbert space.
+    
+    :param pow_H: power in H
+    :param pow_s: power in s
+    :returns: desired form of basis
+    """
+    return (H_s**pow_H*s**pow_s)*jacobi(n, pow_H, pow_s - Rational(1, 2), xi_s)
+
 
 
 """Radial placeholder functions of PG fields in 2-D disk.

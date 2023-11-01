@@ -235,11 +235,26 @@ class LabeledCollection:
         return LabeledCollection(new_names, **{fname: self[fname]
             for idx, fname in enumerate(self._field_names) if index_array[idx]})
 
+    def serialize(self, serializer: Callable[[Any], str]=str) -> List[tuple]:
+        """Serialize the object
+        """
+        return [(fname, serializer(self[fname])) for fname in self._field_names]
+    
     def save_json(self, fp: TextIO, serializer: Callable[[Any], str] = str) -> None:
         """Serialize the object in string format and save to json file
         """
-        save_array = [(fname, serializer(self[fname])) for fname in self._field_names]
+        save_array = self.serialize(serializer=serializer)
         json.dump(save_array, fp, indent=4)
+    
+    @staticmethod
+    def deserialize(obj: List[tuple], 
+        parser: Callable[[str], Any]=lambda x: x) -> "LabeledCollection":
+        """Deserialize an object
+        requires sanitized input
+        """
+        field_names = [field[0] for field in obj]
+        field_dict = {field[0]: parser(field[1]) for field in obj}
+        return LabeledCollection(field_names, **field_dict)
     
     @staticmethod
     def load_json(fp: TextIO, 
@@ -247,9 +262,7 @@ class LabeledCollection:
         """Load LabeledCollection object from json
         """
         load_array = json.load(fp)
-        field_names = [field[0] for field in load_array]
-        field_dict = {field[0]: parser(field[1]) for field in load_array}
-        return LabeledCollection(field_names, **field_dict)
+        return LabeledCollection.deserialize(load_array, parser=parser)
 
 
 class LabeledSubCollection:
@@ -457,15 +470,23 @@ class CollectionPG(LabeledCollection):
         return super().apply(fun, inplace, metadata)
     
     @staticmethod
+    def deserialize(obj: List[tuple], 
+        parser: Callable[[str], Any] = lambda x: x) -> "CollectionPG":
+        """Deserialize an object
+        overriding the base method
+        """
+        field_names = [field[0] for field in obj]
+        assert field_names == CollectionPG.pg_field_names
+        field_dict = {field[0]: parser(field[1]) for field in obj}
+        return CollectionPG(**field_dict)
+    
+    @staticmethod
     def load_json(fp: TextIO, 
         parser: Callable[[str], Any] = lambda x: x) -> "CollectionPG":
         """Load CollectionPG object from json
         """
         load_array = json.load(fp)
-        field_names = [field[0] for field in load_array]
-        assert field_names == CollectionPG.pg_field_names
-        field_dict = {field[0]: parser(field[1]) for field in load_array}
-        return CollectionPG(**field_dict)
+        return CollectionPG.deserialize(load_array, parser=parser)
 
 
 
@@ -539,15 +560,23 @@ class CollectionConjugate(LabeledCollection):
         return super().apply(fun, inplace, metadata)
 
     @staticmethod
+    def deserialize(obj: List[tuple], 
+        parser: Callable[[str], Any]=lambda x: x) -> "CollectionConjugate":
+        """Deserialize object
+        overriding base method
+        """
+        field_names = [field[0] for field in obj]
+        assert field_names == CollectionConjugate.cg_field_names
+        field_dict = {field[0]: parser(field[1]) for field in obj}
+        return CollectionConjugate(**field_dict)
+    
+    @staticmethod
     def load_json(fp: TextIO, 
         parser: Callable[[str], Any] = lambda x: x) -> "CollectionConjugate":
         """Load CollectionConjugate object from json
         """
         load_array = json.load(fp)
-        field_names = [field[0] for field in load_array]
-        assert field_names == CollectionConjugate.pg_field_names
-        field_dict = {field[0]: parser(field[1]) for field in load_array}
-        return CollectionConjugate(**field_dict)
+        return CollectionConjugate.deserialize(load_array, parser=parser)
 
 
 def map_collection(maps_from: LabeledCollection, maps_to: LabeledCollection) -> dict:
