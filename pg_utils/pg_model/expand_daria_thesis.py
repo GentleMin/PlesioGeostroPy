@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Expansion configuration file - 
-Daria's expansion for Malkus background field, with only
-coupling in equatorial components implemented, consistent
-with `quad_malkus_reg_diff.nb`
+Daria's expansion as documented in dissertation, 
+consistent with `C1QP_reg_diff_visc_daria.nb`
 
 Jingtao Min @ ETH Zurich 2023
 """
@@ -14,7 +13,7 @@ from .core import s, p, t, H, H_s, pgvar_ptb
 from .expansion import n, m, xi, xi_s, s_xi
 from . import expansion, base
 
-identifier = "expand_daria_malkus"
+identifier = "expand_daria_thesis_mode_eigen"
 
 
 # Which equations to use
@@ -46,38 +45,41 @@ bases_s = base.LabeledCollection(field_names,
 
 # explicit expression for the radial bases
 m_abs = Abs(m)
-# prefactor_m = Piecewise(
-#     (1, Eq(m, 0)), 
-#     (s, Eq(m_abs, 1)), 
-#     (s**(m_abs - 2), m_abs > 1))
-prefactor_m = s**Abs(Abs(m_abs - S.One) - S.One)
-# beta_m = Piecewise(
-#     (-Rational(1, 2), Eq(m, 0)), 
-#     (Rational(1, 2), Eq(m_abs, 1)), 
-#     (m_abs - Rational(5, 2), m_abs > 1))
-beta_m = Abs(Abs(m_abs - S.One) - S.One) - Rational(1, 2)
+pow_m = Abs(Abs(m_abs - S.One) - S.One)
+# beta_m = pow_m - Rational(1, 2)
+
 coupling_p = Piecewise(
     (S.Zero, Eq(m, 0)),
     (S.One, m_abs > 0)
 )
+coupling_pp = Piecewise(
+    (S.One, Eq(m, S.Zero)), 
+    (S.Zero, Eq(m_abs, S.One)), 
+    (-S.One, m_abs > S.One)
+)
+coupling_sp = Piecewise(
+    (S.Zero, m_abs <= S.One), 
+    (S.One, m_abs > S.One)
+)
+
+
 bases_s_expression = base.LabeledCollection(field_names,
     Psi = H_s**3*s**m_abs*jacobi(n, Rational(3, 2), m_abs, xi_s),
-    # No coupling implemented for moments
-    Mss = H_s*prefactor_m*jacobi(n, 1, beta_m, xi_s),
-    Mpp = H_s*prefactor_m*jacobi(n, 1, beta_m, xi_s), 
-    # Msp expr not consistent with thesis or new notebook (H_s)
-    Msp = H_s**2*s**(Abs(m_abs - 2))*jacobi(n, 2, Abs(m_abs - 2) - Rational(1, 2), xi_s),
-    Msz = H_s**2*s**(Abs(m_abs - 1))*jacobi(n, 2, Abs(m_abs - 1) - Rational(1, 2), xi_s),
-    Mpz = H_s**2*s**(Abs(m_abs - 1))*jacobi(n, 2, Abs(m_abs - 1) - Rational(1, 2), xi_s),
-    zMss = H_s**2*prefactor_m*jacobi(n, 2, beta_m, xi_s),
-    zMpp = H_s**2*prefactor_m*jacobi(n, 2, beta_m, xi_s),
-    zMsp = H_s**2*s**(Abs(m_abs - 2))*jacobi(n, 2, Abs(m_abs - 2) - Rational(1, 2), xi_s),
-    # Coupling implemented for Bs_e, Bp_e,
-    Bs_e = H_s**2*s**(Abs(m_abs - 1))*jacobi(n, 2, Abs(m_abs - 1) - Rational(1, 2), xi_s),
-    Bp_e = s**(Abs(m_abs - 1) + 2*coupling_p)*jacobi(n, 2, Abs(m_abs - 2) + Rational(1, 2), xi_s),
-    Bz_e = H_s**2*s**m_abs*jacobi(n, 2, m_abs - Rational(1, 2), xi_s),
-    dBs_dz_e = H_s**2*s**(Abs(m_abs - 1))*jacobi(n, 2, Abs(m_abs - 1) - Rational(1, 2), xi_s),
-    dBp_dz_e = H_s**2*s**(Abs(m_abs - 1))*jacobi(n, 2, Abs(m_abs - 1) - Rational(1, 2), xi_s)
+    # Coupling for magnetic moments
+    Mss = expansion.orth_pref_jacobi(1, pow_m),
+    Mpp = expansion.orth_pref_jacobi(1, pow_m + 2*Abs(coupling_pp)),
+    Msp = expansion.orth_pref_jacobi(1, Abs(m_abs - 2) + 2*Abs(coupling_sp)),
+    Msz = expansion.orth_pref_jacobi(2, Abs(m_abs - 1)),
+    Mpz = expansion.orth_pref_jacobi(2, Abs(m_abs - 1) + 2*Abs(coupling_p)),
+    zMss = expansion.orth_pref_jacobi(2, pow_m),
+    zMpp = expansion.orth_pref_jacobi(2, pow_m + 2*Abs(coupling_pp)),
+    zMsp = expansion.orth_pref_jacobi(2, Abs(m_abs - 2) + 2*Abs(coupling_sp)),
+    # Coupling for equatorial fields
+    Bs_e = expansion.orth_pref_jacobi(0, Abs(m_abs - 1)),
+    Bp_e = expansion.orth_pref_jacobi(0, Abs(m_abs - 1) + 2*Abs(coupling_p)),
+    Bz_e = expansion.orth_pref_jacobi(0, m_abs),
+    dBs_dz_e = expansion.orth_pref_jacobi(0, Abs(m_abs - 1)),
+    dBp_dz_e = expansion.orth_pref_jacobi(0, Abs(m_abs - 1) + 2*Abs(coupling_p))
 )
 
 # coefficients
@@ -87,40 +89,34 @@ coeff_s = base.LabeledCollection(field_names,
 
 rad_expand = expansion.RadialExpansions(fourier_expand.coeffs, bases_s, coeff_s,
     Psi = coeff_s.Psi*bases_s.Psi,
+    # Lowest-order coupling between Mss, Mpp and Msp
     Mss = coeff_s.Mss*bases_s.Mss,
-    Mpp = coeff_s.Mpp*bases_s.Mpp,
-    Msp = coeff_s.Msp*bases_s.Msp,
+    Mpp = coeff_s.Mpp*bases_s.Mpp \
+        + coupling_pp*coeff_s.Mss*bases_s.Mss,
+    Msp = coeff_s.Msp*bases_s.Msp \
+        + coupling_sp*I*sign(m)*coeff_s.Mss*bases_s.Mss,
+    # Lowest-order coupling between Msz and Mpz
     Msz = coeff_s.Msz*bases_s.Msz,
-    Mpz = coeff_s.Mpz*bases_s.Mpz,
+    Mpz = coeff_s.Mpz*bases_s.Mpz \
+        + coupling_p*I*sign(m)*coeff_s.Msz*bases_s.Msz,
+    # Lowest-order coupling between zMss, zMpp and zMsp
     zMss = coeff_s.zMss*bases_s.zMss,
-    zMpp = coeff_s.zMpp*bases_s.zMpp,
-    zMsp = coeff_s.zMsp*bases_s.zMsp,
-    # For future reference, this is how the coupling can be implemented
+    zMpp = coeff_s.zMpp*bases_s.zMpp \
+        + coupling_pp*coeff_s.zMss*bases_s.zMss,
+    zMsp = coeff_s.zMsp*bases_s.zMsp \
+        + coupling_sp*I*sign(m)*coeff_s.zMss*bases_s.zMss,
+    # Lowest-order coupling between Bs_e and Bp_e
     Bs_e = coeff_s.Bs_e*bases_s.Bs_e,
-    Bp_e = coeff_s.Bp_e*bases_s.Bp_e + I*sign(m)*coupling_p*coeff_s.Bs_e*bases_s.Bs_e,
+    Bp_e = coeff_s.Bp_e*bases_s.Bp_e \
+        + coupling_p*I*sign(m)*coeff_s.Bs_e*bases_s.Bs_e,
     Bz_e = coeff_s.Bz_e*bases_s.Bz_e,
+    # Lowest-order coupling between dBs_dz_e and dBp_dz_e
     dBs_dz_e = coeff_s.dBs_dz_e*bases_s.dBs_dz_e,
-    dBp_dz_e = coeff_s.dBp_dz_e*bases_s.dBp_dz_e
+    dBp_dz_e = coeff_s.dBp_dz_e*bases_s.dBp_dz_e \
+        + coupling_p*I*sign(m)*coeff_s.dBs_dz_e*bases_s.dBs_dz_e
 )
 
 """Test functions"""
-
-# test_s = expansion.RadialTestFunctions(field_names,
-#     Psi = bases_s.Psi,
-#     Mss = bases_s.Mss,
-#     Mpp = bases_s.Mpp,
-#     Msp = bases_s.Msp,
-#     Msz = bases_s.Msz,
-#     Mpz = bases_s.Mpz,
-#     zMss = bases_s.zMss,
-#     zMpp = bases_s.zMpp,
-#     zMsp = bases_s.zMsp,
-#     Bs_e = bases_s.Bs_e,
-#     Bp_e = bases_s.Bp_e,
-#     Bz_e = bases_s.Bz_e,
-#     dBs_dz_e = bases_s.dBs_dz_e,
-#     dBp_dz_e = bases_s.dBp_dz_e
-# )
 
 # Even when the test functions are the same with the trial functions
 # It is required that they use different indices (or different placeholders)
