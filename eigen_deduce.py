@@ -10,10 +10,14 @@ interactively verify the correctness of the equations/elements.
 """
 
 PRECOMPUTE_EQN = True
+VARIABLE_MODE = "PG"
+
+assert VARIABLE_MODE in ("PG", "CG", "Psi-F")
 
 import os, h5py, json
 from typing import List, Any, Optional, Union
-from sympy import S, I, oo, Function, Eq, srepr, parse_expr, Integer, Rational
+from sympy import S, I, oo, Integer, Rational, Function, \
+    Add, diff, Eq, srepr, parse_expr
 import numpy as np
 import pg_utils.sympy_supp.vector_calculus_3d as v3d
 
@@ -28,8 +32,10 @@ from pg_utils.numerics import matrices as nmatrix
 # Background field setup
 import bg_malkus as bg_cfg
 # Radial expansion setup
-# from pg_utils.pg_model import expand_daria_malkus as xpd_cfg
-from pg_utils.pg_model import expand_daria_thesis as xpd_cfg
+# from pg_utils.pg_model import expand_daria_mm_malkus as xpd_cfg
+# from pg_utils.pg_model import expand_daria_thesis as xpd_cfg
+# from pg_utils.pg_model import expand_conjugate as xpd_cfg
+from pg_utils.pg_model import expand_stream_force as xpd_cfg
 # Physical variables
 PHYS_PARAMS = {
     m: Integer(3), 
@@ -39,6 +45,10 @@ PHYS_PARAMS = {
 
 if not PRECOMPUTE_EQN:
     from pg_utils.pg_model import equations as pgeq
+
+
+
+"""Equation derivation and deduction utilities"""
 
 
 def apply_components(eqs: base.LabeledCollection, *args: str, 
@@ -112,13 +122,20 @@ def apply_components(eqs: base.LabeledCollection, *args: str,
     return eqs_new
 
 
-def apply_bg_eqwise(fname: str, eq: Eq, bg_map: dict, verbose: int = 0) -> Eq:
+def apply_bg_eqwise(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
+    verbose: int = 0) -> Eq:
     """Apply background field equation-wise
     
     :param fname: name of the field / equation
     :param eq: a sympy equation
     :param bg_map: background dictionary
     """
+    if mode.lower() == "pg":
+        fnames = base.CollectionPG.pg_field_names
+    elif mode.lower() == "cg":
+        fnames = base.CollectionConjugate.cg_field_names
+    else:
+        raise TypeError
     if verbose > 0:
         print("Applying background field to %s equation..." % (fname,))
     # Treatment of vorticity equation: do not try to "simplify" the RHS of vorticity
@@ -133,11 +150,11 @@ def apply_bg_eqwise(fname: str, eq: Eq, bg_map: dict, verbose: int = 0) -> Eq:
         new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().simplify()
         new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().simplify()
         # Take z to +H or -H at the boundaries or to 0 at the equatorial plane
-        if fname in base.CollectionPG.pg_field_names[-6:-3]:
+        if fname in fnames[-6:-3]:
             new_rhs = new_rhs.subs({z: +H}).doit().simplify()
-        elif fname in base.CollectionPG.pg_field_names[-3:]:
+        elif fname in fnames[-3:]:
             new_rhs = new_rhs.subs({z: -H}).doit().simplify()
-        elif fname in base.CollectionPG.pg_field_names[-11:-6]:
+        elif fname in fnames[-11:-6]:
             new_rhs = new_rhs.subs({z: S.Zero}).doit().simplify()
         new_lhs = new_lhs.subs({H_s: H}).expand()
         new_rhs = new_rhs.subs({H_s: H}).expand()
@@ -145,7 +162,7 @@ def apply_bg_eqwise(fname: str, eq: Eq, bg_map: dict, verbose: int = 0) -> Eq:
 
 
 def apply_bg_field(eqs: base.LabeledCollection, U0_val: v3d.Vector3D, 
-    B0_val: v3d.Vector3D, verbose: int = 0) -> base.LabeledCollection:
+    B0_val: v3d.Vector3D, mode: str="PG", verbose: int = 0) -> base.LabeledCollection:
     """Apply background field to obtain explicit equations
     
     :param eqs: original set of equations
@@ -158,17 +175,70 @@ def apply_bg_field(eqs: base.LabeledCollection, U0_val: v3d.Vector3D,
     if verbose > 0:
         print("========== Applying background field ==========")
     # Building the background field map
-    pg0_val = pgutils.assemble_background(B0=B0_val)
+    f0_val = pgutils.assemble_background(B0=B0_val, mode=mode)
     bg_sub = {u_comp: U0_val[i_c] for i_c, u_comp in enumerate(core.U0_vec)}
     bg_sub.update({b_comp: B0_val[i_c] for i_c, b_comp in enumerate(core.B0_vec)})
-    bg_sub.update({pg_comp: pg0_val[i_c] for i_c, pg_comp in enumerate(core.pgvar_bg)})
+    if mode.lower() == "pg":
+        bg_sub.update({comp: f0_val[i_c] for i_c, comp in enumerate(core.pgvar_bg)})
+    elif mode.lower() == "cg":
+        bg_sub.update({comp: f0_val[i_c] for i_c, comp in enumerate(core.cgvar)})
     eqs_new = eqs.apply(
-        lambda fname, eq: apply_bg_eqwise(fname, eq, bg_sub, verbose=verbose - 1), 
+        lambda fname, eq: apply_bg_eqwise(fname, eq, bg_sub, mode=mode, verbose=verbose-1), 
         inplace=False, metadata=True)
     return eqs_new
 
 
-boundary_fnames = ("Bs_p", "Bp_p", "Bz_p", "Bs_m", "Bp_m", "Bz_m")
+
+"""Dimensional reduction utilities"""
+
+
+def reduce_eqsys_to_force_form(eqsys_old: base.LabeledCollection, 
+    verbose: int = 0) -> base.LabeledCollection:
+    """Reduce a system of equations to streamfunction-force formulation,
+    thus drastically reducing the dimensionality of the dynamical system
+    """
+    if verbose > 0:
+        print("========== Reducing dimension of dynamical system... ==========")
+    assert "Psi" in eqsys_old._field_names and eqsys_old.Psi is not None
+    
+    # Extract dynamical variables other than Psi
+    dynamic_vars = tuple(
+        tuple(eqsys_old[fname].lhs.atoms(Function))[0] 
+        for fname in eqsys_old._field_names if fname != "Psi"
+    )
+    
+    # Process the vorticity equation
+    if verbose > 1:
+        print("Extracting body forces...")
+    psi_term = f_term = S.Zero
+    for term in eqsys_old.Psi.rhs.expand().args:
+        is_dynamic_var = False
+        for func in term.atoms(Function):
+            if func in dynamic_vars:
+                is_dynamic_var = True
+                f_term += term
+                break
+        if not is_dynamic_var:
+            psi_term += term
+    
+    # Form evolution equation for external force
+    if verbose > 1:
+        print("Forming dynamical system of Psi and F...")
+    dynamic_subs = {eqsys_old[fname].lhs: eqsys_old[fname].rhs
+        for fname in eqsys_old._field_names if fname != "Psi"}
+    f_term = diff(f_term, t).doit().subs(dynamic_subs).doit()
+    f_term = Add(*[term.subs({H: H_s}).doit().subs({H_s: H}).expand()
+        for term in f_term.args])
+    eqsys_new = base.LabeledCollection(
+        ["Psi", "F_ext"], 
+        Psi = Eq(eqsys_old.Psi.lhs, psi_term + core.F_ext),
+        F_ext = Eq(diff(core.F_ext, t), f_term)
+    )
+    return eqsys_new
+
+    
+
+"""Matrix collection utilities"""
 
 
 def process_matrix_element(element: Any, map_trial: dict, map_test: dict) -> Any:
@@ -238,24 +308,36 @@ utilities to further simplify the procedure
 """
 
 
-def routine_eqn_reduction(read_from: Optional[str]="./out/symbolic/eqs_pg_lin.json", 
+def routine_eqn_formation(read_from: str = "default", 
     save_to: Optional[str]=None) -> base.LabeledCollection:
     """Top-level routine function
-    Stage 1: equation reduction
+    Stage 1: equation derivation
     """
     # Input
     if PRECOMPUTE_EQN:
-        if read_from is not None:
-            with open(read_from, 'r') as fread:
-                eqs = base.CollectionPG.load_json(fread, parser=parse_expr)
+        if read_from == "default":
+            if VARIABLE_MODE == "PG":
+                with open("./out/symbolic/eqs_pg_lin.json", 'r') as fread:
+                    eqs = base.CollectionPG.load_json(fread, parser=parse_expr)
+            elif VARIABLE_MODE == "CG":
+                with open("./out/symbolic/eqs_cg_lin.json", 'r') as fread:
+                    eqs = base.CollectionConjugate.load_json(fread, parser=parse_expr)
         else:
-            raise TypeError
+            with open(read_from, 'r') as fread:
+                eqs = base.LabeledCollection.load_json(fread, parser=parse_expr)
     else:
-        eqs = pgeq.eqs_pg_lin
+        if VARIABLE_MODE == "PG":
+            eqs = pgeq.eqs_pg_lin
+        elif VARIABLE_MODE == "CG":
+            eqs = pgeq.eqs_cg_lin
     # Body
     eqs = apply_components(eqs, "Lorentz", timescale="Alfven", verbose=2)
-    eqs.Psi = Eq(eqs.Psi.lhs, eqs.Psi.rhs.subs(forcing.force_explicit_lin))
-    eqs = apply_bg_field(eqs, bg_cfg.U0_val, bg_cfg.B0_val, verbose=2)
+    if VARIABLE_MODE == "PG":
+        eqs.Psi = Eq(eqs.Psi.lhs, eqs.Psi.rhs.subs(forcing.force_explicit_lin))
+    elif VARIABLE_MODE == "CG":
+        eqs.Psi = Eq(eqs.Psi.lhs, eqs.Psi.rhs.subs(forcing.force_explicit_lin_cg))
+    eqs = apply_bg_field(eqs, bg_cfg.U0_val, bg_cfg.B0_val, 
+        mode=VARIABLE_MODE, verbose=2)
     # Output
     if save_to is not None:
         fdir = os.path.dirname(save_to)
@@ -263,6 +345,30 @@ def routine_eqn_reduction(read_from: Optional[str]="./out/symbolic/eqs_pg_lin.js
         with open(save_to, 'x') as fwrite:
             eqs.save_json(fwrite, serializer=srepr)
     return eqs
+
+
+def routine_dim_reduction(read_from: Union[str, base.LabeledCollection], 
+    save_to: Optional[str]=None) -> base.LabeledCollection:
+    """Top-level routine function
+    Stage 1b: dimension reduction of the equations
+    """
+    # Input
+    if isinstance(read_from, str):
+        with open(read_from, 'r') as fread:
+            eqs = base.LabeledCollection.load_json(fread, parser=parse_expr)
+    elif isinstance(read_from, base.LabeledCollection):
+        eqs = read_from
+    else:
+        raise TypeError
+    # Body
+    eqs_new = reduce_eqsys_to_force_form(eqs, verbose=5)
+    # Output
+    if save_to is not None:
+        fdir = os.path.dirname(save_to)
+        os.makedirs(fdir, exist_ok=True)
+        with open(save_to, 'x') as fwrite:
+            eqs_new.save_json(fwrite, serializer=srepr)
+    return eqs_new
 
 
 def routine_matrix_collection(read_from: Union[str, base.LabeledCollection], 
@@ -303,7 +409,7 @@ def routine_matrix_collection(read_from: Union[str, base.LabeledCollection],
 
 def routine_matrix_calculation(read_from: Union[str, List[xpd.SystemMatrix]], 
     Ntrunc: int = 5, xpd_recipe: xpd.ExpansionRecipe = xpd_cfg.recipe,
-    save_to: Optional[str] = None) -> List[np.ndarray]:
+    save_to: Optional[str] = None, verbose: int = 0) -> List[np.ndarray]:
     """Top-level routine function
     Stage 3: Routine calculation of matrix elements
     """
@@ -324,17 +430,30 @@ def routine_matrix_calculation(read_from: Union[str, List[xpd.SystemMatrix]],
         M_expr = read_from[0]
         K_expr = read_from[1]
     
+    if verbose > 0:
+        print("========== Expanding matrices... ==========")
+    
+    if verbose > 1:
+        print("Pre-processing elements...")
     # Pre-processing of elements
     M_expr.apply(lambda ele: ele.subs(PHYS_PARAMS), inplace=True, metadata=False)
     K_expr.apply(lambda ele: ele.subs(PHYS_PARAMS), inplace=True, metadata=False)
     
+    if verbose > 1:
+        print("Configuring expansions and quadratures...")    
     # Configure expansions
     fnames = xpd_recipe.rad_xpd.fields._field_names
     cnames = xpd_recipe.rad_xpd.bases._field_names
-    ranges_trial = [np.arange(2*Ntrunc + 1) if 'M' in cname else np.arange(Ntrunc + 1)
-        for cname in cnames]
-    ranges_test = [np.arange(2*Ntrunc + 1) if 'M' in fname else np.arange(Ntrunc + 1)
-        for fname in fnames]
+    if VARIABLE_MODE in ("PG", "CG"):
+        ranges_trial = [
+            np.arange(2*Ntrunc + 1) if 'M' in cname else np.arange(Ntrunc + 1)
+            for cname in cnames]
+        ranges_test = [
+            np.arange(2*Ntrunc + 1) if 'M' in fname else np.arange(Ntrunc + 1)
+            for fname in fnames]
+    elif VARIABLE_MODE == "Psi-F":
+        ranges_trial = [np.arange(Ntrunc + 1), np.arange(Ntrunc + 1)]
+        ranges_test = [np.arange(Ntrunc + 1), np.arange(Ntrunc + 1)]
     
     # Configure quadrature
     quad_recipe_list = np.array([
@@ -344,6 +463,8 @@ def routine_matrix_calculation(read_from: Union[str, List[xpd.SystemMatrix]],
         ) for ele in row] for row in M_expr._matrix
     ])
     
+    if verbose > 1:
+        print("Computing quadratures of elements...")
     # Computation
     M_val = nmatrix.MatrixExpander(
         M_expr, quad_recipe_list, ranges_trial, ranges_test).expand(verbose=True)
@@ -375,7 +496,7 @@ def routine_matrix_calculation(read_from: Union[str, List[xpd.SystemMatrix]],
 
 
 def routine_eigen_compute(read_from: Union[str, List[np.ndarray]], 
-    save_to: Optional[str]) -> List[np.ndarray]:
+    save_to: Optional[str], verbose: int = 0) -> List[np.ndarray]:
     """Top-level routine function
     Stage 4: Computing eigenvalues and eigenvectors from Matrices
     """
@@ -395,6 +516,9 @@ def routine_eigen_compute(read_from: Union[str, List[np.ndarray]],
     else:
         M_val = read_from[0]
         K_val = read_from[1]
+    
+    if verbose > 0:
+        print("========== Calculating eigenvalues... ==========")
     
     # Convert to ordinary eigenvalue problem and solve
     assert np.linalg.cond(M_val) < 1e+8
@@ -427,29 +551,38 @@ def routine_eigen_compute(read_from: Union[str, List[np.ndarray]],
 
 if __name__ == "__main__":
     
-    fname_eqn = "./out/symbolic/eqs_pg_lin.json"
-    output_dir = "./out/cases/Malkus/"
-    fname_eqn_reduced = os.path.join(output_dir, "Eqs_ptb.json")
-    fname_matrix_expr = os.path.join(output_dir, "Matrix_expr_2.json")
-    fname_matrix_val = os.path.join(output_dir, "Matrix_eval_2.h5")
-    fname_eig_result = os.path.join(output_dir, "Eigen_2.h5")
+    # fname_pgeq = "./out/symbolic/eqs_pg_lin.json"
+    output_dir = "./out/cases/Malkus/Reduced_sys/"
+    prefix = ''
+    suffix = ''
+    fname_eqn = os.path.join(output_dir, prefix + "Eqs_ptb" + suffix + ".json")
+    fname_eqn_reduced = os.path.join(output_dir, prefix + "Eqs_reduced" + suffix + ".json")
+    fname_matrix_expr = os.path.join(output_dir, prefix + "Matrix_expr" + suffix + ".json")
+    fname_matrix_val = os.path.join(output_dir, prefix + "Matrix_eval" + suffix + ".h5")
+    fname_eig_result = os.path.join(output_dir, prefix + "Eigen" + suffix + ".h5")
+    
+    """Stage 1: equation formation, apply background"""
+    # routine_eqn_formation(read_from="default", save_to=fname_eqn_reduced)
     
     """Stage 1: equation reduction"""
-    # routine_eqn_reduction(read_from=fname_eqn, save_to=fname_eqn_reduced)
+    # fname_eqn = "./out/cases/Malkus/Eqs_ptb.json"
+    # routine_dim_reduction(fname_eqn, save_to=fname_eqn_reduced)
     
     """Stage 2: matrix extraction"""
-    # Choose equations
-    with open(fname_eqn_reduced, 'r') as fread:
-        eqs = base.CollectionPG.load_json(fread, parser=parse_expr)
-    solve_idx = np.full(21, False)
-    solve_idx[:14] = True
-    eqs_solve = eqs.generate_collection(solve_idx)
-    routine_matrix_collection(eqs_solve, save_to=fname_matrix_expr)
+    # # Choose equations
+    # fname_eqn = "./out/cases/Malkus/Eqs_reduced.json"
+    # with open(fname_eqn, 'r') as fread:
+    #     eqs = base.LabeledCollection.load_json(fread, parser=parse_expr)
+    # eqs_solve = eqs
+    # # solve_idx = np.full(21, False)
+    # # solve_idx[:14] = True
+    # # eqs_solve = eqs.generate_collection(solve_idx)
+    # routine_matrix_collection(eqs_solve, save_to=fname_matrix_expr)
     
     """Stage 3: compute matrices"""
-    routine_matrix_calculation(fname_matrix_expr, 
-        Ntrunc=5, xpd_recipe=xpd_cfg.recipe, save_to=fname_matrix_val)
+    routine_matrix_calculation(fname_matrix_expr, Ntrunc=5, 
+        xpd_recipe=xpd_cfg.recipe, save_to=fname_matrix_val, verbose=5)
     
     """Stage 4: compute eigenvalues"""
-    routine_eigen_compute(fname_matrix_val, save_to=fname_eig_result)
+    routine_eigen_compute(fname_matrix_val, save_to=fname_eig_result, verbose=5)
     
