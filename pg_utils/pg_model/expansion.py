@@ -654,3 +654,37 @@ pgvar_s = base.CollectionPG(
     Bz_m = sympy.Function(r"B_z^{m-}")(s)
 )
 
+cgvar_s = base.CollectionConjugate(
+    # Stream function, unchanged
+    Psi = pgvar_s.Psi,
+    # Conjugate variables for magnetic moments
+    M_1 = sympy.Function(r"\overline{M_1}^m")(s),
+    M_p = sympy.Function(r"\overline{M_+}^m")(s),
+    M_m = sympy.Function(r"\overline{M_-}^m")(s),
+    M_zp = sympy.Function(r"\widetilde{M_{z+}}^m")(s),
+    M_zm = sympy.Function(r"\widetilde{M_{z-}}^m")(s),
+    zM_1 = sympy.Function(r"\widetilde{zM_1}^m")(s),
+    zM_p = sympy.Function(r"\widetilde{zM_+}^m")(s),
+    zM_m = sympy.Function(r"\widetilde{zM_-}^m")(s),
+    # Conjugate variables for magnetic fields in equatorial plane
+    B_ep = sympy.Function(r"B_{e+}^m")(s),
+    B_em = sympy.Function(r"B_{e-}^m")(s),
+    Bz_e = pgvar_s.Bz_e,
+    dB_dz_ep = sympy.Function(r"B_{e+, z}^m")(s),
+    dB_dz_em = sympy.Function(r"B_{e-, z}^m")(s),
+    # Magnetic field at the boundary
+    Br_b = pgvar_s.Br_b,
+    B_pp = sympy.Function(r"B_+^{m+}")(s),
+    B_pm = sympy.Function(r"B_-^{m+}")(s),
+    Bz_p = pgvar_s.Bz_p,
+    B_mp = sympy.Function(r"B_+^{m-}")(s),
+    B_mm = sympy.Function(r"B_-^{m-}")(s),
+    Bz_m = pgvar_s.Bz_m
+)
+
+
+reduced_var_s = base.LabeledCollection(
+    ["Psi", "F_ext"],
+    Psi = pgvar_s.Psi,
+    F_ext = sympy.Function(r"F_\mathrm{ext}^m")(s)
+)
