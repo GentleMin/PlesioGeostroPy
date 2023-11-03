@@ -430,6 +430,14 @@ def map_conjugate_to_pg(cg_comp: base.CollectionConjugate,
 
 
 
+"""Reduced-dimensional system"""
+reduced_var = base.LabeledCollection(
+    ["Psi", "F_ext"], 
+    Psi = pgvar_ptb.Psi, 
+    F_ext = sympy.Function(r"F_\mathrm{ext}")(s, p, t)
+)
+
+
 """Force placeholders"""
 
 # Symbols for external forces

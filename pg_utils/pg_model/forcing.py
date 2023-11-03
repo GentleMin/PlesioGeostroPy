@@ -32,12 +32,26 @@ Lz_asym_expr = 1/s*diff(s*pgvar.Msz, s) + 1/s*diff(pgvar.Mpz, p) \
 Le_p_expr = pgvar.Bs_e*diff(pgvar.Bp_e, s) + 1/s*pgvar.Bp_e*diff(pgvar.Bp_e, p) \
     + pgvar.Bz_e*pgvar.dBp_dz_e + 1/s*pgvar.Bs_e*pgvar.Bp_e
 
+# Convert to conjugate quantities
+pg_cg_map = map_pg_to_conjugate(pgvar, cgvar)
+Ls_sym_cg = Ls_sym_expr.subs(pg_cg_map)
+Lp_sym_cg = Lp_sym_expr.subs(pg_cg_map)
+Lz_asym_cg = Lz_asym_expr.subs(pg_cg_map)
+Le_p_cg = Le_p_expr.subs(pg_cg_map)
+
 # Mapping for placeholder symbol - explicit expressions for forces
 force_explicit = {
     Ls_sym: Ls_sym_expr,
     Lp_sym: Lp_sym_expr,
     Lz_asym: Lz_asym_expr,
     Le_p: Le_p_expr
+}
+
+force_explicit_cg = {
+    Ls_sym: Ls_sym_cg,
+    Lp_sym: Lp_sym_cg,
+    Lz_asym: Lz_asym_cg,
+    Le_p: Le_p_cg
 }
 
 
@@ -70,6 +84,12 @@ Lz_asym_lin = linearize(Lz_asym_expr, pg_linmap, perturb_var=eps)
 # Curl is linear, linearize (curl (field)) = curl (linearize (field))
 # curl_L = cyl.curl((Ls_sym_lin, Lp_sym_lin, 0))[2]
 
+# Conjugate expressions
+Ls_sym_lin_cg = linearize(Ls_sym_cg, cg_linmap, perturb_var=eps)
+Lp_sym_lin_cg = linearize(Lp_sym_cg, cg_linmap, perturb_var=eps)
+Lz_asym_lin_cg = linearize(Lz_asym_cg, cg_linmap, perturb_var=eps)
+Le_p_lin_cg = linearize(Le_p_cg, cg_linmap, perturb_var=eps)
+
 
 # Mapping for placeholder symbol - explicit expressions for linearized forces
 force_explicit_lin = {
@@ -77,4 +97,11 @@ force_explicit_lin = {
     Lp_sym: Lp_sym_lin,
     Lz_asym: Lz_asym_lin,
     Le_p: Le_p_lin
+}
+
+force_explicit_lin_cg = {
+    Ls_sym: Ls_sym_lin_cg,
+    Lp_sym: Lp_sym_lin_cg,
+    Lz_asym: Lz_asym_lin_cg,
+    Le_p: Le_p_lin_cg
 }
