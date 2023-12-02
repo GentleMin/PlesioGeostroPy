@@ -23,6 +23,7 @@ presentation/
 # presentation/*.blg
 # Ignore unnecessary documentation/uml files
 out/**/*.png
+# out/**/*.pdf
 # unwanted local test scripts
 style_sheets_reference.py
 test.py
