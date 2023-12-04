@@ -2,6 +2,7 @@
 *.ipynb linguist-generated
 # Ignore UML files
 *.puml linguist-generated
+*.html linguist-generated
 # Ignore JSON files
 *.json linguist-generated
 
