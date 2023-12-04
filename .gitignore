@@ -33,3 +33,10 @@ test.py
 
 # Currently, ignore wolfram mathematica notebooks
 *.nb
+
+# Currently, disable all source files for documentation
+/docs/source/
+/docs/build/
+/docs/make.bat
+/docs/Makefile
+/docs/.readthedocs.yaml
