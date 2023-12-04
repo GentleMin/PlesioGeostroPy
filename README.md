@@ -14,13 +14,19 @@ Systems fulfilling these conditions can be exactly described using the PG model.
 
 ## Eigenvalue problems
 
-*Ongoing work*
+Framework of eigenvalue solver set up
+
+- [x] Malkus background field
+- [ ] Toroidal quadrupolar field
+- [ ] Poloidal dipolar field
 
 ## Data Assimilation
 
 *Future work*
 
 ## Current code implementation and design
+
+The [documentation](https://gentlemin.github.io/PlesioGeostroPy/) (currently only API reference) is now available. Tutorials can be added in the future if necessary.
 
 Module vector calculus in 3D `pg_utils.sympy_supp`:
 
