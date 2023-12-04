@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_utils.sympy_supp.vector_calculus_3d &mdash; PlesioGeostroPy 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pg_utils.sympy_supp.vector_calculus_3d.cross" href="pg_utils.sympy_supp.vector_calculus_3d.cross.html" />
+    <link rel="prev" title="pg_utils.sympy_supp" href="pg_utils.sympy_supp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PlesioGeostroPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pg_utils.html">pg_utils</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.numerics.html">pg_utils.numerics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.html">pg_utils.pg_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.processing.html">pg_utils.processing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pg_utils.sympy_supp.html">pg_utils.sympy_supp</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pg_utils.sympy_supp.vector_calculus_3d</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.cross.html">pg_utils.sympy_supp.vector_calculus_3d.cross</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.dot.html">pg_utils.sympy_supp.vector_calculus_3d.dot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D.html">pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.CylindricalCoordinates.html">pg_utils.sympy_supp.vector_calculus_3d.CylindricalCoordinates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D.html">pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.Scalar3D.html">pg_utils.sympy_supp.vector_calculus_3d.Scalar3D</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.html">pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.Tensor3D.html">pg_utils.sympy_supp.vector_calculus_3d.Tensor3D</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.Vector3D.html">pg_utils.sympy_supp.vector_calculus_3d.Vector3D</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PlesioGeostroPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.html">pg_utils</a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.sympy_supp.html">pg_utils.sympy_supp</a></li>
+      <li class="breadcrumb-item active">pg_utils.sympy_supp.vector_calculus_3d</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pg_utils/pg_utils.sympy_supp.vector_calculus_3d.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pg_utils.sympy_supp.vector_calculus_3d">
+<span id="pg-utils-sympy-supp-vector-calculus-3d"></span><h1>pg_utils.sympy_supp.vector_calculus_3d<a class="headerlink" href="#module-pg_utils.sympy_supp.vector_calculus_3d" title="Permalink to this heading"></a></h1>
+<p>Completemenery functions for common vector calculus in sympy</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.cross.html#pg_utils.sympy_supp.vector_calculus_3d.cross" title="pg_utils.sympy_supp.vector_calculus_3d.cross"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross</span></code></a>(vec_a, vec_b)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.dot.html#pg_utils.sympy_supp.vector_calculus_3d.dot" title="pg_utils.sympy_supp.vector_calculus_3d.dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dot</span></code></a>(vec_a, vec_b)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D.html#pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D" title="pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CartesianCoordinates3D</span></code></a>(x, y, z[, x_name, ...])</p></td>
+<td><p>Cartesian coordinates in 3D</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.CylindricalCoordinates.html#pg_utils.sympy_supp.vector_calculus_3d.CylindricalCoordinates" title="pg_utils.sympy_supp.vector_calculus_3d.CylindricalCoordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CylindricalCoordinates</span></code></a>(s, p, z[, s_name, ...])</p></td>
+<td><p>Cylindrical coordinates in 3D</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D.html#pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D" title="pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OrthogonalCoordinates3D</span></code></a>(x1, x2, x3[, ...])</p></td>
+<td><p>Base class for orthogonal curvilinear coordinates in 3D</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.Scalar3D.html#pg_utils.sympy_supp.vector_calculus_3d.Scalar3D" title="pg_utils.sympy_supp.vector_calculus_3d.Scalar3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scalar3D</span></code></a>(scalar, coord_sys)</p></td>
+<td><p>Scalar in 3D</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.html#pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates" title="pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SphericalCoordinates</span></code></a>(r, t, p[, r_name, ...])</p></td>
+<td><p>Spherical coordinates in 3D</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.Tensor3D.html#pg_utils.sympy_supp.vector_calculus_3d.Tensor3D" title="pg_utils.sympy_supp.vector_calculus_3d.Tensor3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tensor3D</span></code></a>(tensor, coord_sys)</p></td>
+<td><p>Base class for tensors in 3-D</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.Vector3D.html#pg_utils.sympy_supp.vector_calculus_3d.Vector3D" title="pg_utils.sympy_supp.vector_calculus_3d.Vector3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Vector3D</span></code></a>(vector, coord_sys)</p></td>
+<td><p>Vector in 3D</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pg_utils.sympy_supp.html" class="btn btn-neutral float-left" title="pg_utils.sympy_supp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.sympy_supp.vector_calculus_3d.cross.html" class="btn btn-neutral float-right" title="pg_utils.sympy_supp.vector_calculus_3d.cross" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, GentleMin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
