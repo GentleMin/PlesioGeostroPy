@@ -1,0 +1,32 @@
+pg\_utils.sympy\_supp
+=====================
+
+.. automodule:: pg_utils.sympy_supp
+  
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pg_utils.sympy_supp.vector_calculus_3d
+

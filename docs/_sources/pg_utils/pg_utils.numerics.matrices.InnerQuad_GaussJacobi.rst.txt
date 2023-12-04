@@ -1,0 +1,28 @@
+pg\_utils.numerics.matrices.InnerQuad\_GaussJacobi
+==================================================
+
+.. currentmodule:: pg_utils.numerics.matrices
+
+.. autoclass:: InnerQuad_GaussJacobi
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~InnerQuad_GaussJacobi.__init__
+      ~InnerQuad_GaussJacobi.deduce_params
+      ~InnerQuad_GaussJacobi.get_powers
+      ~InnerQuad_GaussJacobi.gramian
+   
+   
+
+   
+   
+   

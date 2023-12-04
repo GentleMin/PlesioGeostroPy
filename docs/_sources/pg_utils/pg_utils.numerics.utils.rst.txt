@@ -1,0 +1,33 @@
+pg\_utils.numerics.utils
+========================
+
+.. automodule:: pg_utils.numerics.utils
+  
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      eigenfreq_Malkus_3d
+      eigenfreq_Malkus_pg
+      eigenfreq_inertial3d
+      eigenfreq_psi_op
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

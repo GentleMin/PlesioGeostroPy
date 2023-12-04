@@ -1,0 +1,45 @@
+pg\_utils.pg\_model.expansion.SystemEquations
+=============================================
+
+.. currentmodule:: pg_utils.pg_model.expansion
+
+.. autoclass:: SystemEquations
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SystemEquations.__init__
+      ~SystemEquations.apply
+      ~SystemEquations.as_empty
+      ~SystemEquations.collect_matrices
+      ~SystemEquations.copy
+      ~SystemEquations.deserialize
+      ~SystemEquations.generate_collection
+      ~SystemEquations.load_json
+      ~SystemEquations.save_json
+      ~SystemEquations.serialize
+      ~SystemEquations.subs
+      ~SystemEquations.to_fourier_domain
+      ~SystemEquations.to_inner_product
+      ~SystemEquations.to_radial
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SystemEquations.iter_filter
+      ~SystemEquations.iter_name
+   
+   

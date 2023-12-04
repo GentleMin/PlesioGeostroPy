@@ -1,0 +1,47 @@
+pg\_utils.pg\_model.core
+========================
+
+.. automodule:: pg_utils.pg_model.core
+  
+   
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      H_s
+      U_sph
+      U_pg
+      pgvar_bg
+      pgvar_ptb
+      reduced_var
+      fe_p
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      PG_to_conjugate
+      conjugate_to_PG
+      map_conjugate_to_pg
+      map_pg_to_conjugate
+      pg_ansatz
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

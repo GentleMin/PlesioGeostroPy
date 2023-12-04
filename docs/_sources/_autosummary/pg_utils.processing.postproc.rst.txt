@@ -1,0 +1,31 @@
+pg\_utils.processing.postproc
+=============================
+
+.. automodule:: pg_utils.processing.postproc
+  
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      eigen_func_from_conjugate
+      get_eigen_field_function
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

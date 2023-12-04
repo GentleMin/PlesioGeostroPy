@@ -1,0 +1,28 @@
+pg\_utils.sympy\_supp.vector\_calculus\_3d.Scalar3D
+===================================================
+
+.. currentmodule:: pg_utils.sympy_supp.vector_calculus_3d
+
+.. autoclass:: Scalar3D
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Scalar3D.__init__
+      ~Scalar3D.grad
+      ~Scalar3D.laplacian
+      ~Scalar3D.transform_to
+   
+   
+
+   
+   
+   
