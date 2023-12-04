@@ -1,0 +1,38 @@
+pg\_utils.pg\_model.equations
+=============================
+
+.. automodule:: pg_utils.pg_model.equations
+  
+   
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      eqs_pg
+      eqs_cg
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      eqn_PG_to_conjugate
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

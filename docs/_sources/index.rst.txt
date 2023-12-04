@@ -1,0 +1,60 @@
+.. PlesioGeostroPy documentation master file, created by
+   sphinx-quickstart on Mon Dec  4 14:06:46 2023.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+   .. :template: custom-module-template.rst
+
+
+PlesioGeostroPy
+===========================================
+
+**PlesioGeostroPy** is the Python realization of the Plesio-Geostrophy model (PG, Jackson and Maffei `2020 <https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0513>`_), a type of quasi-geostrophic model for magneto-hydrodyanmic system in planetary dynamos.
+For a more detailed description of the PG model, see e.g. Jackson and Maffei (`2020 <https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0513>`_) or Holdenried-Chernoff (`2021 <https://www.research-collection.ethz.ch/handle/20.500.11850/509840>`_).
+
+The package **PlesioGeostroPy** aims to provide robust and efficient numerical solution to the PG model, which can then be plugged into data assimilation frameworks for geomagnetic data assimilation (GDA).
+For information regarding this project, including the formulations, downloadable resources, etc., see the the `project homepage <https://gentlemin.github.io/projects/plesio_geostrophy/>`_.
+
+
+Structure of the Code 
+===========================================
+
+The core of the code is the following package:
+
+.. autosummary::
+   :template: custom-module-template.rst
+   :recursive:
+
+   pg_utils
+
+This packages is then subdivided into four modules: module :py:mod:`~pg_utils.sympy_supp` for supplementary functions for symbolic manipulation; module :py:mod:`~pg_utils.pg_model` for the actual implementation of the symbolic PG model, including variables, equations and the recipes for spectral expansions; module :py:mod:`~pg_utils.numerics` for numerical computations; and module :py:mod:`~pg_utils.processing` for pre- and post-processing.
+
+
+Tutorials
+===========================================
+
+Please check out the following Jupyter Notebooks to work through the package
+
+* `Basic demo for PlesioGeostroPy <https://nbviewer.org/github/GentleMin/PlesioGeostroPy/blob/main/PG_demo.ipynb>`_
+* `Eigenvalue solver step by step <https://nbviewer.org/github/GentleMin/PlesioGeostroPy/blob/main/EigenPG.ipynb>`_
+
+Indices and tables
+==================
+
+Here you can find the indexed reference to all of the modules, and the classes and objects within.
+
+* :ref:`modindex`
+* :ref:`genindex`
+
+You can also use the search function or the extended :doc:`api_reference` to look for all items.
+
+
+.. toctree::
+   :caption: PlesioGeostroPy
+   :hidden:
+
+   sympy_supp </_autosummary/pg_utils.sympy_supp>
+   pg_model </_autosummary/pg_utils.pg_model>
+   numerics </_autosummary/pg_utils.numerics>
+   processing </_autosummary/pg_utils.processing>
+   Full API reference </api_reference>
+

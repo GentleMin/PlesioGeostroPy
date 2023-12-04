@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.base\_utils.linearize
+=========================================
+
+.. currentmodule:: pg_utils.pg_model.base_utils
+
+.. autofunction:: linearize

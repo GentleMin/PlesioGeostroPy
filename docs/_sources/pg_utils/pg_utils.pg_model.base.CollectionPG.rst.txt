@@ -1,0 +1,48 @@
+pg\_utils.pg\_model.base.CollectionPG
+=====================================
+
+.. currentmodule:: pg_utils.pg_model.base
+
+.. autoclass:: CollectionPG
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CollectionPG.__init__
+      ~CollectionPG.apply
+      ~CollectionPG.as_empty
+      ~CollectionPG.copy
+      ~CollectionPG.deserialize
+      ~CollectionPG.generate_collection
+      ~CollectionPG.load_json
+      ~CollectionPG.save_json
+      ~CollectionPG.serialize
+      ~CollectionPG.subs
+      ~CollectionPG.subset_B_bound
+      ~CollectionPG.subset_B_bound_cyl
+      ~CollectionPG.subset_B_equator
+      ~CollectionPG.subset_mag
+      ~CollectionPG.subset_moments
+      ~CollectionPG.vorticity
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CollectionPG.iter_filter
+      ~CollectionPG.iter_name
+      ~CollectionPG.pg_field_names
+   
+   

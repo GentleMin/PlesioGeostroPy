@@ -1,0 +1,33 @@
+pg\_utils.numerics
+==================
+
+.. automodule:: pg_utils.numerics
+  
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pg_utils.numerics.matrices
+   pg_utils.numerics.utils
+

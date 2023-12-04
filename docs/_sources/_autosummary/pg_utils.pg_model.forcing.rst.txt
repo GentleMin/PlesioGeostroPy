@@ -1,0 +1,30 @@
+pg\_utils.pg\_model.forcing
+===========================
+
+.. automodule:: pg_utils.pg_model.forcing
+  
+   
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      force_explicit_cg
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

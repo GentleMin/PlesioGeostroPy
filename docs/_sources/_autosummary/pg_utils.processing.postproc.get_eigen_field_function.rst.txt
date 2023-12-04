@@ -1,0 +1,6 @@
+pg\_utils.processing.postproc.get\_eigen\_field\_function
+=========================================================
+
+.. currentmodule:: pg_utils.processing.postproc
+
+.. autofunction:: get_eigen_field_function
