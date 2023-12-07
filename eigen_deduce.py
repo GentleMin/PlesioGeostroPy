@@ -32,10 +32,10 @@ from pg_utils.numerics import matrices as nmatrix
 # Background field setup
 import bg_malkus as bg_cfg
 # Radial expansion setup
-# from pg_utils.pg_model import expand_daria_mm_malkus as xpd_cfg
+from pg_utils.pg_model import expand_daria_mm_malkus as xpd_cfg
 # from pg_utils.pg_model import expand_daria_thesis as xpd_cfg
 # from pg_utils.pg_model import expand_conjugate as xpd_cfg
-from pg_utils.pg_model import expand_stream_force as xpd_cfg
+# from pg_utils.pg_model import expand_stream_force as xpd_cfg
 # Physical variables
 PHYS_PARAMS = {
     m: Integer(3), 
@@ -552,7 +552,8 @@ def routine_eigen_compute(read_from: Union[str, List[np.ndarray]],
 if __name__ == "__main__":
     
     # fname_pgeq = "./out/symbolic/eqs_pg_lin.json"
-    output_dir = "./out/cases/Malkus/Reduced_sys/"
+    # output_dir = "./out/cases/Malkus/Reduced_sys/"
+    output_dir = "./out/tmp/"
     prefix = ''
     suffix = ''
     fname_eqn = os.path.join(output_dir, prefix + "Eqs_ptb" + suffix + ".json")
@@ -562,22 +563,22 @@ if __name__ == "__main__":
     fname_eig_result = os.path.join(output_dir, prefix + "Eigen" + suffix + ".h5")
     
     """Stage 1: equation formation, apply background"""
-    # routine_eqn_formation(read_from="default", save_to=fname_eqn_reduced)
+    routine_eqn_formation(read_from="default", save_to=fname_eqn)
     
-    """Stage 1: equation reduction"""
+    """Stage 1: dimension reduction"""
     # fname_eqn = "./out/cases/Malkus/Eqs_ptb.json"
     # routine_dim_reduction(fname_eqn, save_to=fname_eqn_reduced)
     
     """Stage 2: matrix extraction"""
-    # # Choose equations
+    # Choose equations
     # fname_eqn = "./out/cases/Malkus/Eqs_reduced.json"
-    # with open(fname_eqn, 'r') as fread:
-    #     eqs = base.LabeledCollection.load_json(fread, parser=parse_expr)
-    # eqs_solve = eqs
-    # # solve_idx = np.full(21, False)
-    # # solve_idx[:14] = True
-    # # eqs_solve = eqs.generate_collection(solve_idx)
-    # routine_matrix_collection(eqs_solve, save_to=fname_matrix_expr)
+    with open(fname_eqn, 'r') as fread:
+        eqs = base.LabeledCollection.load_json(fread, parser=parse_expr)
+    eqs_solve = eqs
+    solve_idx = np.full(21, False)
+    solve_idx[:14] = True
+    eqs_solve = eqs.generate_collection(solve_idx)
+    routine_matrix_collection(eqs_solve, save_to=fname_matrix_expr)
     
     """Stage 3: compute matrices"""
     routine_matrix_calculation(fname_matrix_expr, Ntrunc=5, 
