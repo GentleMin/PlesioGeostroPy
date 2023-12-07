@@ -3,6 +3,8 @@ python=3.8.13
 numpy=1.22.3
 scipy=1.8.0
 sympy=1.11.1
+# Input/output
+h5py=3.3.0
 # Visualization and presentation
 pandas=1.4.2
 matplotlib=3.5.2
