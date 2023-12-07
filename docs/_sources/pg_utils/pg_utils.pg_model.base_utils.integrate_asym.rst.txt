@@ -1,6 +1,0 @@
-pg\_utils.pg\_model.base\_utils.integrate\_asym
-===============================================
-
-.. currentmodule:: pg_utils.pg_model.base_utils
-
-.. autofunction:: integrate_asym

@@ -1,6 +1,0 @@
-pg\_utils.sympy\_supp.vector\_calculus\_3d.cross
-================================================
-
-.. currentmodule:: pg_utils.sympy_supp.vector_calculus_3d
-
-.. autofunction:: cross

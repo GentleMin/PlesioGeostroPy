@@ -1,6 +1,0 @@
-pg\_utils.pg\_model.core.map\_pg\_to\_conjugate
-===============================================
-
-.. currentmodule:: pg_utils.pg_model.core
-
-.. autofunction:: map_pg_to_conjugate

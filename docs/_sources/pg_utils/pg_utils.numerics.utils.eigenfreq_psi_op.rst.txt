@@ -1,6 +1,0 @@
-pg\_utils.numerics.utils.eigenfreq\_psi\_op
-===========================================
-
-.. currentmodule:: pg_utils.numerics.utils
-
-.. autofunction:: eigenfreq_psi_op

@@ -1,6 +1,0 @@
-pg\_utils.processing.postproc.eigen\_func\_from\_conjugate
-==========================================================
-
-.. currentmodule:: pg_utils.processing.postproc
-
-.. autofunction:: eigen_func_from_conjugate
