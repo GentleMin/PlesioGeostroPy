@@ -2,6 +2,7 @@
 """
 Core utilities: coordinates, fields, quantities 
 and controlling parameters in PG model
+
 Jingtao Min @ ETH-EPM, 09.2023
 """
 
@@ -13,24 +14,26 @@ from . import base
 
 
 
-"""Independent variables"""
+# ================== Independent variables ====================
 
-# Coordinates
+#: Spatial and time coordinates (Cartesian)
 x, y, z, t = sympy.symbols("x, y, z, t", real=True)
+#: Cylindrical and spherical coordinates
 s, p, r, theta = sympy.symbols(r"s, \phi, r, \theta", positive=True)
-# Cylindrical coordinates
+#: Cylindrical coordinate system
 cyl = v3d.CylindricalCoordinates(s, p, z)
-# Spherical coordinates
+#: Spherical coordinate system
 sph = v3d.SphericalCoordinates(r, theta, p)
 
-# Half cylinder height (symbol + expression)
+#: Half height as a function of polar radius (symbol)
 H = sympy.Function("H")(s)
+#: Half height as a function of polar radius (expr)
 H_s = sympy.sqrt(1 - s**2)
 
 
-"""PG-independent physical fields"""
+# ============== PG-independent physical fields ===============
 
-# Magnetic field
+#: Vector magnetic field (cylindrical coordinates)
 B_vec = v3d.Vector3D(
     [
         sympy.Function(r"B_s")(s, p, z, t),
@@ -39,7 +42,8 @@ B_vec = v3d.Vector3D(
     ], 
     coord_sys=cyl
 )
-# In spherical coordinates
+
+#: Vector magnetic field (spherical coordinates)
 B_sph = v3d.Vector3D(
     [
         sympy.Function(r"B_r")(r, theta, p, t),
@@ -48,7 +52,8 @@ B_sph = v3d.Vector3D(
     ], 
     coord_sys=sph
 )
-# Velocity field
+
+#: Vector velocity field (cylindrical coordinates)
 U_vec = v3d.Vector3D(
     [
         sympy.Function(r"U_s")(s, p, z, t),
@@ -57,9 +62,11 @@ U_vec = v3d.Vector3D(
     ], 
     coord_sys=cyl
 )
-# Equatorial velocity
+
+#: Equatorial velocity (cylindrical coordinates)
 v_e = (U_vec.s, U_vec.p, 0)
-# In spherical coordinates
+
+#: Vector velocity field (spherical coordinates)
 U_sph = v3d.Vector3D(
     [
         sympy.Function(r"U_r")(r, theta, p, t),
@@ -70,8 +77,9 @@ U_sph = v3d.Vector3D(
 )
 
 
-"""Complete fields in PG"""
+# =================== Complete fields in PG ===================
 
+#: Collection of PG variables
 pgvar = base.CollectionPG(
     # Stream function
     Psi = sympy.Function(r"\Psi")(s, p, t),
@@ -100,7 +108,7 @@ pgvar = base.CollectionPG(
     Bz_m = sympy.Function(r"B_z^-")(s, p, t)
 )
 
-# PG velocity ansatz
+#: Quasi-geostrophic velocity ansatz
 U_pg = v3d.Vector3D(
     [
         1/(s*H)*diff(pgvar.Psi, p),
@@ -112,9 +120,9 @@ U_pg = v3d.Vector3D(
 
 
 
-"""Background fields"""
+# ===================== Background fields =====================
 
-# Magnetic field
+#: Background magnetic field (cylindrical)
 B0_vec = v3d.Vector3D(
     [
         sympy.Function(r"B_s^0")(s, p, z),
@@ -123,7 +131,7 @@ B0_vec = v3d.Vector3D(
     ], 
     coord_sys=cyl
 )
-# In spherical coordinates
+#: Background magnetic field (spherical)
 B0_sph = v3d.Vector3D(
     [
         sympy.Function(r"B_r^0")(r, theta, p),
@@ -132,7 +140,7 @@ B0_sph = v3d.Vector3D(
     ], 
     coord_sys=sph
 )
-# Velocity field
+#: Background velocity field (cylindrical)
 U0_vec = v3d.Vector3D(
     [
         sympy.Function(r"U_s^0")(s, p, z),
@@ -141,7 +149,7 @@ U0_vec = v3d.Vector3D(
     ], 
     coord_sys=cyl
 )
-# In spherical coordinates
+#: Background velocity field (spherical)
 U0_sph = v3d.Vector3D(
     [
         sympy.Function(r"U_r^0")(r, theta, p),
@@ -151,6 +159,7 @@ U0_sph = v3d.Vector3D(
     coord_sys=sph
 )
 
+#: Collection of background PG fields
 pgvar_bg = base.CollectionPG(
     # Stream function
     Psi = sympy.Function(r"\Psi^0")(s, p),
@@ -181,8 +190,9 @@ pgvar_bg = base.CollectionPG(
 
 
 
-"""Perturbation fields"""
+# ==================== Perturbation fields ====================
 
+#: Perturbation of magnetic field (cylindrical)
 b_vec = v3d.Vector3D(
     [
         sympy.Function(r"b_s")(s, p, z, t),
@@ -191,7 +201,7 @@ b_vec = v3d.Vector3D(
     ], 
     coord_sys=cyl
 )
-# In spherical coordinates
+#: Perturbation of magnetic field (spherical)
 b_sph = v3d.Vector3D(
     [
         sympy.Function(r"b_r")(r, theta, p, t),
@@ -200,7 +210,7 @@ b_sph = v3d.Vector3D(
     ], 
     coord_sys=sph
 )
-# Velocity field
+#: Perturbation of velocity field (cylindrical)
 u_vec = v3d.Vector3D(
     [
         sympy.Function(r"u_s")(s, p, z, t),
@@ -209,7 +219,7 @@ u_vec = v3d.Vector3D(
     ], 
     coord_sys=cyl
 )
-# In spherical coordinates
+#: Perturbation of magnetic field (spherical)
 u_sph = v3d.Vector3D(
     [
         sympy.Function(r"u_r")(r, theta, p, t),
@@ -219,6 +229,7 @@ u_sph = v3d.Vector3D(
     coord_sys=sph
 )
 
+#: Perturbation of PG fields
 pgvar_ptb = base.CollectionPG(
     # Stream function
     Psi = sympy.Function(r"\psi")(s, p, t),
@@ -249,8 +260,9 @@ pgvar_ptb = base.CollectionPG(
 
 
 
-"""Conjugate variables"""
+# =================== Conjugate variables =====================
 
+#: Collection of conjugate variables
 cgvar = base.CollectionConjugate(
     # Stream function, unchanged
     Psi = pgvar.Psi,
@@ -279,6 +291,7 @@ cgvar = base.CollectionConjugate(
     Bz_m = pgvar.Bz_m
 )
 
+#: Perturbation in conjugate fields
 cgvar_ptb = base.CollectionConjugate(
     # Stream function, unchanged
     Psi = pgvar_ptb.Psi,
@@ -312,8 +325,8 @@ cgvar_ptb = base.CollectionConjugate(
 def PG_to_conjugate(pg_comp: base.CollectionPG) -> base.CollectionConjugate:
     """Convert PG collection to conjugate counterparts.
     
-    :param pg_comp: PG components to be converted
-    :returns: base.CollectionConjugate object with conjugate quantities
+    :param base.CollectionPG pg_comp: PG components to be converted
+    :returns: collection of conjugate quantities
     """
     # Decide how to form the conjugate object
     # The method assumes all entries are of the same type
@@ -359,8 +372,8 @@ def PG_to_conjugate(pg_comp: base.CollectionPG) -> base.CollectionConjugate:
 def conjugate_to_PG(cg_comp: base.CollectionConjugate) -> base.CollectionPG:
     """Convert conjugate quantities to PG counterparts
     
-    :param cg_comp: conjugate components to be converted
-    :returns: base.CollectionPG object with PG quantities
+    :param base.CollectionConjugate cg_comp: conjugate components to be converted
+    :returns: collection object with PG quantities
     """
     if isinstance(cg_comp.Psi, sympy.Expr):
         pg_comp = base.CollectionPG(
@@ -403,13 +416,13 @@ def conjugate_to_PG(cg_comp: base.CollectionConjugate) -> base.CollectionPG:
 
 def map_pg_to_conjugate(pg_comp: base.CollectionPG, 
     cg_comp: base.CollectionConjugate) -> dict:
-    """Build a dictionary that maps PG quantities to conjugates
+    """Build a dictionary that maps PG quantities to their conjugates
     
-    :param pg_comp: PG quantities collection
+    :param base.CollectionPG pg_comp: PG quantities collection
         each entry should be a symbol, or at least an expression
-    :param cg_comp: conjugate quantities collection
+    :param base.CollectionConjugate cg_comp: conjugate quantities collection
         each entry should be a symbol, or at least an expression
-    :returns: dict<PG quantity, expression in conjugates>
+    :returns: dict<PG quantity, expression in conjugate>
     """
     pg_expr = conjugate_to_PG(cg_comp)
     return base.map_collection(pg_comp, pg_expr)
@@ -419,9 +432,9 @@ def map_conjugate_to_pg(cg_comp: base.CollectionConjugate,
     pg_comp: base.CollectionPG) -> dict:
     """Build a dictionary that maps conjugate quantities to PG quantities
     
-    :param cg_comp: conjugate quantities collection
+    :param base.CollectionConjugate cg_comp: conjugate quantities collection
         each entry should be a symbol, or at least an expression
-    :param pg_comp: PG quantities collection
+    :param base.CollectionPG pg_comp: PG quantities collection
         each entry should be a symbol, or at least an expression
     :returns: dict<conjugate quantity, expression in PG>
     """
@@ -430,7 +443,9 @@ def map_conjugate_to_pg(cg_comp: base.CollectionConjugate,
 
 
 
-"""Reduced-dimensional system"""
+# ====================== Reduced system =======================
+
+#: Reduced system variables
 reduced_var = base.LabeledCollection(
     ["Psi", "F_ext"], 
     Psi = pgvar_ptb.Psi, 
@@ -438,34 +453,41 @@ reduced_var = base.LabeledCollection(
 )
 
 
-"""Force placeholders"""
+# ==================== Force placeholders =====================
 
-# Symbols for external forces
+#: Symmetric integral of radial force
 fs_sym = sympy.Function(r"\overline{f_s}")(s, p, t)
+#: Symmetric integral of azimuthal force
 fp_sym = sympy.Function(r"\overline{f_\phi}")(s, p, t)
+#: Anti-symmetric integral of axial force
 fz_asym = sympy.Function(r"\widetilde{f_z}")(s, p, t)
+#: Azimuthal force in the equatorial plane
 fe_p = sympy.Function(r"f_{e\phi}")(s, p, t)
 
 
-"""Linearization utilities"""
+# ================= Linearization utilities ===================
 
-# Introduce a small quantity $\epsilon$
+#: Small quantity for linearization :math:`\epsilon`
 eps = sympy.Symbol(r"\epsilon")
 
+#: First-order perturbation map of velocity field
 u_linmap = {U_vec[idx]: U0_vec[idx] + eps*U_pg[idx].subs(pgvar.Psi, pgvar_ptb.Psi)
     for idx in range(U_vec.ndim)}
 u_linmap.update({U_sph[idx]: U0_sph[idx] + eps*u_sph[idx] 
     for idx in range(U_sph.ndim)})
+#: First-order perturbation map of magnetic field
 b_linmap = {B_vec[idx]: B0_vec[idx] + eps*b_vec[idx] 
     for idx in range(B_vec.ndim)}
 b_linmap.update({B_sph[idx]: B0_sph[idx] + eps*b_sph[idx] 
     for idx in range(B_sph.ndim)})
+#: First-order perturbation map of PG variables
 pg_linmap = {pgvar[idx]: pgvar_bg[idx] + eps*pgvar_ptb[idx] 
     for idx in range(pgvar.n_fields)}
+#: First-order perturbation map of conjugate variables
 cg_linmap = {cgvar[idx]: cgvar[idx] + eps*cgvar_ptb[idx]
     for idx in range(cgvar.n_fields)}
 
-# Forcing terms are simply transferred to the linearized equations
+#: First-order perturbation in external forcing
 force_linmap = {
     fp_sym: eps*fp_sym,
     fs_sym: eps*fs_sym,

@@ -12,6 +12,7 @@ from typing import List, Union, Optional
 
 import sympy
 from sympy.integrals import quadrature as qdsym
+from ..pg_model import expansion
 from ..pg_model import expansion as xpd
 from ..pg_model.expansion import xi, n_test, n_trial
 
@@ -21,9 +22,36 @@ from scipy import sparse
 
 
 def powers_of(expr: sympy.Expr, *args: sympy.Symbol):
-    """Retrieve the power of symbols.
-    This is a very intricate method, and must be used with care, 
-    with sanitized input.
+    """Retrieve the power of symbols in a given expression.
+    
+    :param sympy.Expr expr: symbolic expression
+    :param sympy.Symbol expr: symbols whose powers are to be estimated
+    :returns: list of powers
+    
+    Usage:
+    
+    Assume we have symbols defined as ``p, q, a, b, n, m = sympy.symbols("p q a b m n")``.
+    We can calculate the powers in a monomial::
+    
+        >>> sample_monomial = p**2*q**(n + 2*m)*jacobi(n, a, b, p**2 + 1)
+        >>> powers_of(sample_monomial, p, q)
+        [2*n + 2, 2*m + n]
+    
+    Or we can calculate the powers inccurred in a polynomial::
+    
+        >>> sample_polynomial = q**2*chebyshev(n, p*q) + p**(n + m)*sp.jacobi(n, a, b, p**2*q**3)
+        >>> powers_of(sample_polynomial, p, q)
+        [[m + 4*n, 2*n], [n, n + 2]]
+    
+    .. warning::
+    
+        This is a very intricate method, and must be used with care, 
+        with sanitized input.
+        
+        If a special function is present in the expression, it will
+        be interpreted as a polynomial, whose first argument is the
+        degree of the polynomial. This at least works for Jacobi
+        polynomials and their special types.
     """
     if isinstance(expr, sympy.Add):
         # When the expression is an addition, collect
@@ -79,9 +107,9 @@ class InnerQuad_Rule:
         are different, and the second operand may well involve a linear
         operator on the trial expansion.
         
-        :param nrange_trial: range of trial functions, an array of int
+        :param List[int] nrange_trial: range of trial functions, an array of int
             indices to be substituted into n_trial
-        :param nrange_test: range of test functions, an array of int
+        :param List[int] nrange_test: range of test functions, an array of int
             indices to be substituted into n_test
         """
         raise NotImplementedError
@@ -91,12 +119,12 @@ class InnerQuad_Rule:
 class InnerQuad_GaussJacobi(InnerQuad_Rule):
     """Quadrature of inner product following Gauss-Jacobi quadrature
     
-    :param inner_prod: expansion.InnerProduct1D, inner prod to be evaluated
-    :param int_var: sympy.Symbol, integration variable
-    :param deduce: bool, whether to automatically deduce the indices
-    :param alpha: sympy.Expr, alpha idx of Jacobi quadrature
-    :param beta: sympy.Expr, beta idx of Jacobi quadrature
-    :param powerN: sympy.Expr, total degree to be integrated
+    :param expansion.InnerProduct1D inner_prod: inner prod to be evaluated
+    :param sympy.Symbol int_var: integration variable
+    :param bool deduce: whether to automatically deduce the indices
+    :param sympy.Expr alpha: alpha idx of Jacobi quadrature
+    :param sympy.Expr beta: beta idx of Jacobi quadrature
+    :param sympy.Expr powerN: total degree to be integrated
     """
     
     def __init__(self, inner_prod: xpd.InnerProduct1D, automatic: bool = False,
@@ -105,19 +133,20 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         quadN: Optional[sympy.Expr] = None) -> None:
         """Initialization
         
-        :param inner_prod: expansion.InnerProduct1D, inner prod to be evaluated
-        :param automatic: bool, whether to automatically deduce the orders
+        :param expansion.InnerProduct1D inner_prod: inner prod to be evaluated
+        :param bool automatic: whether to automatically deduce the orders
             of Jacobi quadrature and the degree of polynomial to be integrated
-        :param alpha: sympy.Expr, alpha index of Jacobi quadrature. 
+        :param sympy.Expr alpha: alpha index of Jacobi quadrature. 
             Ignored when automatic is True, default to Chebyshev alpha = -1/2 
             when automatic deduction is turned off.
-        :param beta: sympy.Expr, beta index of Jacobi quadrature.
+        :param sympy.Expr beta: beta index of Jacobi quadrature.
             Ignored when automatic is True, default to Chebyshev beta = -1/2 
             when automatic deduction is turned off.
-        :param quadN: int/sympy.Expr, no. of quadrature points. Ignored when 
+        :param quadN: no. of quadrature points. Ignored when 
             automatic deduction is True and the quantity not explicitly given, 
             default to n_test + n_trial when automatic deduction turned off.
             When a valid quadN is given, the input will always be used.
+        :type quadN: int or sympy.Expr
         """
         super().__init__(inner_prod)
         self.deduce = automatic
@@ -142,8 +171,10 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
     def get_powers(cls, int_var: sympy.Symbol, expr: sympy.Expr) -> np.ndarray:
         """Get the powers of p1=(1 - xi), p2=(1 + xi) and xi
         
-        :param int_var: sympy.Symbol, integration variable
-        :param expr: sympy.Expr, the expression where the powers are retrieved
+        :param sympy.Symbol int_var: integration variable
+        :param sympy.Expr expr: the expression where the powers are retrieved
+        
+        For details, please refer to :func:`power_of`
         """
         p1 = sympy.Symbol(r"p_1", positive=True)
         p2 = sympy.Symbol(r"p_2", positive=True)
@@ -156,11 +187,12 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
     
     def deduce_params(self, Ntrial: int, Ntest: int):
         """Determine the parameters of the quadrature
+        
         This method is called to determine the values of the parameters
         during evaluation of Gram matrices.
         
-        :param Ntrial: int, maximum value for n_trial
-        :param Ntest: int, maximum value for n_test
+        :param int Ntrial: maximum value for n_trial
+        :param int Ntest: maximum value for n_test
             we assume that the maximum degree of the function to be
             integrated will be reached at maximum n_trial and n_test
         :returns: alpha, beta, quadN
@@ -203,17 +235,17 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         verbose: bool=True) -> Union[np.ndarray, np.matrix, sympy.Matrix]:
         """Compute Gram matrix, concrete realization for Gauss Jacobi quadrature
         
-        :param nrange_trial: idx range for trial func, see InnerQuadRule.gramian
-        :param nrange_test: idx range for test func, see InnerQuadRule.gramian
-        :param backend: str, which backend to use for integration.
+        :param List[int] nrange_trial: idx range for trial func, see InnerQuadRule.gramian
+        :param List[int] nrange_test: idx range for test func, see InnerQuadRule.gramian
+        :param str backend: which backend to use for integration.
             "sympy": the evaluation will be done using sympy evalf
             "scipy": the evaluation will be conducted using numpy/scipy funcs
                 the precision will be limited to platform support for np.float
-        :param int_opt: dict, kwargs passed to integration function
-        :param output: str, which form of matrix to output.
+        :param dict int_opt: kwargs passed to integration function
+        :param str output: which form of matrix to output.
             "sympy": the output will be cast to a sympy.Matrix
             "numpy": the output will be cast to a numpy.ndarray
-        :param out_opt: dict, kwargs passed to _output_form method
+        :param dict out_opt: kwargs passed to _output_form method
         """
         alpha, beta, quadN = self.deduce_params(max(nrange_trial), max(nrange_test))
         if verbose:
@@ -284,8 +316,10 @@ class InnerProdQuad:
     Compared to the direct quadratures of the integral form,
     calculating quadratures in the notation of inner products
     "allows" one to drastically save of time of basis evaluation.
-    When calculating the integral in the form of
+    When calculating the integral in the form of::
+    
         Integral(w(x)*Phi1(l, x)*Phi2(n, x), (x, -1, 1))
+    
     directly calculating the integral using K-point quadrature
     for 0 <= l,n <= N would need KN^2 evaluations of both Phi1
     and Phi2; however, Phi1 and Phi2 in fact only need to be 
@@ -356,19 +390,29 @@ class LabeledBlockMatrix:
     """Block matrix with labels assigned to row & col blocks
     
     Unlike functions e.g. numpy.block, LabeledBlockMatrix assumes the
-    matrix are segmented into block separated by fixed grid lines, i.e.
+    matrix are segmented into block separated by fixed grid lines, i.e::
+    
         AAA BB
         AAA BB
         CCC DD
-    but not in the forms of
-        AAA BB      AAA BB
-        AAA BB  or  CCC BB
-        CC DDD      CCC DD
+    
+    but not in the forms of::
+    
+        AAA BB
+        AAA BB
+        CC DDD
+    
+    or::
+    
+        AAA BB
+        CCC BB
+        CCC DD
+        
     and so each block can be determined by one row and one column idx.
     
-    :param _row_idx: dict, key=label(str) -> value=row indices of the block (slice)
-    :param _col_idx: dict, key=label(str) -> value=col indices of the block (slice)
-    :param _matrix: np.ndarray, the underlying matrix
+    :ivar dict _row_idx: key=label(str) -> value=row indices of the block (slice)
+    :ivar dict _col_idx: key=label(str) -> value=col indices of the block (slice)
+    :ivar np.ndarray _matrix: the underlying matrix
     """
     
     def __init__(self, matrix: np.ndarray, 
@@ -376,10 +420,10 @@ class LabeledBlockMatrix:
         col_names: List[str], col_ranges: List[int]) -> None:
         """Initialization
         
-        :param row_names: array-like, names of the row blocks
+        :param array-like row_names: names of the row blocks
         :param row_ranges: array of integers, the size of each block in 
             number of rows.
-        :param col_names: array-like, names of the col blocks
+        :param array-like col_names: names of the col blocks
         :param col_ranges: array of integers, the size of each block in 
             number of cols.
         """
@@ -416,22 +460,22 @@ class MatrixExpander:
     """Evaluation class for expanding system matrices 
     with InnerProduct1D elements into actual numerical matrices.
     
-    :param matrix: expansion.SystemMatrix, a system matrix with either zero
+    :ivar expansion.SystemMatrix matrix: a system matrix with either zero
         or InnerProduct1D as elements.
-    :param recipe: np.ndarray, collection of QuadRecipe objects.
-    :param n_trials: ranges of trial functions for the expansion
-    :param n_tests: ranges of test functions for the expansion
+    :ivar np.ndarray recipe: collection of QuadRecipe objects.
+    :ivar n_trials: ranges of trial functions for the expansion
+    :ivar n_tests: ranges of test functions for the expansion
     """
     
     def __init__(self, matrix: xpd.SystemMatrix, quad_recipes: np.ndarray,
         ranges_trial: List, ranges_test: List) -> None:
         """Initialization
         
-        :param matrix: expansion.SystemMatrix, a system matrix with either zero
+        :param expansion.SystemMatrix matrix: a system matrix with either zero
             or InnerProduct1D as elements. Ideally in the future, this should
             also accept matrices containing elements written as a sum of inner
             products, for robustness.
-        :param quad_recipes: np.ndarray, collection of QuadRecipe objects.
+        :param np.ndarray quad_recipes: collection of QuadRecipe objects.
         :param ranges_trial: ranges of trial functions for the expansion
         :param ranges_test: ranges of test functions for the expansion
         """
@@ -491,5 +535,7 @@ def invert_block_diag(matrix: np.ndarray, block_seg: List[int]) -> np.ndarray:
     
     The matrix is assumed to be square matrix,
     and the block_seg gives the segmentation of the blocks on the diagonal.
+    
+    Not yet implemented.
     """
     assert matrix.shape[0] == matrix.shape[1]

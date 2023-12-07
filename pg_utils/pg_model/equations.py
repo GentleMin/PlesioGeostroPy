@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Equations for Plesio-Geostrophy Model
+
 Jingtao Min @ ETH-EPM, 09.2023
 """
 
@@ -14,11 +15,10 @@ from .base_utils import linearize
 
 
 
-"""Collecting equations"""
-
+#: Plesio-Geostrophy equations
 eqs_pg = CollectionPG()
 
-"""Vorticity equation"""
+# Vorticity equation
 eqs_pg.Psi = sympy.Eq(
     diff_u(s/H*diff(pgvar.Psi, t, s), s)
     + (1/(s*H) - 1/(2*H**2)*diff(H, s))*diff(pgvar.Psi, t, (p, 2)), 
@@ -26,7 +26,7 @@ eqs_pg.Psi = sympy.Eq(
     + diff(H, s)*(s/H*fe_p + 1/(2*H)*diff(fz_asym, p)) 
     - s/(2*H)*cyl.curl((fs_sym, fp_sym, 0))[2])
 
-"""Induction equations for magnetic moments"""
+# Induction equations for magnetic moments
 eqs_pg.Mss = sympy.Eq(
     diff_u(pgvar.Mss, t), 
     - H*v3d.dot(v_e, cyl.grad(pgvar.Mss/H, evaluate=False))
@@ -80,7 +80,7 @@ eqs_pg.zMsp = sympy.Eq(
     + s*diff_u(U_vec.p/s, s)*pgvar.zMss
     + 1/s*diff(U_vec.s, p)*pgvar.zMpp)
 
-"""Induction equation for magnetic field in the equatorial plane"""
+# Induction equation for magnetic field in the equatorial plane
 eqs_pg.Bs_e = sympy.Eq(
     diff(pgvar.Bs_e, t),
     + pgvar.Bs_e*diff(U_vec.s, s) + 1/s*pgvar.Bp_e*diff(U_vec.s, p)
@@ -110,7 +110,7 @@ eqs_pg.dBp_dz_e = sympy.Eq(
     + (pgvar.dBp_dz_e*U_vec.s - U_vec.p*pgvar.dBs_dz_e)/s
     - diff(U_vec.z, z)*pgvar.dBp_dz_e)
 
-"""Induction: boundary stirring"""
+# Induction: boundary stirring
 # In non-linearized form, boundary induction equation 
 # must be written in Br to be closed
 eqs_pg.Br_b = sympy.Eq(
@@ -159,7 +159,7 @@ eqs_pg.Bz_m = sympy.Eq(
     + pgvar.Bz_m*diff(U_vec.z, z)- U_vec.z*diff(B_vec.z, z))
 
 
-"""Conjugate equations"""
+# Conjugate equations
 
 def eqn_PG_to_conjugate(eqset_pg: CollectionPG, subs_map: dict):
     eqset_pg = eqset_pg.apply(lambda eq: eq.subs(subs_map), inplace=False)
@@ -167,19 +167,22 @@ def eqn_PG_to_conjugate(eqset_pg: CollectionPG, subs_map: dict):
     return eqset_cg
 
 pg_cg_subs = map_pg_to_conjugate(pgvar, cgvar)
+
+#: Conjugate variable equations
 eqs_cg = eqn_PG_to_conjugate(eqs_pg, pg_cg_subs).apply(
     lambda eq: eq.doit().expand(), inplace=True)
 
 
-"""Linearized equations"""
+# ================== Linearized equations =====================
 
-# Linearize equation
+#: Linearized PG equations
 eqs_pg_lin = CollectionPG()
 for idx, eq_tmp in enumerate(eqs_pg):
     eqs_pg_lin[idx] = sympy.Eq(
         linearize(eq_tmp.lhs, pg_linmap),
         linearize(eq_tmp.rhs, u_linmap, b_linmap, pg_linmap, force_linmap))
 
+#: Linearized conjugate equations
 eqs_cg_lin = CollectionConjugate()
 for idx, eq_tmp in enumerate(eqs_cg):
     eqs_cg_lin[idx] = sympy.Eq(

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Base classes for use in PG model
-Jingtao Min @ ETH-EPM, 09.2023
+Base classes and collections
 """
 
 
@@ -13,18 +12,22 @@ class LabeledCollection:
     """Abstract base class for collections to be used in PG model
     
     LabeledCollection is a base class that defines following behaviours
-        (1) indexing by integer; in other words, it is sorted;
-        (2) indexing by string; in other words, it is labeled;
-        (3) the elements can be accessed as attributes.
+    
+    * indexing by integer; in other words, it is sorted;
+    * indexing by string; in other words, it is labeled;
+    * the elements can be accessed as attributes.
+    
     In addition, LabeledCollection supports the following operations
-        (1) iteration: the object can be traversed as an iterator;
-        (2) subcollection: a subset can be extracted from it.
+    
+    * iterator: the object can be traversed as an iterator;
+    * subcollection: a subset can be extracted from it.
+    
     """
     
-    def __init__(self, names, **fields) -> None:
+    def __init__(self, names: List[str], **fields) -> None:
         """Initialization
         
-        :param names: list or array-like [str], 
+        :param List[str] names: names of the fields, 
             list of names to be used as field attributes
         :param \**fields: keyword arguments to be initiated as attributes;
             the keys must be part of the `names`, 
@@ -186,13 +189,13 @@ class LabeledCollection:
     def _extract_subset(self, sub_slice):
         return LabeledSubCollection(self, sub_slice)
         
-    def copy(self):
-        """Deep copy
+    def copy(self) -> "LabeledCollection":
+        """Returns a deep copy of itself
         """
         return LabeledCollection(self._field_names, 
             **{fname: self[fname] for fname in self._field_names})
     
-    def as_empty(self):
+    def as_empty(self) -> "LabeledCollection":
         """Return an object with the same configuration of attributes
         but with fields initiated as None. May be slightly faster than copy?
         """
@@ -200,17 +203,18 @@ class LabeledCollection:
     
     def apply(self, fun: Callable[..., Any], 
         inplace: bool = False, metadata: bool = False) -> "LabeledCollection":
-        """Apply a function to all collection items
+        """Apply a function iteratively to all collection items
         
-        :param fun: Callable, determines how the collection entries
+        :param Callable fun: determines how the collection entries
             are processed. The signature of the function should take
-            the form `fun(type(self[i]))` when metadata is False, and
-            the form `fun(str, type(self[i]))` when metadata is True
-        :param inplace: bool, whether to write changes in situ.
-        :param metadata: bool, whether to pass metadata to the function
+            the form ``fun(type(self[i]))`` when metadata is False, and
+            the form ``fun(str, type(self[i]))`` when metadata is True
+        :param bool inplace: whether to write changes in situ.
+        :param bool metadata: whether to pass field name to the function
         
-        :returns: LabeledCollection object. If inplace, then the 
+        :returns: Updated object. If inplace, then the 
             current object itself is returned.
+        :rtype: LabeledCollection
         """
         if inplace:
             apply_to = self
@@ -224,10 +228,27 @@ class LabeledCollection:
         return apply_to
     
     def subs(self, sub_map: dict, inplace: bool = False):
+        """Substitute variables iteratively in all fields. This utility
+        is for collections with `sympy.Expr` elements. See warning below.
+        
+        :param dict sub_map: a substitution map
+        :param bool inplace: whether the change is made in place; default is False
+        
+        .. warning::
+        
+            To use this method, all elements in the collection need to have
+            implemented the ``subs`` method. This is intended for a collection
+            of which all elements are :class:`sympy.Expr` type. Then, this
+            method calls :meth:`apply` internally to substitute all the variables.
+        """
         return self.apply(lambda eq: eq.subs(sub_map), inplace=inplace)
     
     def generate_collection(self, index_array: List[bool]) -> "LabeledCollection":
         """Generate a new collection based on indices
+        
+        :param List[bool] index_array: array of booleans indicating whether
+            a field is to be included in the new collection
+        :returns: new collection with elements specified by `index_array`
         """
         assert len(index_array) == self.n_fields
         new_names = [fname for idx, fname in enumerate(self._field_names) 
@@ -237,11 +258,21 @@ class LabeledCollection:
 
     def serialize(self, serializer: Callable[[Any], str]=str) -> List[tuple]:
         """Serialize the object
+        
+        :param Callable[[Any],str] serializer: a callable that maps an element
+            to a string. Default is the :func:`str` method.
+        :returns: a list of serialized objects, in the format
+            [(`fname_1`, `serialized_element_1`),
+            (`fname_2`, `serialized_element_2`), ...]
         """
         return [(fname, serializer(self[fname])) for fname in self._field_names]
     
     def save_json(self, fp: TextIO, serializer: Callable[[Any], str] = str) -> None:
         """Serialize the object in string format and save to json file
+        
+        :param TextIO fp: file handle of the output file
+        :param Callable[[Any], str] serializer: a callable that maps an element
+            to a string. Default is the :func:`str` method.
         """
         save_array = self.serialize(serializer=serializer)
         json.dump(save_array, fp, indent=4)
@@ -250,7 +281,17 @@ class LabeledCollection:
     def deserialize(obj: List[tuple], 
         parser: Callable[[str], Any]=lambda x: x) -> "LabeledCollection":
         """Deserialize an object
-        requires sanitized input
+        
+        :param List[tuple] obj: a serialized object of `LabeledCollection`
+        :param Callable[[str], Any] parser: a parser that defines how each
+            string can be parsed into meaningful objects
+        
+        :returns: `LabeledCollection`, that is deserialized from the input object
+        
+        .. warning::
+
+            Sanitized input needed. Unexpected behaviour if input is not a
+            legitimate serialized object
         """
         field_names = [field[0] for field in obj]
         field_dict = {field[0]: parser(field[1]) for field in obj}
@@ -260,6 +301,8 @@ class LabeledCollection:
     def load_json(fp: TextIO, 
         parser: Callable[[str], Any] = lambda x: x) -> "LabeledCollection":
         """Load LabeledCollection object from json
+        
+        convenient wrapper for :meth:`deserialize`
         """
         load_array = json.load(fp)
         return LabeledCollection.deserialize(load_array, parser=parser)
@@ -270,10 +313,16 @@ class LabeledSubCollection:
     
     LabeledSubCollection, similar to LabeledCollection,
     implements the following operations:
-        (1) indexing by integer; in other words, it is sorted;
-        (2) indexing by string; in other words, it is labeled.
+    
+    * indexing by integer; in other words, it is sorted;
+    * indexing by string; in other words, it is labeled;
+    
     In addition, LabeledSubCollection supports the following operations:
-        (1) iteration: the object can be traversed as an iterator.
+    
+    * iteration: the object can be traversed as an iterator.
+    
+    Since the day I built this class, I have almost never found this
+    class useful. Perhaps we can remove it in a later version?
     """
     
     def __init__(self, base_collection: LabeledCollection, sub_slice) -> None:
@@ -403,15 +452,15 @@ class LabeledSubCollection:
 
 
 class CollectionPG(LabeledCollection):
-    """Base class for the collection of Plesio-Geostrophy (PG) variables, 
-    fields, equations, etc.
-    """
+    """Base class for the collection of Plesio-Geostrophy (PG) variables
     
-    """Arrangement of variables:
-    Stream function
-    Magnetic moments
-    Magnetic fields in the equatorial plane
-    Magnetic fields at the boundary
+    The field names are pre-defined, and arranged in the following way
+    
+    * Stream function (`Psi`)
+    * Quadratic moments of magnetic field (`Mss`, `Mpp`, `Msp`, `Msz`, `Mpz`, `zMss`, `zMpp`, `zMsp`)
+    * Magnetic fields in the equatorial plane (`Bs_e`, `Bp_e`, `Bz_e`, `dBs_dz_e`, `dBp_dz_e`)
+    * Magnetic fields at the boundary (`Br_b`, `Bs_p`, `Bp_p`, `Bz_p`, `Bs_m`, `Bp_m`, `Bz_m`)
+    
     """
     pg_field_names = [
         "Psi", 
@@ -420,6 +469,7 @@ class CollectionPG(LabeledCollection):
         "Br_b", "Bs_p", "Bp_p", "Bz_p", "Bs_m", "Bp_m", "Bz_m"]
     
     def __init__(self, **fields) -> None:
+        """Constructor"""
         super().__init__(self.pg_field_names, **fields)
         # No longer accepts attribution addition
         self._disable_attribute_addition()
@@ -456,24 +506,26 @@ class CollectionPG(LabeledCollection):
         return self._extract_subset(slice(15, None))
     
     def copy(self) -> "CollectionPG":
-        """Deep copy
+        """Deep copy, overriding the :meth:`LabeledCollection.copy` method
         """
         return CollectionPG(**{fname: self[fname] for fname in self._field_names})
     
     def as_empty(self) -> "CollectionPG":
-        """Overriding the as_empty method
+        """Overriding the :meth:`LabeledCollection.as_empty` method
         """
         return CollectionPG()
     
     def apply(self, fun: Callable[..., Any], inplace: bool = False,
         metadata: bool = False) -> "CollectionPG":
+        """Overriding the :meth:`LabeledCollection.copy` method"""
         return super().apply(fun, inplace, metadata)
     
     @staticmethod
     def deserialize(obj: List[tuple], 
         parser: Callable[[str], Any] = lambda x: x) -> "CollectionPG":
         """Deserialize an object
-        overriding the base method
+        
+        overriding the :meth:`LabeledCollection.deserialize` method
         """
         field_names = [field[0] for field in obj]
         assert field_names == CollectionPG.pg_field_names
@@ -484,6 +536,8 @@ class CollectionPG(LabeledCollection):
     def load_json(fp: TextIO, 
         parser: Callable[[str], Any] = lambda x: x) -> "CollectionPG":
         """Load CollectionPG object from json
+        
+        overriding the :meth:`LabeledCollection.load_json` method
         """
         load_array = json.load(fp)
         return CollectionPG.deserialize(load_array, parser=parser)
@@ -491,16 +545,21 @@ class CollectionPG(LabeledCollection):
 
 
 class CollectionConjugate(LabeledCollection):
-    """Base class for the collection of conjugate variables, 
-    fields, equations, etc, which are the conjugate counterpart
+    """Base class for the collection of conjugate variables
+     
+    These correspond to the conjugate counterpart
     of PG variables, fields and equations.
-    """
     
-    """Arrangement of variables:
-    Stream function
-    Conjugate magnetic moments
-    Conjugate magnetic fields in the equatorial plane
-    Magnetic fields at the boundary
+    The field names are pre-defined, and arranged in the following way
+    
+    * Stream function (`Psi`)
+    * Conjugate variables of the quadratic moments of magnetic field
+        (`M_1`, `M_p`, `M_m`, `M_zp`, `M_zm`, `zM_1`, `zM_p`, `zM_m`)
+    * Conjugate variables of the magnetic fields in the equatorial plane
+        (`B_ep`, `B_em`, `Bz_e`, `dB_dz_ep`, `dB_dz_em`)
+    * Magnetic fields at the boundary 
+        (`Br_b`, `B_pp`, `B_pm`, `Bz_p`, `B_mp`, `B_mm`, `Bz_m`)
+
     """
     cg_field_names = [
         "Psi", 
@@ -509,6 +568,10 @@ class CollectionConjugate(LabeledCollection):
         "Br_b", "B_pp", "B_pm", "Bz_p", "B_mp", "B_mm", "Bz_m"]
     
     def __init__(self, **fields) -> None:
+        """Constructor
+        
+        No longer accepts attribution addition
+        """
         super().__init__(self.cg_field_names, **fields)
         # No longer accepts attribution addition
         self._disable_attribute_addition()
@@ -546,24 +609,29 @@ class CollectionConjugate(LabeledCollection):
     
     def copy(self) -> "CollectionConjugate":
         """Deep copy
+        
+        overriding the :meth:`LabeledCollection.copy` method
         """
         return CollectionConjugate(
             **{fname: self[fname] for fname in self._field_names})
     
     def as_empty(self) -> "CollectionConjugate":
-        """Overriding the as_empty method
+        """overriding the :meth:`LabeledCollection.as_empty` method
         """
         return CollectionConjugate()
     
     def apply(self, fun: Callable[..., Any], inplace: bool = False,
         metadata: bool = False) -> "CollectionConjugate":
+        """Overriding the :meth:`LabeledCollection.apply` method
+        """
         return super().apply(fun, inplace, metadata)
 
     @staticmethod
     def deserialize(obj: List[tuple], 
         parser: Callable[[str], Any]=lambda x: x) -> "CollectionConjugate":
         """Deserialize object
-        overriding base method
+        
+        overriding the :meth:`LabeledCollection.deserialize` method
         """
         field_names = [field[0] for field in obj]
         assert field_names == CollectionConjugate.cg_field_names
@@ -574,17 +642,19 @@ class CollectionConjugate(LabeledCollection):
     def load_json(fp: TextIO, 
         parser: Callable[[str], Any] = lambda x: x) -> "CollectionConjugate":
         """Load CollectionConjugate object from json
+        
+        overriding the :meth:`LabeledCollection.load_json` method
         """
         load_array = json.load(fp)
         return CollectionConjugate.deserialize(load_array, parser=parser)
 
 
 def map_collection(maps_from: LabeledCollection, maps_to: LabeledCollection) -> dict:
-    """Create mapping from one Collection object to another Collection
+    """Construct mapping from one Collection object to another Collection
     
-    :param maps_from: CollectionPG of fields to be mapped from
-    :param maps_to: CollectionPG of fields to be mapped to
-    :returns: a dictionary
+    :param LabeledCollection maps_from: Collection of fields to be mapped from
+    :param LabeledCollection maps_to: Collection of fields to be mapped to
+    :returns: a dictionary of the map
     """
     assert maps_from._field_names == maps_to._field_names
     return {maps_from[fname]: maps_to[fname] for fname in maps_to._field_names}

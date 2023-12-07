@@ -7,34 +7,41 @@ Jingtao Min @ ETH-EPM, 09.2023
 import sympy
 from ..sympy_supp import vector_calculus_3d as v3d
 from .core import *
+from . import base
 
 
 def integrate_sym(field):
-    """equatorially symmetric / even integral
-    Note: input field has to be a function of cylindrical coordinates
+    """Equatorially symmetric / even integral
+    
+    :param sympy.Expr field: function to be integrated.
+        This should be a function of cylindrical coordinates,
+        especially a function of :data:`pg_utils.pg_model.core.z`
+    :returns: integrated quantity
+    :rtype: sympy.Expr
     """
     return sympy.integrate(field, (z, -H, H))
 
 
 def integrate_asym(field):
-    """equatorially asymmetric / odd integral
-    Note: input field has to be a function of cylindrical coordinates
+    """equatorially antisymmetric / odd integral
+    
+    :param sympy.Expr field: function to be integrated.
+        This should be a function of cylindrical coordinates,
+        especially a function of :data:`pg_utils.pg_model.core.z`
+    :returns: integrated quantity
+    :rtype: sympy.Expr
     """
     return sympy.integrate(field, (z, 0, H)) + sympy.integrate(field, (z, 0, -H))
 
 
 def field_to_moment(B_field):
-    """Convert magnetic field to integrated moments.
+    """Convert magnetic field to integrated quadratic moments.
     
     :param B_field: tuple, magnetic field components
         B_field should be given in cylindrical components, 
         and the field components should be functions of cylindrical coordinates,
-        i.e. B_field = (
-            B_s(s, p, z),
-            B_p(s, p, z),
-            B_z(s, p, z)
-        )
-    :return: tuple of the sympy expressions of the eight moments,
+        i.e. B_field = (B_s(s, p, z), B_p(s, p, z), B_z(s, p, z))
+    :returns: tuple of the sympy expressions of the eight moments,
         Mss, Mpp, Msp, Msz, Mpz, zMss, zMpp, zMsp
     """
     assert isinstance(B_field, v3d.Vector3D) or len(B_field) == 3
@@ -50,25 +57,26 @@ def field_to_moment(B_field):
 
 
 def assemble_background(B0, Psi0=None, mode="PG"):
-    """Assemble background PG fields
+    """Assemble background fields
     
-    :param B0: array-like or Vector3D, iterable and indexable
+    :param array-like B0: indexable
         background magnetic field in cylindrical coordinates
-    :param Psi0: sympy.Function, the background stream function
+    :param sympy.Function Psi0: the background stream function
         Because velocity cannot in general be converted to Psi,
         if one wants to specify the stream function this has to
         be done separately. Note that when the nonlinear term is 
         absent from the vorticity equation, Psi0 will in general
         not be involved in any of these equations. Background
         velocity in all induction equations uses U instead of Psi
-    :param mode: str, the mode, what kind of background fields to
+    :param str mode: the mode, what kind of background fields to
         assemble. Supports Plesio-Geostrophy "PG", or conjugate 
         variables "CG". Default is PG.
     
-    :returns: CollectionPG, collection of background PG fields
+    :returns: collection of background PG fields / conjugate fields
+    :rtype: base.CollectionPG or base.CollectionConjugate
     
     .. note:: The components of B0 and the field Psi0 need to be
-        "directly evaluable", i.e. they should all be sympy expr
+        "directly evaluable", i.e. they should all be `sympy.Expr`
         containing no derivative of undefined functions.
         Otherwise, substitution will return incorrect results.
         The background field at the boundary are not immediately 
@@ -113,12 +121,12 @@ def assemble_background(B0, Psi0=None, mode="PG"):
 def linearize(expr, *subs_maps, perturb_var=eps):
     """Linearize expression
     
-    :param expr: sympy expression, expression to be linearized
-    :param *subs_maps: dict, subtitution maps, takes the form
-        {A: A0 + eps*A1, B: B0 + eps*B1, ...}
-    :param perturb_var: perturbation number, 
+    :param sympy.Expr expr: expressions to be linearized
+    :param dict *subs_maps: subtitution maps, takes the form
+        ``{A: A0 + eps*A1, B: B0 + eps*B1, ...}``
+    :param sympy.Symbol perturb_var: perturbation number, 
         default to be the symbol eps from pg_fields module
-    :return: sympy expression, linearized expression
+    :returns: linearized expression
     """
     expr_lin = expr
     for subs_map in subs_maps:
@@ -130,8 +138,8 @@ def linearize(expr, *subs_maps, perturb_var=eps):
 def fields_in_term(expr: sympy.Expr, field_collection: base.LabeledCollection):
     """Extract all fields in a term from a collection.
     
-    :param expr: the term from which the field will be extracted
-    :param field_collection: range of fields
+    :param sympy.Expr expr: the term from which the field will be extracted
+    :param base.LabeledCollection field_collection: range of fields
     :returns: set of fields
     """
     set_tmp = {field for field in field_collection}

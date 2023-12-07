@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 Define expansions of the fields.
 The methods and classes in this file are mainly for expanding fields
@@ -31,19 +30,22 @@ import json
 
 
 
-# Integers denoting the radial and azimuthal basis
+#: Integers denoting the indices of the radial and azimuthal bases
 n, m = sympy.symbols("n, m", integer=True)
 
-# Index for the orders of the radial test and trial functions
+#: Index for the radial test functions
 n_test = sympy.Symbol(r"\ell'", integer=True)
+#: Index for the radial trial functions 
 n_trial = sympy.Symbol(r"\ell", integer=True)
 
-# Angular frequency
+#: Angular frequency
 omega = sympy.Symbol(r"\omega")
 
-# Integration variable for the radial direction and transforms
+#: Integration variable for the radial direction
 xi = sympy.Symbol(r"\xi")
+#: :data:`xi` as a function of :data:`s`
 xi_s = 2*s**2 - 1
+#: :data:`s` as a function of :data:`xi`
 s_xi = sympy.sqrt((xi + 1)/2)
 
 
@@ -51,9 +53,12 @@ s_xi = sympy.sqrt((xi + 1)/2)
 class SpectralExpansion(base.LabeledCollection):
     """Base class for different kinds of spectral expansions
     
-    :param fields: collection to be expanded
-    :param bases: collection of bases to be used
-    :param coeffs: collection of the corresponding coeffs.
+    This is intended as an abstract class, which should be overriden
+    by its concrete child classes
+    
+    :param base.LabeledCollection fields: fields to be expanded
+    :param Union[base.LabeledCollection, sympy.Expr] bases: bases to be used
+    :param base.LabeledCollection coeffs: collection of the corresponding coeffs.
     """
     
     def __init__(self, fields: base.LabeledCollection, 
@@ -61,6 +66,10 @@ class SpectralExpansion(base.LabeledCollection):
         coeffs: base.LabeledCollection, 
         **relations: sympy.Expr) -> None:
         """Initialization
+        
+        :param base.LabeledCollection fields: fields to be expanded
+        :param Union[base.LabeledCollection, sympy.Expr] bases: bases to be used
+        :param base.LabeledCollection coeffs: collection of the corresponding coeffs.
         """
         super().__init__(fields._field_names, **relations)
         self.fields, self.bases, self.coeffs = fields, bases, coeffs
@@ -69,7 +78,8 @@ class SpectralExpansion(base.LabeledCollection):
 
 class FourierExpansions(SpectralExpansion):
     """Fourier expansion for fields
-    This class is used for reducing equations or expressions into the
+    
+    This class can be used for reducing equations or expressions into the
     Fourier domain given specific arguments. The Fourier-domain eqs/
     exprs are then processed using `RadialExpansions`
     
@@ -86,15 +96,17 @@ class FourierExpansions(SpectralExpansion):
         fourier_coeffs: base.LabeledCollection) -> None:
         """Initiate Fourier expansion
         
-        :param arguments: the complex argument of the Fourier basis
-        :param fields: fields to use the Fourier expansion on
-        :param fourier_coeffs: Fourier coefficients; these should be
-            Fourier coefficients of the fields specified by `fields`
-            expanded with argument specified by `argument`.
-        .. Example:
-            if `fields` are functions of s, p, z and t, and `argument`
-            takes the form omega*t + m*p, then fourier_coeffs should
-            be functions of s and z.
+        :param sympy.Expr arguments: the complex argument of the Fourier basis
+        :param base.LabeledCollection fields: fields to use the Fourier expansion on
+        :param base.LabeledCollection fourier_coeffs: Fourier coefficients; 
+            these should be Fourier coefficients of the fields specified 
+            by `fields` expanded with argument specified by `argument`.
+        
+        .. note::
+        
+            If `fields` are functions of `s`, `p`, `z` and `t`, and `argument`
+            takes the form ``omega*t + m*p``, then `fourier_coeffs` should
+            be functions of `s` and `z`.
         """
         assert fields._field_names == fourier_coeffs._field_names
         fourier_basis = sympy.exp(sympy.I*argument)
@@ -116,6 +128,12 @@ class FourierExpansions(SpectralExpansion):
     @staticmethod
     def to_fourier_domain(expr, ansatz, basis):
         """Convert an expression to Fourier domain
+        
+        :param sympy.Expr expr: expression to be converted
+        :param dict ansatz: a substitution that maps fields to their Fourier ansatz
+        :param basis: the basis used in the ansatz
+        
+        :returns: expression in the Fourier domain
         """
         expr_fourier = expr.subs(ansatz).doit()/basis
         return expr_fourier
@@ -129,12 +147,14 @@ class RadialExpansions(SpectralExpansion):
     In many (even most) spectral expansions, 
     each field, or each component of the tensor are expanded using the 
     same bases, only with different coefficients.
+    
     For PG applications, two complications arise:
-    - As we expand the elements of tensors, it would be desirable to
-    implement different forms of bases for each individual field, so
-    that the regularity constraints are fulfilled;
-    - we potentially have a mixture of quantities expressed in 
-    cylindrical and spherical coordinates.
+    
+    * As we expand the elements of tensors, it would be desirable to
+      implement different forms of bases for each individual field, so
+      that the regularity constraints are fulfilled;
+    * we potentially have a mixture of quantities expressed in 
+      cylindrical and spherical coordinates.
     
     The first point is tackled by using different bases and different
     relations, hence this class assumes a collection of basis.
@@ -149,7 +169,7 @@ class RadialExpansions(SpectralExpansion):
 
 
 class RadialTestFunctions(base.LabeledCollection):
-    """Radial functions that are used as test functions for reducing
+    """Collection of radial functions used as test functions for reducing
     differential equations into algebraic form.
     """
     
@@ -159,20 +179,25 @@ class RadialTestFunctions(base.LabeledCollection):
 
 
 class InnerProduct1D(sympy.Expr):
-    """1-D (integration) inner product
+    """1-D (integration) inner product :math:`\\langle a, b \\rangle`
     
-    :param _opd_A: left operand
-    :param _opd_B: right operand
-    :param _wt: weight
-    :param _int_var: integration variable
-    :param _bound: integration bounds
-    :param _print_mid: whether to print weight in the middle
-        if False, the weight will be merged with the second argument
+    :ivar sympy.Expr _opd_A: left operand
+    :ivar sympy.Expr _opd_B: right operand
+    :ivar sympy.Expr _wt: weight
+    :ivar sympy.Symbol _int_var: integration variable
+    :ivar List[sympy.Expr] _bound: integration bounds
     """
     
     def __init__(self, opd_A: sympy.Expr, opd_B: sympy.Expr, wt: sympy.Expr, 
         int_var: sympy.Symbol, lower: sympy.Expr, upper: sympy.Expr) -> None:
         """Initialization
+        
+        :param sympy.Expr opd_A: left operand
+        :param sympy.Expr opd_B: right operand
+        :param sympy.Expr wt: weight
+        :param sympy.Symbol int_var: integration variable
+        :param sympy.Expr lower: lower bound of integration
+        :param sympy.Expr upper: upper bound of integration
         """
         self._opd_A = opd_A
         self._opd_B = opd_B
@@ -188,6 +213,8 @@ class InnerProduct1D(sympy.Expr):
             str_A, str_B, str_var)
     
     def doit(self, **hints):
+        """Return un-evaluated integral form
+        """
         if hints.get("integral", False):
             return self.integral_form()
     
@@ -208,9 +235,20 @@ class InnerProduct1D(sympy.Expr):
         jac_positive: bool = True, merge: bool = False, simplify: bool = False) -> "InnerProduct1D":
         """Change the integration variable
         
-        :param new_var: the new variable to be integrated over
-        :param int_var_expr: the current variable expressed in new variable
-        :param inv_expr: one needs to explicitly state the inverse expression
+        :param sympy.Symbol new_var: the new variable to be integrated over
+        :param sympy.Expr int_var_expr: the current variable expressed in new variable
+        :param sympy.Expr inv_expr: inverse expression of `int_var_expr`
+            one needs to explicitly state the inverse expression
+        :param bool jac_positive: whether to assume the Jacobian is positive,
+            default is `True`. If False, the absolute value of the Jacobian will
+            be taken before taking the integral
+        :param bool merge: whether to merge the weight with the second operand.
+            Default is `False`.
+            Although not reasonable in the definition of inner products, it can be
+            useful when the inner product is converted to integral form in the end.
+        :param bool simplify: whether to simplify the operands
+        
+        :returns: `InnerProduct1D` object with changed integration variable
         """
         if jac_positive:
             jac = sympy.diff(int_var_expr, new_var).doit()
@@ -234,6 +272,14 @@ class InnerProduct1D(sympy.Expr):
     
     def commute_factor_out(self, term: sympy.Expr, opd: int = 1) -> sympy.Expr:
         """Move a factor out of the inner product
+        
+        A manual operation to move a factor from an operand to outside the
+        inner product. Realization of "linearity"
+        
+        :param sympy.Expr term: the factor to be moved out
+        :param int opd: index for the operand. Either 0 or 1, default = 1.
+            If `opd` = 0, the factor will be moved out of the first operand;
+            if `opd` = 1, the factor will be moved out of the second operand
         """
         if opd == 0:
             return term*InnerProduct1D(self._opd_A/term, self._opd_B, self._wt, 
@@ -246,6 +292,14 @@ class InnerProduct1D(sympy.Expr):
     
     def commute_factor_in(self, term: sympy.Expr, opd: int = 1) -> "InnerProduct1D":
         """Move a factor into the inner product
+        
+        A manual operation to move a factor from outside the inner product
+        to its operand. Realization of "linearity"
+        
+        :param sympy.Expr term: the factor to be moved in
+        :param int opd: index for the operand. Either 0 or 1, default = 1.
+            If `opd` = 0, the factor will be moved to the first operand;
+            if `opd` = 1, the factor will be moved to the second operand
         """
         if opd == 0:
             return InnerProduct1D(term*self._opd_A, self._opd_B, self._wt, 
@@ -257,7 +311,9 @@ class InnerProduct1D(sympy.Expr):
             raise AttributeError
     
     def split(self, opd: int = 1) -> sympy.Expr:
-        """Apply the distributive property of inner products to 
+        """Split the inner product into sum of inner products.
+        
+        A manual operation of the distributive property of inner products to 
         split the inner product whose argument is a sum of several terms
         into the sum of several inner products.
         """
@@ -273,6 +329,8 @@ class InnerProduct1D(sympy.Expr):
             return self
     
     def serialize(self) -> dict:
+        """Serialize inner product to a dictionary
+        """
         return {"opd_A": sympy.srepr(self._opd_A), 
                 "opd_B": sympy.srepr(self._opd_B), "wt": sympy.srepr(self._wt), 
                 "int_var": sympy.srepr(self._int_var), 
@@ -282,17 +340,27 @@ class InnerProduct1D(sympy.Expr):
 
 
 class InnerProductOp1D:
-    """Inner product defined on 1-D function space
+    """Inner product defined on 1-D function space :math:`\\langle \cdot, \cdot \\rangle`
     
-    :param _int_var: integration variable
-    :param _wt: weight
-    :param _bound: integration bound, 2-tuple
-    :param _conj: which argument to perform the complex conjugation
+    :ivar sympy.Symbol _int_var: integration variable
+    :ivar sympy.Expr _wt: weight
+    :ivar List[sympy.Expr] _bound: integration bound, 2-tuple
+    :ivar _conj: which argument to perform the complex conjugation
+    :vartype _conj: int or None
     """
     
     def __init__(self, int_var: sympy.Symbol, wt: sympy.Expr, 
         bound: List, conj: Optional[int] = None) -> None:
         """Initialization
+        
+        :param sympy.Symbol int_var: integration variable
+        :param sympy.Expr wt: weight
+        :param List[sympy.Expr] bound: integration bound, 2-tuple
+        :param Optional[int] conj: which argument to perform the complex conjugation.
+            Default to `None`.
+            If `conj` = `None`, no complex conjugate will be taken;
+            if `conj` = 0, the first operand will be taken conjugate of; 
+            if `conj` = 1, the second operand will be taken conjugate of.
         """
         assert len(bound) == 2
         if isinstance(conj, int):
@@ -330,12 +398,13 @@ class ExpansionRecipe:
     """The top-level class used for spectral expansion,
     which defines the recipe concerning radial and azimuthal expansions.
     
-    :param activated: bool array indicating activated equations
-    :param fourier_ansatz: defines the fourier expansion part
+    :ivar FourierExpansion fourier_xpd: defines the fourier expansion part
         this is considered shared among all fields
-    :param rad_expansion: defines the radial expansion
-    :param rad_test: test functions for each radial equation
-    :param inner_products: inner products associated with each eq
+    :ivar RadialExpansion rad_xpd: defines the radial expansion
+    :ivar RadialTestFunctions rad_test: test functions for each radial equation
+    :ivar RadialInnerProducts inner_prod_op: inner products associated with each eq
+    :ivar dict base_expr: explicit expressions of the bases for substitution
+    :ivar dict test_expr: explicit expressions of the test functions for substitution
     """
     
     def __init__(self, fourier_expand: FourierExpansions, 
@@ -344,6 +413,16 @@ class ExpansionRecipe:
         base_expr: Optional[base.LabeledCollection] = None, 
         test_expr: Optional[base.LabeledCollection] = None) -> None:
         """Initialization
+        
+        :param FourierExpansion fourier_expand: defines the fourier expansion part
+            which is considered shared among all fields
+        :param RadialExpansion rad_expand: defines the radial expansion
+        :param RadialTestFunctions rad_test: test functions for each radial equation
+        :param RadialInnerProducts inner_prod_op: inner products associated with each eq
+        :param Optional[base.LabeledCollection] base_expr: 
+            explicit expression of the bases (if `rad_expand` uses placeholders)
+        :param Optional[base.LabeledCollection] test_expr: 
+            explicit expression of the test functions (if `rad_test` uses placeholders)
         """
         self.fourier_xpd = fourier_expand
         self.rad_xpd = rad_expand
@@ -367,8 +446,7 @@ class SystemEquations(base.LabeledCollection):
     The equations are always assumed to be written in the first-order
     form in time, i.e. LHS = d()/dt
     
-    :param recipe: ExpansionRecipe, collection of expansion rules
-    :param \**fields: equations as attributes.
+    :ivar ExpansionRecipe expansion_recipe: expansion recipe used for the eq
     """
     
     def __init__(self, names: List[str], 
@@ -379,23 +457,22 @@ class SystemEquations(base.LabeledCollection):
         super().__init__(names, **fields)
     
     def as_empty(self):
-        """Construct empty object with the same set of fields and recipe.
-        Overriden method.
+        """Overriding :meth:`base.LabeledCollection.as_empty`
         """
         return SystemEquations(self._field_names, self.recipe)
     
     def copy(self):
-        """Deep copy method, overriden due to a new attribute, recipe,
-        to be copied (copying of recipe is however shallow).
+        """Overriding :meth:`base.LabeledCollection.copy`
         """
         return SystemEquations(self._field_names, self.recipe, 
             **{self[fname] for fname in self._field_names})
     
     def to_fourier_domain(self, inplace: bool = False) -> "SystemEquations":
         """Convert expression into Fourier domain
-        using the bases and coefficients defined in recipe.fourier_ansatz
         
-        :param inplace: bool, whether the operation is made in situ
+        Uses the bases and coefficients defined in recipe.fourier_ansatz
+        
+        :param bool inplace: whether the operation is made in situ
         """
         f_map = base.map_collection(
             self.recipe.fourier_xpd.fields, 
@@ -409,11 +486,8 @@ class SystemEquations(base.LabeledCollection):
     
     def to_radial(self, inplace: bool = False) -> "SystemEquations":
         """Introduce radial expansion to the equations.
-        Note: functions/fields that are not expanded with an coefficient
-            (elements from recipe.rad_xpd.coeffs) will no longer be collected
-            properly and may be lost in linear system formation!
-        
-        :param inplace: bool, whether the operation is made in situ
+                
+        :param bool inplace: whether the operation is made in situ
         """
         f_map = base.map_collection(
             self.recipe.rad_xpd.fields, 
@@ -430,10 +504,16 @@ class SystemEquations(base.LabeledCollection):
         inplace: bool = False) -> "SystemEquations":
         """Collect the radial equations to inner product form
         
-        :param factor_lhs: sympy.Expr, allows the user to choose 
+        :param sympy.Expr factor_lhs: allows the user to choose 
             which factor should be moved out of the inner product on LHS
         :param factor_rhs: ditto, but for RHS
-        :param inplace: bool, whether the operation is made in situ
+        :param bool inplace: whether the operation is made in situ
+        
+        .. warning:: 
+        
+            Functions/fields that are not expanded with an coefficient
+            (elements from `recipe.rad_xpd.coeffs`) will no longer be collected
+            properly and may be lost in linear system formation!
         """
         def collect_inner_product(fname, eq):
             ip_od = self.recipe.inner_prod_op[fname]
@@ -454,7 +534,7 @@ class SystemEquations(base.LabeledCollection):
         factor_rhs: sympy.Expr = sympy.S.One) -> List["SystemMatrix"]:
         """Collect the coefficient matrices of the equations
         
-        :param factor_lhs: sympy.Expr, allows the user to choose 
+        :param sympy.Expr factor_lhs: sympy.Expr, allows the user to choose 
             which factor should be moved out of the inner product on LHS
         :param factor_rhs: ditto, but for RHS
         """
@@ -469,11 +549,34 @@ class SystemEquations(base.LabeledCollection):
 
 class SystemMatrix:
     """System matrix
+    
+    This is a wrapper for a matrix of symbolic expression (inner products)
+    whose numerical values will be evaluated numerically.
+    This is one of the final outcomes of the symbolic computation.
+    
+    :ivar List[str] _row_names: list of names corresponding to each row (block)
+    :ivar dict _row_idx: dict that maps row name to their index
+    :ivar List[str] _col_names: list of names corresponding to each col (block)
+    :ivar dict _col_idx: dict that maps col names to their index
+    :ivar array-like _matrix: a nested list representing the matrix
     """
     
     @staticmethod
     def build_matrix(exprs: base.LabeledCollection, 
         coeffs: base.LabeledCollection) -> List:
+        """Build system matrix from a collection of expressions
+        
+        :param base.LabeledCollection exprs: collection of expressions
+            each element is a `sympy.Expr` instance
+        :param base.LabeledCollection coeffs: collection of coefficients
+            each element is a `sympy.Symbol` instance
+        
+        .. warning::
+
+            Whatever term in `exprs` that does not contain a coefficient
+            included in the `coeffs` collection will be discarded in the
+            process!
+        """
         matrix = list()
         for expr in exprs:
             expr_row = list()
@@ -483,6 +586,20 @@ class SystemMatrix:
         return np.array(matrix)
     
     def __init__(self, *args, **kwargs) -> None:
+        """Initialization
+        
+        There are currently two modes of initialization.
+        
+        * If the first argument is a :class:`base.LabeledCollection` instance,
+          it will be interpreted as a collection of expressions; the second
+          argument is then interpreted as the collection of coefficients.
+          The signaure is `SystemMatrix(expressions, coefficients)`.
+          The :class:`SystemMatrix` will be constructed by invoking the 
+          :meth:`SystemMatrix.build_matrix` method
+        * Otherwise, the arguments will be interpreted as the row names,
+          column names and matrix of expressions, respectively.
+          The signature is `SystemMatrix(row_names, col_names, matrix)`
+        """
         if isinstance(args[0], base.LabeledCollection):
             # initiate from expression and coefficients
             exprs, coeffs = args[0], args[1]
@@ -520,12 +637,26 @@ class SystemMatrix:
         self._matrix[idx_int] = value
     
     def block_sparsity(self):
-        return ~np.array([[self[ridx, cidx] == sympy.S.Zero
+        """Give the sparsity pattern of the symbolic matrix
+        
+        :returns: sparsity matrix.
+            If an element of the `SystemMatrix` is zero or None, then 
+            it will be marked as `False` in the output; otherwise it will
+            be marked as `True`.
+        :rtype: numpy.ndarray
+        """
+        return ~np.array([[self[ridx, cidx] == sympy.S.Zero or self[ridx, cidx] is None
                           for cidx in range(self._matrix.shape[1])]
                          for ridx in range(self._matrix.shape[0])], dtype=bool)
     
     def apply(self, fun: Callable, inplace: bool=False, 
         metadata: bool=False) -> "SystemMatrix":
+        """Apply function to elements iteratively.
+        
+        :param Callable fun: function that processes the elements
+        :param bool inplace: whether the change is applied *in situ*
+        :param bool metadata: whether the name of the element is passed to `fun`.
+        """
         sysm_out = self if inplace else SystemMatrix(
             self._row_names, self._col_names, np.zeros(self._matrix.shape, dtype=object))
         for i_row in range(self._matrix.shape[0]):
@@ -539,6 +670,8 @@ class SystemMatrix:
     
     @staticmethod
     def serialize_element(element: Union[InnerProduct1D, sympy.Expr]) -> Any:
+        """Serialize an element
+        """
         if isinstance(element, InnerProduct1D):
             return element.serialize()
         elif isinstance(element, sympy.Expr):
@@ -595,7 +728,7 @@ class SystemMatrix:
         return SystemMatrix.deserialize(matrix_array)
 
 
-"""Auxiliary functions"""
+# =================== Auxiliary functions =====================
 
 
 def placeholder_collection(names, notation: str, *vars) -> base.LabeledCollection:
@@ -620,11 +753,6 @@ def orth_pref_jacobi(pow_H: Union[sympy.Expr, int],
     return (H_s**pow_H*s**pow_s)*jacobi(n, pow_H, pow_s - Rational(1, 2), xi_s)
 
 
-
-"""Radial placeholder functions of PG fields in 2-D disk.
-These are the Fourier coefficients for using in combination with
-core.pgvar or core.pgvar_lin, with omega*t+p*z the Fourier argument
-"""
 pgvar_s = base.CollectionPG(
     # Stream function
     Psi = sympy.Function(r"\Psi^{m}")(s),
@@ -653,6 +781,11 @@ pgvar_s = base.CollectionPG(
     Bp_m = sympy.Function(r"B_\phi^{m-}")(s),
     Bz_m = sympy.Function(r"B_z^{m-}")(s)
 )
+"""Radial placeholder functions of PG fields in 2-D disk.
+
+These are the Fourier coefficients for use in combination with
+:data:`core.pgvar` or :data:`core.pgvar_ptb`, with ``omega*t+p*z`` the Fourier argument
+"""
 
 cgvar_s = base.CollectionConjugate(
     # Stream function, unchanged
@@ -681,6 +814,11 @@ cgvar_s = base.CollectionConjugate(
     B_mm = sympy.Function(r"B_-^{m-}")(s),
     Bz_m = pgvar_s.Bz_m
 )
+"""Radial placeholder functions for conjugate variables in 2-D disk.
+
+These are the Fourier coefficients for use in combination with
+:data:`core.cgvar` or :data:`core.cgvar_ptb`, with ``omega*t+p*z`` the Fourier argument
+"""
 
 
 reduced_var_s = base.LabeledCollection(
@@ -688,3 +826,8 @@ reduced_var_s = base.LabeledCollection(
     Psi = pgvar_s.Psi,
     F_ext = sympy.Function(r"F_\mathrm{ext}^m")(s)
 )
+"""Radial placeholder functions for reduced system in 2-D disk.
+
+These are the Fourier coefficients for use in combination with
+:data:`core.reduced_var`, with ``omega*t+p*z`` the Fourier argument
+"""
