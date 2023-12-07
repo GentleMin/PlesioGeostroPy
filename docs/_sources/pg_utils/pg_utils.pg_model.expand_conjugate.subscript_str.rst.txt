@@ -1,6 +1,0 @@
-pg\_utils.pg\_model.expand\_conjugate.subscript\_str
-====================================================
-
-.. currentmodule:: pg_utils.pg_model.expand_conjugate
-
-.. autodata:: subscript_str

@@ -1,6 +1,0 @@
-pg\_utils.pg\_model.expansion.orth\_pref\_jacobi
-================================================
-
-.. currentmodule:: pg_utils.pg_model.expansion
-
-.. autofunction:: orth_pref_jacobi

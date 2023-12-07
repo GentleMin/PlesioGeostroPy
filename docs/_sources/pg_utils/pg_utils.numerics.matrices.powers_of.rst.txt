@@ -1,6 +1,0 @@
-pg\_utils.numerics.matrices.powers\_of
-======================================
-
-.. currentmodule:: pg_utils.numerics.matrices
-
-.. autofunction:: powers_of

@@ -1,6 +1,0 @@
-pg\_utils.pg\_model.base\_utils.field\_to\_moment
-=================================================
-
-.. currentmodule:: pg_utils.pg_model.base_utils
-
-.. autofunction:: field_to_moment

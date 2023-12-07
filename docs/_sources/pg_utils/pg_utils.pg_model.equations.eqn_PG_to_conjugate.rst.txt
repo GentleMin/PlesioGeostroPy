@@ -1,6 +1,0 @@
-pg\_utils.pg\_model.equations.eqn\_PG\_to\_conjugate
-====================================================
-
-.. currentmodule:: pg_utils.pg_model.equations
-
-.. autofunction:: eqn_PG_to_conjugate

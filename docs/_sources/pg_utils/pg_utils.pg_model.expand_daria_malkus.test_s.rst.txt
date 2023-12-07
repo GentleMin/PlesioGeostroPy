@@ -1,6 +1,0 @@
-pg\_utils.pg\_model.expand\_daria\_malkus.test\_s
-=================================================
-
-.. currentmodule:: pg_utils.pg_model.expand_daria_malkus
-
-.. autodata:: test_s

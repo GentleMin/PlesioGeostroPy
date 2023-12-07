@@ -1,6 +1,0 @@
-pg\_utils.pg\_model.base.map\_collection
-========================================
-
-.. currentmodule:: pg_utils.pg_model.base
-
-.. autofunction:: map_collection

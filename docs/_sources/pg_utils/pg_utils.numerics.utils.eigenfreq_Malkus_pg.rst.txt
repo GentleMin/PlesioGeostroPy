@@ -1,6 +1,0 @@
-pg\_utils.numerics.utils.eigenfreq\_Malkus\_pg
-==============================================
-
-.. currentmodule:: pg_utils.numerics.utils
-
-.. autofunction:: eigenfreq_Malkus_pg
