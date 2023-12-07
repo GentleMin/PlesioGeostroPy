@@ -20,7 +20,9 @@
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pg_utils.processing.postproc.get_eigen_field_function" href="pg_utils.processing.postproc.get_eigen_field_function.html" />
+    <link rel="prev" title="pg_utils.processing.postproc" href="pg_utils.processing.postproc.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,11 +44,24 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">pg_utils.processing.postproc.eigen_func_from_conjugate</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.html">pg_utils</a></li>
 </ul>
-</div>
+<p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.sympy_supp.html">sympy_supp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.pg_model.html">pg_model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.numerics.html">numerics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pg_utils.processing.html">processing</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pg_utils.processing.postproc.html">pg_utils.processing.postproc</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pg_utils.processing.postproc.eigen_func_from_conjugate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.processing.postproc.get_eigen_field_function.html">pg_utils.processing.postproc.get_eigen_field_function</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -61,6 +76,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.html">pg_utils</a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.processing.html">pg_utils.processing</a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.processing.postproc.html">pg_utils.processing.postproc</a></li>
       <li class="breadcrumb-item active">pg_utils.processing.postproc.eigen_func_from_conjugate</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/_autosummary/pg_utils.processing.postproc.eigen_func_from_conjugate.rst.txt" rel="nofollow"> View page source</a>
@@ -75,9 +93,34 @@
 <h1>pg_utils.processing.postproc.eigen_func_from_conjugate<a class="headerlink" href="#pg-utils-processing-postproc-eigen-func-from-conjugate" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pg_utils.processing.postproc.eigen_func_from_conjugate">
-<span class="sig-prename descclassname"><span class="pre">pg_utils.processing.postproc.</span></span><span class="sig-name descname"><span class="pre">eigen_func_from_conjugate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xpd_recipe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pg_utils.pg_model.expansion.ExpansionRecipe.html#pg_utils.pg_model.expansion.ExpansionRecipe" title="pg_utils.pg_model.expansion.ExpansionRecipe"><span class="pre">ExpansionRecipe</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">phys_par</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pg_utils.pg_model.base.LabeledCollection.html#pg_utils.pg_model.base.LabeledCollection" title="pg_utils.pg_model.base.LabeledCollection"><span class="pre">LabeledCollection</span></a></span></span><a class="headerlink" href="#pg_utils.processing.postproc.eigen_func_from_conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Get lambdified function of field variables
-for fast evaluation</p>
+<span class="sig-prename descclassname"><span class="pre">pg_utils.processing.postproc.</span></span><span class="sig-name descname"><span class="pre">eigen_func_from_conjugate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xpd_recipe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pg_utils.pg_model.expansion.ExpansionRecipe.html#pg_utils.pg_model.expansion.ExpansionRecipe" title="pg_utils.pg_model.expansion.ExpansionRecipe"><span class="pre">ExpansionRecipe</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">phys_par</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#dict" title="(in Python v3.8)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pg_utils.pg_model.base.LabeledCollection.html#pg_utils.pg_model.base.LabeledCollection" title="pg_utils.pg_model.base.LabeledCollection"><span class="pre">LabeledCollection</span></a></span></span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/processing/postproc.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.processing.postproc.eigen_func_from_conjugate" title="Permalink to this definition"></a></dt>
+<dd><p>Lambdify functions of field variables from conjugate expansions</p>
+<p>This method converts symbolic expansions of the conjugate variables
+to numerical functions of PG variables for efficient evaluation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xpd_recipe</strong> (<a class="reference internal" href="pg_utils.pg_model.expansion.ExpansionRecipe.html#pg_utils.pg_model.expansion.ExpansionRecipe" title="pg_utils.pg_model.expansion.ExpansionRecipe"><em>expansion.ExpansionRecipe</em></a>) – expansion recipe (for conjugate variables)</p></li>
+<li><p><strong>phys_par</strong> (<a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – physical parameter to be substituted into expressions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>collection of functions for numerical evaluation, 
+the leading functions are PG variable functions;
+the trailing 4 functions are <cite>U_s</cite> (radial velocity), <cite>U_p</cite> (azimuthal 
+velocity), <cite>U_z</cite> (axial velocity) and <cite>Zeta</cite> (axial vorticity).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pg_utils.pg_model.base.LabeledCollection.html#pg_utils.pg_model.base.LabeledCollection" title="pg_utils.pg_model.base.LabeledCollection">base.LabeledCollection</a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method assumes implicitly that stream function <code class="docutils literal notranslate"><span class="pre">Psi</span></code> is part
+of the variables of the <cite>xpd_recipe</cite> (which should be the case, as long
+as we are solving the PG model). This is required to calculate the
+velocity field and the axial vorticity.</p>
+</div>
 </dd></dl>
 
 </section>
@@ -85,7 +128,10 @@ for fast evaluation</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pg_utils.processing.postproc.html" class="btn btn-neutral float-left" title="pg_utils.processing.postproc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.processing.postproc.get_eigen_field_function.html" class="btn btn-neutral float-right" title="pg_utils.processing.postproc.get_eigen_field_function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

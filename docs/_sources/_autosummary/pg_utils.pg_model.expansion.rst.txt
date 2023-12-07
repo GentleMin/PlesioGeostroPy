@@ -1,9 +1,26 @@
-pg\_utils.pg\_model.expansion
+﻿pg\_utils.pg\_model.expansion
 =============================
 
 .. automodule:: pg_utils.pg_model.expansion
   
    
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      n
+      m
+      n_test
+      n_trial
+      omega
+      xi
+      xi_s
+      s_xi
+      pgvar_s
+      cgvar_s
+      reduced_var_s
    
    
 

@@ -2,8 +2,4 @@
 API reference
 =======================
 
-.. toctree::
-   :maxdepth: 2
-   
-   /_autosummary/pg_utils
 

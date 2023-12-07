@@ -1,4 +1,4 @@
-pg\_utils.pg\_model.forcing
+﻿pg\_utils.pg\_model.forcing
 ===========================
 
 .. automodule:: pg_utils.pg_model.forcing
@@ -10,7 +10,30 @@ pg\_utils.pg\_model.forcing
    .. autosummary::
       :toctree:
    
+      Ls_sym
+      Lp_sym
+      Lz_asym
+      Le_p
+      Ls_sym_expr
+      Lp_sym_expr
+      Lz_asym_expr
+      Le_p_expr
+      Ls_sym_cg
+      Lp_sym_cg
+      Lz_asym_cg
+      Le_p_cg
+      force_explicit
       force_explicit_cg
+      Le_p_lin
+      Ls_sym_lin
+      Lp_sym_lin
+      Lz_asym_lin
+      Ls_sym_lin_cg
+      Lp_sym_lin_cg
+      Lz_asym_lin_cg
+      Le_p_lin_cg
+      force_explicit_lin
+      force_explicit_lin_cg
    
    
 

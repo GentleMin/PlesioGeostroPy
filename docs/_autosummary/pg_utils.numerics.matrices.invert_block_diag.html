@@ -20,7 +20,9 @@
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pg_utils.numerics.matrices.powers_of" href="pg_utils.numerics.matrices.powers_of.html" />
+    <link rel="prev" title="pg_utils.numerics.matrices" href="pg_utils.numerics.matrices.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,11 +44,32 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">pg_utils.numerics.matrices.invert_block_diag</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.html">pg_utils</a></li>
 </ul>
-</div>
+<p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.sympy_supp.html">sympy_supp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.pg_model.html">pg_model</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pg_utils.numerics.html">numerics</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pg_utils.numerics.matrices.invert_block_diag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.powers_of.html">pg_utils.numerics.matrices.powers_of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.InnerProdQuad.html">pg_utils.numerics.matrices.InnerProdQuad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.InnerQuad_GaussJacobi.html">pg_utils.numerics.matrices.InnerQuad_GaussJacobi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.InnerQuad_Rule.html">pg_utils.numerics.matrices.InnerQuad_Rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.LabeledBlockArray.html">pg_utils.numerics.matrices.LabeledBlockArray</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.LabeledBlockMatrix.html">pg_utils.numerics.matrices.LabeledBlockMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.MatrixExpander.html">pg_utils.numerics.matrices.MatrixExpander</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.QuadRecipe.html">pg_utils.numerics.matrices.QuadRecipe</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.numerics.utils.html">pg_utils.numerics.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.processing.html">processing</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -61,6 +84,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.html">pg_utils</a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.numerics.html">pg_utils.numerics</a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a></li>
       <li class="breadcrumb-item active">pg_utils.numerics.matrices.invert_block_diag</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/_autosummary/pg_utils.numerics.matrices.invert_block_diag.rst.txt" rel="nofollow"> View page source</a>
@@ -75,10 +101,11 @@
 <h1>pg_utils.numerics.matrices.invert_block_diag<a class="headerlink" href="#pg-utils-numerics-matrices-invert-block-diag" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pg_utils.numerics.matrices.invert_block_diag">
-<span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.matrices.</span></span><span class="sig-name descname"><span class="pre">invert_block_diag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_seg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#pg_utils.numerics.matrices.invert_block_diag" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.matrices.</span></span><span class="sig-name descname"><span class="pre">invert_block_diag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_seg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.List" title="(in Python v3.8)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/matrices.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.matrices.invert_block_diag" title="Permalink to this definition"></a></dt>
 <dd><p>Invert a block diagonal matrix</p>
 <p>The matrix is assumed to be square matrix,
 and the block_seg gives the segmentation of the blocks on the diagonal.</p>
+<p>Not yet implemented.</p>
 </dd></dl>
 
 </section>
@@ -86,7 +113,10 @@ and the block_seg gives the segmentation of the blocks on the diagonal.</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pg_utils.numerics.matrices.html" class="btn btn-neutral float-left" title="pg_utils.numerics.matrices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.numerics.matrices.powers_of.html" class="btn btn-neutral float-right" title="pg_utils.numerics.matrices.powers_of" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

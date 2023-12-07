@@ -2,13 +2,12 @@
    sphinx-quickstart on Mon Dec  4 14:06:46 2023.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
-   .. :template: custom-module-template.rst
 
 
 PlesioGeostroPy
 ===========================================
 
-**PlesioGeostroPy** is the Python realization of the Plesio-Geostrophy model (PG, Jackson and Maffei `2020 <https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0513>`_), a type of quasi-geostrophic model for magneto-hydrodyanmic system in planetary dynamos.
+**PlesioGeostroPy** is the Python realization of the Plesio-Geostrophy model (PG, Jackson and Maffei `2020 <https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0513>`_), a type of quasi-geostrophic model for magneto-hydrodynamic system in planetary dynamos.
 For a more detailed description of the PG model, see e.g. Jackson and Maffei (`2020 <https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0513>`_) or Holdenried-Chernoff (`2021 <https://www.research-collection.ethz.ch/handle/20.500.11850/509840>`_).
 
 The package **PlesioGeostroPy** aims to provide robust and efficient numerical solution to the PG model, which can then be plugged into data assimilation frameworks for geomagnetic data assimilation (GDA).
@@ -21,6 +20,7 @@ Structure of the Code
 The core of the code is the following package:
 
 .. autosummary::
+   :toctree: _autosummary
    :template: custom-module-template.rst
    :recursive:
 
@@ -45,16 +45,16 @@ Here you can find the indexed reference to all of the modules, and the classes a
 * :ref:`modindex`
 * :ref:`genindex`
 
-You can also use the search function or the extended :doc:`api_reference` to look for all items.
+You can also use the search function to look for all items.
 
 
 .. toctree::
    :caption: PlesioGeostroPy
+   :maxdepth: 4
    :hidden:
 
    sympy_supp </_autosummary/pg_utils.sympy_supp>
    pg_model </_autosummary/pg_utils.pg_model>
    numerics </_autosummary/pg_utils.numerics>
    processing </_autosummary/pg_utils.processing>
-   Full API reference </api_reference>
 

@@ -18,9 +18,12 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pg_utils.pg_model.expansion.n" href="pg_utils.pg_model.expansion.n.html" />
+    <link rel="prev" title="pg_utils.pg_model.expand_stream_force.test_s" href="pg_utils.pg_model.expand_stream_force.test_s.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,13 +45,56 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">pg_utils.pg_model.expansion</a><ul>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.html">pg_utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.sympy_supp.html">sympy_supp</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pg_utils.pg_model.html">pg_model</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.base.html">pg_utils.pg_model.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.base_utils.html">pg_utils.pg_model.base_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.core.html">pg_utils.pg_model.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.equations.html">pg_utils.pg_model.equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_conjugate.html">pg_utils.pg_model.expand_conjugate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pg_utils.pg_model.expansion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.n.html">pg_utils.pg_model.expansion.n</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.m.html">pg_utils.pg_model.expansion.m</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.n_test.html">pg_utils.pg_model.expansion.n_test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.n_trial.html">pg_utils.pg_model.expansion.n_trial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.omega.html">pg_utils.pg_model.expansion.omega</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.xi.html">pg_utils.pg_model.expansion.xi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.xi_s.html">pg_utils.pg_model.expansion.xi_s</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.s_xi.html">pg_utils.pg_model.expansion.s_xi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.pgvar_s.html">pg_utils.pg_model.expansion.pgvar_s</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.cgvar_s.html">pg_utils.pg_model.expansion.cgvar_s</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.reduced_var_s.html">pg_utils.pg_model.expansion.reduced_var_s</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.orth_pref_jacobi.html">pg_utils.pg_model.expansion.orth_pref_jacobi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.placeholder_collection.html">pg_utils.pg_model.expansion.placeholder_collection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.ExpansionRecipe.html">pg_utils.pg_model.expansion.ExpansionRecipe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.FourierExpansions.html">pg_utils.pg_model.expansion.FourierExpansions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.InnerProduct1D.html">pg_utils.pg_model.expansion.InnerProduct1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.InnerProductOp1D.html">pg_utils.pg_model.expansion.InnerProductOp1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.RadialExpansions.html">pg_utils.pg_model.expansion.RadialExpansions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.RadialInnerProducts.html">pg_utils.pg_model.expansion.RadialInnerProducts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.RadialTestFunctions.html">pg_utils.pg_model.expansion.RadialTestFunctions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.SpectralExpansion.html">pg_utils.pg_model.expansion.SpectralExpansion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.SystemEquations.html">pg_utils.pg_model.expansion.SystemEquations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.SystemMatrix.html">pg_utils.pg_model.expansion.SystemMatrix</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.forcing.html">pg_utils.pg_model.forcing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
 </ul>
-</div>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.numerics.html">numerics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.processing.html">processing</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -63,6 +109,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.html">pg_utils</a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.pg_model.html">pg_utils.pg_model</a></li>
       <li class="breadcrumb-item active">pg_utils.pg_model.expansion</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/_autosummary/pg_utils.pg_model.expansion.rst.txt" rel="nofollow"> View page source</a>
@@ -88,6 +136,44 @@ For instance, in eigenvalue problems, the radial magnetic field at the
 boundary and the corresponding evolution equation is often replaced
 by B-fields in cylindrical coordinates at the boundary; Lorentz force
 terms may be combined into one single dynamical variable, etc.</p>
+<p class="rubric">Module Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.n.html#pg_utils.pg_model.expansion.n" title="pg_utils.pg_model.expansion.n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></a></p></td>
+<td><p>Integers denoting the indices of the radial and azimuthal bases</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.m.html#pg_utils.pg_model.expansion.m" title="pg_utils.pg_model.expansion.m"><code class="xref py py-obj docutils literal notranslate"><span class="pre">m</span></code></a></p></td>
+<td><p>Integers denoting the indices of the radial and azimuthal bases</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.n_test.html#pg_utils.pg_model.expansion.n_test" title="pg_utils.pg_model.expansion.n_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_test</span></code></a></p></td>
+<td><p>Index for the radial test functions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.n_trial.html#pg_utils.pg_model.expansion.n_trial" title="pg_utils.pg_model.expansion.n_trial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_trial</span></code></a></p></td>
+<td><p>Index for the radial trial functions</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.omega.html#pg_utils.pg_model.expansion.omega" title="pg_utils.pg_model.expansion.omega"><code class="xref py py-obj docutils literal notranslate"><span class="pre">omega</span></code></a></p></td>
+<td><p>Angular frequency</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.xi.html#pg_utils.pg_model.expansion.xi" title="pg_utils.pg_model.expansion.xi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xi</span></code></a></p></td>
+<td><p>Integration variable for the radial direction</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.xi_s.html#pg_utils.pg_model.expansion.xi_s" title="pg_utils.pg_model.expansion.xi_s"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xi_s</span></code></a></p></td>
+<td><p><a class="reference internal" href="pg_utils.pg_model.expansion.xi.html#pg_utils.pg_model.expansion.xi" title="pg_utils.pg_model.expansion.xi"><code class="xref py py-data docutils literal notranslate"><span class="pre">xi</span></code></a> as a function of <code class="xref py py-data docutils literal notranslate"><span class="pre">s</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.s_xi.html#pg_utils.pg_model.expansion.s_xi" title="pg_utils.pg_model.expansion.s_xi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_xi</span></code></a></p></td>
+<td><p><code class="xref py py-data docutils literal notranslate"><span class="pre">s</span></code> as a function of <a class="reference internal" href="pg_utils.pg_model.expansion.xi.html#pg_utils.pg_model.expansion.xi" title="pg_utils.pg_model.expansion.xi"><code class="xref py py-data docutils literal notranslate"><span class="pre">xi</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.pgvar_s.html#pg_utils.pg_model.expansion.pgvar_s" title="pg_utils.pg_model.expansion.pgvar_s"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pgvar_s</span></code></a></p></td>
+<td><p>Radial placeholder functions of PG fields in 2-D disk.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.cgvar_s.html#pg_utils.pg_model.expansion.cgvar_s" title="pg_utils.pg_model.expansion.cgvar_s"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cgvar_s</span></code></a></p></td>
+<td><p>Radial placeholder functions for conjugate variables in 2-D disk.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.reduced_var_s.html#pg_utils.pg_model.expansion.reduced_var_s" title="pg_utils.pg_model.expansion.reduced_var_s"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduced_var_s</span></code></a></p></td>
+<td><p>Radial placeholder functions for reduced system in 2-D disk.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -106,13 +192,13 @@ terms may be combined into one single dynamical variable, etc.</p>
 <td><p>The top-level class used for spectral expansion, which defines the recipe concerning radial and azimuthal expansions.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.FourierExpansions.html#pg_utils.pg_model.expansion.FourierExpansions" title="pg_utils.pg_model.expansion.FourierExpansions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FourierExpansions</span></code></a>(argument, fields, ...)</p></td>
-<td><p>Fourier expansion for fields This class is used for reducing equations or expressions into the Fourier domain given specific arguments.</p></td>
+<td><p>Fourier expansion for fields</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D" title="pg_utils.pg_model.expansion.InnerProduct1D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InnerProduct1D</span></code></a>(*args)</p></td>
-<td><p>1-D (integration) inner product</p></td>
+<td><p>1-D (integration) inner product <span class="math notranslate nohighlight">\(\langle a, b \rangle\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.InnerProductOp1D.html#pg_utils.pg_model.expansion.InnerProductOp1D" title="pg_utils.pg_model.expansion.InnerProductOp1D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InnerProductOp1D</span></code></a>(int_var, wt, bound[, conj])</p></td>
-<td><p>Inner product defined on 1-D function space</p></td>
+<td><p>Inner product defined on 1-D function space <span class="math notranslate nohighlight">\(\langle \cdot, \cdot \rangle\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.RadialExpansions.html#pg_utils.pg_model.expansion.RadialExpansions" title="pg_utils.pg_model.expansion.RadialExpansions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RadialExpansions</span></code></a>(fields, bases, coeffs, ...)</p></td>
 <td><p>Radial expansions, a collection of radial expansions  for each field in the collection of dynamical variables.</p></td>
@@ -121,7 +207,7 @@ terms may be combined into one single dynamical variable, etc.</p>
 <td><p>Collection of inner products</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.RadialTestFunctions.html#pg_utils.pg_model.expansion.RadialTestFunctions" title="pg_utils.pg_model.expansion.RadialTestFunctions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RadialTestFunctions</span></code></a>(names, **test_functions)</p></td>
-<td><p>Radial functions that are used as test functions for reducing differential equations into algebraic form.</p></td>
+<td><p>Collection of radial functions used as test functions for reducing differential equations into algebraic form.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.SpectralExpansion.html#pg_utils.pg_model.expansion.SpectralExpansion" title="pg_utils.pg_model.expansion.SpectralExpansion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpectralExpansion</span></code></a>(fields, bases, coeffs, ...)</p></td>
 <td><p>Base class for different kinds of spectral expansions</p></td>
@@ -139,7 +225,10 @@ terms may be combined into one single dynamical variable, etc.</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pg_utils.pg_model.expand_stream_force.test_s.html" class="btn btn-neutral float-left" title="pg_utils.pg_model.expand_stream_force.test_s" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.pg_model.expansion.n.html" class="btn btn-neutral float-right" title="pg_utils.pg_model.expansion.n" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
