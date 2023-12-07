@@ -1,4 +1,4 @@
-pg\_utils.pg\_model.core
+﻿pg\_utils.pg\_model.core
 ========================
 
 .. automodule:: pg_utils.pg_model.core
@@ -10,13 +10,48 @@ pg\_utils.pg\_model.core
    .. autosummary::
       :toctree:
    
+      x
+      y
+      z
+      t
+      s
+      p
+      r
+      theta
+      cyl
+      sph
+      H
       H_s
+      B_vec
+      B_sph
+      U_vec
+      v_e
       U_sph
+      pgvar
       U_pg
+      B0_vec
+      B0_sph
+      U0_vec
+      U0_sph
       pgvar_bg
+      b_vec
+      b_sph
+      u_vec
+      u_sph
       pgvar_ptb
+      cgvar
+      cgvar_ptb
       reduced_var
+      fs_sym
+      fp_sym
+      fz_asym
       fe_p
+      eps
+      u_linmap
+      b_linmap
+      pg_linmap
+      cg_linmap
+      force_linmap
    
    
 

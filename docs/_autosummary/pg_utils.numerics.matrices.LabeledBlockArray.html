@@ -20,7 +20,9 @@
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pg_utils.numerics.matrices.LabeledBlockMatrix" href="pg_utils.numerics.matrices.LabeledBlockMatrix.html" />
+    <link rel="prev" title="pg_utils.numerics.matrices.InnerQuad_Rule" href="pg_utils.numerics.matrices.InnerQuad_Rule.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,11 +44,32 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">pg_utils.numerics.matrices.LabeledBlockArray</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.html">pg_utils</a></li>
 </ul>
-</div>
+<p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.sympy_supp.html">sympy_supp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.pg_model.html">pg_model</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pg_utils.numerics.html">numerics</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.invert_block_diag.html">pg_utils.numerics.matrices.invert_block_diag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.powers_of.html">pg_utils.numerics.matrices.powers_of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.InnerProdQuad.html">pg_utils.numerics.matrices.InnerProdQuad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.InnerQuad_GaussJacobi.html">pg_utils.numerics.matrices.InnerQuad_GaussJacobi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.InnerQuad_Rule.html">pg_utils.numerics.matrices.InnerQuad_Rule</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pg_utils.numerics.matrices.LabeledBlockArray</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.LabeledBlockMatrix.html">pg_utils.numerics.matrices.LabeledBlockMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.MatrixExpander.html">pg_utils.numerics.matrices.MatrixExpander</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.QuadRecipe.html">pg_utils.numerics.matrices.QuadRecipe</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.numerics.utils.html">pg_utils.numerics.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.processing.html">processing</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -61,6 +84,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.html">pg_utils</a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.numerics.html">pg_utils.numerics</a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a></li>
       <li class="breadcrumb-item active">pg_utils.numerics.matrices.LabeledBlockArray</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/_autosummary/pg_utils.numerics.matrices.LabeledBlockArray.rst.txt" rel="nofollow"> View page source</a>
@@ -75,8 +101,8 @@
 <h1>pg_utils.numerics.matrices.LabeledBlockArray<a class="headerlink" href="#pg-utils-numerics-matrices-labeledblockarray" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pg_utils.numerics.matrices.LabeledBlockArray">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.matrices.</span></span><span class="sig-name descname"><span class="pre">LabeledBlockArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pg_utils.numerics.matrices.LabeledBlockArray" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.matrices.</span></span><span class="sig-name descname"><span class="pre">LabeledBlockArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.List" title="(in Python v3.8)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#str" title="(in Python v3.8)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.List" title="(in Python v3.8)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/matrices.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.matrices.LabeledBlockArray" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.8/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Block 1-D array with labels assigned to blocks</p>
 <p>LabeledBlockMatrix wraps around an array, so that blocks of it
 can be accessed using a single string</p>
@@ -90,7 +116,7 @@ can be accessed using a single string</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pg_utils.numerics.matrices.LabeledBlockArray.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pg_utils.numerics.matrices.LabeledBlockArray.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.List" title="(in Python v3.8)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#str" title="(in Python v3.8)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.List" title="(in Python v3.8)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.8/library/constants.html#None" title="(in Python v3.8)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/matrices.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.matrices.LabeledBlockArray.__init__" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -128,7 +154,10 @@ will be interpreted in the following sense:
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pg_utils.numerics.matrices.InnerQuad_Rule.html" class="btn btn-neutral float-left" title="pg_utils.numerics.matrices.InnerQuad_Rule" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.numerics.matrices.LabeledBlockMatrix.html" class="btn btn-neutral float-right" title="pg_utils.numerics.matrices.LabeledBlockMatrix" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

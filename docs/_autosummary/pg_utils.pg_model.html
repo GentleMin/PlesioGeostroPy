@@ -20,7 +20,9 @@
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pg_utils.pg_model.base" href="pg_utils.pg_model.base.html" />
+    <link rel="prev" title="pg_utils.numerics.utils.eigenfreq_psi_op" href="pg_utils.numerics.utils.eigenfreq_psi_op.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,11 +44,31 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">pg_utils.pg_model</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.html">pg_utils</a></li>
 </ul>
-</div>
+<p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.sympy_supp.html">sympy_supp</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pg_model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.base.html">pg_utils.pg_model.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.base_utils.html">pg_utils.pg_model.base_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.core.html">pg_utils.pg_model.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.equations.html">pg_utils.pg_model.equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_conjugate.html">pg_utils.pg_model.expand_conjugate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.forcing.html">pg_utils.pg_model.forcing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.numerics.html">numerics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pg_utils.processing.html">processing</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -61,6 +83,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.html">pg_utils</a></li>
       <li class="breadcrumb-item active">pg_utils.pg_model</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/_autosummary/pg_utils.pg_model.rst.txt" rel="nofollow"> View page source</a>
@@ -73,20 +96,30 @@
              
   <section id="module-pg_utils.pg_model">
 <span id="pg-utils-pg-model"></span><h1>pg_utils.pg_model<a class="headerlink" href="#module-pg_utils.pg_model" title="Permalink to this heading"></a></h1>
+<p>Symbolic realization of the PG model and the spectral recipes</p>
+<p>This module includes the following sub-modules:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="pg_utils.pg_model.base.html#module-pg_utils.pg_model.base" title="pg_utils.pg_model.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">base</span></code></a> base classes</p></li>
+<li><p><a class="reference internal" href="pg_utils.pg_model.core.html#module-pg_utils.pg_model.core" title="pg_utils.pg_model.core"><code class="xref py py-mod docutils literal notranslate"><span class="pre">core</span></code></a> core variables for the PG model</p></li>
+<li><p><a class="reference internal" href="pg_utils.pg_model.equations.html#module-pg_utils.pg_model.equations" title="pg_utils.pg_model.equations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">equations</span></code></a> equations for the PG model</p></li>
+<li><p><a class="reference internal" href="pg_utils.pg_model.forcing.html#module-pg_utils.pg_model.forcing" title="pg_utils.pg_model.forcing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">forcing</span></code></a> all sorts of forcings to be inserted into equations</p></li>
+<li><p><a class="reference internal" href="pg_utils.pg_model.params.html#module-pg_utils.pg_model.params" title="pg_utils.pg_model.params"><code class="xref py py-mod docutils literal notranslate"><span class="pre">params</span></code></a> controlling parameters of the system</p></li>
+<li><p><a class="reference internal" href="pg_utils.pg_model.expansion.html#module-pg_utils.pg_model.expansion" title="pg_utils.pg_model.expansion"><code class="xref py py-mod docutils literal notranslate"><span class="pre">expansion</span></code></a> base classes for expansion recipes</p></li>
+</ul>
 <p class="rubric">Modules</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.base.html#module-pg_utils.pg_model.base" title="pg_utils.pg_model.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.base</span></code></a></p></td>
-<td><p>Base classes for use in PG model Jingtao Min &#64; ETH-EPM, 09.2023</p></td>
+<td><p>Base classes and collections</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.html#module-pg_utils.pg_model.base_utils" title="pg_utils.pg_model.base_utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.base_utils</span></code></a></p></td>
 <td><p>Utilities for PG model Jingtao Min &#64; ETH-EPM, 09.2023</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.html#module-pg_utils.pg_model.core" title="pg_utils.pg_model.core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.core</span></code></a></p></td>
-<td><p>Core utilities: coordinates, fields, quantities  and controlling parameters in PG model Jingtao Min &#64; ETH-EPM, 09.2023</p></td>
+<td><p>Core utilities: coordinates, fields, quantities  and controlling parameters in PG model</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.equations.html#module-pg_utils.pg_model.equations" title="pg_utils.pg_model.equations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.equations</span></code></a></p></td>
-<td><p>Equations for Plesio-Geostrophy Model Jingtao Min &#64; ETH-EPM, 09.2023</p></td>
+<td><p>Equations for Plesio-Geostrophy Model</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expand_conjugate.html#module-pg_utils.pg_model.expand_conjugate" title="pg_utils.pg_model.expand_conjugate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.expand_conjugate</span></code></a></p></td>
 <td><p>Expansion configuration file -  Expansion for the conjugate variables</p></td>
@@ -107,10 +140,10 @@
 <td><p>Define expansions of the fields.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.forcing.html#module-pg_utils.pg_model.forcing" title="pg_utils.pg_model.forcing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.forcing</span></code></a></p></td>
-<td><p>Forcings in Plesio-Geostrophy Model Jingtao Min &#64; ETH-EPM, 09.2023</p></td>
+<td><p>Forcings in Plesio-Geostrophy Model</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.params.html#module-pg_utils.pg_model.params" title="pg_utils.pg_model.params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.params</span></code></a></p></td>
-<td><p>Controlling parameters</p></td>
+<td><p>Controlling parameters of the system</p></td>
 </tr>
 </tbody>
 </table>
@@ -119,7 +152,10 @@
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pg_utils.numerics.utils.eigenfreq_psi_op.html" class="btn btn-neutral float-left" title="pg_utils.numerics.utils.eigenfreq_psi_op" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.pg_model.base.html" class="btn btn-neutral float-right" title="pg_utils.pg_model.base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

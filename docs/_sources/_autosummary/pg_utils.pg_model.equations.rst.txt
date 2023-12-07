@@ -1,4 +1,4 @@
-pg\_utils.pg\_model.equations
+﻿pg\_utils.pg\_model.equations
 =============================
 
 .. automodule:: pg_utils.pg_model.equations
@@ -12,6 +12,8 @@ pg\_utils.pg\_model.equations
    
       eqs_pg
       eqs_cg
+      eqs_pg_lin
+      eqs_cg_lin
    
    
 

@@ -1,6 +1,6 @@
-pg\_utils.pg\_model.core.U\_sph
+﻿pg\_utils.pg\_model.core.u\_sph
 ===============================
 
 .. currentmodule:: pg_utils.pg_model.core
 
-.. autodata:: U_sph
+.. autodata:: u_sph
