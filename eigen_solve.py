@@ -2,7 +2,7 @@
 """Equation deduction of the eigenvalue problem.
 Jingtao Min @ ETH Zurich 2023
 
-This script is stage I of the routine to solve an eigenvalue problem
+This script is the routine to solve an eigenvalue problem
 in the framework of PG model.
 When in doubt, it is still recommended to use an interactive session
 such as IPython notebook (recommended), IDLE or IPython Console to
