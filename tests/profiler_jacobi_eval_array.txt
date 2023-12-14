@@ -1,0 +1,13 @@
+         404 function calls in 0.006 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.002    0.002    0.006    0.006 {built-in method builtins.exec}
+        1    0.000    0.000    0.004    0.004 <string>:1(<module>)
+        1    0.000    0.000    0.004    0.004 <string>:1(<listcomp>)
+      100    0.003    0.000    0.004    0.000 special.py:13(eval_jacobi_array)
+      100    0.000    0.000    0.000    0.000 {built-in method numpy.arange}
+      100    0.000    0.000    0.000    0.000 {built-in method numpy.zeros}
+      100    0.000    0.000    0.000    0.000 {built-in method builtins.max}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
