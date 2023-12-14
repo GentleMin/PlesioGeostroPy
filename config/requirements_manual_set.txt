@@ -3,11 +3,13 @@ python=3.8.13
 numpy=1.22.3
 scipy=1.8.0
 sympy=1.11.1
-# Input/output
 h5py=3.3.0
 # Visualization and presentation
 pandas=1.4.2
 matplotlib=3.5.2
 jupyterlab=3.4.0
-# If you want to compile document yourself
+# Documentation and testing
 sphinx=5.0.2
+pytest=7.4.2
+perfplot=0.10.2
+line_profiler=4.1.1
