@@ -1,0 +1,30 @@
+\section{Cauchy-Schwarz inequality}
+
+The Cauchy-Schwarz inequality dictates that for arbitrary inner products $\langle \cdot, \cdot \rangle$ and any elements $\mathbf{u}$ and $\mathbf{v}$ from the inner product space, the following inequality holds
+%
+\begin{equation}\label{eqn:cauchy-schwarz}
+    \langle \mathbf{u}, \mathbf{u} \rangle \langle \mathbf{v}, \mathbf{v} \rangle = \| \mathbf{u} \| \| \mathbf{v} \| \geq |\langle \mathbf{u}, \mathbf{v} \rangle|^2.
+\end{equation}
+%
+where the norms are induced by the inner product. We note that two sets of variables in our PG variables can be written as inner products. The symmetric axial integral of a quadratic moment is in fact an inner product of the two factor quantities. Assuming $f(z), g(z) \in \mathbb{R}$,
+%
+\begin{equation}
+    \overline{f g} = \int_{-H}^H f(z) g(z)\, dz = \langle f, g \rangle.
+\end{equation}
+%
+This is nothing but the inner product for e.g. the Hilbert space, $L^2$ space. Similarly, we can write the anti-symmetric axial integral of the product between $z$ and a quadratic moment as an inner product with non-negative weight
+%
+\begin{equation}
+    \widetilde{z f g} = \int_{-H}^H \sgn(z)z \, f(z) g(z)\, dz = \int_{-H}^H f(z) g(z) |z|\, dz = \langle f, g \rangle,
+\end{equation}
+%
+which is the inner product for the weighted $L^2$ space, $L^2_{|z|}([-H, H])$. The Cauchy-Schwarz inequalities give rise to the two nonlinear inequalities of the PG variables,
+%
+\begin{equation}
+    \begin{aligned}
+        \overline{M_{ss}} \cdot \overline{M_{\phi\phi}} &\geq \left|\overline{M_{s\phi}}\right|^2 \\ 
+        \widetilde{zM_{ss}} \cdot \widetilde{zM_{\phi\phi}} &\geq \left|\widetilde{zM_{s\phi}}\right|^2
+    \end{aligned}
+\end{equation}
+%
+
