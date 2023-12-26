@@ -105,6 +105,7 @@ inner_prod_op = expansion.RadialInnerProducts(field_names,
 )
 
 recipe = expansion.ExpansionRecipe(
+    identifier=identifier,
     fourier_expand=fourier_expand,
     rad_expand=rad_expand,
     rad_test=test_s,
