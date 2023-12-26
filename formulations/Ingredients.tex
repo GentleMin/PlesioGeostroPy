@@ -27,6 +27,8 @@
 \DeclareMathOperator{\sgn}{sgn}
 
 \newcommand{\todoitem}[1]{\textcolor{purple}{[#1]}}
+\newenvironment{todoremark}{\color{purple}}{}
+% \newcommand{\todoproblem}[1]{\textcolor{purple}{#1}}
 \newtheorem{proposition}{Proposition}[section]
 \newtheorem{corollary}[proposition]{Corollary}
 
@@ -59,11 +61,19 @@
 
 \input{PG__new_xpd.tex}
 
+\chapter{Additional physical constraints}
+
+\input{PG__cauchy_schwarz.tex}
+
+\chapter{Implementation of the numerics}
+
+\input{PG__numerics.tex}
+
 \clearpage
 
 \appendix
 
-\chapter{Code implementation}
+\chapter{Code design}
 
 \input{PG__code_design.tex}
 
