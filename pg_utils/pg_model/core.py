@@ -93,11 +93,11 @@ pgvar = base.CollectionPG(
     zMpp = sympy.Function(r"\widetilde{zM_{\phi\phi}}")(s, p, t),
     zMsp = sympy.Function(r"\widetilde{zM_{s\phi}}")(s, p, t),
     # Magnetic field on the equatorial plane
-    Bs_e = sympy.Function(r"B_{es}")(s, p, t),
-    Bp_e = sympy.Function(r"B_{e\phi}")(s, p, t),
-    Bz_e = sympy.Function(r"B_{ez}")(s, p, t),
-    dBs_dz_e = sympy.Function(r"B_{es, z}")(s, p, t),
-    dBp_dz_e = sympy.Function(r"B_{e\phi, z}")(s, p, t),
+    Bs_e = sympy.Function(r"B_{s}^e")(s, p, t),
+    Bp_e = sympy.Function(r"B_{\phi}^e")(s, p, t),
+    Bz_e = sympy.Function(r"B_{z}^e")(s, p, t),
+    dBs_dz_e = sympy.Function(r"B_{s, z}^e")(s, p, t),
+    dBp_dz_e = sympy.Function(r"B_{\phi, z}^e")(s, p, t),
     # Boundary magnetic fields
     Br_b = sympy.Function(r"B_{r1}")(theta, p, t),
     Bs_p = sympy.Function(r"B_s^+")(s, p, t),
@@ -173,11 +173,11 @@ pgvar_bg = base.CollectionPG(
     zMpp = sympy.Function(r"\widetilde{zM_{\phi\phi}}^0")(s, p),
     zMsp = sympy.Function(r"\widetilde{zM_{s\phi}}^0")(s, p),
     # Equatorial magnetic field
-    Bs_e = sympy.Function(r"B_{es}^0")(s, p),
-    Bp_e = sympy.Function(r"B_{e\phi}^0")(s, p),
-    Bz_e = sympy.Function(r"B_{ez}^0")(s, p),
-    dBs_dz_e = sympy.Function(r"B_{es, z}^0")(s, p),
-    dBp_dz_e = sympy.Function(r"B_{e\phi, z}^0")(s, p),
+    Bs_e = sympy.Function(r"B_{s}^{0e}")(s, p),
+    Bp_e = sympy.Function(r"B_{\phi}^{0e}")(s, p),
+    Bz_e = sympy.Function(r"B_{z}^{0e}")(s, p),
+    dBs_dz_e = sympy.Function(r"B_{s, z}^{0e}")(s, p),
+    dBp_dz_e = sympy.Function(r"B_{\phi, z}^{0e}")(s, p),
     # Boundary magnetic fields
     Br_b = sympy.Function(r"B_{r1}^0")(theta, p),
     Bs_p = sympy.Function(r"B_s^{0+}")(s, p),
@@ -243,11 +243,11 @@ pgvar_ptb = base.CollectionPG(
     zMpp = sympy.Function(r"\widetilde{zm_{\phi\phi}}")(s, p, t),
     zMsp = sympy.Function(r"\widetilde{zm_{s\phi}}")(s, p, t),
     # Magnetic field in the equatorial plane
-    Bs_e = sympy.Function(r"b_{es}")(s, p, t),
-    Bp_e = sympy.Function(r"b_{e\phi}")(s, p, t),
-    Bz_e = sympy.Function(r"b_{ez}")(s, p, t),
-    dBs_dz_e = sympy.Function(r"b_{es, z}")(s, p, t),
-    dBp_dz_e = sympy.Function(r"b_{e\phi, z}")(s, p, t),
+    Bs_e = sympy.Function(r"b_{s}^e")(s, p, t),
+    Bp_e = sympy.Function(r"b_{\phi}^e")(s, p, t),
+    Bz_e = sympy.Function(r"b_{z}^e")(s, p, t),
+    dBs_dz_e = sympy.Function(r"b_{s, z}^e")(s, p, t),
+    dBp_dz_e = sympy.Function(r"b_{\phi, z}^e")(s, p, t),
     # Magnetic field at the boundary
     Br_b = sympy.Function(r"b_{r1}")(theta, p, t),
     Bs_p = sympy.Function(r"b_s^+")(s, p, t),
@@ -276,11 +276,11 @@ cgvar = base.CollectionConjugate(
     zM_p = sympy.Function(r"\widetilde{zM_+}")(s, p, t),
     zM_m = sympy.Function(r"\widetilde{zM_-}")(s, p, t),
     # Conjugate variables for magnetic fields in equatorial plane
-    B_ep = sympy.Function(r"B_{e+}")(s, p, t),
-    B_em = sympy.Function(r"B_{e-}")(s, p, t),
+    B_ep = sympy.Function(r"B_{+}^e")(s, p, t),
+    B_em = sympy.Function(r"B_{-}^e")(s, p, t),
     Bz_e = pgvar.Bz_e,
-    dB_dz_ep = sympy.Function(r"B_{e+, z}")(s, p, t),
-    dB_dz_em = sympy.Function(r"B_{e-, z}")(s, p, t),
+    dB_dz_ep = sympy.Function(r"B_{+, z}^e")(s, p, t),
+    dB_dz_em = sympy.Function(r"B_{-, z}^e")(s, p, t),
     # Magnetic field at the boundary
     Br_b = pgvar.Br_b,
     B_pp = sympy.Function(r"B_+^+")(s, p, t),
@@ -288,6 +288,35 @@ cgvar = base.CollectionConjugate(
     Bz_p = pgvar.Bz_p,
     B_mp = sympy.Function(r"B_+^-")(s, p, t),
     B_mm = sympy.Function(r"B_-^-")(s, p, t),
+    Bz_m = pgvar.Bz_m
+)
+
+#: Collection of background conjugate quantities
+cgvar_bg = base.CollectionConjugate(
+    # Stream function, unchanged
+    Psi = pgvar.Psi,
+    # Conjugate variables for magnetic moments
+    M_1 = sympy.Function(r"\overline{M_1}^0")(s, p, t),
+    M_p = sympy.Function(r"\overline{M_+}^0")(s, p, t),
+    M_m = sympy.Function(r"\overline{M_-}^0")(s, p, t),
+    M_zp = sympy.Function(r"\widetilde{M_{z+}}^0")(s, p, t),
+    M_zm = sympy.Function(r"\widetilde{M_{z-}}^0")(s, p, t),
+    zM_1 = sympy.Function(r"\widetilde{zM_1}^0")(s, p, t),
+    zM_p = sympy.Function(r"\widetilde{zM_+}^0")(s, p, t),
+    zM_m = sympy.Function(r"\widetilde{zM_-}^0")(s, p, t),
+    # Conjugate variables for magnetic fields in equatorial plane
+    B_ep = sympy.Function(r"B_{+}^{0e}")(s, p, t),
+    B_em = sympy.Function(r"B_{-}^{0e}")(s, p, t),
+    Bz_e = pgvar.Bz_e,
+    dB_dz_ep = sympy.Function(r"B_{+, z}^{0e}")(s, p, t),
+    dB_dz_em = sympy.Function(r"B_{-, z}^{0e}")(s, p, t),
+    # Magnetic field at the boundary
+    Br_b = pgvar.Br_b,
+    B_pp = sympy.Function(r"B_+^{0+}")(s, p, t),
+    B_pm = sympy.Function(r"B_-^{0+}")(s, p, t),
+    Bz_p = pgvar.Bz_p,
+    B_mp = sympy.Function(r"B_+^{0-}")(s, p, t),
+    B_mm = sympy.Function(r"B_-^{0-}")(s, p, t),
     Bz_m = pgvar.Bz_m
 )
 
@@ -305,11 +334,11 @@ cgvar_ptb = base.CollectionConjugate(
     zM_p = sympy.Function(r"\widetilde{zm_+}")(s, p, t),
     zM_m = sympy.Function(r"\widetilde{zm_-}")(s, p, t),
     # Conjugate variables for magnetic fields in equatorial plane
-    B_ep = sympy.Function(r"b_{e+}")(s, p, t),
-    B_em = sympy.Function(r"b_{e-}")(s, p, t),
+    B_ep = sympy.Function(r"b_{+}^e")(s, p, t),
+    B_em = sympy.Function(r"b_{-}^e")(s, p, t),
     Bz_e = pgvar_ptb.Bz_e,
-    dB_dz_ep = sympy.Function(r"b_{e+, z}")(s, p, t),
-    dB_dz_em = sympy.Function(r"b_{e-, z}")(s, p, t),
+    dB_dz_ep = sympy.Function(r"b_{+, z}^e")(s, p, t),
+    dB_dz_em = sympy.Function(r"b_{-, z}^e")(s, p, t),
     # Magnetic field at the boundary
     Br_b = pgvar_ptb.Br_b,
     B_pp = sympy.Function(r"b_+^+")(s, p, t),
@@ -334,27 +363,27 @@ def PG_to_conjugate(pg_comp: base.CollectionPG) -> base.CollectionConjugate:
         cg_comp = base.CollectionConjugate(
             Psi = pg_comp.Psi,
             # Moments: conversion
-            M_1 = pg_comp.Mss + pg_comp.Mpp,
-            M_p = pg_comp.Mss - pg_comp.Mpp + 2*sympy.I*pg_comp.Msp,
-            M_m = pg_comp.Mss - pg_comp.Mpp - 2*sympy.I*pg_comp.Msp,
-            M_zp = pg_comp.Msz + sympy.I*pg_comp.Mpz,
-            M_zm = pg_comp.Msz - sympy.I*pg_comp.Mpz,
-            zM_1 = pg_comp.zMss + pg_comp.zMpp,
-            zM_p = pg_comp.zMss - pg_comp.zMpp + 2*sympy.I*pg_comp.zMsp,
-            zM_m = pg_comp.zMss - pg_comp.zMpp - 2*sympy.I*pg_comp.zMsp,
+            M_1 = (pg_comp.Mss + pg_comp.Mpp)/2,
+            M_p = (pg_comp.Mss - pg_comp.Mpp + 2*sympy.I*pg_comp.Msp)/2,
+            M_m = (pg_comp.Mss - pg_comp.Mpp - 2*sympy.I*pg_comp.Msp)/2,
+            M_zp = (pg_comp.Msz + sympy.I*pg_comp.Mpz)/sympy.sqrt(2),
+            M_zm = (pg_comp.Msz - sympy.I*pg_comp.Mpz)/sympy.sqrt(2),
+            zM_1 = (pg_comp.zMss + pg_comp.zMpp)/2,
+            zM_p = (pg_comp.zMss - pg_comp.zMpp + 2*sympy.I*pg_comp.zMsp)/2,
+            zM_m = (pg_comp.zMss - pg_comp.zMpp - 2*sympy.I*pg_comp.zMsp)/2,
             # Equatorial fields: conversion
-            B_ep = pg_comp.Bs_e + sympy.I*pg_comp.Bp_e,
-            B_em = pg_comp.Bs_e - sympy.I*pg_comp.Bp_e,
+            B_ep = (pg_comp.Bs_e + sympy.I*pg_comp.Bp_e)/sympy.sqrt(2),
+            B_em = (pg_comp.Bs_e - sympy.I*pg_comp.Bp_e)/sympy.sqrt(2),
             Bz_e = pg_comp.Bz_e,
-            dB_dz_ep = pg_comp.dBs_dz_e + sympy.I*pg_comp.dBp_dz_e,
-            dB_dz_em = pg_comp.dBs_dz_e - sympy.I*pg_comp.dBp_dz_e,
+            dB_dz_ep = (pg_comp.dBs_dz_e + sympy.I*pg_comp.dBp_dz_e)/sympy.sqrt(2),
+            dB_dz_em = (pg_comp.dBs_dz_e - sympy.I*pg_comp.dBp_dz_e)/sympy.sqrt(2),
             # Boundary: unchanged
             Br_b = pg_comp.Br_b,
-            B_pp = pg_comp.Bs_p + sympy.I*pg_comp.Bp_p,
-            B_pm = pg_comp.Bs_p - sympy.I*pg_comp.Bp_p,
+            B_pp = (pg_comp.Bs_p + sympy.I*pg_comp.Bp_p)/sympy.sqrt(2),
+            B_pm = (pg_comp.Bs_p - sympy.I*pg_comp.Bp_p)/sympy.sqrt(2),
             Bz_p = pg_comp.Bz_p,
-            B_mp = pg_comp.Bs_m + sympy.I*pg_comp.Bp_m,
-            B_mm = pg_comp.Bs_m - sympy.I*pg_comp.Bp_m,
+            B_mp = (pg_comp.Bs_m + sympy.I*pg_comp.Bp_m)/sympy.sqrt(2),
+            B_mm = (pg_comp.Bs_m - sympy.I*pg_comp.Bp_m)/sympy.sqrt(2),
             Bz_m = pg_comp.Bz_m,
         )
         return cg_comp
@@ -379,27 +408,27 @@ def conjugate_to_PG(cg_comp: base.CollectionConjugate) -> base.CollectionPG:
         pg_comp = base.CollectionPG(
             Psi = cg_comp.Psi,
             # Moments conversion
-            Mss = (2*cg_comp.M_1 + cg_comp.M_p + cg_comp.M_m)/sympy.Integer(4),
-            Mpp = (2*cg_comp.M_1 - cg_comp.M_p - cg_comp.M_m)/sympy.Integer(4),
-            Msp = (cg_comp.M_p - cg_comp.M_m)/sympy.Integer(4)/sympy.I,
-            Msz = (cg_comp.M_zp + cg_comp.M_zm)/sympy.Integer(2),
-            Mpz = (cg_comp.M_zp - cg_comp.M_zm)/sympy.Integer(2)/sympy.I,
-            zMss = (2*cg_comp.zM_1 + cg_comp.zM_p + cg_comp.zM_m)/sympy.Integer(4),
-            zMpp = (2*cg_comp.zM_1 - cg_comp.zM_p - cg_comp.zM_m)/sympy.Integer(4),
-            zMsp = (cg_comp.zM_p - cg_comp.zM_m)/sympy.Integer(4)/sympy.I,
+            Mss = (2*cg_comp.M_1 + cg_comp.M_p + cg_comp.M_m)/2,
+            Mpp = (2*cg_comp.M_1 - cg_comp.M_p - cg_comp.M_m)/2,
+            Msp = (cg_comp.M_p - cg_comp.M_m)/2/sympy.I,
+            Msz = (cg_comp.M_zp + cg_comp.M_zm)/sympy.sqrt(2),
+            Mpz = (cg_comp.M_zp - cg_comp.M_zm)/sympy.sqrt(2)/sympy.I,
+            zMss = (2*cg_comp.zM_1 + cg_comp.zM_p + cg_comp.zM_m)/2,
+            zMpp = (2*cg_comp.zM_1 - cg_comp.zM_p - cg_comp.zM_m)/2,
+            zMsp = (cg_comp.zM_p - cg_comp.zM_m)/2/sympy.I,
             # Equatorial magnetic field conversion
-            Bs_e = (cg_comp.B_ep + cg_comp.B_em)/sympy.Integer(2),
-            Bp_e = (cg_comp.B_ep - cg_comp.B_em)/sympy.Integer(2)/sympy.I,
+            Bs_e = (cg_comp.B_ep + cg_comp.B_em)/sympy.sqrt(2),
+            Bp_e = (cg_comp.B_ep - cg_comp.B_em)/sympy.sqrt(2)/sympy.I,
             Bz_e = cg_comp.Bz_e,
-            dBs_dz_e = (cg_comp.dB_dz_ep + cg_comp.dB_dz_em)/sympy.Integer(2),
-            dBp_dz_e = (cg_comp.dB_dz_ep - cg_comp.dB_dz_em)/sympy.Integer(2)/sympy.I,
+            dBs_dz_e = (cg_comp.dB_dz_ep + cg_comp.dB_dz_em)/sympy.sqrt(2),
+            dBp_dz_e = (cg_comp.dB_dz_ep - cg_comp.dB_dz_em)/sympy.sqrt(2)/sympy.I,
             # Boundary unchanged
             Br_b = cg_comp.Br_b,
-            Bs_p = (cg_comp.B_pp + cg_comp.B_pm)/sympy.Integer(2),
-            Bp_p = (cg_comp.B_pp - cg_comp.B_pm)/sympy.Integer(2)/sympy.I,
+            Bs_p = (cg_comp.B_pp + cg_comp.B_pm)/sympy.sqrt(2),
+            Bp_p = (cg_comp.B_pp - cg_comp.B_pm)/sympy.sqrt(2)/sympy.I,
             Bz_p = cg_comp.Bz_p,
-            Bs_m = (cg_comp.B_mp + cg_comp.B_mm)/sympy.Integer(2),
-            Bp_m = (cg_comp.B_mp - cg_comp.B_mm)/sympy.Integer(2)/sympy.I,
+            Bs_m = (cg_comp.B_mp + cg_comp.B_mm)/sympy.sqrt(2),
+            Bp_m = (cg_comp.B_mp - cg_comp.B_mm)/sympy.sqrt(2)/sympy.I,
             Bz_m = cg_comp.Bz_m,
         )
         return pg_comp
@@ -462,7 +491,7 @@ fp_sym = sympy.Function(r"\overline{f_\phi}")(s, p, t)
 #: Anti-symmetric integral of axial force
 fz_asym = sympy.Function(r"\widetilde{f_z}")(s, p, t)
 #: Azimuthal force in the equatorial plane
-fe_p = sympy.Function(r"f_{e\phi}")(s, p, t)
+fe_p = sympy.Function(r"f_{\phi}^e")(s, p, t)
 
 
 # ================= Linearization utilities ===================
@@ -484,7 +513,7 @@ b_linmap.update({B_sph[idx]: B0_sph[idx] + eps*b_sph[idx]
 pg_linmap = {pgvar[idx]: pgvar_bg[idx] + eps*pgvar_ptb[idx] 
     for idx in range(pgvar.n_fields)}
 #: First-order perturbation map of conjugate variables
-cg_linmap = {cgvar[idx]: cgvar[idx] + eps*cgvar_ptb[idx]
+cg_linmap = {cgvar[idx]: cgvar_bg[idx] + eps*cgvar_ptb[idx]
     for idx in range(cgvar.n_fields)}
 
 #: First-order perturbation in external forcing
