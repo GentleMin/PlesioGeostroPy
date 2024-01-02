@@ -10,14 +10,14 @@ interactively verify the correctness of the equations/elements.
 """
 
 PRECOMPUTE_EQN = True
-VARIABLE_MODE = "PG"
+VARIABLE_MODE = "CG"
 
 assert VARIABLE_MODE in ("PG", "CG", "Psi-F")
 
 import os, h5py, json
 from typing import List, Any, Optional, Union
 from sympy import S, I, oo, Integer, Rational, Function, \
-    Add, diff, Eq, srepr, parse_expr
+    Add, diff, Eq, srepr, parse_expr, sqrt
 import numpy as np
 import pg_utils.sympy_supp.vector_calculus_3d as v3d
 
@@ -28,16 +28,22 @@ from pg_utils.pg_model import expansion as xpd
 from pg_utils.pg_model.expansion import omega, n, m, xi, n_test, n_trial
 
 from pg_utils.numerics import matrices as nmatrix
+from pg_utils.numerics import io as num_io
+
+from scipy.sparse import coo_array
 
 # Background field setup
-import bg_malkus as bg_cfg
+import bg_hydrodynamic as bg_cfg
+
 # Radial expansion setup
-from pg_utils.pg_model import expand_daria_mm_malkus as xpd_cfg
+# from pg_utils.pg_model import expand_daria_mm_malkus as xpd_cfg
 # from pg_utils.pg_model import expand_daria_thesis as xpd_cfg
-# from pg_utils.pg_model import expand_conjugate as xpd_cfg
+from pg_utils.pg_model import expand_conjugate as xpd_cfg
 # from pg_utils.pg_model import expand_stream_force as xpd_cfg
+
 # Physical variables
 PHYS_PARAMS = {
+    # bg_cfg.cf_gamma: 3*np.sqrt(3)/2,
     m: Integer(3), 
     params.Le: Rational(1, 10000), 
     params.Lu: oo
@@ -231,8 +237,8 @@ def reduce_eqsys_to_force_form(eqsys_old: base.LabeledCollection,
         for term in f_term.args])
     eqsys_new = base.LabeledCollection(
         ["Psi", "F_ext"], 
-        Psi = Eq(eqsys_old.Psi.lhs, psi_term + core.F_ext),
-        F_ext = Eq(diff(core.F_ext, t), f_term)
+        Psi = Eq(eqsys_old.Psi.lhs, psi_term + core.reduced_var.F_ext),
+        F_ext = Eq(diff(core.reduced_var.F_ext, t), f_term)
     )
     return eqsys_new
 
@@ -308,8 +314,8 @@ utilities to further simplify the procedure
 """
 
 
-def routine_eqn_formation(read_from: str = "default", 
-    save_to: Optional[str]=None) -> base.LabeledCollection:
+def routine_eqn_formation(read_from: str = "default", components: List = ["Lorentz"],
+    timescale: str = "Alfven", save_to: Optional[str]=None) -> base.LabeledCollection:
     """Top-level routine function
     Stage 1: equation derivation
     """
@@ -331,7 +337,7 @@ def routine_eqn_formation(read_from: str = "default",
         elif VARIABLE_MODE == "CG":
             eqs = pgeq.eqs_cg_lin
     # Body
-    eqs = apply_components(eqs, "Lorentz", timescale="Alfven", verbose=2)
+    eqs = apply_components(eqs, *components, timescale=timescale, verbose=2)
     if VARIABLE_MODE == "PG":
         eqs.Psi = Eq(eqs.Psi.lhs, eqs.Psi.rhs.subs(forcing.force_explicit_lin))
     elif VARIABLE_MODE == "CG":
@@ -409,7 +415,8 @@ def routine_matrix_collection(read_from: Union[str, base.LabeledCollection],
 
 def routine_matrix_calculation(read_from: Union[str, List[xpd.SystemMatrix]], 
     Ntrunc: int = 5, xpd_recipe: xpd.ExpansionRecipe = xpd_cfg.recipe,
-    save_to: Optional[str] = None, verbose: int = 0) -> List[np.ndarray]:
+    save_to: Optional[str] = None, outer: bool = True, 
+    verbose: int = 0) -> List[np.ndarray]:
     """Top-level routine function
     Stage 3: Routine calculation of matrix elements
     """
@@ -459,7 +466,7 @@ def routine_matrix_calculation(read_from: Union[str, List[xpd.SystemMatrix]],
     quad_recipe_list = np.array([
         [nmatrix.QuadRecipe(
             init_opt={"automatic": True, "quadN": None},
-            gram_opt={"backend": "scipy", "output": "numpy"}
+            gram_opt={"backend": "scipy", "output": "numpy", "outer": outer}
         ) for ele in row] for row in M_expr._matrix
     ])
     
@@ -467,9 +474,9 @@ def routine_matrix_calculation(read_from: Union[str, List[xpd.SystemMatrix]],
         print("Computing quadratures of elements...")
     # Computation
     M_val = nmatrix.MatrixExpander(
-        M_expr, quad_recipe_list, ranges_trial, ranges_test).expand(verbose=True)
+        M_expr, quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1)
     K_val = nmatrix.MatrixExpander(
-        K_expr, quad_recipe_list, ranges_trial, ranges_test).expand(verbose=True)
+        K_expr, quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1)
     
     # Output
     if save_to is not None:
@@ -490,8 +497,12 @@ def routine_matrix_calculation(read_from: Union[str, List[xpd.SystemMatrix]],
             gp.create_dataset("names", data=cnames, dtype=str_type)
             gp.create_dataset("ranges", 
                 data=np.array([len(nrange) for nrange in ranges_trial]))            
-            fwrite.create_dataset("M", data=M_val)
-            fwrite.create_dataset("K", data=K_val)
+            # fwrite.create_dataset("M", data=M_val)
+            # fwrite.create_dataset("K", data=K_val)
+            matrix_gp = fwrite.create_group("M")
+            num_io.sparse_coo_save_to_group(coo_array(M_val), matrix_gp)
+            matrix_gp = fwrite.create_group("K")
+            num_io.sparse_coo_save_to_group(coo_array(K_val), matrix_gp)
     return M_val, K_val
 
 
@@ -511,8 +522,8 @@ def routine_eigen_compute(read_from: Union[str, List[np.ndarray]],
             frange = fread["rows"]["ranges"][()]
             cnames = list(fread["cols"]["names"].asstr()[()])
             crange = fread["cols"]["ranges"][()]
-            M_val = fread["M"][()]
-            K_val = fread["K"][()]
+            M_val = num_io.matrix_load_from_group(fread["M"]).todense()
+            K_val = num_io.matrix_load_from_group(fread["K"]).todense()
     else:
         M_val = read_from[0]
         K_val = read_from[1]
@@ -552,38 +563,47 @@ def routine_eigen_compute(read_from: Union[str, List[np.ndarray]],
 if __name__ == "__main__":
     
     # fname_pgeq = "./out/symbolic/eqs_pg_lin.json"
-    # output_dir = "./out/cases/Malkus/Reduced_sys/"
-    output_dir = "./out/tmp/"
+    output_dir = "./out/cases/Hydrodynamic/Recipe_Conjugate/"
+    # output_dir = "./out/cases/Malkus/Conjugate_recipe"
+    # output_dir = "./out/cases/Toroidal_quadrupolar/Recipe_Daria/"
+    # output_dir = "./out/tmp/"
     prefix = ''
     suffix = ''
-    fname_eqn = os.path.join(output_dir, prefix + "Eqs_ptb" + suffix + ".json")
-    fname_eqn_reduced = os.path.join(output_dir, prefix + "Eqs_reduced" + suffix + ".json")
-    fname_matrix_expr = os.path.join(output_dir, prefix + "Matrix_expr" + suffix + ".json")
-    fname_matrix_val = os.path.join(output_dir, prefix + "Matrix_eval" + suffix + ".h5")
-    fname_eig_result = os.path.join(output_dir, prefix + "Eigen" + suffix + ".h5")
     
     """Stage 1: equation formation, apply background"""
-    routine_eqn_formation(read_from="default", save_to=fname_eqn)
+    # fname_eqn = os.path.join(os.path.dirname(os.path.dirname(output_dir)), 
+    #     prefix + "Eqs_ptb" + suffix + ".json")
+    # fname_eqn = os.path.join(os.path.dirname(os.path.dirname(output_dir)), 
+    #     prefix + "Eqs_conjugate_ptb" + suffix + ".json")
+    # routine_eqn_formation(read_from="default", timescale="spin", save_to=fname_eqn)
     
     """Stage 1: dimension reduction"""
     # fname_eqn = "./out/cases/Malkus/Eqs_ptb.json"
+    # fname_eqn_reduced = os.path.join(os.path.dirname(os.path.dirname(output_dir)), 
+    #     prefix + "Eqs_reduced" + suffix + ".json")
     # routine_dim_reduction(fname_eqn, save_to=fname_eqn_reduced)
     
     """Stage 2: matrix extraction"""
     # Choose equations
-    # fname_eqn = "./out/cases/Malkus/Eqs_reduced.json"
-    with open(fname_eqn, 'r') as fread:
-        eqs = base.LabeledCollection.load_json(fread, parser=parse_expr)
-    eqs_solve = eqs
-    solve_idx = np.full(21, False)
-    solve_idx[:14] = True
-    eqs_solve = eqs.generate_collection(solve_idx)
-    routine_matrix_collection(eqs_solve, save_to=fname_matrix_expr)
+    # with open(fname_eqn, 'r') as fread:
+    #     eqs = base.LabeledCollection.load_json(fread, parser=parse_expr)
+    # eqs_solve = eqs
+    # solve_idx = np.full(21, False)
+    # solve_idx[:14] = True
+    # eqs_solve = eqs.generate_collection(solve_idx)
+    fname_matrix_expr = os.path.join(output_dir, 
+        prefix + "Matrix_expr" + suffix + ".json")
+    # routine_matrix_collection(eqs_solve, save_to=fname_matrix_expr)
     
     """Stage 3: compute matrices"""
-    routine_matrix_calculation(fname_matrix_expr, Ntrunc=5, 
+    Ntrunc = 100
+    fname_matrix_val = os.path.join(output_dir, 
+        prefix + "Matrix_eval_N{:d}".format(Ntrunc) + suffix + ".h5")
+    routine_matrix_calculation(fname_matrix_expr, Ntrunc=Ntrunc, 
         xpd_recipe=xpd_cfg.recipe, save_to=fname_matrix_val, verbose=5)
     
     """Stage 4: compute eigenvalues"""
+    fname_eig_result = os.path.join(output_dir, 
+        prefix + "Eigen_N{:d}".format(Ntrunc) + suffix + ".h5")
     routine_eigen_compute(fname_matrix_val, save_to=fname_eig_result, verbose=5)
     
