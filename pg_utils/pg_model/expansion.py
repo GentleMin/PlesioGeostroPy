@@ -398,6 +398,7 @@ class ExpansionRecipe:
     """The top-level class used for spectral expansion,
     which defines the recipe concerning radial and azimuthal expansions.
     
+    :ivar str identifier: name of the expansion
     :ivar FourierExpansion fourier_xpd: defines the fourier expansion part
         this is considered shared among all fields
     :ivar RadialExpansion rad_xpd: defines the radial expansion
@@ -407,7 +408,9 @@ class ExpansionRecipe:
     :ivar dict test_expr: explicit expressions of the test functions for substitution
     """
     
-    def __init__(self, fourier_expand: FourierExpansions, 
+    def __init__(self, 
+        identifier: str,
+        fourier_expand: FourierExpansions, 
         rad_expand: RadialExpansions, rad_test: RadialTestFunctions, 
         inner_prod_op: RadialInnerProducts, 
         base_expr: Optional[base.LabeledCollection] = None, 
@@ -424,6 +427,7 @@ class ExpansionRecipe:
         :param Optional[base.LabeledCollection] test_expr: 
             explicit expression of the test functions (if `rad_test` uses placeholders)
         """
+        self.identifier = identifier
         self.fourier_xpd = fourier_expand
         self.rad_xpd = rad_expand
         self.rad_test = rad_test
@@ -766,20 +770,20 @@ pgvar_s = base.CollectionPG(
     zMpp = sympy.Function(r"\widetilde{zM_{\phi\phi}}^{m}")(s),
     zMsp = sympy.Function(r"\widetilde{zM_{\phi s}}^{m}")(s),
     # Magnetic fields in equatorial plane
-    Bs_e = sympy.Function(r"B_{es}^{m}")(s),
-    Bp_e = sympy.Function(r"B_{e\phi}^{m}")(s),
-    Bz_e = sympy.Function(r"B_{ez}^{m}")(s),
-    dBs_dz_e = sympy.Function(r"B_{es, z}^{m}")(s),
-    dBp_dz_e = sympy.Function(r"B_{e\phi, z}^{m}")(s),
+    Bs_e = sympy.Function(r"B_{s}^{em}")(s),
+    Bp_e = sympy.Function(r"B_{\phi}^{em}")(s),
+    Bz_e = sympy.Function(r"B_{z}^{em}")(s),
+    dBs_dz_e = sympy.Function(r"B_{s, z}^{em}")(s),
+    dBp_dz_e = sympy.Function(r"B_{\phi, z}^{em}")(s),
     # Magnetic fields at the boundary
     # Note here Br_b is not in 2-D disk, hence there is no 
     # radial (in cylindrical coordinates) function for it
-    Bs_p = sympy.Function(r"B_s^{m+}")(s),
-    Bp_p = sympy.Function(r"B_\phi^{m+}")(s),
-    Bz_p = sympy.Function(r"B_z^{m+}")(s),
-    Bs_m = sympy.Function(r"B_s^{m-}")(s),
-    Bp_m = sympy.Function(r"B_\phi^{m-}")(s),
-    Bz_m = sympy.Function(r"B_z^{m-}")(s)
+    Bs_p = sympy.Function(r"B_s^{+m}")(s),
+    Bp_p = sympy.Function(r"B_\phi^{+m}")(s),
+    Bz_p = sympy.Function(r"B_z^{+m}")(s),
+    Bs_m = sympy.Function(r"B_s^{-m}")(s),
+    Bp_m = sympy.Function(r"B_\phi^{-m}")(s),
+    Bz_m = sympy.Function(r"B_z^{-m}")(s)
 )
 """Radial placeholder functions of PG fields in 2-D disk.
 
@@ -800,18 +804,18 @@ cgvar_s = base.CollectionConjugate(
     zM_p = sympy.Function(r"\widetilde{zM_+}^m")(s),
     zM_m = sympy.Function(r"\widetilde{zM_-}^m")(s),
     # Conjugate variables for magnetic fields in equatorial plane
-    B_ep = sympy.Function(r"B_{e+}^m")(s),
-    B_em = sympy.Function(r"B_{e-}^m")(s),
+    B_ep = sympy.Function(r"B_{+}^{em}")(s),
+    B_em = sympy.Function(r"B_{-}^{em}")(s),
     Bz_e = pgvar_s.Bz_e,
-    dB_dz_ep = sympy.Function(r"B_{e+, z}^m")(s),
-    dB_dz_em = sympy.Function(r"B_{e-, z}^m")(s),
+    dB_dz_ep = sympy.Function(r"B_{+, z}^{em}")(s),
+    dB_dz_em = sympy.Function(r"B_{-, z}^{em}")(s),
     # Magnetic field at the boundary
     Br_b = pgvar_s.Br_b,
-    B_pp = sympy.Function(r"B_+^{m+}")(s),
-    B_pm = sympy.Function(r"B_-^{m+}")(s),
+    B_pp = sympy.Function(r"B_+^{+m}")(s),
+    B_pm = sympy.Function(r"B_-^{+m}")(s),
     Bz_p = pgvar_s.Bz_p,
-    B_mp = sympy.Function(r"B_+^{m-}")(s),
-    B_mm = sympy.Function(r"B_-^{m-}")(s),
+    B_mp = sympy.Function(r"B_+^{-m}")(s),
+    B_mm = sympy.Function(r"B_-^{-m}")(s),
     Bz_m = pgvar_s.Bz_m
 )
 """Radial placeholder functions for conjugate variables in 2-D disk.

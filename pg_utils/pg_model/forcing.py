@@ -28,7 +28,7 @@ Lp_sym = sympy.Function(r"\overline{L_\phi}")(s, p, t)
 Lz_asym = sympy.Function(r"\widetilde{L_z}")(s, p, t)
 
 #: Placeholder: the azimuthal Lorentz force in the equatorial plane
-Le_p = sympy.Function(r"L_{e\phi}")(s, p, t)
+Le_p = sympy.Function(r"L_{\phi}^e")(s, p, t)
 
 # Explicit expressions for Lorentz force
 
