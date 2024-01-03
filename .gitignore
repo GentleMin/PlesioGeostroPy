@@ -3,30 +3,22 @@
 # Byte-compiled files
 __pycache__/
 *.py[cod]
-# miscellaneous intermediate files for latex
+
+# LaTeX and pictures
 *.aux
 *.bbl
 *.bcf
 *.sty
-formulations/*.gz
-formulations/*.log
-formulations/*.out
-formulations/*.xml
+reports/*.gz
+reports/*.log
+reports/*.out
+reports/*.xml
 presentation/
-# presentation/*.log
-# presentation/*.out
-# presentation/*.xml
-# presentation/*.snm
-# presentation/*.nav
-# presentation/*.vrb
-# presentation/*.toc
-# presentation/*.blg
-# Ignore unnecessary documentation/uml files
 out/**/*.png
 out/**/*.pdf
+out/archived/
 out/tmp/
 # unwanted local test scripts
-style_sheets_reference.py
 test.py
 
 # VSCode utilities
@@ -35,9 +27,10 @@ test.py
 # Currently, ignore wolfram mathematica notebooks
 *.nb
 
-# Currently, disable all source files for documentation
+# Source files for documentation
 /docs/source/
 /docs/build/
+/docs/demos/
 /docs/make.bat
 /docs/Makefile
 /docs/.readthedocs.yaml

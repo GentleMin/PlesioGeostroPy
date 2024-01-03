@@ -40,6 +40,7 @@
       u_sph
       pgvar_ptb
       cgvar
+      cgvar_bg
       cgvar_ptb
       reduced_var
       fs_sym

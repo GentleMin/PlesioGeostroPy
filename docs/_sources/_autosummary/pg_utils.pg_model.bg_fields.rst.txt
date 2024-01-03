@@ -1,0 +1,35 @@
+﻿pg\_utils.pg\_model.bg\_fields
+==============================
+
+.. automodule:: pg_utils.pg_model.bg_fields
+  
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      BackgroundFieldMHD
+      BackgroundHydro
+      BackgroundMalkus
+      BackgroundPoloidalDipole
+      BackgroundToroidalQuadrupole
+   
+   
+
+   
+   
+   
+
+
+

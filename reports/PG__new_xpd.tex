@@ -1,0 +1,379 @@
+\section{Conjugate variables}
+
+
+Is there a way to circumvent manually enforcing all of these regularity constraints by designing intricate expansions?
+The answer is yes, according to Matthew and Stefano.
+For the vector quantities in cylindrical coordinates, i.e. components $A_s$ and $A_\phi$, they suggest that instead of expanding them separately, one should rather be looking for expansions of $A_s \pm i A_\phi$. These will have the expansion
+\begin{equation}\label{eqn:lin-combo-vector}
+    \begin{aligned}
+    A_s + iA_\phi &= \sum_m s^{|m+1|} p(s^2) e^{im\phi} \\ 
+    A_s - iA_\phi &= \sum_m s^{|m-1|} p(s^2) e^{im\phi}
+\end{aligned}
+\end{equation}
+The regularity of these quantities is the sufficient and necessary condition that the corresponding Cartesian components are regular.
+
+Does this trick similarly apply to rank-2 tensors?
+Indeed, if we take a step back from the final regularity constraints on individual matrix elements in cylindrical coordinates, we find that as an intermediate step, we have eq.(\ref{eqn:regularity-constraint-tensor-all}), a set of regularity constraints on the Fourier coefficients that are sufficient and necessary conditions that the corresponding Cartesian components have regular Fourier coefficients.
+These are, after all, what gave rise to the regularity constraints on individual variables.
+It follows directly, that the components in the cylindrical coordinates need to and only need to have the following expansion
+\[
+    \begin{aligned}
+        A_{ss} + A_{\phi\phi} &= \sum_{m} s^{|m|} C(s^2) e^{im\phi}, \\ 
+        A_{s\phi} - A_{\phi s} &= \sum_{m} s^{|m|} C(s^2) e^{im\phi}, \\ 
+        A_{ss} - A_{\phi\phi} + i \left(A_{s\phi} + A_{\phi s}\right) &= \sum_{m} s^{|m + 2|} C(s^2) e^{im\phi}, \\ 
+        A_{ss} - A_{\phi\phi} - i \left(A_{s\phi} + A_{\phi s}\right) &= \sum_{m} s^{|m - 2|} C(s^2) e^{im\phi}.
+    \end{aligned}
+\]
+Since the first two equations have identical right hand sides, any invertible linear combination of them will remain sufficient and necessary conditions. For reasons that will become obvious shortly, these can be transformed into a more symmetric form
+\begin{equation}\label{eqn:lin-combo-tensor-2}
+    \begin{aligned}
+        A_{ss} + A_{\phi\phi} - i \left(A_{s\phi} - A_{\phi s}\right) &= \sum_{m} s^{|m|} C(s^2) e^{im\phi}, \\ 
+        A_{ss} + A_{\phi \phi} + i \left(A_{s\phi} - A_{\phi s}\right) &= \sum_{m} s^{|m|} C(s^2) e^{im\phi}, \\ 
+        A_{ss} - A_{\phi\phi} + i \left(A_{s\phi} + A_{\phi s}\right) &= \sum_{m} s^{|m + 2|} C(s^2) e^{im\phi}, \\ 
+        A_{ss} - A_{\phi\phi} - i \left(A_{s\phi} + A_{\phi s}\right) &= \sum_{m} s^{|m - 2|} C(s^2) e^{im\phi}.
+    \end{aligned}
+\end{equation}
+We now see that the left-hand-side quantities in eqs.(\ref{eqn:lin-combo-vector}) and (\ref{eqn:lin-combo-tensor-2}) can be used in place of the original vector/tensor components as independent variables, so that the regularity conditions become clean and simple. Further, we shall see that these quantities can be related to the original components via a unitary transform. For the vector components, these new variables are given by
+\begin{equation}\label{eqn:cg-vector-transform}
+    \begin{pmatrix} A_+ \\ A_- \end{pmatrix} = 
+    \begin{pmatrix} \frac{1}{\sqrt{2}} (A_s + i A_\phi) \\ \frac{1}{\sqrt{2}} (A_s - i A_\phi) \end{pmatrix} = \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+        1 & i \\ 
+        1 & -i
+    \end{pmatrix}
+    \begin{pmatrix} A_s \\ A_\phi \end{pmatrix} 
+    = \mathbf{U} \begin{pmatrix} A_s \\ A_\phi \end{pmatrix}.
+\end{equation}
+An additional factor $1/\sqrt{2}$ is introduced to make the transform matrix unitary. For the rank-2 tensor components, the new variables as shown in eq.(\ref{eqn:lin-combo-tensor-2}) can be alternatively written as
+\begin{equation}\label{eqn:cg-tensor2-transform}
+\begin{aligned}
+    \begin{pmatrix}
+        A_{\mathrm{Tr}-} & A_+ \\ 
+        A_- & A_{\mathrm{Tr}+}
+    \end{pmatrix} &= \frac{1}{2} \begin{pmatrix}
+        A_{ss} + A_{\phi\phi} - i \left(A_{s\phi} - A_{\phi s}\right) & A_{ss} - A_{\phi\phi} + i \left(A_{s\phi} + A_{\phi s}\right) \\ 
+        A_{ss} - A_{\phi\phi} - i \left(A_{s\phi} + A_{\phi s}\right) &  A_{ss} + A_{\phi \phi} + i \left(A_{s\phi} - A_{\phi s}\right)
+    \end{pmatrix} \\ 
+    \begin{pmatrix}
+        A_{\mathrm{Tr}-} & A_+ \\ 
+        A_- & A_{\mathrm{Tr}+}
+    \end{pmatrix} &= \frac{1}{2} \begin{pmatrix} 1 & i \\ 1 & -i \end{pmatrix} 
+    \begin{pmatrix} A_{ss} & A_{s\phi} \\ A_{\phi s} & A_{\phi\phi} \end{pmatrix}
+    \begin{pmatrix} 1 & 1 \\ -i & i \end{pmatrix}
+    = \mathbf{U} \begin{pmatrix} A_{ss} & A_{s\phi} \\ A_{\phi s} & A_{\phi\phi} \end{pmatrix} \mathbf{U}^H.
+\end{aligned}
+\end{equation}
+For implementation purposes, it is sometimes useful to write the transform not as a double matrix multiplication, but a single matrix-vector product for flattened vector
+\begin{equation}\label{eqn:linmap-transformed}
+\begin{aligned}
+    \begin{pmatrix} A_{\mathrm{Tr}-} \\ A_{\mathrm{Tr}+} \\ A_+ \\ A_- \end{pmatrix} &= 
+    \frac{1}{2} \begin{pmatrix}
+        1 & 1 & -i & i \\
+        1 & 1 & i & -i \\
+        1 & -1 & i & i \\ 
+        1 & -1 & -i & -i
+    \end{pmatrix}
+    \begin{pmatrix} A_{ss} \\ A_{\phi\phi} \\ A_{s\phi} \\ A_{\phi s} \end{pmatrix} = \widetilde{\mathbf{U}} \begin{pmatrix} A_{ss} \\ A_{\phi\phi} \\ A_{s\phi} \\ A_{\phi s} \end{pmatrix},\\
+    \begin{pmatrix} A_{ss} \\ A_{\phi\phi} \\ A_{s\phi} \\ A_{\phi s} \end{pmatrix} &= \frac{1}{2}
+    \begin{pmatrix}
+        1 & 1 & 1 & 1 \\
+        1 & 1 & -1 & -1 \\ 
+        i & -i & -i & i \\ 
+        -i & i & -i & i
+    \end{pmatrix}
+    \begin{pmatrix} A_{\mathrm{Tr}-} \\ A_{\mathrm{Tr}+} \\ A_+ \\ A_- \end{pmatrix} = \widetilde{\mathbf{U}}^H \begin{pmatrix} A_{\mathrm{Tr}-} \\ A_{\mathrm{Tr}+} \\ A_+ \\ A_- \end{pmatrix}.
+\end{aligned}
+\end{equation}
+where $\widetilde{\mathbf{U}}$ is the transform for the augmented vector, and is also unitary.
+\medskip
+
+Before we move on, we note that all of these transformed quantities have a common status.
+If we first look at the transform for the vector components in cylindrical coordinates
+\[
+    \begin{pmatrix} A_x \\ A_y \end{pmatrix} = 
+    \begin{pmatrix}
+        \cos\phi & -\sin\phi \\ 
+        \sin\phi & \cos\phi 
+    \end{pmatrix} \begin{pmatrix} A_s \\ A_\phi \end{pmatrix} = \frac{1}{2}
+    \begin{pmatrix}
+        e^{i\phi} + e^{-i\phi} & i \left(e^{i\phi} - e^{-i\phi}\right) \\ 
+        - i \left(e^{i\phi} - e^{-i\phi}\right) & e^{i\phi} + e^{-i\phi}
+    \end{pmatrix} \begin{pmatrix} A_s \\ A_\phi \end{pmatrix} = \mathbf{R} \begin{pmatrix} A_s \\ A_\phi \end{pmatrix}
+\]
+The rotation matrix has the following spectral decomposition,
+\[
+    \mathbf{R} =
+    \begin{pmatrix} 1 & 1 \\ -i & i \end{pmatrix}
+    \begin{pmatrix} e^{i\phi} & 0 \\ 0 & e^{-i\phi} \end{pmatrix}
+    \begin{pmatrix} 1 & 1 \\ -i & i \end{pmatrix}^{-1} = \frac{1}{2}
+    \begin{pmatrix} 1 & 1 \\ -i & i \end{pmatrix}
+    \begin{pmatrix} e^{i\phi} & 0 \\ 0 & e^{-i\phi} \end{pmatrix}
+    \begin{pmatrix} 1 & i \\ 1 & -i \end{pmatrix} = \mathbf{U} \begin{pmatrix} e^{i\phi} & 0 \\ 0 & e^{-i\phi} \end{pmatrix} \mathbf{U}^H
+\]
+i.e. eigenvector $\frac{1}{\sqrt{2}}(1, \pm i)$ corresponding to eigenvalues $e^{\mp i\phi}$. This means that certain linear combinations (given by the \textit{inverse} of the eigenvalue matrix) of the components retain their form during rotation, except for an additional phase factor:
+\[\begin{aligned}
+    A_x + iA_y &= e^{+i\phi} \left(A_s + iA_\phi\right) \\ 
+    A_x - iA_y &= e^{-i\phi} \left(A_s - iA_\phi\right)
+\end{aligned} \quad \Longrightarrow\quad 
+\begin{aligned}
+    A_s + iA_\phi &= e^{-i\phi} \left(A_x + iA_y\right) \\ 
+    A_s - iA_\phi &= e^{+i\phi} \left(A_x - iA_y\right).
+\end{aligned}\]
+Therefore, the transformed quantities are nothing but from the (inverse of the) eigenvectors of the rotation matrix.
+Moreover, one can immediately deduce the regular expansion from these relations.
+We know the Cartesian components behave like scalars, so the right-hand-sides have Fourier coefficients that are $\sim s^{|m|}$.
+Therefore, the valid expansion for these transformed quantities would be
+\[\begin{aligned}
+    A_s + iA_\phi = \sum_m s^{|m+1|}p(s^2) e^{im\phi} \\ 
+    A_s - iA_\phi = \sum_m s^{|m-1|}p(s^2) e^{im\phi}
+\end{aligned}\]
+exactly as we expected.
+Similarly, let us consider the transform of rank-2 tensors in the form of matrices between cylindrical and Cartesian coordinates.
+It can of course be done via
+\[\begin{pmatrix} A_{xx} & A_{xy} \\ A_{yx} & A_{yy} \end{pmatrix} = 
+\begin{pmatrix} \cos\phi & -\sin\phi \\ \sin\phi & \cos\phi \end{pmatrix}  
+\begin{pmatrix} A_{ss} & A_{s\phi} \\ A_{\phi s} & A_{\phi \phi} \end{pmatrix}
+\begin{pmatrix} \cos\phi & \sin\phi \\ -\sin\phi & \cos\phi \end{pmatrix}
+\]
+but once again, it can also be written in matrix-vector form,
+\[\begin{pmatrix} A_{xx} \\ A_{yy} \\ A_{xy} \\ A_{yx} \end{pmatrix} = 
+\begin{pmatrix}
+    \cos^2\phi & \sin^2\phi & -\sin\phi\cos\phi & -\sin\phi\cos\phi \\
+    \sin^2\phi & \cos^2\phi & +\sin\phi\cos\phi & +\sin\phi\cos\phi \\
+    \cos\phi \sin\phi & -\cos\phi \sin\phi & \cos^2\phi & - \sin^2\phi & \\ 
+    \cos\phi \sin\phi & -\cos\phi \sin\phi & - \sin^2\phi & \cos^2\phi \\ 
+\end{pmatrix}
+\begin{pmatrix} A_{ss} \\ A_{\phi\phi} \\ A_{s\phi} \\ A_{\phi s} \end{pmatrix} 
+= \widetilde{\mathbf{R}} \begin{pmatrix} A_{ss} \\ A_{\phi\phi} \\ A_{s\phi} \\ A_{\phi s} \end{pmatrix}.
+\]
+The augmented rotation matrix for the rank-2 tensor can be shown to have eigendecomposition
+\[\begin{aligned}
+    \widetilde{\mathbf{R}} &= \frac{1}{4}
+    \begin{pmatrix}
+        1 & 1 & 1 & 1 \\
+        1 & 1 & -1 & -1\\
+        i & -i & -i & i \\
+        -i & i & -i & i
+    \end{pmatrix}
+    \begin{pmatrix} 1 & & & \\ & 1 & & \\ & & e^{i2\phi} & \\ & & & e^{-i2\phi} \end{pmatrix}
+    \begin{pmatrix}
+        1 & 1 & -i & i\\
+        1 & 1 & i & -i\\
+        1 & -1 & i & i \\ 
+        1 & -1 & -i & -i
+    \end{pmatrix} = \widetilde{\mathbf{U}}^H \mathbf{D} \widetilde{\mathbf{U}}
+\end{aligned}\]
+This gives the relations that we have already obtained before,
+\begin{equation}
+\begin{aligned}
+    A_{xx} + A_{yy} - i(A_{xy} - A_{yx}) &= A_{ss} + A_{\phi\phi} - i (A_{s\phi} - A_{\phi s}) \\ 
+    A_{xx} + A_{yy} + i(A_{xy} - A_{yx}) &= A_{ss} + A_{\phi\phi} + i (A_{s\phi} - A_{\phi s}) \\ 
+    A_{xx} - A_{yy} + i(A_{xy} + A_{yx}) &= e^{+i2\phi} \left(A_{ss} - A_{\phi\phi} + i (A_{s\phi} + A_{\phi s})\right) \\ 
+    A_{xx} - A_{yy} - i(A_{xy} + A_{yx}) &= e^{-i2\phi} \left(A_{ss} - A_{\phi\phi} - i (A_{s\phi} + A_{\phi s})\right)
+\end{aligned}
+\end{equation}
+which will give the regularity conditions given the scalar property of Cartesian components. We also see that due to degeneracy, the double eigenvalue $1$ has a 2-D eigen subspace. The eigen decomposition for $\tilde{\mathbf{R}}$ is hence nonunique, and any non-singular linear combination of the first two eigenvectors will form a new pair of alternative variables, that work equally well for the regularity conditions, for instance, $A_{ss} + A_{\phi\phi}$ and $A_{s\phi} - A_{\phi s}$. However, only the currently chosen configuration satisfy the tensor transform eq.(\ref{eqn:cg-tensor2-transform}). This is the reason why I transformed the equations into form (\ref{eqn:lin-combo-tensor-2}).
+
+To summarize, all of these new quantities, at least for rank-1 and rank-2 tensors, can be derived by computing the eigenvalue decomposition of the rotation matrix for the flattened component vector,
+\[\mathbf{R} = \mathbf{V} \bm{\Lambda} \mathbf{V}^{-1}\]
+and so the relation
+\[\mathbf{y}^{\mathrm{Cart}} = \mathbf{R}_k \mathbf{y}^{\mathrm{Cyl}} \quad \Longrightarrow \quad \mathbf{V}^{-1} \mathbf{y}^{\mathrm{Cart}} = \bm{\Lambda} \left(\mathbf{V}^{-1} \mathbf{y}^{\mathrm{Cyl}}\right)
+\]
+gives the transformed quantities that happen to retain their forms during changing coordinates systems.
+% However, it is doubted whether such expression can be found for arbitrary rank tensor.
+For an arbitrary rank tensor in general, it would suffice to seek the matrix decomposition of the rotation matrix in the form of
+\begin{equation}
+    \mathbf{R}_k = \mathbf{V} \bm{\Lambda} \mathbf{U}
+\end{equation}
+where $\mathbf{V}, \mathbf{U} \in \mathbb{C}^{2^k\times 2^k}$ are invertible matrices whose elements are constants independent of $\phi$, and $\bm{\Lambda} = \mathrm{diag}\left(C_j e^{i m_j \phi}\right)$ is a diagonal matrix whose diagonal entries are solely an exponential function of $\phi$.
+If such a factorization is found, the rotation transform can be rewritten as
+\begin{equation}
+    \mathbf{V}^{-1} \mathbf{y}^\mathrm{Cart} = \bm{\Lambda} \left(\mathbf{U} \mathbf{y}^\mathrm{Cyl}\right)
+\end{equation}
+and the elements in $\mathbf{U} \mathbf{y}^\mathrm{Cyl}$ would give the $2^k$ transformed quantities whose Fourier coefficients take the form of $s^{|m+m_j|\phi}$.
+
+\begin{todoremark}
+For now I have been referring to these "new" quantities \textit{transformed quantities}. This is a temporary designation, and I would rather call it something else. The candidates are the following
+\begin{itemize}
+    \item Names that indicate the affinity / duality of the transformed quantities with the original ones
+    \begin{itemize}
+        \item \textit{Conjugate} variables: this is what is used in a previous version of this manuscript, and in the current version of the code, but it has been pointed out by Stefano that the word is too strongly associated with complex conjugates.
+        \item \textit{Companion} variables: a more neutral version, but we still have instances already bearing this name, e.g. the companion matrix.
+        \item \textit{Dual} variables: a straightforward version, but there are many already well-established terms in mathematics, such as dual space, etc.
+        \item \textit{Auxiliary} variables: a rather neutral description, but it might give a feeling that the new set of variables are somewhat inferior, and are only invented for convenience.
+    \end{itemize}
+    \item Names that emphasize that the transformed quantities have unique mathematical status
+    \begin{itemize}
+        \item \textit{Canonical} variables: this seems to be used by Dahlen and Tromp for similar quantities, but I cannot see what is canonical about it.
+    \end{itemize}
+\end{itemize}
+\end{todoremark}
+
+
+\section{Evolution equation for transformed quantities}
+
+In the part that follows, I shall restrict my discussion to the relevant quadratic moment tensor of the magnetic field. 
+Due to the fact that this quadratic moment tensor is symmetric, $M_{s\phi} = M_{\phi s}$, we have $M_{\mathrm{Tr}-} = M_{\mathrm{Tr}+}$, which I shall denote as $M_1$.
+The four relations are reduced to three relations,
+%
+\begin{equation}
+    \begin{aligned}
+        M_1 &= \frac{1}{2} \left(M_{ss} + M_{\phi\phi}\right) = \sum_{m} s^{|m|} p(s^2) e^{im\phi}, \\ 
+        M_+ &= \frac{1}{2} \left(M_{ss} - M_{\phi\phi} + i 2M_{s\phi}\right) = \sum_{m} s^{|m + 2|} p(s^2) e^{im\phi}, \\ 
+        M_- &= \frac{1}{2} \left(M_{ss} - M_{\phi\phi} - i 2M_{s\phi}\right) = \sum_{m} s^{|m - 2|} p(s^2) e^{im\phi}.
+    \end{aligned}
+\end{equation}
+%
+% Note that $M_1$ is nothing but one half of the trace of the 2-D tensor $\mathbf{M}$, and is a true scalar, i.e. invariant quantity under rotation. 
+% That $\mathrm{Tr}\mathbf{M}$ remains a constant during rotation of axes is a known fact, hence it is also called "the first invariant", especially in the context of strain and stress tensors. The invention of these transformed quantities now allows replacing PG fields $\overline{M_{ss}}$, $\overline{M_{\phi\phi}}$, $\overline{M_{s\phi}}$ and $\widetilde{zM_{ss}}$, $\widetilde{zM_{\phi\phi}}$, $\widetilde{zM_{s\phi}}$.
+We now have a chance to remove all undesired coefficient coupling as regularity constraints, by replacing PG fields $\overline{M_{ss}}$, $\overline{M_{\phi\phi}}$, $\overline{M_{s\phi}}$ and $\widetilde{zM_{ss}}$, $\widetilde{zM_{\phi\phi}}$, $\widetilde{zM_{s\phi}}$ with the transformed variables.
+For the 12 magnetic quantities (except for $B_r$, which lives on the sphere, and $B_{z}^e$, which is a scalar) in PG variables, the corresponding transformed quantities are
+%
+\begin{equation}\label{eqn:conjugate-transform}
+\begin{aligned}
+    &\left\{\begin{aligned}
+        \overline{M_{ss}} \\ 
+        \overline{M_{\phi\phi}} \\ 
+        \overline{M_{s\phi}} \\ 
+    \end{aligned}\right. &\longrightarrow \quad 
+    &\left\{\begin{aligned}
+        \overline{M_1} &= \frac{1}{2} \left(\overline{M_{ss}} + \overline{M_{\phi\phi}}\right) \\ 
+        \overline{M_+} &= \frac{1}{2} \left(\overline{M_{ss}} - \overline{M_{\phi\phi}} + i2 \overline{M_{s\phi}}\right) \\ 
+        \overline{M_-} &= \frac{1}{2} \left(\overline{M_{ss}} - \overline{M_{\phi\phi}} - i2 \overline{M_{s\phi}}\right)
+    \end{aligned}\right. &\quad
+    &\left\{\begin{aligned}
+        \overline{M_{ss}} &= \frac{1}{2} \left(2\overline{M_1} + \overline{M_+} + \overline{M_-}\right) \\ 
+        \overline{M_{\phi\phi}} &= \frac{1}{2} \left(2\overline{M_1} - \overline{M_+} - \overline{M_-}\right) \\ 
+        \overline{M_{s\phi}} &= \frac{1}{2i} \left(\overline{M_+} - \overline{M_-}\right)
+    \end{aligned}\right. \\ 
+    &\left\{\begin{aligned}
+        \widetilde{M_{sz}} \\ 
+        \widetilde{M_{\phi z}} \\ 
+    \end{aligned}\right. &\longrightarrow \quad 
+    &\left\{\begin{aligned}
+        \widetilde{M_{z+}} &= \frac{1}{\sqrt{2}} \left(\widetilde{M_{sz}} + i\widetilde{M_{\phi z}}\right) \\ 
+        \widetilde{M_{z-}} &= \frac{1}{\sqrt{2}} \left(\widetilde{M_{sz}} - i\widetilde{M_{\phi z}}\right)
+    \end{aligned}\right. &\quad 
+    &\left\{\begin{aligned}
+        \widetilde{M_{sz}} &= \frac{1}{\sqrt{2}} \left(\widetilde{M_{z+}} + \widetilde{M_{z-}}\right) \\
+        \widetilde{M_{\phi z}} &= \frac{1}{\sqrt{2}i} \left(\widetilde{M_{z+}} - \widetilde{M_{z-}}\right)
+    \end{aligned}\right.\\
+    &\left\{\begin{aligned}
+        \widetilde{zM_{ss}} \\ 
+        \widetilde{zM_{\phi\phi}} \\ 
+        \widetilde{zM_{s\phi}} \\ 
+    \end{aligned}\right. &\longrightarrow \quad 
+    &\left\{\begin{aligned}
+        \widetilde{zM_1} &= \frac{1}{2} \left(\widetilde{zM_{ss}} + \widetilde{zM_{\phi\phi}}\right) \\ 
+        \widetilde{zM_+} &= \frac{1}{2} \left(\widetilde{zM_{ss}} - \widetilde{zM_{\phi\phi}} + i2 \widetilde{zM_{s\phi}}\right) \\ 
+        \widetilde{zM_-} &= \frac{1}{2} \left(\widetilde{zM_{ss}} - \widetilde{zM_{\phi\phi}} - i2 \widetilde{zM_{s\phi}}\right)
+    \end{aligned}\right. &\quad
+    &\left\{\begin{aligned}
+        \widetilde{zM_{ss}} &= \frac{1}{2} \left(2\widetilde{zM_1} + \widetilde{zM_+} + \widetilde{zM_-}\right) \\ 
+        \widetilde{zM_{\phi\phi}} &= \frac{1}{2} \left(2\widetilde{zM_1} - \widetilde{zM_+} - \widetilde{zM_-}\right) \\ 
+        \widetilde{zM_{s\phi}} &= \frac{1}{2i} \left(\widetilde{zM_+} - \widetilde{zM_-}\right)
+    \end{aligned}\right. \\
+    &\left\{\begin{aligned}
+        B_{s}^e \\ 
+        B_{\phi}^e
+    \end{aligned}\right. &\longrightarrow \quad 
+    &\left\{\begin{aligned}
+        B_{+}^e &= \frac{1}{\sqrt{2}} \left(B_{s}^e + iB_{\phi}^e\right) \\ 
+        B_{-}^e &= \frac{1}{\sqrt{2}} \left(B_{s}^e - iB_{\phi}^e\right)
+    \end{aligned}\right. &\quad 
+    &\left\{\begin{aligned}
+        B_{s}^e &= \frac{1}{\sqrt{2}} \left(B_{+}^e + B_{-}^e\right) \\
+        B_{\phi}^e &= \frac{1}{\sqrt{2}i} \left(B_{+}^e - B_{-}^e\right)
+    \end{aligned}\right.\\
+    &\left\{\begin{aligned}
+        B_{s, z}^e \\ 
+        B_{\phi, z}^e
+    \end{aligned}\right. &\longrightarrow \quad 
+    &\left\{\begin{aligned}
+        B_{+,z}^e &= \frac{1}{\sqrt{2}} \left(B_{s,z}^e + iB_{\phi,z}^e\right) \\ 
+        B_{-,z}^e &= \frac{1}{\sqrt{2}} \left(B_{s,z}^e - iB_{\phi,z}^e\right)
+    \end{aligned}\right. &\quad 
+    &\left\{\begin{aligned}
+        B_{s,z}^e &= \frac{1}{\sqrt{2}} \left(B_{+,z}^e + B_{-,z}^e\right)\\
+        B_{\phi, z}^e &= \frac{1}{\sqrt{2}i} \left(B_{+,z}^e - B_{-,z}^e\right)
+    \end{aligned}\right.
+\end{aligned}\end{equation}
+%
+These transformed quantities now have easily defined function spaces.
+They merely require a power function in $s$ as the prefactor for regularity, and a power function in $H$ from even or odd axial integrations.
+The Fourier coefficients for these quantities thus take the form
+%
+\begin{equation}
+\begin{aligned}
+    \overline{M_1}^m &= H s^{|m|} p(s^2)\\
+    \overline{M_+}^m &= H s^{|m+2|} p(s^2)\\
+    \overline{M_-}^m &= H s^{|m-2|} p(s^2)\\ 
+    \widetilde{M_{z+}}^m &= H^2 s^{|m+1|} p(s^2)\\
+    \widetilde{M_{z-}}^m &= H^2 s^{|m-1|} p(s^2)\\
+    \widetilde{zM_1}^m &= H^2 s^{|m|} p(s^2)\\
+    \widetilde{zM_+}^m &= H^2 s^{|m+2|} p(s^2)\\
+    \widetilde{zM_-}^m &= H^2 s^{|m-2|} p(s^2)\\
+    B_{+}^{em} &= s^{|m+1|} p(s^2)\\
+    B_{-}^{em} &= s^{|m-1|} p(s^2)\\
+    B_{+,z}^{em} &= s^{|m+1|} p(s^2)\\
+    B_{-,z}^{em} &= s^{|m-1|} p(s^2)
+\end{aligned}
+\end{equation}
+%
+When the expansion for the equatorial fields are further combined with a harmonic field contribution, the equatorial Fourier coefficients will have a further $H^2$ prefactor in the front. 
+Apart from that, they are free of any coupling in their Fourier coefficients. The leading order behaviour alone guarantees regularity.
+
+Despite all the merits with this set of expansions, it is not directly applicable to the current form of the PG equations. 
+The reason lies in the test functions to be used to reduce the equations into linear systems.
+With every tensor component comprising of multiple bases, there is no straightforward and consistent way to choose a set of test functions.
+
+One way to overcome the test function issue, and perhaps the most consistent way, is to expand the transformed quantities in their \textit{own} evolution equations.
+In other words, the evolution equations in terms of magnetic field quantities should first be transformed into evolution equations of the corresponding transformed quantities.
+I shall present here the explicit derivation of one set of these quantities, namely from $(\overline{M_{ss}}, \overline{M_{s\phi}}, \overline{M_{\phi\phi}})$ to $(\overline{M_1}, \overline{M_+}, \overline{M_-})$.
+Starting from the original evolution equations \parencite{jackson_plesio-geostrophy_2020}
+\[\begin{aligned}
+    \frac{\partial \overline{M_{ss}}}{\partial t} &= -H (\mathbf{u}\cdot \nabla_e) \frac{\overline{M_{ss}}}{H} + 2 \overline{M_{ss}} \frac{\partial u_s}{\partial s} + \frac{2}{s} \overline{M_{s\phi}} \frac{\partial u_s}{\partial \phi}, \\ 
+    \frac{\partial \overline{M_{\phi\phi}}}{\partial t} &= -\frac{1}{H} (\mathbf{u}\cdot \nabla_e) \left(H \overline{M_{\phi\phi}}\right) - 2 \overline{M_{\phi\phi}} \frac{\partial u_s}{\partial s} + 2 s \overline{M_{s\phi}} \frac{\partial}{\partial s}\left(\frac{u_\phi}{s}\right), \\ 
+    \frac{\partial \overline{M_{s\phi}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \overline{M_{s\phi}} + s \overline{M_{ss}} \frac{\partial}{\partial s}\left(\frac{u_\phi}{s}\right) + \frac{1}{s} \overline{M_{\phi\phi}} \frac{\partial u_s}{\partial \phi}.
+\end{aligned}\]
+Using the transforms (\ref{eqn:conjugate-transform}), the equations can be rewritten as
+\[\begin{aligned}
+    \frac{\partial \overline{M_{ss}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \overline{M_{ss}} + \frac{1}{2}\left(2\overline{M_1} + \overline{M_+} + \overline{M_-}\right) \left(2 \frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) - i \left(\overline{M_+} - \overline{M_-}\right) \frac{1}{s} \frac{\partial u_s}{\partial \phi}, \\ 
+    \frac{\partial \overline{M_{\phi\phi}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \overline{M_{\phi\phi}} - \frac{1}{2}\left(2\overline{M_1} - \overline{M_+} - \overline{M_-}\right) \left(2 \frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) - i \left(\overline{M_+} - \overline{M_-}\right) s \frac{\partial}{\partial s} \frac{u_\phi}{s}, \\ 
+    \frac{\partial \overline{M_{s\phi}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \overline{M_{s\phi}} + \frac{1}{2}\left(2\overline{M_1} + \overline{M_+} + \overline{M_-}\right) s \frac{\partial}{\partial s}\left(\frac{u_\phi}{s}\right) + \frac{1}{2}\left(2\overline{M_1} - \overline{M_+} - \overline{M_-}\right) \frac{1}{s} \frac{\partial u_s}{\partial \phi}.
+\end{aligned}\]
+Re-combining these equations again using the transforms (\ref{eqn:conjugate-transform}), we obtain the evolution equations for the transformed variables
+\[\begin{aligned}
+    \frac{\partial \overline{M_1}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_1} + \frac{1}{2} \left(\overline{M_+} + \overline{M_-}\right) \left(2\frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) - \frac{i}{2} \left(\overline{M_+} - \overline{M_-}\right) \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right), \\
+    \frac{\partial \overline{M_+}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_+} + \overline{M_1} \left(2\frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) + i\overline{M_1} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) + i \overline{M_+} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right), \\ 
+    \frac{\partial \overline{M_-}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_-} + \overline{M_1} \left(2\frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) - i\overline{M_1} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) - i \overline{M_-} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right).
+\end{aligned}\]
+By applying the same strategy to all 12 relevant PG variables, we come to the complete list of evolution equations for the transformed quantities:
+\begin{align*}
+    \frac{\partial \overline{M_1}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_1} + \frac{1}{2} \left(\overline{M_+} + \overline{M_-}\right) \left(2\frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) - \frac{i}{2} \left(\overline{M_+} - \overline{M_-}\right) \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right), \\
+    \frac{\partial \overline{M_+}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_+} + \overline{M_1} \left(2\frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) + i\overline{M_1} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) + i \overline{M_+} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right), \\ 
+    \frac{\partial \overline{M_-}}{\partial t} &= - \left(\mathbf{u}\cdot \nabla_e \right) \overline{M_-} + \overline{M_1} \left(2\frac{\partial u_s}{\partial s} - \frac{su_s}{H^2}\right) - i\overline{M_1} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right) - i \overline{M_-} \left(s \frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{1}{s}\frac{\partial u_s}{\partial \phi}\right), \\ 
+    %
+    \frac{\partial \widetilde{M_{z+}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \widetilde{M_{z+}} -\frac{1}{\sqrt{2}} \left(\frac{\partial}{\partial s} \frac{su_s}{H^2} + \frac{i}{H^2} \frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_1} + \frac{1}{\sqrt{2}} \left(-\frac{\partial}{\partial s}\frac{su_s}{H^2} + \frac{i}{H^2}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_+} \\ 
+    &\quad + \frac{1}{2}\left(3 \frac{\partial u_z}{\partial z} - \frac{i}{s}\frac{\partial u_s}{\partial \phi} + is \frac{\partial}{\partial s}\frac{u_\phi}{s}\right) \widetilde{M_{z+}}
+    + \frac{1}{2} \left(\frac{\partial u_z}{\partial z} + 2 \frac{\partial u_s}{\partial s} + \frac{i}{s} \frac{\partial u_s}{\partial \phi} + is \frac{\partial}{\partial s}\frac{u_\phi}{s}\right) \widetilde{M_{z-}}, \\
+    \frac{\partial \widetilde{M_{z-}}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \widetilde{M_{z-}} -\frac{1}{\sqrt{2}} \left(\frac{\partial}{\partial s} \frac{su_s}{H^2} - \frac{i}{H^2} \frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_1} + \frac{1}{\sqrt{2}} \left(-\frac{\partial}{\partial s}\frac{su_s}{H^2} - \frac{i}{H^2}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_-} \\
+    &\quad + \frac{1}{2} \left(\frac{\partial u_z}{\partial z} + 2 \frac{\partial u_s}{\partial s} - \frac{i}{s} \frac{\partial u_s}{\partial \phi} - is \frac{\partial}{\partial s}\frac{u_\phi}{s}\right) \widetilde{M_{z+}}
+    + \frac{1}{2}\left(3 \frac{\partial u_z}{\partial z} + \frac{i}{s}\frac{\partial u_s}{\partial \phi} - is \frac{\partial}{\partial s}\frac{u_\phi}{s}\right) \widetilde{M_{z-}}, \\
+    %
+    \frac{\partial \widetilde{zM_1}}{\partial t} &= -(\mathbf{u}\cdot \nabla_e) \widetilde{zM_1} + \frac{\partial u_z}{\partial z} \widetilde{zM_1} \\
+    &\quad + \left(\frac{\partial u_s}{\partial s} + \frac{1}{2}\frac{\partial u_z}{\partial z}\right) \left(\widetilde{zM_+} + \widetilde{zM_-}\right) - \frac{i}{2}\left(\frac{1}{s}\frac{\partial u_s}{\partial \phi} + s \frac{\partial}{\partial s}\frac{u_\phi}{s}\right) \left(\widetilde{zM_+} - \widetilde{zM_-}\right), \\
+    \frac{\partial \widetilde{zM_+}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \widetilde{zM_+} + \left(\frac{\partial u_z}{\partial z} + i s\frac{\partial}{\partial s}\frac{u_\phi}{s} - \frac{i}{s}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_+} + \left(2\frac{\partial u_s}{\partial s} + \frac{\partial u_z}{\partial z} + is \frac{\partial}{\partial s}\frac{u_\phi}{s}+ \frac{i}{s}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_1}, \\
+    \frac{\partial \widetilde{zM_-}}{\partial t} &= - (\mathbf{u}\cdot \nabla_e) \widetilde{zM_-} + \left(\frac{\partial u_z}{\partial z} - i s\frac{\partial}{\partial s}\frac{u_\phi}{s} + \frac{i}{s}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_-} + \left(2\frac{\partial u_s}{\partial s} + \frac{\partial u_z}{\partial z} - is \frac{\partial}{\partial s}\frac{u_\phi}{s}- \frac{i}{s}\frac{\partial u_s}{\partial \phi}\right) \widetilde{zM_1}, \\
+    \frac{\partial B_{+}^e}{\partial t} &= - \left(\mathbf{u}^e \cdot \nabla_e\right) B_{+}^e + \frac{1}{2} B_{e+} \left[\left(\frac{\partial}{\partial s} - \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{s}^e + iu_{\phi}^e\right) + \frac{1}{s} \left(u_{s}^e - i u_{\phi}^e\right)\right] \\ 
+    &\qquad \qquad \qquad \quad \,\,\,\, + \frac{1}{2} B_{-}^e \left[\left(\frac{\partial}{\partial s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{s}^e + iu_{\phi}^e\right) - \frac{1}{s} \left(u_{s}^e + i u_{\phi}^e\right)\right], \\ 
+    \frac{\partial B_{-}^e}{\partial t} &= - \left(\mathbf{u}^e \cdot \nabla_e\right) B_{-}^e + \frac{1}{2} B_{+}^e \left[\left(\frac{\partial}{\partial s} - \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{s}^e - iu_{\phi}^e\right) - \frac{1}{s} \left(u_{s}^e - i u_{\phi}^e\right)\right] \\ 
+    &\qquad \qquad \qquad \quad \,\,\,\, + \frac{1}{2} B_{-}^e \left[\left(\frac{\partial}{\partial s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{s}^e - iu_{\phi}^e\right) + \frac{1}{s} \left(u_{s}^e + i u_{\phi}^e\right)\right] \\ 
+    %
+    \frac{\partial B_{+,z}^e}{\partial t} &= - \left(\mathbf{u}^e \cdot \nabla_e\right) B_{+,z}^e + \frac{1}{2} B_{+,z}^e \left[\left(\frac{\partial}{\partial s} - \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{s}^e + iu_{\phi}^e\right) + \frac{1}{s} \left(u_{s}^e - i u_{\phi}^e\right)\right] \\ 
+    &\qquad \quad \,\, - \frac{\partial u_z}{\partial z} B_{+,z}^e + \frac{1}{2} B_{-,z}^e \left[\left(\frac{\partial}{\partial s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{s}^e + iu_{\phi}^e\right) - \frac{1}{s} \left(u_{s}^e + i u_{\phi}^e\right)\right] \\ 
+    \frac{\partial B_{-,z}^e}{\partial t} &= - \left(\mathbf{u}^e \cdot \nabla_e\right) B_{-,z}^e + \frac{1}{2} B_{+,z}^e \left[\left(\frac{\partial}{\partial s} - \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{s}^e - iu_{\phi}^e\right) - \frac{1}{s} \left(u_{s}^e - i u_{\phi}^e\right)\right] \\ 
+    &\qquad \quad \,\, - \frac{\partial u_z}{\partial z} B_{-,z}^e + \frac{1}{2} B_{-,z}^e \left[\left(\frac{\partial}{\partial s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) \left(u_{s}^e - iu_{\phi}^e\right) + \frac{1}{s} \left(u_{s}^e + i u_{\phi}^e\right)\right]
+\end{align*}
+
+

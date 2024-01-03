@@ -1,0 +1,6 @@
+﻿pg\_utils.pg\_model.core.cgvar\_bg
+==================================
+
+.. currentmodule:: pg_utils.pg_model.core
+
+.. autodata:: cgvar_bg

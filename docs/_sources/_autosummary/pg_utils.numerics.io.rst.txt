@@ -1,0 +1,34 @@
+﻿pg\_utils.numerics.io
+=====================
+
+.. automodule:: pg_utils.numerics.io
+  
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      matrices_load_h5
+      matrices_save_h5
+      matrix_load_from_group
+      sparse_coo_load_from_group
+      sparse_coo_save_to_group
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
