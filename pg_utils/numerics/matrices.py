@@ -315,12 +315,17 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
                 max(nrange_trial), max(nrange_test))
         else:
             alpha, beta, quadN = self.deduce_params(max(nrange_trial), max(nrange_test))
+        
+        # Throw warning of singularity if alpha or beta <= -1
         if alpha <= -1:
             alpha = 0
             quadN *= 2
+            warnings.warn("Endpoint singularity detected! Check for integrability!")
         if beta <= -1:
             beta = 0
             quadN *= 2
+            warnings.warn("Endpoint singularity detected! Check for integrability!")
+        
         if verbose:
             print("Integrating with alpha={}, beta={}, N={}".format(alpha, beta, quadN))
         if backend == "sympy":

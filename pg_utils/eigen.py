@@ -130,8 +130,8 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
     # !!!!! ==================================================== Note ===========
     # If the code is not used interactively, perhaps all simplify can be skipped?
     else:
-        new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().simplify()
-        new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().simplify()
+        new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H}).expand()
+        new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H}).expand()
         # Take z to +H or -H at the boundaries or to 0 at the equatorial plane
         if fname in fnames[-6:-3]:
             new_rhs = new_rhs.subs({z: +H}).doit().simplify()
