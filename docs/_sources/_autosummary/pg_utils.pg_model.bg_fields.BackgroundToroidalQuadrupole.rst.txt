@@ -1,0 +1,25 @@
+pg\_utils.pg\_model.bg\_fields.BackgroundToroidalQuadrupole
+===========================================================
+
+.. currentmodule:: pg_utils.pg_model.bg_fields
+
+.. autoclass:: BackgroundToroidalQuadrupole
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BackgroundToroidalQuadrupole.__init__
+   
+   
+
+   
+   
+   

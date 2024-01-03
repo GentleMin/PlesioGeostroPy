@@ -1,0 +1,6 @@
+pg\_utils.eigen.process\_matrix\_element
+========================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: process_matrix_element

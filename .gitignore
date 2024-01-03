@@ -30,6 +30,7 @@ test.py
 # Source files for documentation
 /docs/source/
 /docs/build/
+/docs/demos/
 /docs/make.bat
 /docs/Makefile
 /docs/.readthedocs.yaml

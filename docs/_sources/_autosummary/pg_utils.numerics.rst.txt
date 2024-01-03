@@ -1,4 +1,4 @@
-pg\_utils.numerics
+﻿pg\_utils.numerics
 ==================
 
 .. automodule:: pg_utils.numerics
@@ -28,6 +28,8 @@ pg\_utils.numerics
    :template: custom-module-template.rst
    :recursive:
 
+   pg_utils.numerics.io
    pg_utils.numerics.matrices
+   pg_utils.numerics.special
    pg_utils.numerics.utils
 
