@@ -9,13 +9,14 @@ __pycache__/
 *.bbl
 *.bcf
 *.sty
-formulations/*.gz
-formulations/*.log
-formulations/*.out
-formulations/*.xml
+reports/*.gz
+reports/*.log
+reports/*.out
+reports/*.xml
 presentation/
 out/**/*.png
 out/**/*.pdf
+out/archived/
 out/tmp/
 # unwanted local test scripts
 test.py
