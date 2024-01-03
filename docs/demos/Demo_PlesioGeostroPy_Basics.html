@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introducing PlesioGeostroPy: Quickstart &mdash; PlesioGeostroPy 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Intro to the collection interface" href="Demo_Collections.html" />
+    <link rel="prev" title="Tutorials" href="../tutorials.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PlesioGeostroPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#intro">Intro</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#why-plesiogeostropy">Why PlesioGeostroPy?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-started-with-sympy">Getting started with SymPy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#symbols-functions-expressions">Symbols, functions, expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#substitutions-simplifications">Substitutions, simplifications</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-started-with-plesiogeostropy">Getting started with PlesioGeostroPy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core-variables">Core variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#equations-and-linearizations">Equations and linearizations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#precomputed-equations">Precomputed equations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#forcing-and-linearization">Forcing and linearization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#to-be-continued">To be continued</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Demo_Collections.html">Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Demo_Variables.html">Variables, equations and forcings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Demo_Regularity.html">Regularity conditions on tensor components in polar coordinates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/pg_utils.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PlesioGeostroPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Introducing PlesioGeostroPy: Quickstart</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/demos/Demo_PlesioGeostroPy_Basics.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="introducing-plesiogeostropy-quickstart">
+<h1>Introducing PlesioGeostroPy: Quickstart<a class="headerlink" href="#introducing-plesiogeostropy-quickstart" title="Permalink to this heading"></a></h1>
+<p>PlesioGeostroPy is a python realization of the plesio-gestrophy model. Plesio-Geostrophy model (see <a class="reference external" href="https://doi.org/10.1098/rspa.2020.0513">Jackson and Maffei, 2020</a>), or PG model, is a 2-D reduced model for 3-D MHD in rapidly rotating frame, based on near-geostrophic flows in an axisymmetric cavity. The model uses a plesio-geostrophic ansatz, where the velocity field is completely described by a scalar stream function, but remains solenoidal and satisfies the non-penetration boundary condition. In diffusionless case, the MHD equations are shown to exactly reduce to a set of equations involving only the stream function and the axially integrated magnetic moments (except for the boundary terms), which are all 2-D variables.</p>
+<p>It should be noted that the current development involves only a full sphere geometry. However, the method would apply to general axisymmetric cavities without an inner core.</p>
+<section id="intro">
+<h2>Intro<a class="headerlink" href="#intro" title="Permalink to this heading"></a></h2>
+<section id="why-plesiogeostropy">
+<h3>Why PlesioGeostroPy?<a class="headerlink" href="#why-plesiogeostropy" title="Permalink to this heading"></a></h3>
+<p>Indeed, we already have Daria’s Wolfram Mathematica notebook, which also heavily inspired the initial development of this small package. The decision to develop a python realization is motivated by the following observations:</p>
+<ul class="simple">
+<li><p>Despite the completeness of Daria’s notebook, many notations are cryptic and not easy to apprehend.</p>
+<ul>
+<li><p><em><strong>Problem</strong></em>: The moments have been replaced with notations <code class="docutils literal notranslate"><span class="pre">A</span></code> to <code class="docutils literal notranslate"><span class="pre">H</span></code>, whereas the components of magnetic fields are replaced with notations <code class="docutils literal notranslate"><span class="pre">a</span></code> to <code class="docutils literal notranslate"><span class="pre">c</span></code>. For instance, field <span class="math notranslate nohighlight">\(\overline{M_{ss}}=\overline{B_s^2}\)</span> is <code class="docutils literal notranslate"><span class="pre">A</span></code>, <span class="math notranslate nohighlight">\(\overline{M_{s\phi}} = \overline{B_sB_\phi}\)</span> is <code class="docutils literal notranslate"><span class="pre">C</span></code> (or <code class="docutils literal notranslate"><span class="pre">Csp</span></code> for the perturbation field). The equations also use a confusing numbering system. Not only do we have <code class="docutils literal notranslate"><span class="pre">eq1</span></code> to <code class="docutils literal notranslate"><span class="pre">eq11</span></code>, but also <code class="docutils literal notranslate"><span class="pre">eq73</span></code>, <code class="docutils literal notranslate"><span class="pre">eq74</span></code>, <code class="docutils literal notranslate"><span class="pre">eq76</span></code> and <code class="docutils literal notranslate"><span class="pre">eq80</span></code>. These equations seem to correspond to the not-yet-linearized version of the induction equations. None of these are physically meaningful notations, and I even have jotted down a mapping table just to decipher the Mathematica code.</p></li>
+<li><p><em><strong>Cause</strong></em>: non-physical namings.</p></li>
+<li><p><em><strong>Response</strong></em>: Given the former two observations, a rewrite of the code is desired.</p></li>
+</ul>
+</li>
+<li><p>The original mathematica notebook lacks flexibility when it comes to changing expansions, plottings, numerical computations, etc.</p>
+<ul>
+<li><p><em><strong>Problem</strong></em>: Changing expansions would require switching on and off code blocks, or creating new notebooks. Plotting (according to Stefano) has always been confusing in Mathematica. In addition to that, many of the Mathematica functions, e.g. special functions, etc. do not vectorize well, and would not be efficient in numerics.</p></li>
+<li><p><em><strong>Cause</strong></em>: many of the problems can be attributed to the fact that Mathematica is a domain-specific language (DSL). The inflexibility is due to the fact that Mathematica is mostly a functional language for symbolic manipulation, whereas the support of object-oriented programming is very limited (except for <a class="reference external" href="https://library.wolfram.com/infocenter/Articles/3243/">a OOP repo</a> from 30 years ago, the links from which have mostly expired). The numerics part is not comparable to numerical libaries (e.g. <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">scipy</span></code>), let alone numerics DSL such as MATLAB. In addition, it is also complicated to use external libraries for faster numerical computation.</p></li>
+<li><p><em><strong>Response</strong></em>: Program the model in a language that is a general-purpose language (GPL), which allows abstract design of the code and at the same time allows efficient numerical algorithms. Designed initially to be a scripting language or glue language, and developing later into a GPL with numerous external packages, Python is a good choice. The packages such as <code class="docutils literal notranslate"><span class="pre">sympy</span></code> and <code class="docutils literal notranslate"><span class="pre">numpy</span></code> allow good integration between the symbolic and the numeric sides of the picture, while <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> and other visualization packages provide an additional selling point. It is also much easier to either directly call or export intermediate variables to external numerical libraries.</p></li>
+</ul>
+</li>
+<li><p>Mathematica is closed source, while python itself as well as many of the packages are open source.</p></li>
+</ul>
+<p>Of course, switching from Daria’s Mathematica notebook to PlesioGeostroPy implementation comes with a price.</p>
+<ul class="simple">
+<li><p>Symbolic computation may be more robust in Mathematica than in Python. This is statement recycled from some Mathematica users. This might be true for solving differential equations or other equations symbolically, however this is not relevant for PG model. In simple algebras, simplifications and substitutions, Mathematica is just as “capricious” as <code class="docutils literal notranslate"><span class="pre">Sympy</span></code>, the behaviour of neither would coincide exactly as what a human would do during derivations. On top of that, there is no knowing what exactly went wrong in Mathematica, whereas in <code class="docutils literal notranslate"><span class="pre">Sympy</span></code>, the user can peek under the hood as the code is open-source.</p></li>
+<li><p>Arbitrary precision computation is slower in vanilla-version <code class="docutils literal notranslate"><span class="pre">SymPy</span></code>, however slightly. This may be a real issue, but may also be circumvented by using multi-precision evaluation libraries, but it would be much more desirable if computing within the double precision is sufficient.</p></li>
+</ul>
+</section>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h3>
+<p>The package <strong>PlesioGeostroPy</strong> is written in python, and dependent on the following packages.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Core packages</span>
+<span class="n">python</span><span class="o">=</span><span class="mf">3.8.13</span>
+<span class="n">numpy</span><span class="o">=</span><span class="mf">1.22.3</span>
+<span class="n">scipy</span><span class="o">=</span><span class="mf">1.8.0</span>
+<span class="n">sympy</span><span class="o">=</span><span class="mf">1.11.1</span>
+<span class="n">h5py</span><span class="o">=</span><span class="mf">3.3.0</span>
+
+<span class="c1"># Visualization and presentation</span>
+<span class="n">pandas</span><span class="o">=</span><span class="mf">1.4.2</span>
+<span class="n">matplotlib</span><span class="o">=</span><span class="mf">3.5.2</span>
+<span class="n">jupyterlab</span><span class="o">=</span><span class="mf">3.4.0</span>
+
+<span class="c1"># Documentation and testing</span>
+<span class="n">sphinx</span><span class="o">=</span><span class="mf">5.0.2</span>
+<span class="n">pytest</span><span class="o">=</span><span class="mf">7.4.2</span>
+<span class="n">perfplot</span><span class="o">=</span><span class="mf">0.10.2</span>
+<span class="n">line_profiler</span><span class="o">=</span><span class="mf">4.1.1</span>
+</pre></div>
+</div>
+<p>In addition, in order to harness the power of the pretty printing interface, it is highly recommended that the interactive programming is done using <a class="reference external" href="https://jupyter.org/">web-based Project Jupyter tools</a>, such as JupyterLab, Jupyter notebook, or IPython consoles launched in Jupyter services. These tools enable LaTeX rendering, which is a significantly improvement compared to Unicode or ASCII printing methods.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="getting-started-with-sympy">
+<h2>Getting started with SymPy<a class="headerlink" href="#getting-started-with-sympy" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Sympy</span></code>, or “Symbolic Python”, is a Python library for symbolic mathematics. A very brief demo is covered here. For a longer tutorial, see <a class="reference external" href="https://docs.sympy.org/latest/tutorials/intro-tutorial/index.html#intro-tutorial">the official website</a>.</p>
+<p>As in using other Python libraries, to import utilities from the package one only needs to write</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="symbols-functions-expressions">
+<h3>Symbols, functions, expressions<a class="headerlink" href="#symbols-functions-expressions" title="Permalink to this heading"></a></h3>
+<p>As in most programming languages, one needs to <strong>define</strong> a variable before using it, and symbolic symbols are no exceptions in <code class="docutils literal notranslate"><span class="pre">SymPy</span></code>. This might be the only possible and reasonable thing to do for anyone with a background in C/C++, Java, C#, Fortran, Python, Julia or even MATLAB. The only scenarios, where I know the variables are readily interpreted as symbols even before definition are Mathematica and Maple.</p>
+<p>To define a symbolic variable, which will have the name/expression <span class="math notranslate nohighlight">\(\psi_1^{m}\)</span>, we can write the following code</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_1m</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\hat{\psi}_1^m&quot;</span><span class="p">)</span>
+<span class="n">psi_1m</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \hat{\psi}_1^m\]</div>
+</div>
+</div>
+<p>This example already shows that you can use just about any LaTeX expressions as the symbol of the variable.</p>
+<p>A symbol is just an independent variable, and has no known dependency on any other variables:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;x, y, z&quot;</span><span class="p">)</span>
+
+<span class="n">diff_psi_1m_x</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">psi_1m</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">diff_psi_1m_x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0\]</div>
+</div>
+</div>
+<p>If a dependency on some variable is needed for some symbol, one needs to define a <strong>function</strong>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi</span> <span class="o">=</span> <span class="n">Function</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\psi&quot;</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+<span class="n">diff_psi_x</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">diff_psi_x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial^{3}}{\partial y\partial x^{2}} \psi{\left(x,y,z \right)}\]</div>
+</div>
+</div>
+<p>Adding, substracting, multiplying or dividing any symbols or functions will generate an <strong>expression</strong> (<code class="docutils literal notranslate"><span class="pre">Expr</span></code>):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_expr</span> <span class="o">=</span> <span class="n">psi_1m</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">psi_1m</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">z</span>
+<span class="n">psi_expr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left(\hat{\psi}_1^m\right)^{2} x + \hat{\psi}_1^m y + z\]</div>
+</div>
+</div>
+<p>An expression can once again be added, substracted, multiplied, and differentiated etc. as well. To construct a derivative object without evaluation, use <code class="docutils literal notranslate"><span class="pre">Derivative</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dpsi_expr_dx</span> <span class="o">=</span> <span class="n">Derivative</span><span class="p">(</span><span class="n">psi_expr</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">dpsi_expr_dx</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial x} \left(\left(\hat{\psi}_1^m\right)^{2} x + \hat{\psi}_1^m y + z\right)\]</div>
+</div>
+</div>
+<p>One can evaluate this by either invoking the method <code class="docutils literal notranslate"><span class="pre">.doit()</span></code>, or directly using <code class="docutils literal notranslate"><span class="pre">diff</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">dpsi_expr_dx</span><span class="o">.</span><span class="n">doit</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">diff</span><span class="p">(</span><span class="n">psi_expr</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left(\hat{\psi}_1^m\right)^{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left(\hat{\psi}_1^m\right)^{2}\]</div>
+</div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">sympy</span></code>, there is a clear hierarchy of classes. <code class="docutils literal notranslate"><span class="pre">Expr</span></code> is pretty much one of the most basic base classes. This means a <code class="docutils literal notranslate"><span class="pre">Function</span></code> is an <code class="docutils literal notranslate"><span class="pre">Expr</span></code>, a <code class="docutils literal notranslate"><span class="pre">Symbol</span></code> is an <code class="docutils literal notranslate"><span class="pre">Expr</span></code>, and a <code class="docutils literal notranslate"><span class="pre">jacobi</span></code> polynomial is also an <code class="docutils literal notranslate"><span class="pre">Expr</span></code>. The results of algebraic manipulations, which may be <code class="docutils literal notranslate"><span class="pre">Add</span></code>, <code class="docutils literal notranslate"><span class="pre">Mul</span></code>, are all <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s. For readers who do not know object-oriented programming, by <code class="docutils literal notranslate"><span class="pre">A</span></code> <em>is</em> <code class="docutils literal notranslate"><span class="pre">Expr</span></code>, what I really mean is that <code class="docutils literal notranslate"><span class="pre">A</span></code> is a child class of, or inherit from, <code class="docutils literal notranslate"><span class="pre">Expr</span></code>.</p>
+</section>
+<section id="substitutions-simplifications">
+<h3>Substitutions, simplifications<a class="headerlink" href="#substitutions-simplifications" title="Permalink to this heading"></a></h3>
+<p>Substitution in Sympy is realized by the <code class="docutils literal notranslate"><span class="pre">Expr.subs()</span></code> method. A typical way to use the substitution method is to pass a dictionary (a key-value “map” in C++ languages) into the method.</p>
+<p>This is much more human readable than the <code class="docutils literal notranslate"><span class="pre">/.</span></code> operator in Mathematica.</p>
+<p>The following example shows how the <span class="math notranslate nohighlight">\(\psi\)</span> function is replaced with a Jacobi polynomial of order <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\alpha&quot;</span><span class="p">)</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\beta&quot;</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="n">integer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">diff_jacobi</span> <span class="o">=</span> <span class="n">diff_psi_x</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">psi</span><span class="p">:</span> <span class="n">jacobi</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">x</span><span class="p">)})</span>
+<span class="n">diff_jacobi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial^{3}}{\partial y\partial x^{2}} P_{n}^{\left(\alpha,\beta\right)}\left(x\right)\]</div>
+</div>
+</div>
+<p>Substituting a variable whose derivative is involved would result in delayed substitution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff_val</span> <span class="o">=</span> <span class="n">diff_psi_x</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="n">diff_val</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left. \frac{\partial^{3}}{\partial y\partial x^{2}} \psi{\left(x,y,z \right)} \right|_{\substack{ y=1\\ x=1 }}\end{split}\]</div>
+</div>
+</div>
+<p>which can only be evaluated when the explicit form is calculated:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff_val</span> <span class="o">=</span> <span class="n">diff_val</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">psi</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">})</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
+<span class="n">diff_val</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 12\]</div>
+</div>
+</div>
+<p>Simplification is probably the most counterintuitive part of all symbolic computation libraries, simply due to the fact that the computer does not know for sure what the human programmer wants.</p>
+<p>In many cases, when we are doing simplifications, we also do it by trial and error, and we don’t even know <em>a priori</em> what form we want to end up in.</p>
+<p>We can make a dummy example here,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff_simp</span> <span class="o">=</span> <span class="n">diff_psi_x</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">psi</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="p">})</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+<span class="n">diff_simp</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 \cdot \left(7 x y - \frac{x^{4} y^{3} + 1}{x^{3} y^{2}}\right)\]</div>
+</div>
+</div>
+<p>Apparently, it is much reasonable to rewrite it as
+$<span class="math notranslate nohighlight">\(
+2\left(6xy - \frac{1}{x^3 y^2}\right)
+\)</span>$, this can still be achieved using <code class="docutils literal notranslate"><span class="pre">expand()</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff_simp</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 12 x y - \frac{2}{x^{3} y^{2}}\]</div>
+</div>
+</div>
+<p>For more on simplifying expressions such as rational expressions, special functions, etc., see <a class="reference external" href="https://docs.sympy.org/latest/tutorials/intro-tutorial/simplification.html">Simplifiations in SymPy</a>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="getting-started-with-plesiogeostropy">
+<h2>Getting started with PlesioGeostroPy<a class="headerlink" href="#getting-started-with-plesiogeostropy" title="Permalink to this heading"></a></h2>
+<p>Now we have come to the fun part: the actual utilities concerning the PG model.</p>
+<p>The PG equations, especially the induction equations, are of such a complex form that a sane human being is usually not overly fond of writing the expression down very often.
+PlesioGeostroPy does just that for you, by wrapping the governing equations in much human-readable structures.</p>
+<p>In this section, we shall look at the symbolic part of this package. We will see how to inspect equations, transformations and their linearized versions.</p>
+<section id="core-variables">
+<h3>Core variables<a class="headerlink" href="#core-variables" title="Permalink to this heading"></a></h3>
+<p>The core variables that are concerned in the model are constructed in <code class="docutils literal notranslate"><span class="pre">pg_model.core</span></code> module.
+These first include the coordinates <span class="math notranslate nohighlight">\(s\)</span>, <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(z\)</span>; Cartesian coordinates <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span>; as well as spherical coordinates <span class="math notranslate nohighlight">\(r\)</span>, <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="n">root_dir</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+
+<span class="c1"># The following 2 lines are a hack to import from parent directory</span>
+<span class="c1"># If the notebook is run in the root directory, comment out these 2 lines</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span>
+<span class="n">root_dir</span> <span class="o">=</span> <span class="s2">&quot;..&quot;</span>
+
+<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pg_utils.pg_model</span> <span class="kn">import</span> <span class="n">core</span>
+<span class="kn">from</span> <span class="nn">pg_utils.pg_model.core</span> <span class="kn">import</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">t</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cylindrical oordinates:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">core</span><span class="o">.</span><span class="n">cyl</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span> <span class="k">for</span> <span class="n">i_comp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cylindrical oordinates:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle s\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \phi\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle z\]</div>
+</div>
+</div>
+<p>Next, we have the 3-D vector fields. These include</p>
+<ul class="simple">
+<li><p>magnetic field: in cylindrical coordinates: <code class="docutils literal notranslate"><span class="pre">B_vec</span></code>, background field <code class="docutils literal notranslate"><span class="pre">B0_vec</span></code>; in spherical coordinates <code class="docutils literal notranslate"><span class="pre">B_sph</span></code>, background field <code class="docutils literal notranslate"><span class="pre">B0_sph</span></code>;</p></li>
+<li><p>velocity field: in cylindrical coordinates: <code class="docutils literal notranslate"><span class="pre">U_vec</span></code>, background field <code class="docutils literal notranslate"><span class="pre">U0_vec</span></code>; in spherical coordinates <code class="docutils literal notranslate"><span class="pre">U_sph</span></code>, background field <code class="docutils literal notranslate"><span class="pre">U0_sph</span></code>;</p></li>
+</ul>
+<p>we can take a look at one of these variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">core</span><span class="o">.</span><span class="n">B_vec</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span> <span class="k">for</span> <span class="n">i_comp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{s}{\left(s,\phi,z,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{\phi}{\left(s,\phi,z,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{z}{\left(s,\phi,z,t \right)}\]</div>
+</div>
+</div>
+<p>And finally, the PG variables. These are stored in <code class="docutils literal notranslate"><span class="pre">core.pgvar</span></code>, <code class="docutils literal notranslate"><span class="pre">core.pgvar_bg</span></code> (background) and <code class="docutils literal notranslate"><span class="pre">core.pgvar_ptb</span></code> (perturbation). These are of the type</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pg_utils.pg_model.base.CollectionPG
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">CollectionPG</span></code> is a special class specifically designed for holding PG variables. This class allows accessing fields as attributes or by index, as well as many other useful features. For more detailed explanation of how this interface works, please refer to <a class="reference internal" href="Demo_Collections.html"><span class="doc std std-doc">Demo_Collections</span></a>.</p>
+<p>To look at what variables the object holds, we can for instance make the following inquiry</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="o">.</span><span class="n">_field_names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Psi&#39;,
+ &#39;Mss&#39;,
+ &#39;Mpp&#39;,
+ &#39;Msp&#39;,
+ &#39;Msz&#39;,
+ &#39;Mpz&#39;,
+ &#39;zMss&#39;,
+ &#39;zMpp&#39;,
+ &#39;zMsp&#39;,
+ &#39;Bs_e&#39;,
+ &#39;Bp_e&#39;,
+ &#39;Bz_e&#39;,
+ &#39;dBs_dz_e&#39;,
+ &#39;dBp_dz_e&#39;,
+ &#39;Br_b&#39;,
+ &#39;Bs_p&#39;,
+ &#39;Bp_p&#39;,
+ &#39;Bz_p&#39;,
+ &#39;Bs_m&#39;,
+ &#39;Bp_m&#39;,
+ &#39;Bz_m&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We see that we have in all 21 variables. The first is the stream function; the second to the eight are magnetic moments; then we have the fields in the equatorial plane (ones with <code class="docutils literal notranslate"><span class="pre">_e</span></code> suffix). Finally, we have the boundary terms.</p>
+<p>Note that in standard PG, only <code class="docutils literal notranslate"><span class="pre">Br_b</span></code> = “radial magnetic field at the boundary” is used; however, for many problems such as the eigenvalue problem, we can use <code class="docutils literal notranslate"><span class="pre">Bs_p</span></code> (s-magnetic field at <span class="math notranslate nohighlight">\(z=+H\)</span>) - <code class="docutils literal notranslate"><span class="pre">Bz_m</span></code> (z-magnetic field at <span class="math notranslate nohighlight">\(z=-H\)</span>) instead of <code class="docutils literal notranslate"><span class="pre">Br_b</span></code>. As mentioned, all these fields can be accessed just by typing in the attribute name:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="o">.</span><span class="n">Psi</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="o">.</span><span class="n">Bz_m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \Psi{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{z}{\left(s,\phi,t \right)}\]</div>
+</div>
+</div>
+<p>In addition to this method of accessing fields, the same variable <code class="docutils literal notranslate"><span class="pre">pgvar</span></code> can also be indexed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \Psi{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{z}{\left(s,\phi,t \right)}\]</div>
+</div>
+</div>
+<p>And finally, as a sugar frosting, the fields can be traversed by iterating through the variable <code class="docutils literal notranslate"><span class="pre">pgvar</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">field_symb</span> <span class="k">for</span> <span class="n">field_symb</span> <span class="ow">in</span> <span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \Psi{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_{ss}}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_{\phi\phi}}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_{s\phi}}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{M_{sz}}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{M_{\phi z}}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_{ss}}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{s}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{\phi}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{s, z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{\phi, z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{r1}{\left(\theta,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{s}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{\phi}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{z}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{s}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{\phi}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{z}{\left(s,\phi,t \right)}\]</div>
+</div>
+</div>
+<p>The same thing holds for <code class="docutils literal notranslate"><span class="pre">pgvar_bg</span></code> and <code class="docutils literal notranslate"><span class="pre">pgvar_ptb</span></code>. The background fields are denoted with an additional <span class="math notranslate nohighlight">\(0\)</span> superscript, and the perturbed fields are denoted with lower-case letters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">pgvar_bg</span><span class="o">.</span><span class="n">Mss</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">pgvar_ptb</span><span class="o">.</span><span class="n">Mss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_{ss}}^0{\left(s,\phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{m_{ss}}{\left(s,\phi,t \right)}\]</div>
+</div>
+</div>
+<p>Last but not least, the <code class="docutils literal notranslate"><span class="pre">core</span></code> module also stores the PG ansatz of the velocity, which can be invoked whenever necessary:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">core</span><span class="o">.</span><span class="n">U_pg</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span> <span class="k">for</span> <span class="n">i_comp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\frac{\partial}{\partial \phi} \Psi{\left(s,\phi,t \right)}}{s H{\left(s \right)}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - \frac{\frac{\partial}{\partial s} \Psi{\left(s,\phi,t \right)}}{H{\left(s \right)}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{z \frac{d}{d s} H{\left(s \right)} \frac{\partial}{\partial \phi} \Psi{\left(s,\phi,t \right)}}{s H^{2}{\left(s \right)}}\]</div>
+</div>
+</div>
+</section>
+<section id="equations-and-linearizations">
+<h3>Equations and linearizations<a class="headerlink" href="#equations-and-linearizations" title="Permalink to this heading"></a></h3>
+<p>With all the variables defined, we can now introduce the equations. The 15 PG equations have been typed in manually in the <code class="docutils literal notranslate"><span class="pre">equations.py</span></code> module.
+Since these equations are constructed when the module is imported, the first import of <code class="docutils literal notranslate"><span class="pre">equations</span></code> module takes some time (~10s or so).</p>
+<p>These are similarly stored in a <code class="docutils literal notranslate"><span class="pre">CollectionPG</span></code> object called <code class="docutils literal notranslate"><span class="pre">equations.eqs_pg</span></code>. Let us inspect these equations:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pg_utils.pg_model</span> <span class="kn">import</span> <span class="n">equations</span> <span class="k">as</span> <span class="n">eqs</span>
+
+<span class="n">display</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">eq</span> <span class="k">for</span> <span class="n">eq</span> <span class="ow">in</span> <span class="n">eqs</span><span class="o">.</span><span class="n">eqs_pg</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left(- \frac{\frac{d}{d s} H{\left(s \right)}}{2 H^{2}{\left(s \right)}} + \frac{1}{s H{\left(s \right)}}\right) \frac{\partial^{3}}{\partial t\partial \phi^{2}} \Psi{\left(s,\phi,t \right)} + \frac{\partial}{\partial s} \frac{s \frac{\partial^{2}}{\partial t\partial s} \Psi{\left(s,\phi,t \right)}}{H{\left(s \right)}} = - \frac{s \left(\frac{s \frac{\partial}{\partial s} \overline{f_\phi}{\left(s,\phi,t \right)} + \overline{f_\phi}{\left(s,\phi,t \right)}}{s} - \frac{\frac{\partial}{\partial \phi} \overline{f_s}{\left(s,\phi,t \right)}}{s}\right)}{2 H{\left(s \right)}} + \left(\frac{s f_{\phi}^e{\left(s,\phi,t \right)}}{H{\left(s \right)}} + \frac{\frac{\partial}{\partial \phi} \widetilde{f_z}{\left(s,\phi,t \right)}}{2 H{\left(s \right)}}\right) \frac{d}{d s} H{\left(s \right)} - \frac{2 \frac{d}{d s} H{\left(s \right)} \frac{\partial}{\partial \phi} \Psi{\left(s,\phi,t \right)}}{H^{2}{\left(s \right)}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} \overline{M_{ss}}{\left(s,\phi,t \right)} = - \left(U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} \frac{\overline{M_{ss}}{\left(s,\phi,t \right)}}{H{\left(s \right)}} + \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} \frac{\overline{M_{ss}}{\left(s,\phi,t \right)}}{H{\left(s \right)}}}{s}\right) H{\left(s \right)} + 2 \overline{M_{ss}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{s}{\left(s,\phi,z,t \right)} + \frac{2 \overline{M_{s\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} \overline{M_{\phi\phi}}{\left(s,\phi,t \right)} = 2 s \overline{M_{s\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} \frac{U_{\phi}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} H{\left(s \right)} \overline{M_{\phi\phi}}{\left(s,\phi,t \right)} + \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} H{\left(s \right)} \overline{M_{\phi\phi}}{\left(s,\phi,t \right)}}{s}}{H{\left(s \right)}} - 2 \overline{M_{\phi\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{s}{\left(s,\phi,z,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} \overline{M_{s\phi}}{\left(s,\phi,t \right)} = s \overline{M_{ss}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} \frac{U_{\phi}{\left(s,\phi,z,t \right)}}{s} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} \overline{M_{s\phi}}{\left(s,\phi,t \right)} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} \overline{M_{s\phi}}{\left(s,\phi,t \right)}}{s} + \frac{\overline{M_{\phi\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} \widetilde{M_{sz}}{\left(s,\phi,t \right)} = \left(\frac{\partial}{\partial s} U_{s}{\left(s,\phi,z,t \right)} + 2 \frac{\partial}{\partial z} U_{z}{\left(s,\phi,z,t \right)}\right) \widetilde{M_{sz}}{\left(s,\phi,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} \widetilde{M_{sz}}{\left(s,\phi,t \right)} + \widetilde{zM_{ss}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} \frac{U_{s}{\left(s,\phi,z,t \right)} \frac{d}{d s} H{\left(s \right)}}{H{\left(s \right)}} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} \widetilde{M_{sz}}{\left(s,\phi,t \right)}}{s} + \frac{\widetilde{M_{\phi z}}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s} + \frac{\widetilde{zM_{s\phi}}{\left(s,\phi,t \right)} \frac{d}{d s} H{\left(s \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s H{\left(s \right)}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} \widetilde{M_{\phi z}}{\left(s,\phi,t \right)} = s \widetilde{M_{sz}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} \frac{U_{\phi}{\left(s,\phi,z,t \right)}}{s} + \left(- \frac{\partial}{\partial s} U_{s}{\left(s,\phi,z,t \right)} + \frac{\partial}{\partial z} U_{z}{\left(s,\phi,z,t \right)}\right) \widetilde{M_{\phi z}}{\left(s,\phi,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} \widetilde{M_{\phi z}}{\left(s,\phi,t \right)} + \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} \frac{U_{s}{\left(s,\phi,z,t \right)} \frac{d}{d s} H{\left(s \right)}}{H{\left(s \right)}} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} \widetilde{M_{\phi z}}{\left(s,\phi,t \right)}}{s} + \frac{\widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)} \frac{d}{d s} H{\left(s \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s H{\left(s \right)}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} \widetilde{zM_{ss}}{\left(s,\phi,t \right)} = \left(2 \frac{\partial}{\partial s} U_{s}{\left(s,\phi,z,t \right)} + 2 \frac{\partial}{\partial z} U_{z}{\left(s,\phi,z,t \right)}\right) \widetilde{zM_{ss}}{\left(s,\phi,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} \widetilde{zM_{ss}}{\left(s,\phi,t \right)} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} \widetilde{zM_{ss}}{\left(s,\phi,t \right)}}{s} + \frac{2 \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} \widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)} = 2 s \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} \frac{U_{\phi}{\left(s,\phi,z,t \right)}}{s} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} \widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)} - 2 \widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{s}{\left(s,\phi,z,t \right)} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} \widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)} = s \widetilde{zM_{ss}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} \frac{U_{\phi}{\left(s,\phi,z,t \right)}}{s} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)} + \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U_{z}{\left(s,\phi,z,t \right)} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)}}{s} + \frac{\widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B_{s}^e{\left(s,\phi,t \right)} = B_{s}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{s}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{s}^e{\left(s,\phi,t \right)} + \frac{B_{\phi}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{s}^e{\left(s,\phi,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B_{\phi}^e{\left(s,\phi,t \right)} = B_{s}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{\phi}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{\phi}^e{\left(s,\phi,t \right)} + \frac{B_{\phi}^e{\left(s,\phi,t \right)} U_{s}{\left(s,\phi,z,t \right)} - B_{s}^e{\left(s,\phi,t \right)} U_{\phi}{\left(s,\phi,z,t \right)}}{s} + \frac{B_{\phi}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{\phi}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{\phi}^e{\left(s,\phi,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B_{z}^e{\left(s,\phi,t \right)} = B_{z}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U_{z}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{z}^e{\left(s,\phi,t \right)} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{z}^e{\left(s,\phi,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B_{s, z}^e{\left(s,\phi,t \right)} = B_{s, z}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{s}{\left(s,\phi,z,t \right)} - B_{s, z}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U_{z}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{s, z}^e{\left(s,\phi,t \right)} + \frac{B_{\phi, z}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{s, z}^e{\left(s,\phi,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B_{\phi, z}^e{\left(s,\phi,t \right)} = - B_{\phi, z}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U_{z}{\left(s,\phi,z,t \right)} + B_{s, z}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{\phi}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{\phi, z}^e{\left(s,\phi,t \right)} + \frac{B_{\phi, z}^e{\left(s,\phi,t \right)} U_{s}{\left(s,\phi,z,t \right)} - B_{s, z}^e{\left(s,\phi,t \right)} U_{\phi}{\left(s,\phi,z,t \right)}}{s} + \frac{B_{\phi, z}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{\phi}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{\phi, z}^e{\left(s,\phi,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B_{r1}{\left(\theta,\phi,t \right)} = - \frac{\frac{\partial}{\partial \phi} B_{r1}{\left(\theta,\phi,t \right)} U_{\phi}{\left(r,\theta,\phi,t \right)}}{r \sin{\left(\theta \right)}} - \frac{\frac{\partial}{\partial \theta} B_{r1}{\left(\theta,\phi,t \right)} U_{\theta}{\left(r,\theta,\phi,t \right)} \sin{\left(\theta \right)}}{r \sin{\left(\theta \right)}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B^{+}_{s}{\left(s,\phi,t \right)} = B^{+}_{s}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{s}{\left(s,\phi,z,t \right)} + B^{+}_{z}{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U_{s}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{s}{\left(s,\phi,z,t \right)} - U_{z}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial z} B_{s}{\left(s,\phi,z,t \right)} + \frac{B^{+}_{\phi}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{s}{\left(s,\phi,z,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B^{+}_{\phi}{\left(s,\phi,t \right)} = B^{+}_{s}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{\phi}{\left(s,\phi,z,t \right)} + B^{+}_{z}{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U_{\phi}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{\phi}{\left(s,\phi,z,t \right)} - U_{z}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial z} B_{\phi}{\left(s,\phi,z,t \right)} + \frac{B^{+}_{\phi}{\left(s,\phi,t \right)} U_{s}{\left(s,\phi,z,t \right)} - B^{+}_{s}{\left(s,\phi,t \right)} U_{\phi}{\left(s,\phi,z,t \right)}}{s} + \frac{B^{+}_{\phi}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{\phi}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{\phi}{\left(s,\phi,z,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B^{+}_{z}{\left(s,\phi,t \right)} = B^{+}_{s}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{z}{\left(s,\phi,z,t \right)} + B^{+}_{z}{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U_{z}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{z}{\left(s,\phi,z,t \right)} - U_{z}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial z} B_{z}{\left(s,\phi,z,t \right)} + \frac{B^{+}_{\phi}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{z}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{z}{\left(s,\phi,z,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B^{-}_{s}{\left(s,\phi,t \right)} = B^{-}_{s}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{s}{\left(s,\phi,z,t \right)} + B^{-}_{z}{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U_{s}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{s}{\left(s,\phi,z,t \right)} - U_{z}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial z} B_{s}{\left(s,\phi,z,t \right)} + \frac{B^{-}_{\phi}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{s}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{s}{\left(s,\phi,z,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B^{-}_{\phi}{\left(s,\phi,t \right)} = B^{-}_{s}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{\phi}{\left(s,\phi,z,t \right)} + B^{-}_{z}{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U_{\phi}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{\phi}{\left(s,\phi,z,t \right)} - U_{z}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial z} B_{\phi}{\left(s,\phi,z,t \right)} + \frac{B^{-}_{\phi}{\left(s,\phi,t \right)} U_{s}{\left(s,\phi,z,t \right)} - B^{-}_{s}{\left(s,\phi,t \right)} U_{\phi}{\left(s,\phi,z,t \right)}}{s} + \frac{B^{-}_{\phi}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{\phi}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{\phi}{\left(s,\phi,z,t \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} B^{-}_{z}{\left(s,\phi,t \right)} = B^{-}_{s}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U_{z}{\left(s,\phi,z,t \right)} + B^{-}_{z}{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U_{z}{\left(s,\phi,z,t \right)} - U_{s}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial s} B_{z}{\left(s,\phi,z,t \right)} - U_{z}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial z} B_{z}{\left(s,\phi,z,t \right)} + \frac{B^{-}_{\phi}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U_{z}{\left(s,\phi,z,t \right)}}{s} - \frac{U_{\phi}{\left(s,\phi,z,t \right)} \frac{\partial}{\partial \phi} B_{z}{\left(s,\phi,z,t \right)}}{s}\]</div>
+</div>
+</div>
+<p>Of course, as other <code class="docutils literal notranslate"><span class="pre">CollectionPG</span></code> objects as <code class="docutils literal notranslate"><span class="pre">core.pgvar</span></code>, the equations in <code class="docutils literal notranslate"><span class="pre">equations.eqs_pg</span></code> can also be accessed either by attribute (e.g. <code class="docutils literal notranslate"><span class="pre">equations.eqs_pg.Mss</span></code>) or by index (e.g. <code class="docutils literal notranslate"><span class="pre">equations.eqs_pg[1]</span></code>).</p>
+<p>These equations are then linearized automatically in the same module. The procedure is as follows: each fields are expanded as the background state + <span class="math notranslate nohighlight">\(\epsilon\cdot\)</span> a perturbation state. Then, all the terms that are linear in <span class="math notranslate nohighlight">\(\epsilon\)</span> are collected to yields the linearized form. This method is borrowed from Daria’s Mathematica notebook.</p>
+<p>The linearized equations are then stored in <code class="docutils literal notranslate"><span class="pre">equations.eqs_lin</span></code>. For instance, the linearized evolution equation for <span class="math notranslate nohighlight">\(\widetilde{zM_{s\phi}}\)</span> takes the form</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eqs</span><span class="o">.</span><span class="n">eqs_pg_lin</span><span class="o">.</span><span class="n">zMsp</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} \widetilde{zm_{s\phi}}{\left(s,\phi,t \right)} = - U^{0}_{s}{\left(s,\phi,z \right)} \frac{\partial}{\partial s} \widetilde{zm_{s\phi}}{\left(s,\phi,t \right)} + \widetilde{zm_{s\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial z} U^{0}_{z}{\left(s,\phi,z \right)} + \widetilde{zm_{ss}}{\left(s,\phi,t \right)} \frac{\partial}{\partial s} U^{0}_{\phi}{\left(s,\phi,z \right)} - \frac{\widetilde{zM_{ss}}^0{\left(s,\phi \right)} \frac{\partial^{2}}{\partial s^{2}} \psi{\left(s,\phi,t \right)}}{H{\left(s \right)}} + \frac{\widetilde{zM_{ss}}^0{\left(s,\phi \right)} \frac{d}{d s} H{\left(s \right)} \frac{\partial}{\partial s} \psi{\left(s,\phi,t \right)}}{H^{2}{\left(s \right)}} - \frac{U^{0}_{\phi}{\left(s,\phi,z \right)} \widetilde{zm_{ss}}{\left(s,\phi,t \right)}}{s} - \frac{U^{0}_{\phi}{\left(s,\phi,z \right)} \frac{\partial}{\partial \phi} \widetilde{zm_{s\phi}}{\left(s,\phi,t \right)}}{s} + \frac{\widetilde{zm_{\phi\phi}}{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} U^{0}_{s}{\left(s,\phi,z \right)}}{s} + \frac{\widetilde{zM_{ss}}^0{\left(s,\phi \right)} \frac{\partial}{\partial s} \psi{\left(s,\phi,t \right)}}{s H{\left(s \right)}} - \frac{\frac{\partial}{\partial \phi} \psi{\left(s,\phi,t \right)} \frac{\partial}{\partial s} \widetilde{zM_{s\phi}}^0{\left(s,\phi \right)}}{s H{\left(s \right)}} + \frac{\frac{\partial}{\partial s} \psi{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} \widetilde{zM_{s\phi}}^0{\left(s,\phi \right)}}{s H{\left(s \right)}} + \frac{\widetilde{zM_{s\phi}}^0{\left(s,\phi \right)} \frac{d}{d s} H{\left(s \right)} \frac{\partial}{\partial \phi} \psi{\left(s,\phi,t \right)}}{s H^{2}{\left(s \right)}} + \frac{\widetilde{zM_{\phi\phi}}^0{\left(s,\phi \right)} \frac{\partial^{2}}{\partial \phi^{2}} \psi{\left(s,\phi,t \right)}}{s^{2} H{\left(s \right)}}\]</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>The vorticity equation has been validated against Daria’s notebook <code class="docutils literal notranslate"><span class="pre">quad_malkus_reg_diff.nb</span></code>, and has passed the test.</p></li>
+<li><p>Induction terms of <span class="math notranslate nohighlight">\(\overline{m_{ss}}\)</span>, <span class="math notranslate nohighlight">\(\overline{m_{\phi\phi}}\)</span>, <span class="math notranslate nohighlight">\(\overline{m_{s\phi}}\)</span>, <span class="math notranslate nohighlight">\(\widetilde{m_{sz}}\)</span>, <span class="math notranslate nohighlight">\(\widetilde{m_{\phi z}}\)</span>, <span class="math notranslate nohighlight">\(\widetilde{zm_{ss}}\)</span>, <span class="math notranslate nohighlight">\(z\widetilde{m_{\phi\phi}}\)</span>, <span class="math notranslate nohighlight">\(z\widetilde{m_{s\phi}}\)</span>, as well as <span class="math notranslate nohighlight">\(b_{es}\)</span> and <span class="math notranslate nohighlight">\(b_{e\phi}\)</span> (i.e. the linearized induction term), have been validated against <code class="docutils literal notranslate"><span class="pre">quad_malkus_reg_diff.nb</span></code> and have passed the test.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eqs</span><span class="o">.</span><span class="n">eqs_pg_lin</span><span class="o">.</span><span class="n">Bs_p</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">core</span><span class="o">.</span><span class="n">U0_vec</span><span class="o">.</span><span class="n">s</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">U0_vec</span><span class="o">.</span><span class="n">p</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">U0_vec</span><span class="o">.</span><span class="n">z</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\partial}{\partial t} b^{+}_{s}{\left(s,\phi,t \right)} = - \frac{z \frac{\partial}{\partial z} B^{0}_{s}{\left(s,\phi,z \right)} \frac{d}{d s} H{\left(s \right)} \frac{\partial}{\partial \phi} \psi{\left(s,\phi,t \right)}}{s H^{2}{\left(s \right)}} + \frac{B_s^{0+}{\left(s,\phi \right)} \frac{\partial^{2}}{\partial s\partial \phi} \psi{\left(s,\phi,t \right)}}{s H{\left(s \right)}} - \frac{B_s^{0+}{\left(s,\phi \right)} \frac{d}{d s} H{\left(s \right)} \frac{\partial}{\partial \phi} \psi{\left(s,\phi,t \right)}}{s H^{2}{\left(s \right)}} + \frac{\frac{\partial}{\partial \phi} B^{0}_{s}{\left(s,\phi,z \right)} \frac{\partial}{\partial s} \psi{\left(s,\phi,t \right)}}{s H{\left(s \right)}} - \frac{\frac{\partial}{\partial s} B^{0}_{s}{\left(s,\phi,z \right)} \frac{\partial}{\partial \phi} \psi{\left(s,\phi,t \right)}}{s H{\left(s \right)}} + \frac{B_\phi^{0+}{\left(s,\phi \right)} \frac{\partial^{2}}{\partial \phi^{2}} \psi{\left(s,\phi,t \right)}}{s^{2} H{\left(s \right)}} - \frac{B_s^{0+}{\left(s,\phi \right)} \frac{\partial}{\partial \phi} \psi{\left(s,\phi,t \right)}}{s^{2} H{\left(s \right)}}\]</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Induction terms of <span class="math notranslate nohighlight">\(b_s^\pm\)</span>, <span class="math notranslate nohighlight">\(b_\phi^\pm\)</span>, <span class="math notranslate nohighlight">\(b_z^\pm\)</span> has been validated against the expressions in the document <span class="xref myst">PG_Assim.pdf</span>, which are derived by hand. The validation is successful.</p></li>
+<li><p>The validation is performed under zero background velocity.</p></li>
+</ul>
+<p>We note that in the vorticity equation, the placeholders for the forces are used:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eqs</span><span class="o">.</span><span class="n">eqs_pg_lin</span><span class="o">.</span><span class="n">Psi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{s \frac{\partial^{3}}{\partial t\partial s^{2}} \psi{\left(s,\phi,t \right)}}{H{\left(s \right)}} - \frac{s \frac{d}{d s} H{\left(s \right)} \frac{\partial^{2}}{\partial t\partial s} \psi{\left(s,\phi,t \right)}}{H^{2}{\left(s \right)}} + \frac{\frac{\partial^{2}}{\partial t\partial s} \psi{\left(s,\phi,t \right)}}{H{\left(s \right)}} - \frac{\frac{d}{d s} H{\left(s \right)} \frac{\partial^{3}}{\partial t\partial \phi^{2}} \psi{\left(s,\phi,t \right)}}{2 H^{2}{\left(s \right)}} + \frac{\frac{\partial^{3}}{\partial t\partial \phi^{2}} \psi{\left(s,\phi,t \right)}}{s H{\left(s \right)}} = \frac{s f_{\phi}^e{\left(s,\phi,t \right)} \frac{d}{d s} H{\left(s \right)}}{H{\left(s \right)}} - \frac{s \frac{\partial}{\partial s} \overline{f_\phi}{\left(s,\phi,t \right)}}{2 H{\left(s \right)}} - \frac{\overline{f_\phi}{\left(s,\phi,t \right)}}{2 H{\left(s \right)}} + \frac{\frac{d}{d s} H{\left(s \right)} \frac{\partial}{\partial \phi} \widetilde{f_z}{\left(s,\phi,t \right)}}{2 H{\left(s \right)}} + \frac{\frac{\partial}{\partial \phi} \overline{f_s}{\left(s,\phi,t \right)}}{2 H{\left(s \right)}} - \frac{2 \frac{d}{d s} H{\left(s \right)} \frac{\partial}{\partial \phi} \psi{\left(s,\phi,t \right)}}{H^{2}{\left(s \right)}}\]</div>
+</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(\overline{f_s}\)</span>, <span class="math notranslate nohighlight">\(\overline{f_\phi}\)</span>, <span class="math notranslate nohighlight">\(\widetilde{f_z}\)</span> and <span class="math notranslate nohighlight">\(f_{e\phi}\)</span> are the vertically evenly integrated <span class="math notranslate nohighlight">\(s\)</span>-component, <span class="math notranslate nohighlight">\(\phi\)</span>-component, vertically oddly integrated <span class="math notranslate nohighlight">\(z\)</span>-component and the equatorial <span class="math notranslate nohighlight">\(\phi\)</span>-component of arbitrary body force <span class="math notranslate nohighlight">\(\mathbf{f}\)</span>, respectively.</p>
+<p>This allows some flexibility regarding which forces are included in the system. Currently, only the forms of the Lorentz force are compiled in the package, but adding viscous diffusion as well as buoyancy force will be straightforward.</p>
+</section>
+<section id="precomputed-equations">
+<h3>Precomputed equations<a class="headerlink" href="#precomputed-equations" title="Permalink to this heading"></a></h3>
+<p>As you probably have noticed, loading the equations from the <code class="docutils literal notranslate"><span class="pre">pg_utils.pg_model.equations</span></code> module is <strong>slooowwww</strong>!</p>
+<p>Loading the equations now may take 20-30s (tested on my laptop, AMD R5-4500U).</p>
+<p>The reason is that it takes a while to compile the equations, as they are not all written out in explicit forms in the code.
+In linearization especially, the program needs to simplify the expressions to a form where the perturbation <span class="math notranslate nohighlight">\(\epsilon\)</span> is taken out of all brackets.
+Another problem is that so far, compilation and derivation of equations is done sequentially, not in parallel.</p>
+<p>While the compilation of equations is not expected to be the bottleneck of the program in the end, it would still be desirable if it can be loaded faster.
+A method is to compute the equations and store them in a string that can be quickly loaded.
+This has already been done and the outputs have been saved under <code class="docutils literal notranslate"><span class="pre">out/symbolic/</span></code>.
+One can use the following code to load a set of equations:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pg_utils.pg_model</span> <span class="kn">import</span> <span class="n">base</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s2">&quot;out/symbolic/eqs_pg.json&quot;</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fread</span><span class="p">:</span>
+    <span class="n">pgeqs</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">CollectionPG</span><span class="o">.</span><span class="n">load_json</span><span class="p">(</span><span class="n">fread</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">parse_expr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>which cuts back the cost of loading from 20s to 2s. The following four sets are given in the folder:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">eqs_pg.json</span></code>: original PG equations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">eqs_pg_lin.json</span></code>: linearized PG equations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">eqs_cg.json</span></code>: conjugate variable equations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">eqs_cg_lin.json</span></code>: linearized conjugate variable equations</p></li>
+</ul>
+<p>This is now the recommended way to load equations. However, it also means that if the equations in <code class="docutils literal notranslate"><span class="pre">pg_utils.pg_model.equations</span></code> are changed, they would need to be re-compiled and re-saved.</p>
+</section>
+<section id="forcing-and-linearization">
+<h3>Forcing and linearization<a class="headerlink" href="#forcing-and-linearization" title="Permalink to this heading"></a></h3>
+<p>As mentioned, the forcing in the vorticity equation is only given by placeholder functions. It remains to be defined what forces are involved in the system. This is the task for the <code class="docutils literal notranslate"><span class="pre">forcing.py</span></code> module.</p>
+<p>Currently, only the forms of the Lorentz force are compiled in the package. The explicit forms for Lorentz force are stored in <code class="docutils literal notranslate"><span class="pre">forcing.Ls_sym_expr</span></code>, <code class="docutils literal notranslate"><span class="pre">forcing.Lp_sym_expr</span></code>, <code class="docutils literal notranslate"><span class="pre">forcing.Lz_asym_expr</span></code> and <code class="docutils literal notranslate"><span class="pre">forcing.Le_p_expr</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pg_utils.pg_model</span> <span class="kn">import</span> <span class="n">forcing</span>
+
+<span class="n">Eq</span><span class="p">(</span><span class="n">forcing</span><span class="o">.</span><span class="n">Le_p</span><span class="p">,</span> <span class="n">forcing</span><span class="o">.</span><span class="n">Le_p_expr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle L_{\phi}^e{\left(s,\phi,t \right)} = B_{\phi, z}^e{\left(s,\phi,t \right)} B_{z}^e{\left(s,\phi,t \right)} + B_{s}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial s} B_{\phi}^e{\left(s,\phi,t \right)} + \frac{B_{\phi}^e{\left(s,\phi,t \right)} B_{s}^e{\left(s,\phi,t \right)}}{s} + \frac{B_{\phi}^e{\left(s,\phi,t \right)} \frac{\partial}{\partial \phi} B_{\phi}^e{\left(s,\phi,t \right)}}{s}\]</div>
+</div>
+</div>
+<p>The linearization of the forces are the same as linearization of equations and is done automatically. The linearized forcing terms are stored in <code class="docutils literal notranslate"><span class="pre">forcing.Ls_sym_lin</span></code>, <code class="docutils literal notranslate"><span class="pre">forcing.Lp_sym_lin</span></code>, <code class="docutils literal notranslate"><span class="pre">forcing.Lz_asym_lin</span></code> and <code class="docutils literal notranslate"><span class="pre">forcing.Le_p_lin</span></code> expressions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Eq</span><span class="p">(</span><span class="n">forcing</span><span class="o">.</span><span class="n">Ls_sym</span><span class="p">,</span> <span class="n">forcing</span><span class="o">.</span><span class="n">Ls_sym_lin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{L_s}{\left(s,\phi,t \right)} = \frac{2 s B_s^{0+}{\left(s,\phi \right)} b^{+}_{s}{\left(s,\phi,t \right)}}{H{\left(s \right)}} + \frac{2 s B_s^{0-}{\left(s,\phi \right)} b^{-}_{s}{\left(s,\phi,t \right)}}{H{\left(s \right)}} + B_s^{0+}{\left(s,\phi \right)} b^{+}_{z}{\left(s,\phi,t \right)} - B_s^{0-}{\left(s,\phi \right)} b^{-}_{z}{\left(s,\phi,t \right)} + B_z^{0+}{\left(s,\phi \right)} b^{+}_{s}{\left(s,\phi,t \right)} - B_z^{0-}{\left(s,\phi \right)} b^{-}_{s}{\left(s,\phi,t \right)} + \frac{\partial}{\partial s} \overline{m_{ss}}{\left(s,\phi,t \right)} - \frac{\overline{m_{\phi\phi}}{\left(s,\phi,t \right)}}{s} + \frac{\overline{m_{ss}}{\left(s,\phi,t \right)}}{s} + \frac{\frac{\partial}{\partial \phi} \overline{m_{s\phi}}{\left(s,\phi,t \right)}}{s}\]</div>
+</div>
+</div>
+<p>Linearized expressions for Lorentz force are validated against Daria’s notebook <code class="docutils literal notranslate"><span class="pre">quad_malkus_reg_diff.nb</span></code>.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\overline{L_\phi}\)</span>, <span class="math notranslate nohighlight">\(\widetilde{L_z}\)</span> and <span class="math notranslate nohighlight">\(L_\phi(z=0)\)</span> passed the validation;</p></li>
+<li><p>The <span class="math notranslate nohighlight">\(s\)</span>-component of the equatorial Lorentz force in <code class="docutils literal notranslate"><span class="pre">quad_malkus_reg_diff</span></code> has a <span class="math notranslate nohighlight">\(\frac{s^2}{H}\)</span> coefficient, while the current derivation (and others) indicate this coefficient should be <span class="math notranslate nohighlight">\(\frac{s}{H}\)</span></p></li>
+</ul>
+<p>For a more detailed explanation on the ingredients, see <a class="reference internal" href="Demo_Variables.html"><span class="doc std std-doc">Variables, equations and forcing</span></a>.</p>
+</section>
+</section>
+<section id="to-be-continued">
+<h2>To be continued<a class="headerlink" href="#to-be-continued" title="Permalink to this heading"></a></h2>
+<p>Here are more demos to learn about PlesioGeostroPy:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="Demo_Collections.html"><span class="doc std std-doc">The collection interface</span></a></p></li>
+<li><p><a class="reference internal" href="Demo_Variables.html"><span class="doc std std-doc">The variables, equations and forcing</span></a></p></li>
+<li><p><a class="reference internal" href="Demo_Regularity.html"><span class="doc std std-doc">Regularity conditions of tensor components in polar coordinates</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../tutorials.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Demo_Collections.html" class="btn btn-neutral float-right" title="Intro to the collection interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, GentleMin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

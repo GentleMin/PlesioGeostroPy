@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regularity conditions for tensor components in polar coordinates &mdash; PlesioGeostroPy 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pg_utils" href="../_autosummary/pg_utils.html" />
+    <link rel="prev" title="Variables, equations and forcing terms" href="Demo_Variables.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PlesioGeostroPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Demo_PlesioGeostroPy_Basics.html">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Demo_Collections.html">Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Demo_Variables.html">Variables, equations and forcings</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Regularity conditions on tensor components in polar coordinates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#scalar">Scalar</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-a-singular-scalar-field-showing-necessity-of-the-conditions">Example: a singular scalar field showing necessity of the conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-confirmation-of-the-conditions">Example: confirmation of the conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vector">Vector</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#counter-example-lewis-bellan-relations-are-not-necessary-for-one-component-to-be-regular">(Counter)Example: Lewis-Bellan relations are not necessary for one component to be regular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-a-singular-vector-field-showing-necessity-of-the-conditions">Example: a singular vector field showing necessity of the conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Example: confirmation of the conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#rank-2-tensor">Rank-2 tensor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-a-singular-field-showing-necessity-of-the-m-1-condition">Example: a singular field showing necessity of the |m|=1 condition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-confirmation-of-the-m-1-condition">Example: confirmation of the |m|=1 condition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-a-singular-field-showing-necessity-of-the-2nd-order-condition-for-m-1">Example: a singular field showing necessity of the 2nd-order condition for |m|&gt;1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-confirmation-of-the-2nd-order-condition-for-m-1">Example: confirmation of the 2nd-order condition for |m|&gt;1</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/pg_utils.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PlesioGeostroPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Regularity conditions for tensor components in polar coordinates</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/demos/Demo_Regularity.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="regularity-conditions-for-tensor-components-in-polar-coordinates">
+<h1>Regularity conditions for tensor components in polar coordinates<a class="headerlink" href="#regularity-conditions-for-tensor-components-in-polar-coordinates" title="Permalink to this heading"></a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">plotting_utils</span> <span class="k">as</span> <span class="nn">plottings</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Utilities for symbolic manipulation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\phi&quot;</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="n">A_x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;A_x&quot;</span><span class="p">)</span>
+<span class="n">A_y</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;A_y&quot;</span><span class="p">)</span>
+<span class="n">A_s</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;A_s&quot;</span><span class="p">)</span>
+<span class="n">A_p</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;A_{\phi}&quot;</span><span class="p">)</span>
+<span class="n">A_xx</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;A_</span><span class="si">{xx}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">A_xy</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;A_</span><span class="si">{xy}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">A_yx</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;A_</span><span class="si">{yx}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">A_yy</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;A_</span><span class="si">{yy}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">A_ss</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;A_</span><span class="si">{ss}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">A_sp</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;A_{s\phi}&quot;</span><span class="p">)</span>
+<span class="n">A_ps</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;A_{\phi s}&quot;</span><span class="p">)</span>
+<span class="n">A_pp</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;A_{\phi\phi}&quot;</span><span class="p">)</span>
+
+
+<span class="n">cart2polar_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">s</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+    <span class="n">y</span><span class="p">:</span> <span class="n">s</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">polar2cart_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">s</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">+</span><span class="n">sp</span><span class="o">.</span><span class="n">I</span><span class="o">*</span><span class="n">p</span><span class="p">):</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">I</span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">sp</span><span class="o">.</span><span class="n">I</span><span class="o">*</span><span class="n">p</span><span class="p">):</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">I</span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="scalar">
+<h2>Scalar<a class="headerlink" href="#scalar" title="Permalink to this heading"></a></h2>
+<p>The regularity condition for scalar (Lewis and Bellan <a class="reference external" href="https://doi.org/10.1063/1.529009">1990</a>):
+$<span class="math notranslate nohighlight">\(
+A = \sum_{m=-\infty}^{+\infty} s^{|m|} p(s^2) e^{im\phi}
+\)</span>$</p>
+<section id="example-a-singular-scalar-field-showing-necessity-of-the-conditions">
+<h3>Example: a singular scalar field showing necessity of the conditions<a class="headerlink" href="#example-a-singular-scalar-field-showing-necessity-of-the-conditions" title="Permalink to this heading"></a></h3>
+<p>The following field (containing only <span class="math notranslate nohighlight">\(|m|=1\)</span>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_val</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A = \cos{\left(\phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A = \frac{e^{i \phi}}{2} + \frac{e^{- i \phi}}{2}\]</div>
+</div>
+</div>
+<p>does not have the leading order behaviour <span class="math notranslate nohighlight">\(s^1\)</span> required.</p>
+<p>As we convert it to Cartesian coordinates, it takes the following form in Cartesian coordinates</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A = \frac{x}{\sqrt{x^{2} + y^{2}}}\]</div>
+</div>
+</div>
+<p>The field is thus singular, even discontinous at the origin.</p>
+<p>The visualization of the field is as follows</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_val</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plottings</span><span class="o">.</span><span class="n">polar_singularity_scalar</span><span class="p">(</span><span class="n">sfunc</span><span class="o">=</span><span class="n">A_numerical</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/58550cef8f908bd8e294576ad5995ba3e8481c10ddd9c289400ceb06ae82cae3.png" src="../_images/58550cef8f908bd8e294576ad5995ba3e8481c10ddd9c289400ceb06ae82cae3.png" />
+</div>
+</div>
+</section>
+<section id="example-confirmation-of-the-conditions">
+<h3>Example: confirmation of the conditions<a class="headerlink" href="#example-confirmation-of-the-conditions" title="Permalink to this heading"></a></h3>
+<p>Now we simplify modify the field by adding a <span class="math notranslate nohighlight">\(s^1\)</span> prefactor</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_val</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A = s \cos{\left(\phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A = \frac{s e^{i \phi}}{2} + \frac{s e^{- i \phi}}{2}\]</div>
+</div>
+</div>
+<p>As we convert it to Cartesian coordinates, it takes the following form in Cartesian coordinates</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A = x\]</div>
+</div>
+</div>
+<p>The field is thus regular:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_val</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plottings</span><span class="o">.</span><span class="n">polar_singularity_scalar</span><span class="p">(</span><span class="n">sfunc</span><span class="o">=</span><span class="n">A_numerical</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b47c0a75031d33c204bc1fc6fc6522a47a7d1d2d7611182bd3cbacd1cf00e296.png" src="../_images/b47c0a75031d33c204bc1fc6fc6522a47a7d1d2d7611182bd3cbacd1cf00e296.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="vector">
+<h2>Vector<a class="headerlink" href="#vector" title="Permalink to this heading"></a></h2>
+<p>The regularity condition for vector (Lewis and Bellan <a class="reference external" href="https://doi.org/10.1063/1.529009">1990</a>):
+$<span class="math notranslate nohighlight">\(
+\begin{aligned}
+A_s &amp;= sp(s^2) + \sum_{m\neq 0} \left(\lambda_m s^{|m|-1} + s^{|m|+1}p(s^2)\right) e^{im\phi},\\
+A_\phi &amp;= sp(s^2) + \sum_{m\neq 0} \left(i\mathrm{sgn}(m)\lambda_m s^{|m|-1} + s^{|m|+1}p(s^2)\right) e^{im\phi}
+\end{aligned}
+\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rotate_polar2cart_vec</span><span class="p">(</span><span class="n">F_s</span><span class="p">,</span> <span class="n">F_p</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">F_s</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="n">F_p</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">F_s</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="n">F_p</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="counter-example-lewis-bellan-relations-are-not-necessary-for-one-component-to-be-regular">
+<h3>(Counter)Example: Lewis-Bellan relations are not necessary for one component to be regular<a class="headerlink" href="#counter-example-lewis-bellan-relations-are-not-necessary-for-one-component-to-be-regular" title="Permalink to this heading"></a></h3>
+<p>Consider the following vector field</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_s_val</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="p">))</span><span class="o">/</span><span class="n">s</span>
+<span class="n">A_p_val</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="n">s</span>
+<span class="n">A_s_exp</span> <span class="o">=</span> <span class="n">A_s_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_p_exp</span> <span class="o">=</span> <span class="n">A_p_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_s</span><span class="p">,</span> <span class="n">A_s_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_p</span><span class="p">,</span> <span class="n">A_p_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_s</span><span class="p">,</span> <span class="n">A_s_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_p</span><span class="p">,</span> <span class="n">A_p_exp</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s} = \frac{1 - \cos{\left(2 \phi \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi} = \frac{\sin{\left(2 \phi \right)}}{s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s} = - \frac{e^{2 i \phi}}{2 s} + \frac{1}{s} - \frac{e^{- 2 i \phi}}{2 s}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi} = - \frac{i e^{2 i \phi}}{2 s} + \frac{i e^{- 2 i \phi}}{2 s}\]</div>
+</div>
+</div>
+<p>which does not fulfill the Lewis-Bellan relations at all (even the Fourier coefficients are singular!).</p>
+<p>Nevertheless, as we convert it to Cartesian coordinates, it takes the following form in Cartesian coordinates</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_x_val</span><span class="p">,</span> <span class="n">A_y_val</span> <span class="o">=</span> <span class="n">rotate_polar2cart_vec</span><span class="p">(</span><span class="n">A_s_exp</span><span class="p">,</span> <span class="n">A_p_exp</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_x</span><span class="p">,</span> <span class="n">A_x_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_y</span><span class="p">,</span> <span class="n">A_y_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{x} = 0\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{y} = \frac{2 y}{x^{2} + y^{2}}\]</div>
+</div>
+</div>
+<p>The field is of course singular, even blows up at the origin for <span class="math notranslate nohighlight">\(A_y\)</span>, but the <span class="math notranslate nohighlight">\(A_x\)</span> component is however perfectly regular. Therefore, Lewis and Bellan shouldn’t have jumped to their conclusion by deriving only the <span class="math notranslate nohighlight">\(A_x\)</span> component (eq. 14 in their paper).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_s_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_s_val</span><span class="p">)</span>
+<span class="n">A_p_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_p_val</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plottings</span><span class="o">.</span><span class="n">polar_singularity_vector</span><span class="p">(</span><span class="n">vfunc_s</span><span class="o">=</span><span class="n">A_s_numerical</span><span class="p">,</span> <span class="n">vfunc_p</span><span class="o">=</span><span class="n">A_p_numerical</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/576bd13497369d0e8740f7914386229cd0fd8d4d1e9b3523e31f06d389bc0202.png" src="../_images/576bd13497369d0e8740f7914386229cd0fd8d4d1e9b3523e31f06d389bc0202.png" />
+</div>
+</div>
+</section>
+<section id="example-a-singular-vector-field-showing-necessity-of-the-conditions">
+<h3>Example: a singular vector field showing necessity of the conditions<a class="headerlink" href="#example-a-singular-vector-field-showing-necessity-of-the-conditions" title="Permalink to this heading"></a></h3>
+<p>We look at a field whose Fourier coefficients have the correct prefactor in <span class="math notranslate nohighlight">\(s\)</span>, but have the wrong configuration of coefficients</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_s_val</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">A_p_val</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">A_s_exp</span> <span class="o">=</span> <span class="n">A_s_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_p_exp</span> <span class="o">=</span> <span class="n">A_p_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_s</span><span class="p">,</span> <span class="n">A_s_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_p</span><span class="p">,</span> <span class="n">A_p_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_s</span><span class="p">,</span> <span class="n">A_s_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_p</span><span class="p">,</span> <span class="n">A_p_exp</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s} = \cos{\left(\phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi} = \sin{\left(\phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s} = \frac{e^{i \phi}}{2} + \frac{e^{- i \phi}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi} = - \frac{i e^{i \phi}}{2} + \frac{i e^{- i \phi}}{2}\]</div>
+</div>
+</div>
+<p>As we convert it to Cartesian coordinates, it takes the following form in Cartesian coordinates</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_x_val</span><span class="p">,</span> <span class="n">A_y_val</span> <span class="o">=</span> <span class="n">rotate_polar2cart_vec</span><span class="p">(</span><span class="n">A_s_exp</span><span class="p">,</span> <span class="n">A_p_exp</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_x</span><span class="p">,</span> <span class="n">A_x_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_y</span><span class="p">,</span> <span class="n">A_y_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{x} = \frac{x^{2} - y^{2}}{x^{2} + y^{2}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{y} = \frac{2 x y}{x^{2} + y^{2}}\]</div>
+</div>
+</div>
+<p>The field is singular and discontinous at the origin:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_s_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_s_val</span><span class="p">)</span>
+<span class="n">A_p_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_p_val</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plottings</span><span class="o">.</span><span class="n">polar_singularity_vector</span><span class="p">(</span><span class="n">vfunc_s</span><span class="o">=</span><span class="n">A_s_numerical</span><span class="p">,</span> <span class="n">vfunc_p</span><span class="o">=</span><span class="n">A_p_numerical</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/26d0ad4ed931e7a84fd3d66501e3a156bd1dda53dcbb0c62f8cb7fc432b20c56.png" src="../_images/26d0ad4ed931e7a84fd3d66501e3a156bd1dda53dcbb0c62f8cb7fc432b20c56.png" />
+</div>
+</div>
+</section>
+<section id="id1">
+<h3>Example: confirmation of the conditions<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>Now we simply change the sign of <span class="math notranslate nohighlight">\(A_\phi\)</span> so that the Fourier coefficients are indeed <span class="math notranslate nohighlight">\(i\mathrm{sgn}(m)\)</span> of the <span class="math notranslate nohighlight">\(A_s\)</span> coefficients at the lowest order</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_s_val</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">A_p_val</span> <span class="o">=</span> <span class="o">-</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">A_s_exp</span> <span class="o">=</span> <span class="n">A_s_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_p_exp</span> <span class="o">=</span> <span class="n">A_p_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_s</span><span class="p">,</span> <span class="n">A_s_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_p</span><span class="p">,</span> <span class="n">A_p_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_s</span><span class="p">,</span> <span class="n">A_s_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_p</span><span class="p">,</span> <span class="n">A_p_exp</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s} = \cos{\left(\phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi} = - \sin{\left(\phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s} = \frac{e^{i \phi}}{2} + \frac{e^{- i \phi}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi} = \frac{i e^{i \phi}}{2} - \frac{i e^{- i \phi}}{2}\]</div>
+</div>
+</div>
+<p>The field components are perfectly regular in Cartesian coordinates</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_x_val</span><span class="p">,</span> <span class="n">A_y_val</span> <span class="o">=</span> <span class="n">rotate_polar2cart_vec</span><span class="p">(</span><span class="n">A_s_exp</span><span class="p">,</span> <span class="n">A_p_exp</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_x</span><span class="p">,</span> <span class="n">A_x_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_y</span><span class="p">,</span> <span class="n">A_y_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{x} = 1\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{y} = 0\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_s_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_s_val</span><span class="p">)</span>
+<span class="n">A_p_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_p_val</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plottings</span><span class="o">.</span><span class="n">polar_singularity_vector</span><span class="p">(</span><span class="n">vfunc_s</span><span class="o">=</span><span class="n">A_s_numerical</span><span class="p">,</span> <span class="n">vfunc_p</span><span class="o">=</span><span class="n">A_p_numerical</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e1ed186f770a717550bf85eb076c3e971cea7b269f39eb00c1020b189e1377e2.png" src="../_images/e1ed186f770a717550bf85eb076c3e971cea7b269f39eb00c1020b189e1377e2.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="rank-2-tensor">
+<h2>Rank-2 tensor<a class="headerlink" href="#rank-2-tensor" title="Permalink to this heading"></a></h2>
+<p>Holdenried-Chernoff (<a class="reference external" href="https://www.research-collection.ethz.ch/handle/20.500.11850/509840">2021</a>) derives the following,
+$<span class="math notranslate nohighlight">\(
+A_{ij} = \left[A_{ij}^{00} + O(s^2)\right] + \sum_{|m|=1} \left[A_{ij}^{m0} s + O(s^3)\right] e^{im\phi} + \sum_{|m|\geq 2} \left[A_{ij}^{m0} s^{|m|-2} + A_{ij}^{m1} s^{|m|} + O(s^{|m|+2})\right] e^{im\phi}
+\)</span><span class="math notranslate nohighlight">\(
+where the following relations apply
+\)</span><span class="math notranslate nohighlight">\(
+m = 0: 
+\left\{\begin{aligned}
+    &amp;A_{ss}^{00} = A_{\phi\phi}^{00} \\ 
+    &amp;A_{s\phi}^{00} = -A_{\phi s}^{00}
+\end{aligned}\right.,\qquad 
+|m| \geq 2:
+\left\{\begin{aligned}
+&amp;A_{ss}^{m0} = - A_{\phi\phi}^{m0}\\
+&amp;A_{s\phi}^{m0} = A_{\phi s}^{m0} \\ 
+&amp;A_{s\phi}^{m0} = i \mathrm{sgn}(m) A_{ss}^{m0}
+\end{aligned}\right.
+\)</span>$</p>
+<p>I show that these relations are not exhaustive, and two other conditions are required to make the conditions sufficient. The complete relations are
+$<span class="math notranslate nohighlight">\(
+m = 0: 
+\left\{\begin{aligned}
+    &amp;A_{ss}^{00} = A_{\phi\phi}^{00} \\ 
+    &amp;A_{s\phi}^{00} = -A_{\phi s}^{00}
+\end{aligned}\right.,\qquad 
+|m| = 1: 
+A_{s\phi}^{m0} + A_{\phi s}^{m0} = i\mathrm{sgn}(m) \left(A_{ss}^{m0} - A_{\phi\phi}^{m0}\right),\qquad
+|m| \geq 2:
+\left\{\begin{aligned}
+&amp;A_{ss}^{m0} = - A_{\phi\phi}^{m0}\\
+&amp;A_{s\phi}^{m0} = A_{\phi s}^{m0} \\ 
+&amp;A_{s\phi}^{m0} = i \mathrm{sgn}(m) A_{ss}^{m0} \\ 
+&amp;A_{s\phi}^{m1} + A_{\phi s}^{m1} = i\mathrm{sgn}(m)\left(A_{ss}^{m1} - A_{\phi\phi}^{m1}\right)
+\end{aligned}\right.
+\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rotate_polar2cart_tensor2</span><span class="p">(</span><span class="n">F_ss</span><span class="p">,</span> <span class="n">F_sp</span><span class="p">,</span> <span class="n">F_ps</span><span class="p">,</span> <span class="n">F_pp</span><span class="p">):</span>
+    <span class="n">F_xx</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">F_ss</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">F_pp</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">F_sp</span> <span class="o">+</span> <span class="n">F_ps</span><span class="p">)</span>
+    <span class="n">F_yy</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">F_ss</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">F_pp</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">F_sp</span> <span class="o">+</span> <span class="n">F_ps</span><span class="p">)</span>
+    <span class="n">F_xy</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">F_ss</span> <span class="o">-</span> <span class="n">F_pp</span><span class="p">)</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">F_sp</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">F_ps</span>
+    <span class="n">F_yx</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">F_ss</span> <span class="o">-</span> <span class="n">F_pp</span><span class="p">)</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">F_ps</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">F_sp</span>
+    <span class="k">return</span> <span class="n">F_xx</span><span class="p">,</span> <span class="n">F_xy</span><span class="p">,</span> <span class="n">F_yx</span><span class="p">,</span> <span class="n">F_yy</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="example-a-singular-field-showing-necessity-of-the-m-1-condition">
+<h3>Example: a singular field showing necessity of the |m|=1 condition<a class="headerlink" href="#example-a-singular-field-showing-necessity-of-the-m-1-condition" title="Permalink to this heading"></a></h3>
+<p>The old conditions involve no additional requirements at <span class="math notranslate nohighlight">\(|m|=1\)</span>. To test if the new condition is really necessary, let us look at a field</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_ss_val</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">A_pp_val</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">S</span><span class="o">.</span><span class="n">Zero</span>
+<span class="n">A_sp_val</span> <span class="o">=</span> <span class="n">A_ps_val</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ss</span><span class="p">,</span> <span class="n">A_ss_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_sp</span><span class="p">,</span> <span class="n">A_sp_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ps</span><span class="p">,</span> <span class="n">A_ps_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_pp</span><span class="p">,</span> <span class="n">A_pp_val</span><span class="p">))</span>
+
+<span class="n">A_ss_exp</span> <span class="o">=</span> <span class="n">A_ss_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_sp_exp</span> <span class="o">=</span> <span class="n">A_sp_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_ps_exp</span> <span class="o">=</span> <span class="n">A_ps_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_pp_exp</span> <span class="o">=</span> <span class="n">A_pp_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ss</span><span class="p">,</span> <span class="n">A_ss_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_sp</span><span class="p">,</span> <span class="n">A_sp_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ps</span><span class="p">,</span> <span class="n">A_ps_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_pp</span><span class="p">,</span> <span class="n">A_pp_exp</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{ss} = s \cos{\left(\phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s\phi} = \frac{s \cos{\left(\phi \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi s} = \frac{s \cos{\left(\phi \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi\phi} = 0\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{ss} = \frac{s e^{i \phi}}{2} + \frac{s e^{- i \phi}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s\phi} = \frac{s e^{i \phi}}{4} + \frac{s e^{- i \phi}}{4}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi s} = \frac{s e^{i \phi}}{4} + \frac{s e^{- i \phi}}{4}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi\phi} = 0\]</div>
+</div>
+</div>
+<p>This field does have all the correct prefactors <span class="math notranslate nohighlight">\(s^1\)</span> at <span class="math notranslate nohighlight">\(|m|=1\)</span>, but <span class="math notranslate nohighlight">\(A_{s\phi}^{m0} + A_{\phi s}^{m0} \neq i \mathrm{sgn}(m) (A_{ss}^{m0} - A_{\phi\phi}^{m0})\)</span>. As we convert it to Cartesian coordinates, it takes the following form in Cartesian coordinates</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_xx_val</span><span class="p">,</span> <span class="n">A_xy_val</span><span class="p">,</span> <span class="n">A_yx_val</span><span class="p">,</span> <span class="n">A_yy_val</span> <span class="o">=</span> <span class="n">rotate_polar2cart_tensor2</span><span class="p">(</span><span class="n">A_ss_exp</span><span class="p">,</span> <span class="n">A_sp_exp</span><span class="p">,</span> <span class="n">A_ps_exp</span><span class="p">,</span> <span class="n">A_pp_exp</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_xx</span><span class="p">,</span> <span class="n">A_xx_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_xy</span><span class="p">,</span> <span class="n">A_xy_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_yx</span><span class="p">,</span> <span class="n">A_yx_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_yy</span><span class="p">,</span> <span class="n">A_yy_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{xx} = \frac{x^{2} \left(x - y\right)}{x^{2} + y^{2}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{xy} = \frac{x \left(x^{2} + 2 x y - y^{2}\right)}{2 \left(x^{2} + y^{2}\right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{yx} = \frac{x \left(x^{2} + 2 x y - y^{2}\right)}{2 \left(x^{2} + y^{2}\right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{yy} = \frac{x y \left(x + y\right)}{x^{2} + y^{2}}\]</div>
+</div>
+</div>
+<p>Different from previous examples, this field is not only bounded, but also at least continuous. However, its derivative is undefined at the origin.</p>
+<p>The whole function is not continuously differentiable, so it is still singular.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_ss_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_ss_val</span><span class="p">)</span>
+<span class="n">A_sp_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_sp_val</span><span class="p">)</span>
+<span class="n">A_ps_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_ps_val</span><span class="p">)</span>
+<span class="n">A_pp_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_pp_val</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plottings</span><span class="o">.</span><span class="n">polar_singularity_rank2tensor</span><span class="p">(</span>
+    <span class="n">tfunc_ss</span><span class="o">=</span><span class="n">A_ss_numerical</span><span class="p">,</span> <span class="n">tfunc_sp</span><span class="o">=</span><span class="n">A_sp_numerical</span><span class="p">,</span>
+    <span class="n">tfunc_ps</span><span class="o">=</span><span class="n">A_ps_numerical</span><span class="p">,</span> <span class="n">tfunc_pp</span><span class="o">=</span><span class="n">A_pp_numerical</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bb173255b7baf17ae85ba4187c194f1675ffc30092d211039d21148bc44669f7.png" src="../_images/bb173255b7baf17ae85ba4187c194f1675ffc30092d211039d21148bc44669f7.png" />
+</div>
+</div>
+</section>
+<section id="example-confirmation-of-the-m-1-condition">
+<h3>Example: confirmation of the |m|=1 condition<a class="headerlink" href="#example-confirmation-of-the-m-1-condition" title="Permalink to this heading"></a></h3>
+<p>Now we change slightly the <span class="math notranslate nohighlight">\(A_{ss}\)</span> component from <span class="math notranslate nohighlight">\(\cos\)</span> to <span class="math notranslate nohighlight">\(\sin\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_ss_val</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">A_pp_val</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">S</span><span class="o">.</span><span class="n">Zero</span>
+<span class="n">A_sp_val</span> <span class="o">=</span> <span class="n">A_ps_val</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ss</span><span class="p">,</span> <span class="n">A_ss_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_sp</span><span class="p">,</span> <span class="n">A_sp_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ps</span><span class="p">,</span> <span class="n">A_ps_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_pp</span><span class="p">,</span> <span class="n">A_pp_val</span><span class="p">))</span>
+
+<span class="n">A_ss_exp</span> <span class="o">=</span> <span class="n">A_ss_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_sp_exp</span> <span class="o">=</span> <span class="n">A_sp_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_ps_exp</span> <span class="o">=</span> <span class="n">A_ps_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_pp_exp</span> <span class="o">=</span> <span class="n">A_pp_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ss</span><span class="p">,</span> <span class="n">A_ss_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_sp</span><span class="p">,</span> <span class="n">A_sp_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ps</span><span class="p">,</span> <span class="n">A_ps_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_pp</span><span class="p">,</span> <span class="n">A_pp_exp</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{ss} = s \sin{\left(\phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s\phi} = \frac{s \cos{\left(\phi \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi s} = \frac{s \cos{\left(\phi \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi\phi} = 0\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{ss} = - \frac{i s e^{i \phi}}{2} + \frac{i s e^{- i \phi}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s\phi} = \frac{s e^{i \phi}}{4} + \frac{s e^{- i \phi}}{4}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi s} = \frac{s e^{i \phi}}{4} + \frac{s e^{- i \phi}}{4}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi\phi} = 0\]</div>
+</div>
+</div>
+<p>Now this field satisfies <span class="math notranslate nohighlight">\(A_{s\phi}^{m0} + A_{\phi s}^{m0} = i \mathrm{sgn}(m) (A_{ss}^{m0} - A_{\phi\phi}^{m0})\)</span>. As we convert it to Cartesian coordinates, it takes the form</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_xx_val</span><span class="p">,</span> <span class="n">A_xy_val</span><span class="p">,</span> <span class="n">A_yx_val</span><span class="p">,</span> <span class="n">A_yy_val</span> <span class="o">=</span> <span class="n">rotate_polar2cart_tensor2</span><span class="p">(</span><span class="n">A_ss_exp</span><span class="p">,</span> <span class="n">A_sp_exp</span><span class="p">,</span> <span class="n">A_ps_exp</span><span class="p">,</span> <span class="n">A_pp_exp</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_xx</span><span class="p">,</span> <span class="n">A_xx_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_xy</span><span class="p">,</span> <span class="n">A_xy_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_yx</span><span class="p">,</span> <span class="n">A_yx_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_yy</span><span class="p">,</span> <span class="n">A_yy_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{xx} = 0\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{xy} = \frac{x}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{yx} = \frac{x}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{yy} = y\]</div>
+</div>
+</div>
+<p>And the whole field becomes perfect regular.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_ss_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_ss_val</span><span class="p">)</span>
+<span class="n">A_sp_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_sp_val</span><span class="p">)</span>
+<span class="n">A_ps_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_ps_val</span><span class="p">)</span>
+<span class="n">A_pp_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_pp_val</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plottings</span><span class="o">.</span><span class="n">polar_singularity_rank2tensor</span><span class="p">(</span>
+    <span class="n">tfunc_ss</span><span class="o">=</span><span class="n">A_ss_numerical</span><span class="p">,</span> <span class="n">tfunc_sp</span><span class="o">=</span><span class="n">A_sp_numerical</span><span class="p">,</span>
+    <span class="n">tfunc_ps</span><span class="o">=</span><span class="n">A_ps_numerical</span><span class="p">,</span> <span class="n">tfunc_pp</span><span class="o">=</span><span class="n">A_pp_numerical</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ec8b24c4ffca2b8c23066e1c35d7b0d7dd3b64c29ec4878ef34b6ce9604a92fe.png" src="../_images/ec8b24c4ffca2b8c23066e1c35d7b0d7dd3b64c29ec4878ef34b6ce9604a92fe.png" />
+</div>
+</div>
+</section>
+<section id="example-a-singular-field-showing-necessity-of-the-2nd-order-condition-for-m-1">
+<h3>Example: a singular field showing necessity of the 2nd-order condition for |m|&gt;1<a class="headerlink" href="#example-a-singular-field-showing-necessity-of-the-2nd-order-condition-for-m-1" title="Permalink to this heading"></a></h3>
+<p>The old conditions involve no additional requirements at the second order for <span class="math notranslate nohighlight">\(|m|\geq 2\)</span>. To test if the new condition is really necessary, let us look at a field</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_ss_val</span> <span class="o">=</span> <span class="p">(</span><span class="o">+</span><span class="mi">1</span> <span class="o">+</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="n">A_pp_val</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="n">A_sp_val</span> <span class="o">=</span> <span class="n">A_ps_val</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ss</span><span class="p">,</span> <span class="n">A_ss_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_sp</span><span class="p">,</span> <span class="n">A_sp_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ps</span><span class="p">,</span> <span class="n">A_ps_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_pp</span><span class="p">,</span> <span class="n">A_pp_val</span><span class="p">))</span>
+
+<span class="n">A_ss_exp</span> <span class="o">=</span> <span class="n">A_ss_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_sp_exp</span> <span class="o">=</span> <span class="n">A_sp_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_ps_exp</span> <span class="o">=</span> <span class="n">A_ps_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_pp_exp</span> <span class="o">=</span> <span class="n">A_pp_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ss</span><span class="p">,</span> <span class="n">A_ss_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_sp</span><span class="p">,</span> <span class="n">A_sp_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ps</span><span class="p">,</span> <span class="n">A_ps_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_pp</span><span class="p">,</span> <span class="n">A_pp_exp</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{ss} = \left(s^{2} + 1\right) \sin{\left(2 \phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s\phi} = \left(s^{2} + 1\right) \cos{\left(2 \phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi s} = \left(s^{2} + 1\right) \cos{\left(2 \phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi\phi} = \left(s^{2} - 1\right) \sin{\left(2 \phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{ss} = - \frac{i s^{2} e^{2 i \phi}}{2} + \frac{i s^{2} e^{- 2 i \phi}}{2} - \frac{i e^{2 i \phi}}{2} + \frac{i e^{- 2 i \phi}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s\phi} = \frac{s^{2} e^{2 i \phi}}{2} + \frac{s^{2} e^{- 2 i \phi}}{2} + \frac{e^{2 i \phi}}{2} + \frac{e^{- 2 i \phi}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi s} = \frac{s^{2} e^{2 i \phi}}{2} + \frac{s^{2} e^{- 2 i \phi}}{2} + \frac{e^{2 i \phi}}{2} + \frac{e^{- 2 i \phi}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi\phi} = - \frac{i s^{2} e^{2 i \phi}}{2} + \frac{i s^{2} e^{- 2 i \phi}}{2} + \frac{i e^{2 i \phi}}{2} - \frac{i e^{- 2 i \phi}}{2}\]</div>
+</div>
+</div>
+<p>This field have all the correct prefactors at <span class="math notranslate nohighlight">\(|m|=2\)</span>, and the lowest order coefficient in <span class="math notranslate nohighlight">\(s\)</span> satisfy the conditions required by Holdenried-Chernoff (2021), but the second-order relation is not satisfied, i.e. <span class="math notranslate nohighlight">\(A_{s\phi}^{m1} + A_{\phi s}^{m1} \neq i \mathrm{sgn}(m) (A_{ss}^{m1} - A_{\phi\phi}^{m1})\)</span>. As we convert it to Cartesian coordinates, it takes the form</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_xx_val</span><span class="p">,</span> <span class="n">A_xy_val</span><span class="p">,</span> <span class="n">A_yx_val</span><span class="p">,</span> <span class="n">A_yy_val</span> <span class="o">=</span> <span class="n">rotate_polar2cart_tensor2</span><span class="p">(</span><span class="n">A_ss_exp</span><span class="p">,</span> <span class="n">A_sp_exp</span><span class="p">,</span> <span class="n">A_ps_exp</span><span class="p">,</span> <span class="n">A_pp_exp</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_xx</span><span class="p">,</span> <span class="n">A_xx_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_xy</span><span class="p">,</span> <span class="n">A_xy_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_yx</span><span class="p">,</span> <span class="n">A_yx_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_yy</span><span class="p">,</span> <span class="n">A_yy_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{xx} = \frac{4 x y^{3}}{x^{2} + y^{2}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{xy} = \frac{x^{4} - 2 x^{2} y^{2} + x^{2} + y^{4} + y^{2}}{x^{2} + y^{2}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{yx} = \frac{x^{4} - 2 x^{2} y^{2} + x^{2} + y^{4} + y^{2}}{x^{2} + y^{2}}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{yy} = \frac{4 x^{3} y}{x^{2} + y^{2}}\]</div>
+</div>
+</div>
+<p>The field is again bounded and continuous, but is not continuously differentiable, and hence still singular.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_ss_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_ss_val</span><span class="p">)</span>
+<span class="n">A_sp_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_sp_val</span><span class="p">)</span>
+<span class="n">A_ps_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_ps_val</span><span class="p">)</span>
+<span class="n">A_pp_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_pp_val</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plottings</span><span class="o">.</span><span class="n">polar_singularity_rank2tensor</span><span class="p">(</span>
+    <span class="n">tfunc_ss</span><span class="o">=</span><span class="n">A_ss_numerical</span><span class="p">,</span> <span class="n">tfunc_sp</span><span class="o">=</span><span class="n">A_sp_numerical</span><span class="p">,</span>
+    <span class="n">tfunc_ps</span><span class="o">=</span><span class="n">A_ps_numerical</span><span class="p">,</span> <span class="n">tfunc_pp</span><span class="o">=</span><span class="n">A_pp_numerical</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7c6d168200cb929bc62981bcfff65e30c8c39062dbd1b9540f5b37c1981ff045.png" src="../_images/7c6d168200cb929bc62981bcfff65e30c8c39062dbd1b9540f5b37c1981ff045.png" />
+</div>
+</div>
+</section>
+<section id="example-confirmation-of-the-2nd-order-condition-for-m-1">
+<h3>Example: confirmation of the 2nd-order condition for |m|&gt;1<a class="headerlink" href="#example-confirmation-of-the-2nd-order-condition-for-m-1" title="Permalink to this heading"></a></h3>
+<p>We only need to flip the sign for the second order term in <span class="math notranslate nohighlight">\(A_{\phi\phi}\)</span> to construct a field which completely abides by the newly derived regularity conditions, even at second order:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_ss_val</span> <span class="o">=</span> <span class="p">(</span><span class="o">+</span><span class="mi">1</span> <span class="o">+</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="n">A_pp_val</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="n">A_sp_val</span> <span class="o">=</span> <span class="n">A_ps_val</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ss</span><span class="p">,</span> <span class="n">A_ss_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_sp</span><span class="p">,</span> <span class="n">A_sp_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ps</span><span class="p">,</span> <span class="n">A_ps_val</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_pp</span><span class="p">,</span> <span class="n">A_pp_val</span><span class="p">))</span>
+
+<span class="n">A_ss_exp</span> <span class="o">=</span> <span class="n">A_ss_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_sp_exp</span> <span class="o">=</span> <span class="n">A_sp_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_ps_exp</span> <span class="o">=</span> <span class="n">A_ps_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">A_pp_exp</span> <span class="o">=</span> <span class="n">A_pp_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ss</span><span class="p">,</span> <span class="n">A_ss_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_sp</span><span class="p">,</span> <span class="n">A_sp_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_ps</span><span class="p">,</span> <span class="n">A_ps_exp</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_pp</span><span class="p">,</span> <span class="n">A_pp_exp</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{ss} = \left(s^{2} + 1\right) \sin{\left(2 \phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s\phi} = \left(s^{2} + 1\right) \cos{\left(2 \phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi s} = \left(s^{2} + 1\right) \cos{\left(2 \phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi\phi} = \left(- s^{2} - 1\right) \sin{\left(2 \phi \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{ss} = - \frac{i s^{2} e^{2 i \phi}}{2} + \frac{i s^{2} e^{- 2 i \phi}}{2} - \frac{i e^{2 i \phi}}{2} + \frac{i e^{- 2 i \phi}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{s\phi} = \frac{s^{2} e^{2 i \phi}}{2} + \frac{s^{2} e^{- 2 i \phi}}{2} + \frac{e^{2 i \phi}}{2} + \frac{e^{- 2 i \phi}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi s} = \frac{s^{2} e^{2 i \phi}}{2} + \frac{s^{2} e^{- 2 i \phi}}{2} + \frac{e^{2 i \phi}}{2} + \frac{e^{- 2 i \phi}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{\phi\phi} = \frac{i s^{2} e^{2 i \phi}}{2} - \frac{i s^{2} e^{- 2 i \phi}}{2} + \frac{i e^{2 i \phi}}{2} - \frac{i e^{- 2 i \phi}}{2}\]</div>
+</div>
+</div>
+<p>As we convert it to Cartesian coordinates, it takes the form</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_xx_val</span><span class="p">,</span> <span class="n">A_xy_val</span><span class="p">,</span> <span class="n">A_yx_val</span><span class="p">,</span> <span class="n">A_yy_val</span> <span class="o">=</span> <span class="n">rotate_polar2cart_tensor2</span><span class="p">(</span><span class="n">A_ss_exp</span><span class="p">,</span> <span class="n">A_sp_exp</span><span class="p">,</span> <span class="n">A_ps_exp</span><span class="p">,</span> <span class="n">A_pp_exp</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_xx</span><span class="p">,</span> <span class="n">A_xx_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_xy</span><span class="p">,</span> <span class="n">A_xy_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_yx</span><span class="p">,</span> <span class="n">A_yx_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">A_yy</span><span class="p">,</span> <span class="n">A_yy_val</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">polar2cart_map</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{xx} = 0\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{xy} = x^{2} + y^{2} + 1\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{yx} = x^{2} + y^{2} + 1\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle A_{yy} = 0\]</div>
+</div>
+</div>
+<p>The field is now polynomial and undoubtedly regular throughout the domain</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_ss_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_ss_val</span><span class="p">)</span>
+<span class="n">A_sp_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_sp_val</span><span class="p">)</span>
+<span class="n">A_ps_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_ps_val</span><span class="p">)</span>
+<span class="n">A_pp_numerical</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">A_pp_val</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plottings</span><span class="o">.</span><span class="n">polar_singularity_rank2tensor</span><span class="p">(</span>
+    <span class="n">tfunc_ss</span><span class="o">=</span><span class="n">A_ss_numerical</span><span class="p">,</span> <span class="n">tfunc_sp</span><span class="o">=</span><span class="n">A_sp_numerical</span><span class="p">,</span>
+    <span class="n">tfunc_ps</span><span class="o">=</span><span class="n">A_ps_numerical</span><span class="p">,</span> <span class="n">tfunc_pp</span><span class="o">=</span><span class="n">A_pp_numerical</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/99202a57fa99a5b91d7fba2e5c6471f214f210d3e738aff5df2aee558fae294b.png" src="../_images/99202a57fa99a5b91d7fba2e5c6471f214f210d3e738aff5df2aee558fae294b.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Demo_Variables.html" class="btn btn-neutral float-left" title="Variables, equations and forcing terms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../_autosummary/pg_utils.html" class="btn btn-neutral float-right" title="pg_utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, GentleMin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
