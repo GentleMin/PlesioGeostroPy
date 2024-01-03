@@ -14,31 +14,38 @@ The package **PlesioGeostroPy** aims to provide robust and efficient numerical s
 For information regarding this project, including the formulations, downloadable resources, etc., see the the `project homepage <https://gentlemin.github.io/projects/plesio_geostrophy/>`_.
 
 
-Structure of the Code 
+-------
+
+Tutorials
+===========================================
+
+PlesioGeostroPy 101
+-------------------------------------------
+
+These contain the most essential features of **PlesioGeostroPy**, especially in symbolic manipulations.
+
+- :doc:`demos/Demo_PlesioGeostroPy_Basics`
+- :doc:`demos/Demo_Collections`
+- :doc:`demos/Demo_Variables`
+- :doc:`demos/Demo_Regularity`
+
+More advanced tutorials are yet to come.
+
+
+-------
+
+API Reference
 ===========================================
 
 The core of the code is the following package:
 
 .. autosummary::
-   :toctree: _autosummary
    :template: custom-module-template.rst
    :recursive:
 
    pg_utils
 
 This packages is then subdivided into four modules: module :py:mod:`~pg_utils.sympy_supp` for supplementary functions for symbolic manipulation; module :py:mod:`~pg_utils.pg_model` for the actual implementation of the symbolic PG model, including variables, equations and the recipes for spectral expansions; module :py:mod:`~pg_utils.numerics` for numerical computations; and module :py:mod:`~pg_utils.processing` for pre- and post-processing.
-
-
-Tutorials
-===========================================
-
-Please check out the following Jupyter Notebooks to work through the package
-
-* `Basic demo for PlesioGeostroPy <https://nbviewer.org/github/GentleMin/PlesioGeostroPy/blob/main/PG_demo.ipynb>`_
-* `Eigenvalue solver step by step <https://nbviewer.org/github/GentleMin/PlesioGeostroPy/blob/main/EigenPG.ipynb>`_
-
-Indices and tables
-==================
 
 Here you can find the indexed reference to all of the modules, and the classes and objects within.
 
@@ -52,9 +59,14 @@ You can also use the search function to look for all items.
    :caption: PlesioGeostroPy
    :maxdepth: 4
    :hidden:
+   
+   Tutorials <tutorials>
+   API reference </_autosummary/pg_utils>
 
-   sympy_supp </_autosummary/pg_utils.sympy_supp>
-   pg_model </_autosummary/pg_utils.pg_model>
-   numerics </_autosummary/pg_utils.numerics>
-   processing </_autosummary/pg_utils.processing>
+.. Demo_PlesioGeostroPy_Basics
+.. Demo_Regularity
+.. sympy_supp </_autosummary/pg_utils.sympy_supp>
+.. pg_model </_autosummary/pg_utils.pg_model>
+.. numerics </_autosummary/pg_utils.numerics>
+.. processing </_autosummary/pg_utils.processing>
 

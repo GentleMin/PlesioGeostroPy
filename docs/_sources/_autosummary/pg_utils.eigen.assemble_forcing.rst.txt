@@ -1,0 +1,6 @@
+pg\_utils.eigen.assemble\_forcing
+=================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: assemble_forcing

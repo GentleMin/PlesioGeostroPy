@@ -28,6 +28,7 @@
    :template: custom-module-template.rst
    :recursive:
 
+   pg_utils.eigen
    pg_utils.numerics
    pg_utils.pg_model
    pg_utils.processing

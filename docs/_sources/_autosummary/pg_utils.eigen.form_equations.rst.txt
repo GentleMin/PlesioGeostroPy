@@ -1,0 +1,6 @@
+pg\_utils.eigen.form\_equations
+===============================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: form_equations

@@ -1,0 +1,15 @@
+{
+    "params": [
+        "Symbol('\\\\mathrm{Le}')"
+    ],
+    "equations": [
+        [
+            "Psi",
+            "Equality(Add(Mul(Pow(Symbol('s', positive=True), Integer(2)), Pow(Function('H')(Symbol('s', positive=True)), Integer(-3)), Derivative(Function('\\\\psi')(Symbol('s', positive=True), Symbol('\\\\phi', positive=True), Symbol('t', real=True)), Tuple(Symbol('s', positive=True), Integer(1)), Tuple(Symbol('t', real=True), Integer(1)))), Mul(Symbol('s', positive=True), Pow(Function('H')(Symbol('s', positive=True)), Integer(-1)), Derivative(Function('\\\\psi')(Symbol('s', positive=True), Symbol('\\\\phi', positive=True), Symbol('t', real=True)), Tuple(Symbol('s', positive=True), Integer(2)), Tuple(Symbol('t', real=True), Integer(1)))), Mul(Rational(1, 2), Symbol('s', positive=True), Pow(Function('H')(Symbol('s', positive=True)), Integer(-3)), Derivative(Function('\\\\psi')(Symbol('s', positive=True), Symbol('\\\\phi', positive=True), Symbol('t', real=True)), Tuple(Symbol('\\\\phi', positive=True), Integer(2)), Tuple(Symbol('t', real=True), Integer(1)))), Mul(Pow(Function('H')(Symbol('s', positive=True)), Integer(-1)), Derivative(Function('\\\\psi')(Symbol('s', positive=True), Symbol('\\\\phi', positive=True), Symbol('t', real=True)), Tuple(Symbol('s', positive=True), Integer(1)), Tuple(Symbol('t', real=True), Integer(1)))), Mul(Pow(Symbol('s', positive=True), Integer(-1)), Pow(Function('H')(Symbol('s', positive=True)), Integer(-1)), Derivative(Function('\\\\psi')(Symbol('s', positive=True), Symbol('\\\\phi', positive=True), Symbol('t', real=True)), Tuple(Symbol('\\\\phi', positive=True), Integer(2)), Tuple(Symbol('t', real=True), Integer(1))))), Add(Mul(Integer(2), Symbol('s', positive=True), Pow(Function('H')(Symbol('s', positive=True)), Integer(-3)), Derivative(Function('\\\\psi')(Symbol('s', positive=True), Symbol('\\\\phi', positive=True), Symbol('t', real=True)), Tuple(Symbol('\\\\phi', positive=True), Integer(1)))), Function('F_\\\\mathrm{ext}')(Symbol('s', positive=True), Symbol('\\\\phi', positive=True), Symbol('t', real=True))))"
+        ],
+        [
+            "F_ext",
+            "Equality(Derivative(Function('F_\\\\mathrm{ext}')(Symbol('s', positive=True), Symbol('\\\\phi', positive=True), Symbol('t', real=True)), Tuple(Symbol('t', real=True), Integer(1))), Integer(0))"
+        ]
+    ]
+}

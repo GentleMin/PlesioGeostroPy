@@ -7,6 +7,7 @@
   <title>PlesioGeostroPy &mdash; PlesioGeostroPy 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
 
   
   <!--[if lt IE 9]>
@@ -21,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pg_utils" href="_autosummary/pg_utils.html" /> 
+    <link rel="next" title="Tutorials" href="tutorials.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,15 +44,10 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.html">pg_utils</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+              <p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.sympy_supp.html">sympy_supp</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.pg_model.html">pg_model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.numerics.html">numerics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.processing.html">processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.html">API reference</a></li>
 </ul>
 
         </div>
@@ -85,8 +81,24 @@ For a more detailed description of the PG model, see e.g. Jackson and Maffei (<a
 <p>The package <strong>PlesioGeostroPy</strong> aims to provide robust and efficient numerical solution to the PG model, which can then be plugged into data assimilation frameworks for geomagnetic data assimilation (GDA).
 For information regarding this project, including the formulations, downloadable resources, etc., see the the <a class="reference external" href="https://gentlemin.github.io/projects/plesio_geostrophy/">project homepage</a>.</p>
 </section>
-<section id="structure-of-the-code">
-<h1>Structure of the Code<a class="headerlink" href="#structure-of-the-code" title="Permalink to this heading"></a></h1>
+<hr class="docutils" />
+<section id="tutorials">
+<h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading"></a></h1>
+<section id="plesiogeostropy-101">
+<h2>PlesioGeostroPy 101<a class="headerlink" href="#plesiogeostropy-101" title="Permalink to this heading"></a></h2>
+<p>These contain the most essential features of <strong>PlesioGeostroPy</strong>, especially in symbolic manipulations.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="demos/Demo_PlesioGeostroPy_Basics.html"><span class="doc">Introducing PlesioGeostroPy: Quickstart</span></a></p></li>
+<li><p><a class="reference internal" href="demos/Demo_Collections.html"><span class="doc">Intro to the collection interface</span></a></p></li>
+<li><p><a class="reference internal" href="demos/Demo_Variables.html"><span class="doc">Variables, equations and forcing terms</span></a></p></li>
+<li><p><a class="reference internal" href="demos/Demo_Regularity.html"><span class="doc">Regularity conditions for tensor components in polar coordinates</span></a></p></li>
+</ul>
+<p>More advanced tutorials are yet to come.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading"></a></h1>
 <p>The core of the code is the following package:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -96,17 +108,6 @@ For information regarding this project, including the formulations, downloadable
 </tbody>
 </table>
 <p>This packages is then subdivided into four modules: module <a class="reference internal" href="_autosummary/pg_utils.sympy_supp.html#module-pg_utils.sympy_supp" title="pg_utils.sympy_supp"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sympy_supp</span></code></a> for supplementary functions for symbolic manipulation; module <a class="reference internal" href="_autosummary/pg_utils.pg_model.html#module-pg_utils.pg_model" title="pg_utils.pg_model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pg_model</span></code></a> for the actual implementation of the symbolic PG model, including variables, equations and the recipes for spectral expansions; module <a class="reference internal" href="_autosummary/pg_utils.numerics.html#module-pg_utils.numerics" title="pg_utils.numerics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">numerics</span></code></a> for numerical computations; and module <a class="reference internal" href="_autosummary/pg_utils.processing.html#module-pg_utils.processing" title="pg_utils.processing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">processing</span></code></a> for pre- and post-processing.</p>
-</section>
-<section id="tutorials">
-<h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading"></a></h1>
-<p>Please check out the following Jupyter Notebooks to work through the package</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://nbviewer.org/github/GentleMin/PlesioGeostroPy/blob/main/PG_demo.ipynb">Basic demo for PlesioGeostroPy</a></p></li>
-<li><p><a class="reference external" href="https://nbviewer.org/github/GentleMin/PlesioGeostroPy/blob/main/EigenPG.ipynb">Eigenvalue solver step by step</a></p></li>
-</ul>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
 <p>Here you can find the indexed reference to all of the modules, and the classes and objects within.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
@@ -121,7 +122,7 @@ For information regarding this project, including the formulations, downloadable
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="_autosummary/pg_utils.html" class="btn btn-neutral float-right" title="pg_utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorials.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

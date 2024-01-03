@@ -151,18 +151,39 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         super().__init__(inner_prod)
         self.deduce = automatic
         if self.deduce:
-            powers_list = self.get_powers(self.int_var, 
-                self.inner_prod.integrand().doit())
-            if isinstance(powers_list[0], list):
-                self.alpha = [powers[0] for powers in powers_list]
-                self.beta = [powers[1] for powers in powers_list]
-                self.powerN = [powers[2] for powers in powers_list]
+            # powers_list = self.get_powers(self.int_var, 
+            #     self.inner_prod.integrand().doit())
+            powers_left = self.get_powers(self.int_var, 
+                self.inner_prod._opd_A.doit())
+            powers_right = self.get_powers(self.int_var, 
+                (self.inner_prod._wt*self.inner_prod._opd_B).doit())
+            if isinstance(powers_left[0], list):
+                self.alpha_left = [powers[0] for powers in powers_left]
+                self.beta_left = [powers[1] for powers in powers_left]
+                powerN_left = [powers[2] for powers in powers_left]
             else:
-                self.alpha = powers_list[0]
-                self.beta = powers_list[1]
-                self.powerN = powers_list[2]
+                self.alpha_left = [powers_left[0]]
+                self.beta_left = [powers_left[1]]
+                powerN_left = [powers_left[2]]
+            if isinstance(powers_right[0], list):
+                self.alpha_right = [powers[0] for powers in powers_right]
+                self.beta_right = [powers[1] for powers in powers_right]
+                powerN_right = [powers[2] for powers in powers_right]
+            else:
+                self.alpha_right = [powers_right[0]]
+                self.beta_right = [powers_right[1]]
+                powerN_right = [powers_right[2]]
+            # Calculate total degree for all terms in the integrand
+            self.alpha = [a_left + a_right 
+                for a_left in self.alpha_left for a_right in self.alpha_right]
+            self.beta = [b_left + b_right 
+                for b_left in self.beta_left for b_right in self.beta_right]
+            self.powerN = [N_left + N_right 
+                for N_left in powerN_left for N_right in powerN_right]
         else:
-            self.alpha, self.beta = alpha, beta
+            self.alpha, self.beta = [alpha], [beta]
+            self.alpha_left, self.alpha_right = [sympy.S.One], [alpha]
+            self.beta_left, self.beta_right = [sympy.S.One], [beta]
             self.powerN = 2*quadN - 1
         if quadN is not None:
             self.powerN = 2*quadN - 1
@@ -189,7 +210,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         """Determine the parameters of the quadrature
         
         This method is called to determine the values of the parameters
-        during evaluation of Gram matrices.
+        during evaluation of Gram matrices as integration of the full integrand.
         
         :param int Ntrial: maximum value for n_trial
         :param int Ntest: maximum value for n_test
@@ -198,69 +219,130 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         :returns: alpha, beta, quadN
         """
         deduce_map = {n_trial: Ntrial, n_test: Ntest}
-        if isinstance(self.alpha, list):
-            # If alpha is a list, this means the integrand contains multiple
-            # terms, each term with some alpha, beta factors.
-            # The final alpha and beta will be given by the minimum of each
-            alpha_list = np.array([tmp.subs(deduce_map) for tmp in self.alpha])
-            beta_list = np.array([tmp.subs(deduce_map) for tmp in self.beta])
-            alpha = alpha_list.min()
-            beta = beta_list.min()
-            # If alpha and beta of each term in the summation differ by a 
-            # non-integer number, this means there will be endpoint singularities
-            # that cannot be simultaneously integrated using Gauss-Jacobi quad
-            pow_diff = [not term.is_integer for term in alpha_list - alpha] \
-                + [not term.is_integer for term in beta_list - beta]
-            if np.array(pow_diff).sum() > 0:
-                warnings.warn("Incompatible singularities!"
-                    "The quadrature cannot integrate exactly."
-                    "Trying splitting the inner product instead.")
-        else:
-            alpha = self.alpha.subs(deduce_map)
-            beta = self.beta.subs(deduce_map)
+        # The integrand contains multiple terms, each term with some alpha, beta factors.
+        # The final alpha and beta will be given by the minimum of each
+        alpha_list = np.array([tmp.subs(deduce_map) for tmp in self.alpha])
+        beta_list = np.array([tmp.subs(deduce_map) for tmp in self.beta])
+        alpha = alpha_list.min()
+        beta = beta_list.min()
+        # If alpha and beta of each term in the summation differ by a 
+        # non-integer number, this means there will be endpoint singularities
+        # that cannot be simultaneously integrated using Gauss-Jacobi quad
+        pow_diff = [not term.is_integer for term in alpha_list - alpha] \
+            + [not term.is_integer for term in beta_list - beta]
+        if np.array(pow_diff).sum() > 0:
+            warnings.warn("Incompatible singularities!"
+                "The quadrature cannot integrate exactly."
+                "Trying splitting the inner product instead.")
         if isinstance(self.powerN, list):
-            if isinstance(self.alpha, list):
-                powerN = [tmp + self.alpha[idx] + self.beta[idx] - alpha - beta
-                    for idx, tmp in enumerate(self.powerN)]
-                powerN = np.array([tmp.subs(deduce_map) for tmp in powerN]).max()
-            else:
-                powerN = np.array([tmp.subs(deduce_map) for tmp in self.powerN]).max()
+            powerN = [tmp + self.alpha[idx] + self.beta[idx] - alpha - beta
+                for idx, tmp in enumerate(self.powerN)]
+            powerN = np.array([tmp.subs(deduce_map) for tmp in powerN]).max()
         else:
             powerN = self.powerN.subs(deduce_map)
         quadN = int(powerN) // 2 + 1
         return alpha, beta, quadN
     
+    def deduce_params_outer(self, Ntrial: int, Ntest: int):
+        """Determine the parameters of the quadrature
+        
+        This method is called to determine the values of the parameters
+        during evaluation of Gram matrices as integration of outer products.
+        
+        :param int Ntrial: maximum value for n_trial
+        :param int Ntest: maximum value for n_test
+            we assume that the maximum degree of the function to be
+            integrated will be reached at maximum n_trial and n_test
+        :returns: alpha, beta, quadN
+        """
+        deduce_map = {n_trial: Ntrial, n_test: Ntest}
+        # Determine the smallest value of alpha and beta in each operand
+        alpha_lmin = np.array([tmp.subs(deduce_map) for tmp in self.alpha_left]).min()
+        alpha_rmin = np.array([tmp.subs(deduce_map) for tmp in self.alpha_right]).min()
+        beta_lmin = np.array([tmp.subs(deduce_map) for tmp in self.beta_left]).min()
+        beta_rmin = np.array([tmp.subs(deduce_map) for tmp in self.beta_right]).min()
+        alpha_min = alpha_lmin + alpha_rmin
+        beta_min = beta_lmin + beta_rmin
+        # If alpha and beta of each term in the summation differ by a 
+        # non-integer number, this means there will be endpoint singularities
+        # that cannot be simultaneously integrated using one G-J quadrature
+        for i_idx in range(len(self.alpha)):
+            alpha_diff = self.alpha[i_idx].subs(deduce_map) - alpha_min
+            beta_diff = self.beta[i_idx].subs(deduce_map) - beta_min
+            if not alpha_diff.is_integer or not beta_diff.is_integer:
+                warnings.warn("Incompatible singularities!"
+                    "The quadrature cannot integrate exactly."
+                    "Trying splitting the inner product instead.")
+                break
+        # alpha_list = np.array([tmp.subs(deduce_map) for tmp in self.alpha])
+        # beta_list = np.array([tmp.subs(deduce_map) for tmp in self.beta])
+        # pow_diff = [not term.is_integer for term in alpha_list - alpha_min] \
+        #     + [not term.is_integer for term in beta_list - beta_min]
+        # if np.array(pow_diff).sum() > 0:
+        #     warnings.warn("Incompatible singularities!"
+        #         "The quadrature cannot integrate exactly."
+        #         "Trying splitting the inner product instead.")
+        if isinstance(self.powerN, list):
+            powerN = [tmp + self.alpha[idx] + self.beta[idx] - alpha_min - beta_min
+                for idx, tmp in enumerate(self.powerN)]
+            powerN = np.array([tmp.subs(deduce_map) for tmp in powerN]).max()
+        else:
+            powerN = self.powerN.subs(deduce_map)
+        quadN = int(powerN) // 2 + 1
+        return alpha_min, beta_min, quadN, alpha_lmin, beta_lmin
+    
     def gramian(self, nrange_trial: List[int], nrange_test: List[int], 
         backend: str="sympy", int_opt: dict={}, output: str="sympy", out_opt: dict={}, 
-        verbose: bool=True) -> Union[np.ndarray, np.matrix, sympy.Matrix]:
+        outer: bool=True, verbose: bool=True) -> Union[np.ndarray, np.matrix, sympy.Matrix]:
         """Compute Gram matrix, concrete realization for Gauss Jacobi quadrature
         
         :param List[int] nrange_trial: idx range for trial func, see InnerQuadRule.gramian
         :param List[int] nrange_test: idx range for test func, see InnerQuadRule.gramian
         :param str backend: which backend to use for integration.
-            "sympy": the evaluation will be done using sympy evalf
-            "scipy": the evaluation will be conducted using numpy/scipy funcs
+            * "sympy": the evaluation will be done using sympy evalf
+            * "scipy": the evaluation will be conducted using numpy/scipy funcs
                 the precision will be limited to platform support for np.float
+            
         :param dict int_opt: kwargs passed to integration function
         :param str output: which form of matrix to output.
-            "sympy": the output will be cast to a sympy.Matrix
-            "numpy": the output will be cast to a numpy.ndarray
+            * "sympy": the output will be cast to a sympy.Matrix
+            * "numpy": the output will be cast to a numpy.ndarray
+            
         :param dict out_opt: kwargs passed to _output_form method
         """
-        alpha, beta, quadN = self.deduce_params(max(nrange_trial), max(nrange_test))
+        if outer:
+            alpha, beta, quadN, alpha_l, beta_l = self.deduce_params_outer(
+                max(nrange_trial), max(nrange_test))
+        else:
+            alpha, beta, quadN = self.deduce_params(max(nrange_trial), max(nrange_test))
+        
+        # Throw warning of singularity if alpha or beta <= -1
+        if alpha <= -1:
+            alpha = 0
+            quadN *= 2
+            warnings.warn("Endpoint singularity detected! Check for integrability!")
+        if beta <= -1:
+            beta = 0
+            quadN *= 2
+            warnings.warn("Endpoint singularity detected! Check for integrability!")
+        
         if verbose:
             print("Integrating with alpha={}, beta={}, N={}".format(alpha, beta, quadN))
         if backend == "sympy":
-            M = self._quad_sympy(nrange_trial, nrange_test, 
+            M = self._quad_sympy_integrand(nrange_trial, nrange_test, 
                 alpha, beta, quadN, **int_opt)
         elif backend == "scipy":
-            M = self._quad_scipy(nrange_trial, nrange_test, 
-                alpha, beta, quadN)
+            if outer:
+                M = self._quad_scipy_outer(nrange_trial, nrange_test,
+                    alpha, beta, quadN, alpha_l, beta_l)
+            else:
+                M = self._quad_scipy_integrand(nrange_trial, nrange_test, 
+                    alpha, beta, quadN)
         else:
             raise AttributeError
         return self._output_form(M, output=output, **out_opt)
     
-    def _quad_sympy(self, nrange_trial: List[int], nrange_test: List[int], 
+    def _quad_sympy_integrand(self, nrange_trial: List[int], nrange_test: List[int], 
         alpha: Union[float, int, sympy.Expr], beta: Union[float, int, sympy.Expr], 
         quad_N: int, precision: int = 16) -> sympy.Matrix:
         """Quadrature using sympy utilities.
@@ -280,7 +362,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             M.append(M_row)
         return sympy.Matrix(M)
     
-    def _quad_scipy(self, nrange_trial: List[int], nrange_test: List[int], 
+    def _quad_scipy_integrand(self, nrange_trial: List[int], nrange_test: List[int], 
         alpha: Union[float, int, sympy.Expr], beta: Union[float, int, sympy.Expr], 
         quad_N: int) -> np.ndarray:
         """Quadrature using scipy utilities
@@ -292,6 +374,23 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             modules=["scipy", "numpy"])
         Ntest, Ntrial, Xi = np.meshgrid(nrange_test, nrange_trial, xi_quad, indexing='ij')
         return np.sum(int_fun(Ntest, Ntrial, Xi)*wt_quad, axis=-1)
+    
+    def _quad_scipy_outer(self, nrange_trial: List[int], nrange_test: List[int], 
+        alpha: Union[float, int, sympy.Expr], beta: Union[float, int, sympy.Expr], quad_N: int,
+        alpha_left: Union[float, int, sympy.Expr], beta_left: Union[float, int, sympy.Expr]) -> np.ndarray:
+        """Quadrature using scipy utilities
+        Concrete realization of the Gauss-Jacobi quadrature
+        """
+        xi_quad, wt_quad = specfun.roots_jacobi(int(quad_N), float(alpha), float(beta))
+        opd_A = self.inner_prod._opd_A/(1 - xi)**alpha_left/(1 + xi)**beta_left
+        opd_B = self.inner_prod._opd_B*self.inner_prod._wt/(1 - xi)**(alpha - alpha_left)/(1 + xi)**(beta - beta_left)
+        opd_A = sympy.lambdify([n_test, xi], opd_A.doit(), modules=["scipy", "numpy"])
+        opd_B = sympy.lambdify([n_trial, xi], opd_B.doit(), modules=["scipy", "numpy"])
+        Ntest, Xi_test = np.meshgrid(nrange_test, xi_quad, indexing='ij')
+        Phi_test = opd_A(Ntest, Xi_test)
+        Ntrial, Xi_trial = np.meshgrid(nrange_trial, xi_quad, indexing='ij')
+        Phi_trial = opd_B(Ntrial, Xi_trial)
+        return (Phi_test*wt_quad) @ Phi_trial.T
     
     def _output_form(self, M_in: Union[np.ndarray, np.matrix, sympy.Matrix], 
         output: str = "sympy", **kwargs) -> Union[np.ndarray, np.matrix, sympy.Matrix]:

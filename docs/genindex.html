@@ -6,6 +6,7 @@
   <title>Index &mdash; PlesioGeostroPy 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
 
   
   <!--[if lt IE 9]>
@@ -41,15 +42,10 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.html">pg_utils</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+              <p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.sympy_supp.html">sympy_supp</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.pg_model.html">pg_model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.numerics.html">numerics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.processing.html">processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pg_utils.html">API reference</a></li>
 </ul>
 
         </div>
@@ -131,6 +127,16 @@
 </li>
         <li><a href="_autosummary/pg_utils.pg_model.base.LabeledSubCollection.html#pg_utils.pg_model.base.LabeledSubCollection.__init__">(pg_utils.pg_model.base.LabeledSubCollection method)</a>
 </li>
+        <li><a href="_autosummary/pg_utils.pg_model.bg_fields.BackgroundFieldMHD.html#pg_utils.pg_model.bg_fields.BackgroundFieldMHD.__init__">(pg_utils.pg_model.bg_fields.BackgroundFieldMHD method)</a>
+</li>
+        <li><a href="_autosummary/pg_utils.pg_model.bg_fields.BackgroundHydro.html#pg_utils.pg_model.bg_fields.BackgroundHydro.__init__">(pg_utils.pg_model.bg_fields.BackgroundHydro method)</a>
+</li>
+        <li><a href="_autosummary/pg_utils.pg_model.bg_fields.BackgroundMalkus.html#pg_utils.pg_model.bg_fields.BackgroundMalkus.__init__">(pg_utils.pg_model.bg_fields.BackgroundMalkus method)</a>
+</li>
+        <li><a href="_autosummary/pg_utils.pg_model.bg_fields.BackgroundPoloidalDipole.html#pg_utils.pg_model.bg_fields.BackgroundPoloidalDipole.__init__">(pg_utils.pg_model.bg_fields.BackgroundPoloidalDipole method)</a>
+</li>
+        <li><a href="_autosummary/pg_utils.pg_model.bg_fields.BackgroundToroidalQuadrupole.html#pg_utils.pg_model.bg_fields.BackgroundToroidalQuadrupole.__init__">(pg_utils.pg_model.bg_fields.BackgroundToroidalQuadrupole method)</a>
+</li>
         <li><a href="_autosummary/pg_utils.pg_model.expansion.ExpansionRecipe.html#pg_utils.pg_model.expansion.ExpansionRecipe.__init__">(pg_utils.pg_model.expansion.ExpansionRecipe method)</a>
 </li>
         <li><a href="_autosummary/pg_utils.pg_model.expansion.FourierExpansions.html#pg_utils.pg_model.expansion.FourierExpansions.__init__">(pg_utils.pg_model.expansion.FourierExpansions method)</a>
@@ -196,6 +202,10 @@
         <li><a href="_autosummary/pg_utils.pg_model.expansion.SystemMatrix.html#pg_utils.pg_model.expansion.SystemMatrix.apply">(pg_utils.pg_model.expansion.SystemMatrix method)</a>
 </li>
       </ul></li>
+      <li><a href="_autosummary/pg_utils.eigen.apply_bg_to_eq.html#pg_utils.eigen.apply_bg_to_eq">apply_bg_to_eq() (in module pg_utils.eigen)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.eigen.apply_bg_to_set.html#pg_utils.eigen.apply_bg_to_set">apply_bg_to_set() (in module pg_utils.eigen)</a>
+</li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.args">args (pg_utils.pg_model.expansion.InnerProduct1D property)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.args_cnc">args_cnc() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
@@ -264,6 +274,8 @@
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.base_utils.assemble_background.html#pg_utils.pg_model.base_utils.assemble_background">assemble_background() (in module pg_utils.pg_model.base_utils)</a>
 </li>
+      <li><a href="_autosummary/pg_utils.eigen.assemble_forcing.html#pg_utils.eigen.assemble_forcing">assemble_forcing() (in module pg_utils.eigen)</a>
+</li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.assumptions0">assumptions0 (pg_utils.pg_model.expansion.InnerProduct1D property)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.atoms">atoms() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
@@ -280,11 +292,21 @@
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.core.b_linmap.html#pg_utils.pg_model.core.b_linmap">b_linmap (in module pg_utils.pg_model.core)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/pg_utils.pg_model.core.B_sph.html#pg_utils.pg_model.core.b_sph">b_sph (in module pg_utils.pg_model.core)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.core.B_vec.html#pg_utils.pg_model.core.b_vec">b_vec (in module pg_utils.pg_model.core)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.pg_model.bg_fields.BackgroundFieldMHD.html#pg_utils.pg_model.bg_fields.BackgroundFieldMHD">BackgroundFieldMHD (class in pg_utils.pg_model.bg_fields)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/pg_utils.pg_model.bg_fields.BackgroundHydro.html#pg_utils.pg_model.bg_fields.BackgroundHydro">BackgroundHydro (class in pg_utils.pg_model.bg_fields)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.pg_model.bg_fields.BackgroundMalkus.html#pg_utils.pg_model.bg_fields.BackgroundMalkus">BackgroundMalkus (class in pg_utils.pg_model.bg_fields)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.pg_model.bg_fields.BackgroundPoloidalDipole.html#pg_utils.pg_model.bg_fields.BackgroundPoloidalDipole">BackgroundPoloidalDipole (class in pg_utils.pg_model.bg_fields)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.pg_model.bg_fields.BackgroundToroidalQuadrupole.html#pg_utils.pg_model.bg_fields.BackgroundToroidalQuadrupole">BackgroundToroidalQuadrupole (class in pg_utils.pg_model.bg_fields)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.SystemMatrix.html#pg_utils.pg_model.expansion.SystemMatrix.block_sparsity">block_sparsity() (pg_utils.pg_model.expansion.SystemMatrix method)</a>
 </li>
@@ -306,6 +328,8 @@
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.core.cgvar.html#pg_utils.pg_model.core.cgvar">cgvar (in module pg_utils.pg_model.core)</a>
 </li>
+      <li><a href="_autosummary/pg_utils.pg_model.core.cgvar_bg.html#pg_utils.pg_model.core.cgvar_bg">cgvar_bg (in module pg_utils.pg_model.core)</a>
+</li>
       <li><a href="_autosummary/pg_utils.pg_model.core.cgvar_ptb.html#pg_utils.pg_model.core.cgvar_ptb">cgvar_ptb (in module pg_utils.pg_model.core)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.cgvar_s.html#pg_utils.pg_model.expansion.cgvar_s">cgvar_s (in module pg_utils.pg_model.expansion)</a>
@@ -320,6 +344,8 @@
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.SystemEquations.html#pg_utils.pg_model.expansion.SystemEquations.collect_matrices">collect_matrices() (pg_utils.pg_model.expansion.SystemEquations method)</a>
 </li>
+      <li><a href="_autosummary/pg_utils.eigen.collect_matrix_elements.html#pg_utils.eigen.collect_matrix_elements">collect_matrix_elements() (in module pg_utils.eigen)</a>
+</li>
       <li><a href="_autosummary/pg_utils.pg_model.base.CollectionConjugate.html#pg_utils.pg_model.base.CollectionConjugate">CollectionConjugate (class in pg_utils.pg_model.base)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.base.CollectionPG.html#pg_utils.pg_model.base.CollectionPG">CollectionPG (class in pg_utils.pg_model.base)</a>
@@ -332,10 +358,16 @@
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.compare">compare() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
 </li>
+      <li><a href="_autosummary/pg_utils.eigen.compute_eigen.html#pg_utils.eigen.compute_eigen">compute_eigen() (in module pg_utils.eigen)</a>
+</li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.compute_leading_term">compute_leading_term() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.eigen.compute_matrix_numerics.html#pg_utils.eigen.compute_matrix_numerics">compute_matrix_numerics() (in module pg_utils.eigen)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.conjugate">conjugate() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/pg_utils.pg_model.core.conjugate_to_PG.html#pg_utils.pg_model.core.conjugate_to_PG">conjugate_to_PG() (in module pg_utils.pg_model.core)</a>
 </li>
       <li><a href="_autosummary/pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D.html#pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D.coords">coords (pg_utils.sympy_supp.vector_calculus_3d.CartesianCoordinates3D property)</a>
@@ -348,8 +380,6 @@
         <li><a href="_autosummary/pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.html#pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.coords">(pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/pg_utils.pg_model.base.CollectionConjugate.html#pg_utils.pg_model.base.CollectionConjugate.copy">copy() (pg_utils.pg_model.base.CollectionConjugate method)</a>
 
       <ul>
@@ -401,6 +431,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/pg_utils.numerics.matrices.InnerQuad_GaussJacobi.html#pg_utils.numerics.matrices.InnerQuad_GaussJacobi.deduce_params">deduce_params() (pg_utils.numerics.matrices.InnerQuad_GaussJacobi method)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.numerics.matrices.InnerQuad_GaussJacobi.html#pg_utils.numerics.matrices.InnerQuad_GaussJacobi.deduce_params_outer">deduce_params_outer() (pg_utils.numerics.matrices.InnerQuad_GaussJacobi method)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.base.CollectionConjugate.html#pg_utils.pg_model.base.CollectionConjugate.deserialize">deserialize() (pg_utils.pg_model.base.CollectionConjugate static method)</a>
 
@@ -470,11 +502,17 @@
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.equations.eqs_pg.html#pg_utils.pg_model.equations.eqs_pg">eqs_pg (in module pg_utils.pg_model.equations)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/pg_utils.pg_model.equations.eqs_pg_lin.html#pg_utils.pg_model.equations.eqs_pg_lin">eqs_pg_lin (in module pg_utils.pg_model.equations)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.equals">equals() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.eigen.equations_to_matrices.html#pg_utils.eigen.equations_to_matrices">equations_to_matrices() (in module pg_utils.eigen)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.numerics.special.eval_jacobi_nrange.html#pg_utils.numerics.special.eval_jacobi_nrange">eval_jacobi_nrange() (in module pg_utils.numerics.special)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.numerics.special.eval_jacobi_to_Nmax.html#pg_utils.numerics.special.eval_jacobi_to_Nmax">eval_jacobi_to_Nmax() (in module pg_utils.numerics.special)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.evalf">evalf() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
 </li>
@@ -519,6 +557,8 @@
       <li><a href="_autosummary/pg_utils.pg_model.forcing.force_explicit_lin_cg.html#pg_utils.pg_model.forcing.force_explicit_lin_cg">force_explicit_lin_cg (in module pg_utils.pg_model.forcing)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.core.force_linmap.html#pg_utils.pg_model.core.force_linmap">force_linmap (in module pg_utils.pg_model.core)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.eigen.form_equations.html#pg_utils.eigen.form_equations">form_equations() (in module pg_utils.eigen)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expand_conjugate.fourier_expand.html#pg_utils.pg_model.expand_conjugate.fourier_expand">fourier_expand (in module pg_utils.pg_model.expand_conjugate)</a>
 
@@ -838,6 +878,12 @@
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.matches">matches() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
 </li>
+      <li><a href="_autosummary/pg_utils.numerics.io.matrices_load_h5.html#pg_utils.numerics.io.matrices_load_h5">matrices_load_h5() (in module pg_utils.numerics.io)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.numerics.io.matrices_save_h5.html#pg_utils.numerics.io.matrices_save_h5">matrices_save_h5() (in module pg_utils.numerics.io)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.numerics.io.matrix_load_from_group.html#pg_utils.numerics.io.matrix_load_from_group">matrix_load_from_group() (in module pg_utils.numerics.io)</a>
+</li>
       <li><a href="_autosummary/pg_utils.numerics.matrices.MatrixExpander.html#pg_utils.numerics.matrices.MatrixExpander">MatrixExpander (class in pg_utils.numerics.matrices)</a>
 </li>
       <li>
@@ -846,9 +892,15 @@
       <ul>
         <li><a href="_autosummary/pg_utils.html#module-pg_utils">pg_utils</a>
 </li>
+        <li><a href="_autosummary/pg_utils.eigen.html#module-pg_utils.eigen">pg_utils.eigen</a>
+</li>
         <li><a href="_autosummary/pg_utils.numerics.html#module-pg_utils.numerics">pg_utils.numerics</a>
 </li>
+        <li><a href="_autosummary/pg_utils.numerics.io.html#module-pg_utils.numerics.io">pg_utils.numerics.io</a>
+</li>
         <li><a href="_autosummary/pg_utils.numerics.matrices.html#module-pg_utils.numerics.matrices">pg_utils.numerics.matrices</a>
+</li>
+        <li><a href="_autosummary/pg_utils.numerics.special.html#module-pg_utils.numerics.special">pg_utils.numerics.special</a>
 </li>
         <li><a href="_autosummary/pg_utils.numerics.utils.html#module-pg_utils.numerics.utils">pg_utils.numerics.utils</a>
 </li>
@@ -857,6 +909,8 @@
         <li><a href="_autosummary/pg_utils.pg_model.base.html#module-pg_utils.pg_model.base">pg_utils.pg_model.base</a>
 </li>
         <li><a href="_autosummary/pg_utils.pg_model.base_utils.html#module-pg_utils.pg_model.base_utils">pg_utils.pg_model.base_utils</a>
+</li>
+        <li><a href="_autosummary/pg_utils.pg_model.bg_fields.html#module-pg_utils.pg_model.bg_fields">pg_utils.pg_model.bg_fields</a>
 </li>
         <li><a href="_autosummary/pg_utils.pg_model.core.html#module-pg_utils.pg_model.core">pg_utils.pg_model.core</a>
 </li>
@@ -945,6 +999,13 @@
 </li>
       </ul></li>
       <li>
+    pg_utils.eigen
+
+      <ul>
+        <li><a href="_autosummary/pg_utils.eigen.html#module-pg_utils.eigen">module</a>
+</li>
+      </ul></li>
+      <li>
     pg_utils.numerics
 
       <ul>
@@ -952,10 +1013,24 @@
 </li>
       </ul></li>
       <li>
+    pg_utils.numerics.io
+
+      <ul>
+        <li><a href="_autosummary/pg_utils.numerics.io.html#module-pg_utils.numerics.io">module</a>
+</li>
+      </ul></li>
+      <li>
     pg_utils.numerics.matrices
 
       <ul>
         <li><a href="_autosummary/pg_utils.numerics.matrices.html#module-pg_utils.numerics.matrices">module</a>
+</li>
+      </ul></li>
+      <li>
+    pg_utils.numerics.special
+
+      <ul>
+        <li><a href="_autosummary/pg_utils.numerics.special.html#module-pg_utils.numerics.special">module</a>
 </li>
       </ul></li>
       <li>
@@ -987,6 +1062,13 @@
 </li>
       </ul></li>
       <li>
+    pg_utils.pg_model.bg_fields
+
+      <ul>
+        <li><a href="_autosummary/pg_utils.pg_model.bg_fields.html#module-pg_utils.pg_model.bg_fields">module</a>
+</li>
+      </ul></li>
+      <li>
     pg_utils.pg_model.core
 
       <ul>
@@ -1007,6 +1089,8 @@
         <li><a href="_autosummary/pg_utils.pg_model.expand_conjugate.html#module-pg_utils.pg_model.expand_conjugate">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     pg_utils.pg_model.expand_daria_malkus
 
@@ -1021,8 +1105,6 @@
         <li><a href="_autosummary/pg_utils.pg_model.expand_daria_mm_malkus.html#module-pg_utils.pg_model.expand_daria_mm_malkus">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     pg_utils.pg_model.expand_daria_thesis
 
@@ -1102,6 +1184,8 @@
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.primitive">primitive() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
 </li>
+      <li><a href="_autosummary/pg_utils.eigen.process_matrix_element.html#pg_utils.eigen.process_matrix_element">process_matrix_element() (in module pg_utils.eigen)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -1136,13 +1220,17 @@
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.RadialTestFunctions.html#pg_utils.pg_model.expansion.RadialTestFunctions">RadialTestFunctions (class in pg_utils.pg_model.expansion)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.radsimp">radsimp() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.ratsimp">ratsimp() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.rcall">rcall() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.eigen.reduce_dimensions.html#pg_utils.eigen.reduce_dimensions">reduce_dimensions() (in module pg_utils.eigen)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.eigen.reduce_eqsys_to_force_form.html#pg_utils.eigen.reduce_eqsys_to_force_form">reduce_eqsys_to_force_form() (in module pg_utils.eigen)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.core.reduced_var.html#pg_utils.pg_model.core.reduced_var">reduced_var (in module pg_utils.pg_model.core)</a>
 </li>
@@ -1226,12 +1314,16 @@
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.sort_key">sort_key() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>
 </li>
-      <li><a href="_autosummary/pg_utils.pg_model.expansion.SpectralExpansion.html#pg_utils.pg_model.expansion.SpectralExpansion">SpectralExpansion (class in pg_utils.pg_model.expansion)</a>
+      <li><a href="_autosummary/pg_utils.numerics.io.sparse_coo_load_from_group.html#pg_utils.numerics.io.sparse_coo_load_from_group">sparse_coo_load_from_group() (in module pg_utils.numerics.io)</a>
 </li>
-      <li><a href="_autosummary/pg_utils.pg_model.core.sph.html#pg_utils.pg_model.core.sph">sph (in module pg_utils.pg_model.core)</a>
+      <li><a href="_autosummary/pg_utils.numerics.io.sparse_coo_save_to_group.html#pg_utils.numerics.io.sparse_coo_save_to_group">sparse_coo_save_to_group() (in module pg_utils.numerics.io)</a>
+</li>
+      <li><a href="_autosummary/pg_utils.pg_model.expansion.SpectralExpansion.html#pg_utils.pg_model.expansion.SpectralExpansion">SpectralExpansion (class in pg_utils.pg_model.expansion)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/pg_utils.pg_model.core.sph.html#pg_utils.pg_model.core.sph">sph (in module pg_utils.pg_model.core)</a>
+</li>
       <li><a href="_autosummary/pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.html#pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates">SphericalCoordinates (class in pg_utils.sympy_supp.vector_calculus_3d)</a>
 </li>
       <li><a href="_autosummary/pg_utils.pg_model.expansion.InnerProduct1D.html#pg_utils.pg_model.expansion.InnerProduct1D.split">split() (pg_utils.pg_model.expansion.InnerProduct1D method)</a>

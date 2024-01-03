@@ -1,0 +1,14 @@
+
+Tutorials
+=========================================
+
+
+.. toctree::
+   :maxdepth: 4
+   
+   Quickstart </demos/Demo_PlesioGeostroPy_Basics>
+   Collections </demos/Demo_Collections>
+   Variables, equations and forcings </demos/Demo_Variables>
+   Regularity conditions on tensor components in polar coordinates </demos/Demo_Regularity>
+
+

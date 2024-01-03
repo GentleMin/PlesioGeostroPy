@@ -1,0 +1,92 @@
+\documentclass[a4paper, 11pt]{report}
+\usepackage{doc_default}
+\allowdisplaybreaks[1]
+% \usepackage[outdir=./]{epstopdf}
+\usepackage{newtxtext, newtxmath}
+\usepackage{mathtools}
+\usepackage[
+    backend=biber,
+    style=authoryear,
+    sorting=nyt
+]{biblatex}
+\addbibresource{references.bib}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    filecolor=blue,
+}
+\lstset{style=stdcodestyle}
+
+% \DeclareMathOperator{\arcsec}{arcsec}
+% \DeclareMathOperator{\arccot}{arccot}
+% \DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\sgn}{sgn}
+
+\newcommand{\todoitem}[1]{\textcolor{purple}{[#1]}}
+\newenvironment{todoremark}{\color{purple}}{}
+% \newcommand{\todoproblem}[1]{\textcolor{purple}{#1}}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}[proposition]{Corollary}
+
+
+\title{Plesio-Geostrophy and Data Assimilation: Formulations \\ {\Large Missing ingredients and new recipes}}
+\author{Jingtao Min}
+\date{August 18, 2023, last update \today}
+
+
+\begin{document}
+
+\maketitle
+
+\chapter{Theory and governing equations}
+
+\input{PG__sph_cyl_transform.tex}
+
+\input{PG__vorticity.tex}
+
+\input{PG__nondim_convert.tex}
+
+\input{PG__boundary_evolution.tex}
+
+\chapter{Regularity constraints on expansions, conjugate variables}
+
+% Regularity constraints on general rank-2 tensors
+\input{PG__regularity_rank2_tensor.tex}
+
+\input{PG__revised_xpd.tex}
+
+\input{PG__new_xpd.tex}
+
+\chapter{Additional physical constraints}
+
+\input{PG__cauchy_schwarz.tex}
+
+\chapter{Implementation of the numerics}
+
+\input{PG__numerics.tex}
+
+\clearpage
+
+\appendix
+
+\chapter{Code design}
+
+\input{PG__code_design.tex}
+
+\clearpage
+
+% [Deprecated][Archived] Derivation of regularity constraints on magnetic moments, following Daria's approach
+% \input{PG__extended_expansions.tex}
+
+\input{PG__quadrature_derivatives.tex}
+
+\clearpage
+
+\printbibliography
+
+\end{document}
+

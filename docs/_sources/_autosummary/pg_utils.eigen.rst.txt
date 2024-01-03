@@ -1,0 +1,40 @@
+﻿pg\_utils.eigen
+===============
+
+.. automodule:: pg_utils.eigen
+  
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      apply_bg_to_eq
+      apply_bg_to_set
+      assemble_forcing
+      collect_matrix_elements
+      compute_eigen
+      compute_matrix_numerics
+      equations_to_matrices
+      form_equations
+      process_matrix_element
+      reduce_dimensions
+      reduce_eqsys_to_force_form
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,25 @@
+pg\_utils.pg\_model.bg\_fields.BackgroundMalkus
+===============================================
+
+.. currentmodule:: pg_utils.pg_model.bg_fields
+
+.. autoclass:: BackgroundMalkus
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BackgroundMalkus.__init__
+   
+   
+
+   
+   
+   

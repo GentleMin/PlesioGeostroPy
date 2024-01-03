@@ -1,0 +1,6 @@
+pg\_utils.eigen.collect\_matrix\_elements
+=========================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: collect_matrix_elements

@@ -7,6 +7,7 @@
   <title>pg_utils.pg_model.forcing &mdash; PlesioGeostroPy 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
 
   
   <!--[if lt IE 9]>
@@ -18,7 +19,8 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -45,55 +47,58 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="pg_utils.html">pg_utils</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+              <p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="pg_utils.sympy_supp.html">sympy_supp</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="pg_utils.pg_model.html">pg_model</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.base.html">pg_utils.pg_model.base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.base_utils.html">pg_utils.pg_model.base_utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.core.html">pg_utils.pg_model.core</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.equations.html">pg_utils.pg_model.equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_conjugate.html">pg_utils.pg_model.expand_conjugate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pg_utils.pg_model.forcing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Ls_sym.html">pg_utils.pg_model.forcing.Ls_sym</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Lp_sym.html">pg_utils.pg_model.forcing.Lp_sym</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Lz_asym.html">pg_utils.pg_model.forcing.Lz_asym</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Le_p.html">pg_utils.pg_model.forcing.Le_p</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Ls_sym_expr.html">pg_utils.pg_model.forcing.Ls_sym_expr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Lp_sym_expr.html">pg_utils.pg_model.forcing.Lp_sym_expr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Lz_asym_expr.html">pg_utils.pg_model.forcing.Lz_asym_expr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Le_p_expr.html">pg_utils.pg_model.forcing.Le_p_expr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Ls_sym_cg.html">pg_utils.pg_model.forcing.Ls_sym_cg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Lp_sym_cg.html">pg_utils.pg_model.forcing.Lp_sym_cg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Lz_asym_cg.html">pg_utils.pg_model.forcing.Lz_asym_cg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Le_p_cg.html">pg_utils.pg_model.forcing.Le_p_cg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.force_explicit.html">pg_utils.pg_model.forcing.force_explicit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.force_explicit_cg.html">pg_utils.pg_model.forcing.force_explicit_cg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Le_p_lin.html">pg_utils.pg_model.forcing.Le_p_lin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Ls_sym_lin.html">pg_utils.pg_model.forcing.Ls_sym_lin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Lp_sym_lin.html">pg_utils.pg_model.forcing.Lp_sym_lin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Lz_asym_lin.html">pg_utils.pg_model.forcing.Lz_asym_lin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Ls_sym_lin_cg.html">pg_utils.pg_model.forcing.Ls_sym_lin_cg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Lp_sym_lin_cg.html">pg_utils.pg_model.forcing.Lp_sym_lin_cg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Lz_asym_lin_cg.html">pg_utils.pg_model.forcing.Lz_asym_lin_cg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.Le_p_lin_cg.html">pg_utils.pg_model.forcing.Le_p_lin_cg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.force_explicit_lin.html">pg_utils.pg_model.forcing.force_explicit_lin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.force_explicit_lin_cg.html">pg_utils.pg_model.forcing.force_explicit_lin_cg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pg_utils.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.eigen.html">pg_utils.eigen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.numerics.html">pg_utils.numerics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pg_utils.pg_model.html">pg_utils.pg_model</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.base.html">pg_utils.pg_model.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.base_utils.html">pg_utils.pg_model.base_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.bg_fields.html">pg_utils.pg_model.bg_fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.html">pg_utils.pg_model.core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.equations.html">pg_utils.pg_model.equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_conjugate.html">pg_utils.pg_model.expand_conjugate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pg_utils.pg_model.forcing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Ls_sym.html">pg_utils.pg_model.forcing.Ls_sym</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Lp_sym.html">pg_utils.pg_model.forcing.Lp_sym</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Lz_asym.html">pg_utils.pg_model.forcing.Lz_asym</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Le_p.html">pg_utils.pg_model.forcing.Le_p</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Ls_sym_expr.html">pg_utils.pg_model.forcing.Ls_sym_expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Lp_sym_expr.html">pg_utils.pg_model.forcing.Lp_sym_expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Lz_asym_expr.html">pg_utils.pg_model.forcing.Lz_asym_expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Le_p_expr.html">pg_utils.pg_model.forcing.Le_p_expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Ls_sym_cg.html">pg_utils.pg_model.forcing.Ls_sym_cg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Lp_sym_cg.html">pg_utils.pg_model.forcing.Lp_sym_cg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Lz_asym_cg.html">pg_utils.pg_model.forcing.Lz_asym_cg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Le_p_cg.html">pg_utils.pg_model.forcing.Le_p_cg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.force_explicit.html">pg_utils.pg_model.forcing.force_explicit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.force_explicit_cg.html">pg_utils.pg_model.forcing.force_explicit_cg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Le_p_lin.html">pg_utils.pg_model.forcing.Le_p_lin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Ls_sym_lin.html">pg_utils.pg_model.forcing.Ls_sym_lin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Lp_sym_lin.html">pg_utils.pg_model.forcing.Lp_sym_lin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Lz_asym_lin.html">pg_utils.pg_model.forcing.Lz_asym_lin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Ls_sym_lin_cg.html">pg_utils.pg_model.forcing.Ls_sym_lin_cg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Lp_sym_lin_cg.html">pg_utils.pg_model.forcing.Lp_sym_lin_cg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Lz_asym_lin_cg.html">pg_utils.pg_model.forcing.Lz_asym_lin_cg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.Le_p_lin_cg.html">pg_utils.pg_model.forcing.Le_p_lin_cg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.force_explicit_lin.html">pg_utils.pg_model.forcing.force_explicit_lin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.forcing.force_explicit_lin_cg.html">pg_utils.pg_model.forcing.force_explicit_lin_cg</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pg_utils.numerics.html">numerics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pg_utils.processing.html">processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.processing.html">pg_utils.processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.sympy_supp.html">pg_utils.sympy_supp</a></li>
+</ul>
+</li>
 </ul>
 
         </div>

@@ -1,0 +1,6 @@
+pg\_utils.eigen.compute\_eigen
+==============================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: compute_eigen

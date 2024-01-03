@@ -1,0 +1,6 @@
+pg\_utils.numerics.io.sparse\_coo\_save\_to\_group
+==================================================
+
+.. currentmodule:: pg_utils.numerics.io
+
+.. autofunction:: sparse_coo_save_to_group

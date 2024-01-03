@@ -52,8 +52,8 @@ class TestConjugateEquations:
         rhs_cmp = - self.u_dot_grad_h(cgvar.M_zp) \
             + cgvar.M_zp/2*(3*diff(Uz, z) - I/s*diff(Us, p) + I*s*diff(Up/s, s)) \
             + cgvar.M_zm/2*(diff(Uz, z) + 2*diff(Us, s) + I/s*diff(Us, p) + I*s*diff(Up/s, s)) \
-            - cgvar.zM_1/2*(diff(s*Us/H**2, s) + I/H**2*diff(Us, p)) \
-            + cgvar.zM_p/2*(-diff(s*Us/H**2, s) + I/H**2*diff(Us, p))
+            - cgvar.zM_1/sympy.sqrt(2)*(diff(s*Us/H**2, s) + I/H**2*diff(Us, p)) \
+            + cgvar.zM_p/sympy.sqrt(2)*(-diff(s*Us/H**2, s) + I/H**2*diff(Us, p))
         rhs_cmp = rhs_cmp.subs({H: H_s}).doit().subs({H_s: H})
         assert rhs_tmp.equals(rhs_cmp)
     
@@ -63,8 +63,8 @@ class TestConjugateEquations:
         rhs_cmp = - self.u_dot_grad_h(cgvar.M_zm) \
             + cgvar.M_zm/2*(3*diff(Uz, z) + I/s*diff(Us, p) - I*s*diff(Up/s, s)) \
             + cgvar.M_zp/2*(diff(Uz, z) + 2*diff(Us, s) - I/s*diff(Us, p) - I*s*diff(Up/s, s)) \
-            - cgvar.zM_1/2*(diff(s*Us/H**2, s) - I/H**2*diff(Us, p)) \
-            + cgvar.zM_m/2*(-diff(s*Us/H**2, s) - I/H**2*diff(Us, p))
+            - cgvar.zM_1/sympy.sqrt(2)*(diff(s*Us/H**2, s) - I/H**2*diff(Us, p)) \
+            + cgvar.zM_m/sympy.sqrt(2)*(-diff(s*Us/H**2, s) - I/H**2*diff(Us, p))
         rhs_cmp = rhs_cmp.subs({H: H_s}).doit().subs({H_s: H})
         assert rhs_tmp.equals(rhs_cmp)
 
