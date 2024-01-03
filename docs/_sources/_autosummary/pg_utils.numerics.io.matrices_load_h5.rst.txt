@@ -1,0 +1,6 @@
+pg\_utils.numerics.io.matrices\_load\_h5
+========================================
+
+.. currentmodule:: pg_utils.numerics.io
+
+.. autofunction:: matrices_load_h5

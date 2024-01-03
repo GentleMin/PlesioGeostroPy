@@ -1,0 +1,31 @@
+﻿pg\_utils.numerics.special
+==========================
+
+.. automodule:: pg_utils.numerics.special
+  
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      eval_jacobi_nrange
+      eval_jacobi_to_Nmax
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

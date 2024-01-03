@@ -7,6 +7,7 @@
   <title>pg_utils.pg_model.core &mdash; PlesioGeostroPy 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
 
   
   <!--[if lt IE 9]>
@@ -18,12 +19,13 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pg_utils.pg_model.core.x" href="pg_utils.pg_model.core.x.html" />
-    <link rel="prev" title="pg_utils.pg_model.base_utils.linearize" href="pg_utils.pg_model.base_utils.linearize.html" /> 
+    <link rel="prev" title="pg_utils.pg_model.bg_fields.BackgroundToroidalQuadrupole" href="pg_utils.pg_model.bg_fields.BackgroundToroidalQuadrupole.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,74 +47,78 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="pg_utils.html">pg_utils</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+              <p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="pg_utils.sympy_supp.html">sympy_supp</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="pg_utils.pg_model.html">pg_model</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.base.html">pg_utils.pg_model.base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.base_utils.html">pg_utils.pg_model.base_utils</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pg_utils.pg_model.core</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.x.html">pg_utils.pg_model.core.x</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.y.html">pg_utils.pg_model.core.y</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.z.html">pg_utils.pg_model.core.z</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.t.html">pg_utils.pg_model.core.t</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.s.html">pg_utils.pg_model.core.s</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.p.html">pg_utils.pg_model.core.p</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.r.html">pg_utils.pg_model.core.r</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.theta.html">pg_utils.pg_model.core.theta</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.cyl.html">pg_utils.pg_model.core.cyl</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.sph.html">pg_utils.pg_model.core.sph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.H.html">pg_utils.pg_model.core.H</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.H_s.html">pg_utils.pg_model.core.H_s</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.B_vec.html">pg_utils.pg_model.core.b_vec</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.B_sph.html">pg_utils.pg_model.core.b_sph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.U_vec.html">pg_utils.pg_model.core.u_vec</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.v_e.html">pg_utils.pg_model.core.v_e</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.U_sph.html">pg_utils.pg_model.core.u_sph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.pgvar.html">pg_utils.pg_model.core.pgvar</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.U_pg.html">pg_utils.pg_model.core.U_pg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.B0_vec.html">pg_utils.pg_model.core.B0_vec</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.B0_sph.html">pg_utils.pg_model.core.B0_sph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.U0_vec.html">pg_utils.pg_model.core.U0_vec</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.U0_sph.html">pg_utils.pg_model.core.U0_sph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.pgvar_bg.html">pg_utils.pg_model.core.pgvar_bg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.pgvar_ptb.html">pg_utils.pg_model.core.pgvar_ptb</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.cgvar.html">pg_utils.pg_model.core.cgvar</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.cgvar_ptb.html">pg_utils.pg_model.core.cgvar_ptb</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.reduced_var.html">pg_utils.pg_model.core.reduced_var</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.fs_sym.html">pg_utils.pg_model.core.fs_sym</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.fp_sym.html">pg_utils.pg_model.core.fp_sym</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.fz_asym.html">pg_utils.pg_model.core.fz_asym</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.fe_p.html">pg_utils.pg_model.core.fe_p</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.eps.html">pg_utils.pg_model.core.eps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.u_linmap.html">pg_utils.pg_model.core.u_linmap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.b_linmap.html">pg_utils.pg_model.core.b_linmap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.pg_linmap.html">pg_utils.pg_model.core.pg_linmap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.cg_linmap.html">pg_utils.pg_model.core.cg_linmap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.force_linmap.html">pg_utils.pg_model.core.force_linmap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.PG_to_conjugate.html">pg_utils.pg_model.core.PG_to_conjugate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.conjugate_to_PG.html">pg_utils.pg_model.core.conjugate_to_PG</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.map_conjugate_to_pg.html">pg_utils.pg_model.core.map_conjugate_to_pg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.map_pg_to_conjugate.html">pg_utils.pg_model.core.map_pg_to_conjugate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.core.pg_ansatz.html">pg_utils.pg_model.core.pg_ansatz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pg_utils.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.eigen.html">pg_utils.eigen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.numerics.html">pg_utils.numerics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pg_utils.pg_model.html">pg_utils.pg_model</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.base.html">pg_utils.pg_model.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.base_utils.html">pg_utils.pg_model.base_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.bg_fields.html">pg_utils.pg_model.bg_fields</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pg_utils.pg_model.core</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.x.html">pg_utils.pg_model.core.x</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.y.html">pg_utils.pg_model.core.y</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.z.html">pg_utils.pg_model.core.z</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.t.html">pg_utils.pg_model.core.t</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.s.html">pg_utils.pg_model.core.s</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.p.html">pg_utils.pg_model.core.p</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.r.html">pg_utils.pg_model.core.r</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.theta.html">pg_utils.pg_model.core.theta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.cyl.html">pg_utils.pg_model.core.cyl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.sph.html">pg_utils.pg_model.core.sph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.H.html">pg_utils.pg_model.core.H</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.H_s.html">pg_utils.pg_model.core.H_s</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.B_vec.html">pg_utils.pg_model.core.b_vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.B_sph.html">pg_utils.pg_model.core.b_sph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.U_vec.html">pg_utils.pg_model.core.u_vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.v_e.html">pg_utils.pg_model.core.v_e</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.U_sph.html">pg_utils.pg_model.core.u_sph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.pgvar.html">pg_utils.pg_model.core.pgvar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.U_pg.html">pg_utils.pg_model.core.U_pg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.B0_vec.html">pg_utils.pg_model.core.B0_vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.B0_sph.html">pg_utils.pg_model.core.B0_sph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.U0_vec.html">pg_utils.pg_model.core.U0_vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.U0_sph.html">pg_utils.pg_model.core.U0_sph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.pgvar_bg.html">pg_utils.pg_model.core.pgvar_bg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.pgvar_ptb.html">pg_utils.pg_model.core.pgvar_ptb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.cgvar.html">pg_utils.pg_model.core.cgvar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.cgvar_bg.html">pg_utils.pg_model.core.cgvar_bg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.cgvar_ptb.html">pg_utils.pg_model.core.cgvar_ptb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.reduced_var.html">pg_utils.pg_model.core.reduced_var</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.fs_sym.html">pg_utils.pg_model.core.fs_sym</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.fp_sym.html">pg_utils.pg_model.core.fp_sym</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.fz_asym.html">pg_utils.pg_model.core.fz_asym</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.fe_p.html">pg_utils.pg_model.core.fe_p</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.eps.html">pg_utils.pg_model.core.eps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.u_linmap.html">pg_utils.pg_model.core.u_linmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.b_linmap.html">pg_utils.pg_model.core.b_linmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.pg_linmap.html">pg_utils.pg_model.core.pg_linmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.cg_linmap.html">pg_utils.pg_model.core.cg_linmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.force_linmap.html">pg_utils.pg_model.core.force_linmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.PG_to_conjugate.html">pg_utils.pg_model.core.PG_to_conjugate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.conjugate_to_PG.html">pg_utils.pg_model.core.conjugate_to_PG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.map_conjugate_to_pg.html">pg_utils.pg_model.core.map_conjugate_to_pg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.map_pg_to_conjugate.html">pg_utils.pg_model.core.map_pg_to_conjugate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.core.pg_ansatz.html">pg_utils.pg_model.core.pg_ansatz</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.equations.html">pg_utils.pg_model.equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_conjugate.html">pg_utils.pg_model.expand_conjugate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.forcing.html">pg_utils.pg_model.forcing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.equations.html">pg_utils.pg_model.equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_conjugate.html">pg_utils.pg_model.expand_conjugate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.html">pg_utils.pg_model.forcing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pg_utils.numerics.html">numerics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pg_utils.processing.html">processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.processing.html">pg_utils.processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.sympy_supp.html">pg_utils.sympy_supp</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -239,40 +245,43 @@ and controlling parameters in PG model</p>
 <tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.cgvar.html#pg_utils.pg_model.core.cgvar" title="pg_utils.pg_model.core.cgvar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cgvar</span></code></a></p></td>
 <td><p>Collection of conjugate variables</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.cgvar_ptb.html#pg_utils.pg_model.core.cgvar_ptb" title="pg_utils.pg_model.core.cgvar_ptb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cgvar_ptb</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.cgvar_bg.html#pg_utils.pg_model.core.cgvar_bg" title="pg_utils.pg_model.core.cgvar_bg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cgvar_bg</span></code></a></p></td>
+<td><p>Collection of background conjugate quantities</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.cgvar_ptb.html#pg_utils.pg_model.core.cgvar_ptb" title="pg_utils.pg_model.core.cgvar_ptb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cgvar_ptb</span></code></a></p></td>
 <td><p>Perturbation in conjugate fields</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.reduced_var.html#pg_utils.pg_model.core.reduced_var" title="pg_utils.pg_model.core.reduced_var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduced_var</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.reduced_var.html#pg_utils.pg_model.core.reduced_var" title="pg_utils.pg_model.core.reduced_var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduced_var</span></code></a></p></td>
 <td><p>Reduced system variables</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.fs_sym.html#pg_utils.pg_model.core.fs_sym" title="pg_utils.pg_model.core.fs_sym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fs_sym</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.fs_sym.html#pg_utils.pg_model.core.fs_sym" title="pg_utils.pg_model.core.fs_sym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fs_sym</span></code></a></p></td>
 <td><p>Symmetric integral of radial force</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.fp_sym.html#pg_utils.pg_model.core.fp_sym" title="pg_utils.pg_model.core.fp_sym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fp_sym</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.fp_sym.html#pg_utils.pg_model.core.fp_sym" title="pg_utils.pg_model.core.fp_sym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fp_sym</span></code></a></p></td>
 <td><p>Symmetric integral of azimuthal force</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.fz_asym.html#pg_utils.pg_model.core.fz_asym" title="pg_utils.pg_model.core.fz_asym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fz_asym</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.fz_asym.html#pg_utils.pg_model.core.fz_asym" title="pg_utils.pg_model.core.fz_asym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fz_asym</span></code></a></p></td>
 <td><p>Anti-symmetric integral of axial force</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.fe_p.html#pg_utils.pg_model.core.fe_p" title="pg_utils.pg_model.core.fe_p"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fe_p</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.fe_p.html#pg_utils.pg_model.core.fe_p" title="pg_utils.pg_model.core.fe_p"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fe_p</span></code></a></p></td>
 <td><p>Azimuthal force in the equatorial plane</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.eps.html#pg_utils.pg_model.core.eps" title="pg_utils.pg_model.core.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.eps.html#pg_utils.pg_model.core.eps" title="pg_utils.pg_model.core.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a></p></td>
 <td><p>Small quantity for linearization <span class="math notranslate nohighlight">\(\epsilon\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.u_linmap.html#pg_utils.pg_model.core.u_linmap" title="pg_utils.pg_model.core.u_linmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_linmap</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.u_linmap.html#pg_utils.pg_model.core.u_linmap" title="pg_utils.pg_model.core.u_linmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_linmap</span></code></a></p></td>
 <td><p>First-order perturbation map of velocity field</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.b_linmap.html#pg_utils.pg_model.core.b_linmap" title="pg_utils.pg_model.core.b_linmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">b_linmap</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.b_linmap.html#pg_utils.pg_model.core.b_linmap" title="pg_utils.pg_model.core.b_linmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">b_linmap</span></code></a></p></td>
 <td><p>First-order perturbation map of magnetic field</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.pg_linmap.html#pg_utils.pg_model.core.pg_linmap" title="pg_utils.pg_model.core.pg_linmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_linmap</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.pg_linmap.html#pg_utils.pg_model.core.pg_linmap" title="pg_utils.pg_model.core.pg_linmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_linmap</span></code></a></p></td>
 <td><p>First-order perturbation map of PG variables</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.cg_linmap.html#pg_utils.pg_model.core.cg_linmap" title="pg_utils.pg_model.core.cg_linmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cg_linmap</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.cg_linmap.html#pg_utils.pg_model.core.cg_linmap" title="pg_utils.pg_model.core.cg_linmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cg_linmap</span></code></a></p></td>
 <td><p>First-order perturbation map of conjugate variables</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.core.force_linmap.html#pg_utils.pg_model.core.force_linmap" title="pg_utils.pg_model.core.force_linmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">force_linmap</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.core.force_linmap.html#pg_utils.pg_model.core.force_linmap" title="pg_utils.pg_model.core.force_linmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">force_linmap</span></code></a></p></td>
 <td><p>First-order perturbation in external forcing</p></td>
 </tr>
 </tbody>
@@ -303,7 +312,7 @@ and controlling parameters in PG model</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pg_utils.pg_model.base_utils.linearize.html" class="btn btn-neutral float-left" title="pg_utils.pg_model.base_utils.linearize" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.pg_model.bg_fields.BackgroundToroidalQuadrupole.html" class="btn btn-neutral float-left" title="pg_utils.pg_model.bg_fields.BackgroundToroidalQuadrupole" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="pg_utils.pg_model.core.x.html" class="btn btn-neutral float-right" title="pg_utils.pg_model.core.x" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
