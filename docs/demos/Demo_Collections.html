@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intro to the collection interface &mdash; PlesioGeostroPy 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Variables, equations and forcing terms" href="Demo_Variables.html" />
+    <link rel="prev" title="Introducing PlesioGeostroPy: Quickstart" href="Demo_PlesioGeostroPy_Basics.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PlesioGeostroPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Demo_PlesioGeostroPy_Basics.html">Quickstart</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Collections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#labeledcollection-initialization-and-operations">LabeledCollection: initialization and operations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#iterator-traversing-the-collection">Iterator: traversing the collection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#serialization">Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#specializations-of-collections">Specializations of collections</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#collectionpg">CollectionPG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#collectionconjugate">CollectionConjugate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transformation-between-pg-and-transformed-variables">Transformation between PG and transformed variables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Demo_Variables.html">Variables, equations and forcings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Demo_Regularity.html">Regularity conditions on tensor components in polar coordinates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/pg_utils.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PlesioGeostroPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Intro to the collection interface</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/demos/Demo_Collections.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="intro-to-the-collection-interface">
+<h1>Intro to the collection interface<a class="headerlink" href="#intro-to-the-collection-interface" title="Permalink to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">base.LabeledCollection</span></code> interface is one of the fundamental structures in <strong>PlesioGeostroPy</strong>.
+It is a class designed for convenient manipulation (esp. symbolic manipulation) of a physically meaningful collection of variables / fields / equations.</p>
+<p>To understand why this is necessary, we just need to compare the PG model with the 3D counterpart, i.e. MHD equations.
+In the original MHD equations, the unknown fields are the vector velocity field <span class="math notranslate nohighlight">\(\mathbf{U}\)</span>, vector magnetic field <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>, and perhaps scalar temperature field <span class="math notranslate nohighlight">\(\Theta\)</span>.
+If Mie decomp is used, then these are further reduced to five scalars <span class="math notranslate nohighlight">\(T_u\)</span>, <span class="math notranslate nohighlight">\(P_u\)</span>, <span class="math notranslate nohighlight">\(T_b\)</span>, <span class="math notranslate nohighlight">\(P_b\)</span> and <span class="math notranslate nohighlight">\(\Theta\)</span>.
+Either way, the set of unknown variables is small, well defined, and well organized by their physical meanings, and so are the governing equations.
+Manipulating these variables can be easily done by writing codes for each equation / variable.</p>
+<p>Things become much more annoying when dealing with PG equations and variables. First, we are now dealing with at least 15 variables, and it is no longer desirable to write a code snippet for every single variable / equation.
+Second, although all the variables have clear physical meaning, their conglomeration does not. The velocity field merely occupies one variable, while magnetic field occupies eight, within which there are both symmetric integrals and anti-symmetric integrals. The existence of boundary quantities poses another complication.</p>
+<p>The design of class <code class="docutils literal notranslate"><span class="pre">base.LabeledCollection</span></code> is hence directed at fulfilling two purposes. First, it allows batch manipulation of all variables within this collection, without the need to write the code for each component. Second, when field-specific manipulation is necessary, the class admits extracting one or more fields by calling their “names”. Underneath, the class is really just a class whose attributes can be traversed with an iterator, but it provides the flexibility to support both batch and specific manipulation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="n">root_dir</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+
+<span class="c1"># The following 2 lines are a hack to import from parent directory</span>
+<span class="c1"># If the notebook is run in the root directory, comment out these 2 lines</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span>
+<span class="n">root_dir</span> <span class="o">=</span> <span class="s2">&quot;..&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pg_utils.pg_model</span> <span class="kn">import</span> <span class="n">base</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="labeledcollection-initialization-and-operations">
+<h2>LabeledCollection: initialization and operations<a class="headerlink" href="#labeledcollection-initialization-and-operations" title="Permalink to this heading"></a></h2>
+<p>Now let us look at an example of how this class can be used. Granted, there are not so many circumstances where one wants a collection to be both iterable and indexable by name.
+The following example may not be the most necessary, but it gives an idea how this interface functions.</p>
+<p>Let us consider the meta-data of an article, or any published material really. It has fields such as “title”, “DOI”, etc. We can build a LabeledCollection around this structure.
+The construction of the <code class="docutils literal notranslate"><span class="pre">base.LabeledCollection</span></code> class starts with a list of field names, followed by the values of these fields. For the example, we can construct an entry using:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="n">article_meta</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">LabeledCollection</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Abstract&quot;</span><span class="p">,</span> <span class="s2">&quot;Authors&quot;</span><span class="p">,</span> <span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="s2">&quot;AccessDate&quot;</span><span class="p">,</span> <span class="s2">&quot;DOI&quot;</span><span class="p">,</span> <span class="s2">&quot;Journal&quot;</span><span class="p">],</span>
+    <span class="n">Title</span><span class="o">=</span><span class="s2">&quot;The CHAOS-7 geomagnetic field model and observed changes in the South Atlantic Anomaly&quot;</span><span class="p">,</span> 
+    <span class="n">Abstract</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;We present the CHAOS-7 model of the time-dependent near-Earth geomagnetic field &quot;</span>
+              <span class="s2">&quot;between 1999 and 2020 based on magnetic field observations &quot;</span>
+              <span class="s2">&quot;collected by the low-Earth orbit satellites Swarm, CryoSat-2, CHAMP, SAC-C and Ørsted, &quot;</span>
+              <span class="s2">&quot;and on annual differences of monthly means of ground observatory measurements.&quot;</span><span class="p">),</span>
+    <span class="n">Authors</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;C. C. Finlay&quot;</span><span class="p">,</span> <span class="s2">&quot;C. Kloss&quot;</span><span class="p">,</span> <span class="s2">&quot;N. Olsen&quot;</span><span class="p">,</span> <span class="s2">&quot;M. D. Hammer&quot;</span><span class="p">,</span> <span class="s2">&quot;L. Tøffner-Clausen&quot;</span><span class="p">,</span> <span class="s2">&quot;A. Grayver&quot;</span><span class="p">,</span> <span class="s2">&quot;A. Kuvshinov&quot;</span><span class="p">],</span>
+    <span class="n">Date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="n">AccessDate</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+    <span class="n">DOI</span><span class="o">=</span><span class="s2">&quot;10.1186/s40623-020-01252-9&quot;</span><span class="p">,</span>
+    <span class="n">Journal</span><span class="o">=</span><span class="s2">&quot;Earth, Planets and Space&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The field names can be accessed via</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">article_meta</span><span class="o">.</span><span class="n">_field_names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Title&#39;, &#39;Abstract&#39;, &#39;Authors&#39;, &#39;Date&#39;, &#39;AccessDate&#39;, &#39;DOI&#39;, &#39;Journal&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>And the fields within this data structure is arranged according to this list, which is the first parameter passed in.
+For instance, the first field will be title</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">article_meta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;The CHAOS-7 geomagnetic field model and observed changes in the South Atlantic Anomaly&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>and the last field will be the name of the journal</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">article_meta</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Earth, Planets and Space&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The same field can also be accessed by the name of the field, i.e. “Journal”:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">article_meta</span><span class="p">[</span><span class="s2">&quot;Journal&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Earth, Planets and Space&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>At this point one might think that a dictionary as a container is sufficient: the values can be accessed via the key (<em>“call me by my name”</em>, if you will), and can also be accessed via the index, say using <code class="docutils literal notranslate"><span class="pre">dict[list(dict.keys())[index]]</span></code> or <code class="docutils literal notranslate"><span class="pre">list(dict.values())[index]</span></code>. However, there are two problems. First, it is usually not right to assume that the index within a dictionary/map is stable. Second, designing a specific data structure would give you more control as to how you can use it. For instance, we can also call the value as an attribute:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">article_meta</span><span class="o">.</span><span class="n">Authors</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;C. C. Finlay&#39;,
+ &#39;C. Kloss&#39;,
+ &#39;N. Olsen&#39;,
+ &#39;M. D. Hammer&#39;,
+ &#39;L. Tøffner-Clausen&#39;,
+ &#39;A. Grayver&#39;,
+ &#39;A. Kuvshinov&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<section id="iterator-traversing-the-collection">
+<h3>Iterator: traversing the collection<a class="headerlink" href="#iterator-traversing-the-collection" title="Permalink to this heading"></a></h3>
+<p>One of the key things enabled by assigning an index to each field is that you can iterate through the collection. You can do this by</p>
+<ul class="simple">
+<li><p>iterating through the field names:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">article_meta</span><span class="o">.</span><span class="n">_field_names</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:12s}</span><span class="s2">: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">article_meta</span><span class="p">[</span><span class="n">field_name</span><span class="p">])))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Title       : The CHAOS-7 geomagnetic field model and observed changes in the South Atlantic Anomaly
+Abstract    : We present the CHAOS-7 model of the time-dependent near-Earth geomagnetic field between 1999 and 2020 based on magnetic field observations collected by the low-Earth orbit satellites Swarm, CryoSat-2, CHAMP, SAC-C and Ørsted, and on annual differences of monthly means of ground observatory measurements.
+Authors     : [&#39;C. C. Finlay&#39;, &#39;C. Kloss&#39;, &#39;N. Olsen&#39;, &#39;M. D. Hammer&#39;, &#39;L. Tøffner-Clausen&#39;, &#39;A. Grayver&#39;, &#39;A. Kuvshinov&#39;]
+Date        : 2020-10-20 00:00:00
+AccessDate  : 2023-03-07 00:00:00
+DOI         : 10.1186/s40623-020-01252-9
+Journal     : Earth, Planets and Space
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>or simply iterating through the field values. Your call.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="n">article_meta</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">field_value</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The CHAOS-7 geomagnetic field model and observed changes in the South Atlantic Anomaly
+We present the CHAOS-7 model of the time-dependent near-Earth geomagnetic field between 1999 and 2020 based on magnetic field observations collected by the low-Earth orbit satellites Swarm, CryoSat-2, CHAMP, SAC-C and Ørsted, and on annual differences of monthly means of ground observatory measurements.
+[&#39;C. C. Finlay&#39;, &#39;C. Kloss&#39;, &#39;N. Olsen&#39;, &#39;M. D. Hammer&#39;, &#39;L. Tøffner-Clausen&#39;, &#39;A. Grayver&#39;, &#39;A. Kuvshinov&#39;]
+2020-10-20 00:00:00
+2023-03-07 00:00:00
+10.1186/s40623-020-01252-9
+Earth, Planets and Space
+</pre></div>
+</div>
+</div>
+</div>
+<p>There are also some built-in syntax sugars for simpler manipulation of a collection.
+One of them is the <code class="docutils literal notranslate"><span class="pre">apply</span></code> function, which applies a processing method to all of the fields.</p>
+<p>Say you (for some reason) want to make a 1950s Swiss style poster of this article, and you want all letters to be in lowercase (see <a class="reference external" href="https://www.printmag.com/featured/swiss-style-principles-typefaces-designers/">examples</a> here).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">string_lower</span><span class="p">(</span><span class="n">field_value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">field_value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">field_value</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">field_value</span>
+
+<span class="n">article_meta_swiss_style</span> <span class="o">=</span> <span class="n">article_meta</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">string_lower</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">article_meta_swiss_style</span><span class="o">.</span><span class="n">_field_names</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:12s}</span><span class="s2">: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">article_meta_swiss_style</span><span class="p">[</span><span class="n">field_name</span><span class="p">])))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Title       : the chaos-7 geomagnetic field model and observed changes in the south atlantic anomaly
+Abstract    : we present the chaos-7 model of the time-dependent near-earth geomagnetic field between 1999 and 2020 based on magnetic field observations collected by the low-earth orbit satellites swarm, cryosat-2, champ, sac-c and ørsted, and on annual differences of monthly means of ground observatory measurements.
+Authors     : [&#39;c. c. finlay&#39;, &#39;c. kloss&#39;, &#39;n. olsen&#39;, &#39;m. d. hammer&#39;, &#39;l. tøffner-clausen&#39;, &#39;a. grayver&#39;, &#39;a. kuvshinov&#39;]
+Date        : 2020-10-20 00:00:00
+AccessDate  : 2023-03-07 00:00:00
+DOI         : 10.1186/s40623-020-01252-9
+Journal     : earth, planets and space
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can also optionally pass in the name of the field. For instance, say you want the dates to be expressed in days since 2000:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">date_ref_2000</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">field_value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">field_name</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;Date&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">field_value</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">field_value</span>
+
+<span class="n">article_meta_ref_2000</span> <span class="o">=</span> <span class="n">article_meta</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">date_ref_2000</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">article_meta_ref_2000</span><span class="o">.</span><span class="n">_field_names</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:12s}</span><span class="s2">: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">article_meta_ref_2000</span><span class="p">[</span><span class="n">field_name</span><span class="p">])))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Title       : The CHAOS-7 geomagnetic field model and observed changes in the South Atlantic Anomaly
+Abstract    : We present the CHAOS-7 model of the time-dependent near-Earth geomagnetic field between 1999 and 2020 based on magnetic field observations collected by the low-Earth orbit satellites Swarm, CryoSat-2, CHAMP, SAC-C and Ørsted, and on annual differences of monthly means of ground observatory measurements.
+Authors     : [&#39;C. C. Finlay&#39;, &#39;C. Kloss&#39;, &#39;N. Olsen&#39;, &#39;M. D. Hammer&#39;, &#39;L. Tøffner-Clausen&#39;, &#39;A. Grayver&#39;, &#39;A. Kuvshinov&#39;]
+Date        : 7598.0
+AccessDate  : 8466.0
+DOI         : 10.1186/s40623-020-01252-9
+Journal     : Earth, Planets and Space
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="serialization">
+<h3>Serialization<a class="headerlink" href="#serialization" title="Permalink to this heading"></a></h3>
+<p>The last useful function is to serialize the collection. This can be particularly useful when you want to export the collection.</p>
+<p>Serialization of a collection converts the collection into a list of tuples. By default, all of the items are converted to strings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">article_meta</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;Title&#39;,
+  &#39;The CHAOS-7 geomagnetic field model and observed changes in the South Atlantic Anomaly&#39;),
+ (&#39;Abstract&#39;,
+  &#39;We present the CHAOS-7 model of the time-dependent near-Earth geomagnetic field between 1999 and 2020 based on magnetic field observations collected by the low-Earth orbit satellites Swarm, CryoSat-2, CHAMP, SAC-C and Ørsted, and on annual differences of monthly means of ground observatory measurements.&#39;),
+ (&#39;Authors&#39;,
+  &quot;[&#39;C. C. Finlay&#39;, &#39;C. Kloss&#39;, &#39;N. Olsen&#39;, &#39;M. D. Hammer&#39;, &#39;L. Tøffner-Clausen&#39;, &#39;A. Grayver&#39;, &#39;A. Kuvshinov&#39;]&quot;),
+ (&#39;Date&#39;, &#39;2020-10-20 00:00:00&#39;),
+ (&#39;AccessDate&#39;, &#39;2023-03-07 00:00:00&#39;),
+ (&#39;DOI&#39;, &#39;10.1186/s40623-020-01252-9&#39;),
+ (&#39;Journal&#39;, &#39;Earth, Planets and Space&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can specify specific conversions for field values by specifying the <code class="docutils literal notranslate"><span class="pre">serializer</span></code> parameter.
+For instance, you want everything to remain the same, without the need of conversion:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">article_meta</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;Title&#39;,
+  &#39;The CHAOS-7 geomagnetic field model and observed changes in the South Atlantic Anomaly&#39;),
+ (&#39;Abstract&#39;,
+  &#39;We present the CHAOS-7 model of the time-dependent near-Earth geomagnetic field between 1999 and 2020 based on magnetic field observations collected by the low-Earth orbit satellites Swarm, CryoSat-2, CHAMP, SAC-C and Ørsted, and on annual differences of monthly means of ground observatory measurements.&#39;),
+ (&#39;Authors&#39;,
+  [&#39;C. C. Finlay&#39;,
+   &#39;C. Kloss&#39;,
+   &#39;N. Olsen&#39;,
+   &#39;M. D. Hammer&#39;,
+   &#39;L. Tøffner-Clausen&#39;,
+   &#39;A. Grayver&#39;,
+   &#39;A. Kuvshinov&#39;]),
+ (&#39;Date&#39;, datetime.datetime(2020, 10, 20, 0, 0)),
+ (&#39;AccessDate&#39;, datetime.datetime(2023, 3, 7, 0, 0)),
+ (&#39;DOI&#39;, &#39;10.1186/s40623-020-01252-9&#39;),
+ (&#39;Journal&#39;, &#39;Earth, Planets and Space&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>This way list remains a list, and datetimes remain datetimes.</p>
+<p>The serialized object contains all the information of the collection, and can be used to reconstruct a collection:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">article_meta_reconstructed</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">LabeledCollection</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">article_meta</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">article_meta_reconstructed</span><span class="o">.</span><span class="n">_field_names</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:12s}</span><span class="s2">: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">article_meta_reconstructed</span><span class="p">[</span><span class="n">field_name</span><span class="p">])))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Title       : The CHAOS-7 geomagnetic field model and observed changes in the South Atlantic Anomaly
+Abstract    : We present the CHAOS-7 model of the time-dependent near-Earth geomagnetic field between 1999 and 2020 based on magnetic field observations collected by the low-Earth orbit satellites Swarm, CryoSat-2, CHAMP, SAC-C and Ørsted, and on annual differences of monthly means of ground observatory measurements.
+Authors     : [&#39;C. C. Finlay&#39;, &#39;C. Kloss&#39;, &#39;N. Olsen&#39;, &#39;M. D. Hammer&#39;, &#39;L. Tøffner-Clausen&#39;, &#39;A. Grayver&#39;, &#39;A. Kuvshinov&#39;]
+Date        : 2020-10-20 00:00:00
+AccessDate  : 2023-03-07 00:00:00
+DOI         : 10.1186/s40623-020-01252-9
+Journal     : Earth, Planets and Space
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="specializations-of-collections">
+<h2>Specializations of collections<a class="headerlink" href="#specializations-of-collections" title="Permalink to this heading"></a></h2>
+<p>There are two major specializations of collections in the PG model: <code class="docutils literal notranslate"><span class="pre">base.CollectionPG</span></code>, and <code class="docutils literal notranslate"><span class="pre">base.CollectionConjugate</span></code>.
+These both inherit from the base class <code class="docutils literal notranslate"><span class="pre">base.LabeledCollection</span></code>, and has pratically the same functionality, except for that the field names are pre-defined.</p>
+<section id="collectionpg">
+<h3>CollectionPG<a class="headerlink" href="#collectionpg" title="Permalink to this heading"></a></h3>
+<p>For <code class="docutils literal notranslate"><span class="pre">base.CollectionPG</span></code>, the fields correspond to the PG variables:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">base</span><span class="o">.</span><span class="n">CollectionPG</span><span class="o">.</span><span class="n">pg_field_names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Psi&#39;,
+ &#39;Mss&#39;,
+ &#39;Mpp&#39;,
+ &#39;Msp&#39;,
+ &#39;Msz&#39;,
+ &#39;Mpz&#39;,
+ &#39;zMss&#39;,
+ &#39;zMpp&#39;,
+ &#39;zMsp&#39;,
+ &#39;Bs_e&#39;,
+ &#39;Bp_e&#39;,
+ &#39;Bz_e&#39;,
+ &#39;dBs_dz_e&#39;,
+ &#39;dBp_dz_e&#39;,
+ &#39;Br_b&#39;,
+ &#39;Bs_p&#39;,
+ &#39;Bp_p&#39;,
+ &#39;Bz_p&#39;,
+ &#39;Bs_m&#39;,
+ &#39;Bp_m&#39;,
+ &#39;Bz_m&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Several key variables are of this type. For instance, the collection of the PG variables:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pg_utils.pg_model</span> <span class="kn">import</span> <span class="n">core</span>
+
+<span class="nb">type</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pg_utils.pg_model.base.CollectionPG
+</pre></div>
+</div>
+</div>
+</div>
+<p>These field values are <code class="docutils literal notranslate"><span class="pre">sympy.Function</span></code>s that represent the corresponding PG field</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="o">.</span><span class="n">_field_names</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field_name</span><span class="p">))</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="p">[</span><span class="n">field_name</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Psi:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \Psi{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mss:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_{ss}}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mpp:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_{\phi\phi}}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Msp:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_{s\phi}}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Msz:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{M_{sz}}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mpz:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{M_{\phi z}}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>zMss:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_{ss}}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>zMpp:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>zMsp:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bs_e:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{s}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bp_e:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{\phi}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bz_e:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dBs_dz_e:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{s, z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dBp_dz_e:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{\phi, z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Br_b:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{r1}{\left(\theta,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bs_p:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{s}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bp_p:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{\phi}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bz_p:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{z}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bs_m:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{s}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bp_m:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{\phi}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bz_m:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{z}{\left(s,\phi,t \right)}\]</div>
+</div>
+</div>
+</section>
+<section id="collectionconjugate">
+<h3>CollectionConjugate<a class="headerlink" href="#collectionconjugate" title="Permalink to this heading"></a></h3>
+<p>Similar variables exist for the conjugate/transformed fields:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">base</span><span class="o">.</span><span class="n">CollectionConjugate</span><span class="o">.</span><span class="n">cg_field_names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Psi&#39;,
+ &#39;M_1&#39;,
+ &#39;M_p&#39;,
+ &#39;M_m&#39;,
+ &#39;M_zp&#39;,
+ &#39;M_zm&#39;,
+ &#39;zM_1&#39;,
+ &#39;zM_p&#39;,
+ &#39;zM_m&#39;,
+ &#39;B_ep&#39;,
+ &#39;B_em&#39;,
+ &#39;Bz_e&#39;,
+ &#39;dB_dz_ep&#39;,
+ &#39;dB_dz_em&#39;,
+ &#39;Br_b&#39;,
+ &#39;B_pp&#39;,
+ &#39;B_pm&#39;,
+ &#39;Bz_p&#39;,
+ &#39;B_mp&#39;,
+ &#39;B_mm&#39;,
+ &#39;Bz_m&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">cgvar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pg_utils.pg_model.base.CollectionConjugate
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">core</span><span class="o">.</span><span class="n">cgvar</span><span class="o">.</span><span class="n">_field_names</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field_name</span><span class="p">))</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">cgvar</span><span class="p">[</span><span class="n">field_name</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Psi:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \Psi{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>M_1:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_1}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>M_p:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_+}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>M_m:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_-}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>M_zp:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{M_{z+}}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>M_zm:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{M_{z-}}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>zM_1:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_1}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>zM_p:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_+}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>zM_m:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_-}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>B_ep:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{+}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>B_em:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{-}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bz_e:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dB_dz_ep:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{+, z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dB_dz_em:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{-, z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Br_b:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{r1}{\left(\theta,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>B_pp:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{+}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>B_pm:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{-}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bz_p:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{z}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>B_mp:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{+}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>B_mm:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{-}{\left(s,\phi,t \right)}\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bz_m:
+</pre></div>
+</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{z}{\left(s,\phi,t \right)}\]</div>
+</div>
+</div>
+<p>For more detailed information on the variables, please refer to <a class="reference internal" href="Demo_Variables.html"><span class="doc std std-doc">Demo_Variables</span></a>.</p>
+</section>
+<section id="transformation-between-pg-and-transformed-variables">
+<h3>Transformation between PG and transformed variables<a class="headerlink" href="#transformation-between-pg-and-transformed-variables" title="Permalink to this heading"></a></h3>
+<p>The conjugate / transformed variables form another set of variables that is mathematically equivalent to the PG variables, but are desired in that they admit simpler spectral expansions to fulfill regularity conditions.
+If you are unsure what it means, please refer to the <a class="reference external" href="https://gentlemin.github.io/assets/pdf/Ingredients.pdf">formulation PDF</a>.</p>
+<p><strong>PlesioGeostroPy</strong> provides the interface for linearly transforming one set of variables to another.
+For instance, <code class="docutils literal notranslate"><span class="pre">core.PG_to_conjugate</span></code> gives the linear transform from PG to conjugate / transformed variables:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span>
+
+<span class="n">cgvar_in_pgvar</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">PG_to_conjugate</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">core</span><span class="o">.</span><span class="n">cgvar</span><span class="o">.</span><span class="n">_field_names</span><span class="p">:</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">cgvar</span><span class="p">[</span><span class="n">field_name</span><span class="p">],</span> <span class="n">cgvar_in_pgvar</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span><span class="o">.</span><span class="n">expand</span><span class="p">(),</span> <span class="n">evaluate</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \Psi{\left(s,\phi,t \right)} = \Psi{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_1}{\left(s,\phi,t \right)} = \frac{\overline{M_{\phi\phi}}{\left(s,\phi,t \right)}}{2} + \frac{\overline{M_{ss}}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_+}{\left(s,\phi,t \right)} = - \frac{\overline{M_{\phi\phi}}{\left(s,\phi,t \right)}}{2} + i \overline{M_{s\phi}}{\left(s,\phi,t \right)} + \frac{\overline{M_{ss}}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_-}{\left(s,\phi,t \right)} = - \frac{\overline{M_{\phi\phi}}{\left(s,\phi,t \right)}}{2} - i \overline{M_{s\phi}}{\left(s,\phi,t \right)} + \frac{\overline{M_{ss}}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{M_{z+}}{\left(s,\phi,t \right)} = \frac{\sqrt{2} i \widetilde{M_{\phi z}}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} \widetilde{M_{sz}}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{M_{z-}}{\left(s,\phi,t \right)} = - \frac{\sqrt{2} i \widetilde{M_{\phi z}}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} \widetilde{M_{sz}}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_1}{\left(s,\phi,t \right)} = \frac{\widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)}}{2} + \frac{\widetilde{zM_{ss}}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_+}{\left(s,\phi,t \right)} = - \frac{\widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)}}{2} + i \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)} + \frac{\widetilde{zM_{ss}}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_-}{\left(s,\phi,t \right)} = - \frac{\widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)}}{2} - i \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)} + \frac{\widetilde{zM_{ss}}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{+}^e{\left(s,\phi,t \right)} = \frac{\sqrt{2} i B_{\phi}^e{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B_{s}^e{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{-}^e{\left(s,\phi,t \right)} = - \frac{\sqrt{2} i B_{\phi}^e{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B_{s}^e{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{z}^e{\left(s,\phi,t \right)} = B_{z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{+, z}^e{\left(s,\phi,t \right)} = \frac{\sqrt{2} i B_{\phi, z}^e{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B_{s, z}^e{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{-, z}^e{\left(s,\phi,t \right)} = - \frac{\sqrt{2} i B_{\phi, z}^e{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B_{s, z}^e{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{r1}{\left(\theta,\phi,t \right)} = B_{r1}{\left(\theta,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{+}{\left(s,\phi,t \right)} = \frac{\sqrt{2} i B^{+}_{\phi}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B^{+}_{s}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{-}{\left(s,\phi,t \right)} = - \frac{\sqrt{2} i B^{+}_{\phi}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B^{+}_{s}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{z}{\left(s,\phi,t \right)} = B^{+}_{z}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{+}{\left(s,\phi,t \right)} = \frac{\sqrt{2} i B^{-}_{\phi}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B^{-}_{s}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{-}{\left(s,\phi,t \right)} = - \frac{\sqrt{2} i B^{-}_{\phi}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B^{-}_{s}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{z}{\left(s,\phi,t \right)} = B^{-}_{z}{\left(s,\phi,t \right)}\]</div>
+</div>
+</div>
+<p>Similarly, <code class="docutils literal notranslate"><span class="pre">core.conjugate_to_PG</span></code> converts transformed/conjugate variables to PG counterparts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span>
+
+<span class="n">pgvar_in_cgvar</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">conjugate_to_PG</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">cgvar</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="o">.</span><span class="n">_field_names</span><span class="p">:</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">pgvar</span><span class="p">[</span><span class="n">field_name</span><span class="p">],</span> <span class="n">pgvar_in_cgvar</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span><span class="o">.</span><span class="n">expand</span><span class="p">(),</span> <span class="n">evaluate</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \Psi{\left(s,\phi,t \right)} = \Psi{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_{ss}}{\left(s,\phi,t \right)} = \frac{\overline{M_+}{\left(s,\phi,t \right)}}{2} + \frac{\overline{M_-}{\left(s,\phi,t \right)}}{2} + \overline{M_1}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_{\phi\phi}}{\left(s,\phi,t \right)} = - \frac{\overline{M_+}{\left(s,\phi,t \right)}}{2} - \frac{\overline{M_-}{\left(s,\phi,t \right)}}{2} + \overline{M_1}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \overline{M_{s\phi}}{\left(s,\phi,t \right)} = - \frac{i \overline{M_+}{\left(s,\phi,t \right)}}{2} + \frac{i \overline{M_-}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{M_{sz}}{\left(s,\phi,t \right)} = \frac{\sqrt{2} \widetilde{M_{z+}}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} \widetilde{M_{z-}}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{M_{\phi z}}{\left(s,\phi,t \right)} = - \frac{\sqrt{2} i \widetilde{M_{z+}}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} i \widetilde{M_{z-}}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_{ss}}{\left(s,\phi,t \right)} = \frac{\widetilde{zM_+}{\left(s,\phi,t \right)}}{2} + \frac{\widetilde{zM_-}{\left(s,\phi,t \right)}}{2} + \widetilde{zM_1}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_{\phi\phi}}{\left(s,\phi,t \right)} = - \frac{\widetilde{zM_+}{\left(s,\phi,t \right)}}{2} - \frac{\widetilde{zM_-}{\left(s,\phi,t \right)}}{2} + \widetilde{zM_1}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \widetilde{zM_{s\phi}}{\left(s,\phi,t \right)} = - \frac{i \widetilde{zM_+}{\left(s,\phi,t \right)}}{2} + \frac{i \widetilde{zM_-}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{s}^e{\left(s,\phi,t \right)} = \frac{\sqrt{2} B_{+}^e{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B_{-}^e{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{\phi}^e{\left(s,\phi,t \right)} = - \frac{\sqrt{2} i B_{+}^e{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} i B_{-}^e{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{z}^e{\left(s,\phi,t \right)} = B_{z}^e{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{s, z}^e{\left(s,\phi,t \right)} = \frac{\sqrt{2} B_{+, z}^e{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B_{-, z}^e{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{\phi, z}^e{\left(s,\phi,t \right)} = - \frac{\sqrt{2} i B_{+, z}^e{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} i B_{-, z}^e{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B_{r1}{\left(\theta,\phi,t \right)} = B_{r1}{\left(\theta,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{s}{\left(s,\phi,t \right)} = \frac{\sqrt{2} B^{+}_{+}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B^{+}_{-}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{\phi}{\left(s,\phi,t \right)} = - \frac{\sqrt{2} i B^{+}_{+}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} i B^{+}_{-}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{+}_{z}{\left(s,\phi,t \right)} = B^{+}_{z}{\left(s,\phi,t \right)}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{s}{\left(s,\phi,t \right)} = \frac{\sqrt{2} B^{-}_{+}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} B^{-}_{-}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{\phi}{\left(s,\phi,t \right)} = - \frac{\sqrt{2} i B^{-}_{+}{\left(s,\phi,t \right)}}{2} + \frac{\sqrt{2} i B^{-}_{-}{\left(s,\phi,t \right)}}{2}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle B^{-}_{z}{\left(s,\phi,t \right)} = B^{-}_{z}{\left(s,\phi,t \right)}\]</div>
+</div>
+</div>
+<p>The transforms <code class="docutils literal notranslate"><span class="pre">core.conjugate_to_PG</span></code> and <code class="docutils literal notranslate"><span class="pre">core.PG_to_conjugate</span></code> have several applications.</p>
+<ul class="simple">
+<li><p>It is used in the module <code class="docutils literal notranslate"><span class="pre">core</span></code> to construct mappings from transformed variables (PG variables) to PG variables (transformed variables);</p></li>
+<li><p>It is used in the module <code class="docutils literal notranslate"><span class="pre">equations</span></code> to derive the transformed equations from original PG equations;</p></li>
+<li><p>It also works on numerical arrays, and can be used in post-processing to construct PG fields from transformed quantities.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Demo_PlesioGeostroPy_Basics.html" class="btn btn-neutral float-left" title="Introducing PlesioGeostroPy: Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Demo_Variables.html" class="btn btn-neutral float-right" title="Variables, equations and forcing terms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, GentleMin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
