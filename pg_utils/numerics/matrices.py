@@ -21,12 +21,13 @@ from scipy import special as specfun
 from scipy import sparse
 
 
-def powers_of(expr: sympy.Expr, *args: sympy.Symbol):
+def powers_of(expr: sympy.Expr, *args: sympy.Symbol, return_expr: bool = False):
     """Retrieve the power of symbols in a given expression.
     
     :param sympy.Expr expr: symbolic expression
     :param sympy.Symbol expr: symbols whose powers are to be estimated
-    :returns: list of powers
+    :param bool return_expr: whether to return the expressions
+    :returns: list of powers, optionally with the respective terms (if `return_expr`)
     
     Usage:
     
@@ -82,7 +83,10 @@ def powers_of(expr: sympy.Expr, *args: sympy.Symbol):
                     # For a single symbol, simply add one
                     if arg == symb:
                         powers[i_symb] += sympy.S.One
-        return powers
+        if return_expr:
+            return powers, expr
+        else:
+            return powers
 
 
 
@@ -189,11 +193,13 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             self.powerN = 2*quadN - 1
         
     @classmethod
-    def get_powers(cls, int_var: sympy.Symbol, expr: sympy.Expr) -> np.ndarray:
+    def get_powers(cls, int_var: sympy.Symbol, expr: sympy.Expr, 
+        **kwargs) -> np.ndarray:
         """Get the powers of p1=(1 - xi), p2=(1 + xi) and xi
         
         :param sympy.Symbol int_var: integration variable
         :param sympy.Expr expr: the expression where the powers are retrieved
+        :param \**kwargs: whatever that needs to be passed to :func:`powers_of`
         
         For details, please refer to :func:`power_of`
         """
@@ -204,7 +210,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             int_var/2 - sympy.Rational(1, 2): -p1/2, 
             1 + int_var: p2, sympy.Rational(1, 2) + int_var/2: p2/2}
         expr = expr.xreplace(replace_map).expand()
-        return powers_of(expr, p1, p2, int_var)
+        return powers_of(expr, p1, p2, int_var, **kwargs)
     
     def deduce_params(self, Ntrial: int, Ntest: int):
         """Determine the parameters of the quadrature
