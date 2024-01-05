@@ -307,8 +307,9 @@ def form_equations(
     timescale: str = "Alfven", 
     bg: bg_fields.BackgroundFieldMHD = bg_fields.BackgroundHydro(),
     save_to: Optional[str] = None, 
+    overwrite: bool = False,
     verbose: int = 0) -> Tuple[base.LabeledCollection, List]:
-    """Top-level function: form set of equations
+    """Eigensolver step I: form set of equations
     
     :param str eq_mode: mode of equation, "pg", "cg" or "reduced"
     :param List components: list of forcing ingredients to be added to the system.
@@ -318,6 +319,8 @@ def form_equations(
     :param bg_fields.BackgroundFieldMHD bg: a background field,
     :param Optional[str] save_to: output json file name, 
         if None (default), no file will be written.
+    :param bool overwrite: whether to overwrite existing file upon output, 
+        False by default.
     :param int verbose: verbosity level, default to 0.
     
     :returns: set of equations and a list of unknown parameters.
@@ -342,7 +345,8 @@ def form_equations(
     # Output
     if save_to is not None:
         os.makedirs(os.path.dirname(save_to), exist_ok=True)
-        with open(save_to, 'x') as fwrite:
+        mode = 'w' if overwrite else 'x' 
+        with open(save_to, mode) as fwrite:
             json.dump(
                 {
                     "params": [srepr(par) for par in par_list],
@@ -357,13 +361,16 @@ def form_equations(
 def reduce_dimensions(
     read_from: Union[str, Tuple[base.LabeledCollection, List]], 
     save_to: Optional[str] = None, 
+    overwrite: bool = False,
     verbose: int = 0) -> base.LabeledCollection:
-    """Top-level function: reduce dimension of the system
+    """Eigensolver step Ib: reduce dimension of the system
     
     :param Union[str, Tuple[base.LabeledCollection, List]] read_from: 
         file name to be loaded as the starting set of equations.
     :param Optional[str] save_to: output json file name, 
         if None (default), no file will be written.
+    :param bool overwrite: whether to overwrite existing file upon output, 
+        False by default.
     :param int verbose: verbosity level, default to 0.
     
     :returns: a set of reduced dimensional equations
@@ -392,7 +399,8 @@ def reduce_dimensions(
     # Output
     if save_to is not None:
         os.makedirs(os.path.dirname(save_to), exist_ok=True)
-        with open(save_to, 'x') as fwrite:
+        mode = 'w' if overwrite else 'x'
+        with open(save_to, mode) as fwrite:
             json.dump(
                 {
                     "params": [srepr(par) for par in par_list],
@@ -406,9 +414,10 @@ def collect_matrix_elements(
     read_from: Union[str, Tuple[base.LabeledCollection, List]], 
     manual_select: Optional[List],
     expansion_recipe: xpd.ExpansionRecipe,
-    save_to: Optional[str]=None, 
+    save_to: Optional[str] = None, 
+    overwrite: bool = False,
     verbose: int = 0) -> Tuple[xpd.SystemMatrix, xpd.SystemMatrix, List]:
-    """Top-level function: collect matrix elements in symbolic forms
+    """Eigensolver step II: collect matrix elements in symbolic forms
     
     :param Union[str, Tuple[base.LabeledCollection, List]] read_from: 
         the starting set of equations.
@@ -422,6 +431,8 @@ def collect_matrix_elements(
     :param xpd.ExpansionRecipe expansion_recipe: spectral expansion
     :param Optional[str] save_to: output json file name, 
         if None (default), no file will be written.
+    :param bool overwrite: whether to overwrite existing file upon output, 
+        False by default.
     :param int verbose: verbosity level, default to 0.
     
     :returns: Mass matrix (expression), stiffness matrix (expression)
@@ -459,7 +470,8 @@ def collect_matrix_elements(
             "M": M_expr.serialize(),
             "K": K_expr.serialize()
         }
-        with open(save_to, 'x') as fwrite:
+        mode = 'w' if overwrite else 'x'
+        with open(save_to, mode) as fwrite:
             json.dump(serialized_obj, fwrite, indent=4)
         if verbose > 0:
             print("Results saved to {:s}".format(save_to))
@@ -474,8 +486,9 @@ def compute_matrix_numerics(
     jacobi_rule_opt: dict = {"automatic": True, "quadN": None},
     quadrature_opt: dict = {"backend": "scipy", "output": "numpy", "outer": True},
     save_to: Optional[str] = None, 
+    overwrite: bool = False,
     verbose: int = 0) -> Tuple[np.ndarray, np.ndarray]:
-    """Top-level function: computation of matrix elements
+    """Eigensolver step III: computation of matrix elements
     
     :param Union[str, Tuple[expansion.SystemMatrix, expansion.SystemMatrix, List]] read_from: 
         the symbolic matrices to be computed.
@@ -493,6 +506,8 @@ def compute_matrix_numerics(
         to be passed to :class:`~pg_utils.numerics.matrices.InnerQuad_GaussJacobi.gramian`
     :param Optional[str] save_to: output json file name, 
         if None (default), no file will be written.
+    :param bool overwrite: whether to overwrite existing file upon output, 
+        False by default.
     :param int verbose: verbosity level, default to 0.
     
     :returns: the numerical mass and stiffness matrices.
@@ -550,7 +565,8 @@ def compute_matrix_numerics(
     # Output
     if save_to is not None:
         os.makedirs(os.path.dirname(save_to), exist_ok=True)
-        with h5py.File(save_to, 'x') as fwrite:
+        mode = 'w' if overwrite else 'x'
+        with h5py.File(save_to, mode) as fwrite:
             str_type = h5py.string_dtype(encoding="utf-8")
             fwrite.attrs["xpd"] = xpd_recipe.identifier
             for par, val in par_val.items():
@@ -575,9 +591,21 @@ def compute_matrix_numerics(
 def compute_eigen(
     read_from: Union[str, Tuple[np.ndarray, np.ndarray]], 
     save_to: Optional[str], 
+    overwrite: bool = False,
     verbose: int = 0) -> List[np.ndarray]:
-    """Top-level routine function
-    Stage 4: Computing eigenvalues and eigenvectors from Matrices
+    """Eigensolver step IV: compute eigenvalues and eigenvectors from matrices
+    
+    :param Union[str, Tuple[np.ndarray, np.ndarray]] read_from: 
+        file name to be loaded as the starting set of equations.
+        If two arrays are given, they are interpreted as mass and stiffness
+        matrices, respectively.
+    :param Optional[str] save_to: output json file name, 
+        if None (default), no file will be written.
+    :param bool overwrite: whether to overwrite existing file upon output, 
+        False by default.
+    :param int verbose: verbosity level, default to 0.
+    
+    :returns: eigenvalues and eigenvectors
     """
     # Input
     if isinstance(read_from, str):
@@ -613,7 +641,8 @@ def compute_eigen(
     # Output
     if save_to is not None:
         os.makedirs(os.path.dirname(save_to), exist_ok=True)
-        with h5py.File(save_to, 'x') as fwrite:
+        mode = 'w' if overwrite else 'x'
+        with h5py.File(save_to, mode) as fwrite:
             str_type = h5py.string_dtype(encoding="utf-8")
             for par, val in par_dict.items():
                 fwrite.attrs[par] = val
