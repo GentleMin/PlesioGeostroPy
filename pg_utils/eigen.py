@@ -130,8 +130,8 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
     # !!!!! ==================================================== Note ===========
     # If the code is not used interactively, perhaps all simplify can be skipped?
     else:
-        new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H}).expand()
-        new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H}).expand()
+        new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().simplify()
+        new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().simplify()
         # Take z to +H or -H at the boundaries or to 0 at the equatorial plane
         if fname in fnames[-6:-3]:
             new_rhs = new_rhs.subs({z: +H}).doit().simplify()
@@ -215,6 +215,20 @@ def reduce_eqsys_to_force_form(eqsys_old: base.LabeledCollection,
     )
     return eqsys_new
 
+
+def reduce_eqsys_to_psi(eqsys_old: base.LabeledCollection, 
+    verbose: int = 0) -> Eq:
+    """Reduce a system of eqs to 2nd-order formulation in stream function
+    """
+    if verbose > 0:
+        print("========== Converting to 2nd order dynamical system... ==========")
+    eqsys_psi_F = reduce_eqsys_to_force_form(eqsys_old, verbose=verbose-1)
+    eq_psi, eq_F = eqsys_psi_F.Psi, eqsys_psi_F.F_ext
+    eqsys_new = Eq(
+        diff(eq_psi.lhs, t),
+        diff(eq_psi.rhs, t).subs({eq_F.lhs: eq_F.rhs}).doit().expand()
+    )
+    return eqsys_new
 
 """Matrix collection utilities"""
 
