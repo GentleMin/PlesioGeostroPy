@@ -57,7 +57,7 @@ def powers_of(expr: sympy.Expr, *args: sympy.Symbol, return_expr: bool = False):
     if isinstance(expr, sympy.Add):
         # When the expression is an addition, collect
         # all powers for each term separately
-        powers = [powers_of(term, *args) for term in expr.args]
+        powers = [powers_of(term, *args, return_expr=return_expr) for term in expr.args]
         return powers
     else:
         expr = expr.factor()
@@ -335,8 +335,12 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         if verbose:
             print("Integrating with alpha={}, beta={}, N={}".format(alpha, beta, quadN))
         if backend == "sympy":
-            M = self._quad_sympy_integrand(nrange_trial, nrange_test, 
-                alpha, beta, quadN, **int_opt)
+            if outer:
+                M = self._quad_sympy_outer(nrange_trial, nrange_test, 
+                    alpha, beta, quadN, alpha_l, beta_l, **int_opt)
+            else:
+                M = self._quad_sympy_integrand(nrange_trial, nrange_test, 
+                    alpha, beta, quadN, **int_opt)
         elif backend == "scipy":
             if outer:
                 M = self._quad_scipy_outer(nrange_trial, nrange_test,
@@ -368,6 +372,36 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             M.append(M_row)
         return sympy.Matrix(M)
     
+    def _quad_sympy_outer(self, nrange_trial: List[int], nrange_test: List[int], 
+        alpha: Union[float, int, sympy.Expr], beta: Union[float, int, sympy.Expr], 
+        quad_N: int, alpha_left: Union[float, int, sympy.Expr], 
+        beta_left: Union[float, int, sympy.Expr], 
+        precision: int = 16) -> sympy.Matrix:
+        """Quadrature using sympy utilities, outer product formulation
+        Concrete realization of the Gauss-Jacobi quadrature
+        """
+        xi_quad, wt_quad = qdsym.gauss_jacobi(quad_N, alpha, beta, precision)
+        opd_A = self.inner_prod._opd_A/(1 - xi)**alpha_left/(1 + xi)**beta_left
+        opd_B = self.inner_prod._opd_B*self.inner_prod._wt/(1 - xi)**(alpha - alpha_left)/(1 + xi)**(beta - beta_left)
+        
+        Phi_test = list()
+        for n_test_val in nrange_test:
+            opd_tmp = opd_A.subs({n_test: n_test_val}).doit()
+            Phi_test.append([
+                opd_tmp.subs({xi: xi_quad[i]}, n=precision)
+                for i in range(quad_N)
+            ])
+        Phi_test = np.array(Phi_test, dtype=object)
+        Phi_trial = list()
+        for n_trial_val in nrange_trial:
+            opd_tmp = opd_B.subs({n_trial: n_trial_val}).doit()
+            Phi_trial.append([
+                opd_tmp.subs({xi: xi_quad[i]}, n=precision)
+                for i in range(quad_N)
+            ])
+        Phi_trial = np.array(Phi_trial, dtype=object)
+        return sympy.Matrix(list((Phi_test*wt_quad) @ Phi_trial.T))
+    
     def _quad_scipy_integrand(self, nrange_trial: List[int], nrange_test: List[int], 
         alpha: Union[float, int, sympy.Expr], beta: Union[float, int, sympy.Expr], 
         quad_N: int) -> np.ndarray:
@@ -384,7 +418,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
     def _quad_scipy_outer(self, nrange_trial: List[int], nrange_test: List[int], 
         alpha: Union[float, int, sympy.Expr], beta: Union[float, int, sympy.Expr], quad_N: int,
         alpha_left: Union[float, int, sympy.Expr], beta_left: Union[float, int, sympy.Expr]) -> np.ndarray:
-        """Quadrature using scipy utilities
+        """Quadrature using scipy utilities, outer product formulation
         Concrete realization of the Gauss-Jacobi quadrature
         """
         xi_quad, wt_quad = specfun.roots_jacobi(int(quad_N), float(alpha), float(beta))
