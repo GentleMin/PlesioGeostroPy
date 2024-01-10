@@ -1,0 +1,49 @@
+\section{Inner product matrix}
+
+The Galerkin method in spectral method and finite-element method typically involves computing matrices that are formed by inner products. Considering a series of test functions $\varphi'_{n'}(x)$ and their inner product with a series of functions $\varphi_n(x)$ (which could be the trial functions in the mass matrix). The inner product matrix is given by
+\[
+(\mathbf{G})_{n'n} = G_{n'n} = \langle \varphi'_{n'}(x), \varphi_n(x)\rangle = \int \varphi'_{n'}(x) \varphi_n(x) r(x)\,dx.
+\]
+This is dubbed a Gramian matrix in the code (method \texttt{numerics.InnerQuad\_Rule.gramian}), although technically it is an abuse of terminology (Gram matrix should refer to those formed by the inner product of the same basis, e.g. $\langle \varphi_{n'}, \varphi_n\rangle$).
+Except for the case where the integral can be calculated analytically and efficiently (\textit{In eigenvalue problems, possibly all elements can be calculated analytically; the problem however is efficiency: automatic symbolic computation can be very slow}), the integral is approximated using a quadrature rule,
+\[
+    G_{n'n} \approx \sum_{k} w_k \varphi'_{n'}(x_k) \varphi_n (x_k) r(x_k)
+\]
+where $x_k$ and $w_k$ are the quadrature points and the weights respectively.
+The inner product matrix can be expressed as a summation along one axis of a 3-D array,
+\[
+G_{n'n} = \sum_k w_k [\varphi'_{n'}(x_k) \varphi_n (x_k) r(x_k)] = \sum_k w_k \, F_{n'nk}.
+\]
+Therefore, the matrix element can be constructed by first constructing the 3-D array $F_{n'nk}$, and then summing over the last index using weights $w_k$.
+An naive way to construct the 3-D array is to compute element by element.
+If we take $\mathbf{G} \in \mathbb{C}^{N\times N}$, and the number of quadrature points $K\approx N$, the complexity of this approach is summarized by
+\begin{itemize}
+    \item $O(N^3)$ evaluations of $\varphi'_{n'}$ and $\varphi_n$.
+    \item $O(N^3)$ algebraic operations, in the form of broadcasting.
+\end{itemize}
+Alternatively, the inner product matrix can be constructed from the outer product of matrices. Introducing the notations
+\[
+    \Phi' = (\varphi'_{n'}(x_k)) = \begin{pmatrix}
+        \text{---} & \varphi'_1(\mathbf{x}^\intercal) & \text{---} \\
+         & \vdots & \\ 
+        \text{---} & \varphi'_N(\mathbf{x}^\intercal) & \text{---}
+    \end{pmatrix}, \quad 
+    \Phi = (\varphi_{n}(x_k)) =  \begin{pmatrix}
+        \text{---} & \varphi_1(\mathbf{x}^\intercal) & \text{---} \\
+         & \vdots & \\ 
+        \text{---} & \varphi_N(\mathbf{x}^\intercal) & \text{---}
+    \end{pmatrix}.
+\]
+whose each row represents one basis evaluated at $K$ quadrature points. Denoting $\mathrm{diag}\left(w(x_k) r(x_k)\right)$ as $\mathbf{W}$, the inner product matrix has the the expression
+\begin{equation}
+    \mathbf{G} = \Phi' \mathbf{W} \Phi^\intercal.
+\end{equation}
+Note the diagonal matrix formed by the weights should preferably used as a broadcasted multiplication on $\Phi'$. The complexity of this approach is reduced for function evaluation,
+\begin{itemize}
+    \item $O(N^2)$ evaluations of $\varphi'_{n'}$ and $\varphi_n$,
+    \item $O(N^2)$ scalar multiplications in the form of broadcasting,
+    \item $O(N^3)$ algebraic operations in the form of two matrix multiplications.
+\end{itemize}
+This especially saves resources when evaluation of the functions is relatively expensive. For instance, evaluating Jacobi polynomials and the result of linear operators operated on these polynomials can involve evaluating Jacobi polynomials for 5 to 10 terms. Cutting back a factor of $N$ has significant gains at relative large $N$.
+
+As a final remark, the $O(N^3)$ algebraic operation, especially in the second approach, can also be circumvented if an iterative approach is used for the eigensolver that only uses matrix-vector products.

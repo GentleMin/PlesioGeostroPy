@@ -1,7 +1,7 @@
-\section{Vorticity equation}
+\section{Streamfunction equation}
 
-In this section I derive an alternative form of the vorticity equation, which is the starting point of some eigenvalue problems.
-Starting from the dimensionless form of the vorticity equation, we have
+In this section I derive an alternative form of the streamfunction equation, which is the starting point of some eigenvalue problems.
+Starting from the dimensionless form of the streamfunction equation, we have
 \begin{equation}
 \begin{aligned}
     -2 \nabla_e^2 \frac{\partial \psi}{\partial t} &= \frac{dH}{ds} \left(\frac{4}{sH} \frac{\partial \psi}{\partial \phi} - \frac{2}{H}\frac{\partial}{\partial s} \frac{\partial \psi}{\partial t} - \frac{1}{sH}\frac{\partial^2}{\partial \phi^2}\frac{\partial \psi}{\partial t}\right) - \frac{dH}{ds} \left(2 f_\phi^e + \frac{1}{s}\frac{\partial \widetilde{f_z}}{\partial \phi}\right) + \hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e}.
@@ -21,6 +21,6 @@ and we can deduce the term $p(x)$ using the relation
     \frac{1}{p(s)}\frac{d p(s)}{ds} = \frac{1}{s} - \frac{1}{H}\frac{dH}{ds}\quad \Longrightarrow \quad d \ln p = d\ln s - d\ln H = d \ln \frac{s}{H} \quad \Longrightarrow\quad p = \frac{s}{H}.
 \]
 And the original equation can be rewritten as 
-\begin{equation}
+\begin{equation}\label{eqn:streamfunction-eqn-fine}
     \left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial \psi}{\partial t} = - \frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + \frac{dH}{ds} \left(\frac{s}{H} f_\phi^e + \frac{1}{2H}\frac{\partial \widetilde{f_z}}{\partial \phi}\right) - \frac{s}{2H}\hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e}
 \end{equation}
