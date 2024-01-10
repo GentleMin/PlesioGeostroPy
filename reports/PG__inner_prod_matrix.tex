@@ -4,7 +4,7 @@ The Galerkin method in spectral method and finite-element method typically invol
 \[
 (\mathbf{G})_{n'n} = G_{n'n} = \langle \varphi'_{n'}(x), \varphi_n(x)\rangle = \int \varphi'_{n'}(x) \varphi_n(x) r(x)\,dx.
 \]
-This is dubbed a Gramian matrix in the code (method \texttt{numerics.InnerQuad\_Rule.gramian}), although technically it is an abuse of terminology (Gram matrix should refer to those formed by the inner product of the same basis, e.g. $\langle \varphi_{n'}, \varphi_n\rangle$).
+This is dubbed a Gramian matrix in the code (method \colorbox{backcolour}{\lstinline|numerics.InnerQuad\_Rule.gramian|}), although technically it is an abuse of terminology (Gram matrix should refer to those formed by the inner product of the same basis, e.g. $\langle \varphi_{n'}, \varphi_n\rangle$).
 Except for the case where the integral can be calculated analytically and efficiently (\textit{In eigenvalue problems, possibly all elements can be calculated analytically; the problem however is efficiency: automatic symbolic computation can be very slow}), the integral is approximated using a quadrature rule,
 \[
     G_{n'n} \approx \sum_{k} w_k \varphi'_{n'}(x_k) \varphi_n (x_k) r(x_k)
