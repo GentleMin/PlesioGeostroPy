@@ -7,7 +7,109 @@ as this will be a computation-/memory-intensive part in quadratures
 """
 
 import numpy as np
-from scipy.special import eval_jacobi
+import mpmath as mp
+import gmpy2 as gp
+from scipy.special import eval_jacobi, roots_jacobi
+
+
+class RootsJacobiResult:
+    """Result object of root-finding routine for Jacobi polynomials
+    
+    :ivar np.ndarray xi: final computational result of the roots
+    :ivar np.ndarray wt: weights, dependent on the final roots
+    :ivar bool flag: whether the computation has converged
+    :ivar str msg: additional message
+    """
+    
+    def __init__(self, xi: np.ndarray, wt: np.ndarray, flag: bool, msg: str) -> None:
+        """
+        :param np.ndarray xi: final computational result of the roots
+        :param np.ndarray wt: weights, dependent on the final roots
+        :param bool flag: whether the computation has converged
+        :param str msg: additional message
+        """
+        self.xi = xi
+        self.wt = wt
+        self.flag = flag
+        self.msg = msg
+        
+    def __repr__(self) -> str:
+        o_str = "Jacobi polynomial root-finding result:\n"
+        o_str += "Root-finding %s.\n%s" % (
+            "successful" if self.flag else "failed", 
+            self.msg)
+        return o_str
+    
+    def __str__(self) -> str:
+        o_str = "Jacobi polynomial root-finding result:\n"
+        o_str += "flag:  %s.\nmsg: %s\nxi:\n%s\nwt:\n%s" % (
+            "successful" if self.flag else "failed", 
+            self.msg, 
+            np.array2string(self.xi, max_line_width=50, threshold=10, edgeitems=2),
+            np.array2string(self.wt, max_line_width=50, threshold=10, edgeitems=2))
+        return o_str
+
+
+def roots_jacobi_mp(n: int, alpha: mp.mpf, beta: mp.mpf, 
+    n_dps: int = 32, extra_dps: int = 8, 
+    max_iter: int = 10) -> RootsJacobiResult:
+    """Multi-precision Jacobi root calculation.
+    
+    Calculates the nodes (=roots of Jacobi polynomial) and weights 
+    for Gauss-Jacobi quadrature to arbitrary precision.
+    
+    :param int n: number of nodes / degree of Jacobi polynomial
+    :param mpmath.mpf alpha: alpha value, with precision that is 
+        consistent with the desired precision of output
+    :param mpmath.mpf beta: beta value, with precision that is 
+        consistent with the desired precision of output
+    :param int n_dps: number of decimal digits, default=32, i.e.
+        approx. quadruple precision
+    :param int extra_dps: additional decimal digits during calculation
+    :param int max_iter: maximum iteration, default=10
+    
+    :returns: `RootsJacobiResult` object, containing the calculated 
+        quadrature nodes and weights, as `mpmath.mpf` wrapped in `numpy.ndarray`
+    """
+    
+    # Initial nodes
+    xi_dp, _ = roots_jacobi(n, float(alpha), float(beta))
+    threshold = 1/10**n_dps
+    
+    # Switch working precision
+    with mp.workdps(n_dps + extra_dps):
+        
+        np2mp = np.vectorize(lambda x: mp.mpf(x), otypes=(object,))
+        wt_cf = (
+            -((2*n + alpha + beta + 2)/(n + alpha + beta + 1))
+            *(mp.gamma(n + alpha + 1)/mp.gamma(n + alpha + beta + 1))
+            *(mp.gamma(n + beta + 1)/mp.factorial(n + 1))
+            *mp.power(2, alpha + beta)
+        )
+        
+        def f(n, xi):
+            return np.array(
+                [mp.jacobi(n, alpha, beta, xi_tmp) for xi_tmp in xi], dtype=object)
+        def df(n, xi):
+            return (n + alpha + beta + 1)/2*np.array(
+                [mp.jacobi(n-1, alpha+1, beta+1, xi_tmp) for xi_tmp in xi], dtype=object)
+        
+        xi_mp = np2mp(xi_dp)
+        xi_prev = xi_mp
+        xi_mp = xi_mp - f(n, xi_mp)/df(n, xi_mp)
+        
+        for i_iter in range(1, max_iter):
+            if max(abs(xi_prev - xi_mp)) <= threshold:
+                wt_mp = wt_cf/df(n, xi_mp)/f(n+1, xi_mp)
+                return RootsJacobiResult(xi_mp, wt_mp, True, 
+                    "Convergence to {:d} digits after {:d} iters".format(n_dps, i_iter))
+            xi_prev = xi_mp
+            xi_mp = xi_mp - f(n, xi_mp)/df(n, xi_mp)
+        
+        wt_mp = wt_cf/df(n, xi_mp)/f(n+1, xi_mp)
+        
+    return RootsJacobiResult(xi_mp, wt_mp, False, 
+        "Maximum iters {:d} reached without converging to {:d} digits".format(max_iter, n_dps))
 
 
 def eval_jacobi_nrange(n_min: int, n_max: int, alpha: float, beta: float, z: np.ndarray):
