@@ -281,7 +281,7 @@ def eval_jacobi_recur_Nmax(Nmax: int, alpha: float, beta: float,
 
 def eval_jacobi_recur_mp(Nmesh: np.ndarray, 
     alpha: Union[mp.mpf, gp.mpfr], beta: Union[mp.mpf, gp.mpfr], zmesh: np.ndarray, 
-    dps: int = 32, backend: str = "mpmath") -> np.ndarray:
+    dps: int = 32, backend: str = "gp.mpfr") -> np.ndarray:
     """Evaluate Jacobi polynomials using recurrence relations to arb prec
     
     This function is intended to maintain the same signature 
@@ -309,6 +309,7 @@ def eval_jacobi_recur_mp(Nmesh: np.ndarray,
         otherwise the multi-precision evaluation is meaningless.
     """
     assert Nmesh.shape == zmesh.shape
+    Nmesh = Nmesh.astype(np.int32)
     
     n_array = Nmesh[:, 0]
     z_array = zmesh[0, :]
