@@ -10,6 +10,48 @@ import numpy as np
 import mpmath as mp
 import gmpy2 as gp
 from scipy.special import eval_jacobi, roots_jacobi
+from typing import Optional, Union
+
+
+def transform_dps_prec(dps: Optional[int] = None, prec: Optional[int] = None, 
+    dps_default: int = 16, prec_default: int = 53) -> np.ndarray:
+    """Conversion between decimal points and precision
+    
+    The current implementation seems to be consistent with the dps-precision
+    conversion in `sympy`, `mpmath` and `gmpy2`.
+    Currently, 3.322 is used as a proxy for :math:`\log_2(10)`, this value seems
+    accurate enough.
+    """
+    if dps is not None:
+        return dps, int(np.round(3.322*(dps + 1)))
+    elif prec is not None:
+        return int(np.round(prec/3.322)) - 1, prec
+    else:
+        return dps_default, prec_default
+
+def to_gpmy2_f(x: np.ndarray, dps: Optional[int] = None, 
+    prec: Optional[int] = None) -> np.ndarray:
+    """Convert float array to gmpy2 float array
+    """
+    if dps is None and prec is None:
+        return np.vectorize(lambda x: gp.mpfr(str(x)), otypes=(object,))(x)
+    _, prec_target = transform_dps_prec(dps=dps, prec=prec)
+    return np.vectorize(lambda x: gp.mpfr(str(x), prec_target), otypes=(object,))(x)
+
+def to_mpmath_f(x: np.ndarray, dps: Optional[int] = None, 
+    prec: Optional[int] = None) -> np.ndarray:
+    """Convert float array to mpmath float array
+    """
+    if dps is None and prec is None:
+        return np.vectorize(lambda x: mp.mpf(str(x)), otypes=(object,))(x)
+    dps_target, _ = transform_dps_prec(dps=dps, prec=prec)
+    with mp.workdps(dps_target):
+        return np.vectorize(lambda x: mp.mpf(str(x)), otypes=(object,))(x)
+
+def to_numpy_f(x: np.ndarray) -> np.ndarray:
+    """Convert float array to numpy float64 array
+    """
+    return x.astype(np.float64)
 
 
 class RootsJacobiResult:
@@ -112,7 +154,8 @@ def roots_jacobi_mp(n: int, alpha: mp.mpf, beta: mp.mpf,
         "Maximum iters {:d} reached without converging to {:d} digits".format(max_iter, n_dps))
 
 
-def eval_jacobi_nrange(n_min: int, n_max: int, alpha: float, beta: float, z: np.ndarray):
+def eval_jacobi_nrange(n_min: int, n_max: int, alpha: float, beta: float, 
+    z: np.ndarray) -> np.ndarray:
     """Evaluate Jacobi polynomials for a range of degrees
     
     :param int n_min: minimum degree
@@ -129,7 +172,7 @@ def eval_jacobi_nrange(n_min: int, n_max: int, alpha: float, beta: float, z: np.
     assert n_min <= n_max and n_max >= 0
     if n_min == n_max or n_max == 0:
         return eval_jacobi(n_max, alpha, beta, z)
-    Jacobi_vals = eval_jacobi_to_Nmax(n_max, alpha, beta, z)
+    Jacobi_vals = eval_jacobi_recur_Nmax(n_max, alpha, beta, z)
     # Retrieve desired degrees
     if n_min >= 0:
         return Jacobi_vals[n_min:, :]
@@ -137,8 +180,48 @@ def eval_jacobi_nrange(n_min: int, n_max: int, alpha: float, beta: float, z: np.
         return np.r_[np.zeros((-n_min, z.size), dtype=z.dtype), Jacobi_vals]
 
 
-def eval_jacobi_to_Nmax(Nmax: int, alpha: float, beta: float, z: np.ndarray):
-    """Evaluate Jacobi polynomials up to a degree
+def eval_jacobi_recur(Nmesh: np.ndarray, alpha: float, beta: float, 
+    zmesh: np.ndarray) -> np.ndarray:
+    """Evaluate Jacobi polynomials using recurrence relations
+    
+    This function is intended to maintain the same signature 
+    as `scipy.special.eval_jacobi` and `sympy.jacobi`, 
+    albeit several restrictions regarding the input params (see note)
+    
+    :param np.ndarray Nmesh: mesh for degrees *(N,Nz)*
+    :param float alpha: alpha index
+    :param float beta: beta index
+    :param np.ndarray zmesh: mesh for evaluation grid *(N,Nz)*
+    
+    .. note::
+    
+        This function is designed in such a way that the Jacobi polynomial 
+        is evaluated on a grid that remains the same for all degrees.
+        Denoting the total number of degrees with *N* and total number of 
+        grid points *Nz*, the standard for input parameter is as follows
+        * Param `Nmesh` is of shape *(N,Nz)*; first index changes deg
+        * Param `zmesh` is of shape *(N,Nz)*; second index changes z
+    
+    """
+    assert Nmesh.shape == zmesh.shape
+    
+    n_array = Nmesh[:, 0]
+    z_array = zmesh[0, :]
+    Nmax = n_array.max()
+    idx_pos = n_array > 0
+    
+    Jacobi_vals = np.zeros_like(zmesh)
+    Jacobi_vals[n_array == 0, :] = 1.
+    if Nmax >= 1:
+        Jacobi_Nmax = eval_jacobi_recur_Nmax(Nmax, alpha, beta, z_array)
+        Jacobi_vals[idx_pos, :] = Jacobi_Nmax[n_array[idx_pos], :]
+        
+    return Jacobi_vals
+
+
+def eval_jacobi_recur_Nmax(Nmax: int, alpha: float, beta: float, 
+    z: np.ndarray) -> np.ndarray:
+    """Evaluate Jacobi polynomials with recurrence relation up to a degree
     
     This functions generates values for Jacobi polynomials from degree 0
     up to a specified degree, using recurrence relations.
@@ -157,8 +240,8 @@ def eval_jacobi_to_Nmax(Nmax: int, alpha: float, beta: float, z: np.ndarray):
     # Initializing the matrix: N * M
     Jacobi_vals = np.zeros((n_array.size, z.size), dtype=z.dtype)   # O(MN)
     # Start from non-negative degrees
-    Jacobi_vals[0, :] = eval_jacobi(0, alpha, beta, z)      # O(N) Jacobi eval
-    Jacobi_vals[1, :] = eval_jacobi(1, alpha, beta, z)      # O(N) Jacobi eval
+    Jacobi_vals[0, :] = 1.
+    Jacobi_vals[1, :] = (alpha - beta)/2 + (alpha + beta + 2)/2*z
     if Nmax == 1:
         return Jacobi_vals
     
@@ -196,3 +279,179 @@ def eval_jacobi_to_Nmax(Nmax: int, alpha: float, beta: float, z: np.ndarray):
     return Jacobi_vals
 
 
+def eval_jacobi_recur_mp(Nmesh: np.ndarray, 
+    alpha: Union[mp.mpf, gp.mpfr], beta: Union[mp.mpf, gp.mpfr], zmesh: np.ndarray, 
+    dps: int = 32, backend: str = "mpmath") -> np.ndarray:
+    """Evaluate Jacobi polynomials using recurrence relations to arb prec
+    
+    This function is intended to maintain the same signature 
+    as `scipy.special.eval_jacobi` and `sympy.jacobi`, 
+    albeit several restrictions regarding the input params (see note)
+    
+    :param np.ndarray Nmesh: mesh for degrees *(N,Nz)*
+    :param mpmath.mpf alpha: alpha index
+    :param mpmath.mpf beta: beta index
+    :param np.ndarray zmesh: mesh for evaluation grid *(N,Nz)*
+    
+    .. note::
+    
+        This function is designed in such a way that the Jacobi polynomial 
+        is evaluated on a grid that remains the same for all degrees.
+        Denoting the total number of degrees with *N* and total number of 
+        grid points *Nz*, the standard for input parameter is as follows
+        * Param `Nmesh` is of shape *(N,Nz)*; first index changes deg
+        * Param `zmesh` is of shape *(N,Nz)*; second index changes z
+        
+    .. note::
+    
+        The input parameters `alpha` and `beta` as well as `zmesh` 
+        need to at least match the precision of the desired output, 
+        otherwise the multi-precision evaluation is meaningless.
+    """
+    assert Nmesh.shape == zmesh.shape
+    
+    n_array = Nmesh[:, 0]
+    z_array = zmesh[0, :]
+    Nmax = n_array.max()
+    idx_pos = n_array > 0
+    
+    if backend == "mpmath":
+    
+        with mp.workdps(dps):
+            Jacobi_vals = np.full(zmesh.shape, mp.mpf("0."))
+            Jacobi_vals[n_array == 0, :] = mp.mpf("1.")
+        
+        if Nmax >= 1:
+            Jacobi_Nmax = eval_jacobi_recur_mpmath(Nmax, alpha, beta, z_array, dps=dps)
+            Jacobi_vals[idx_pos, :] = Jacobi_Nmax[n_array[idx_pos], :]
+    
+    elif backend == "gmpy2":
+        
+        _, prec = transform_dps_prec(dps=dps)
+        with gp.local_context(gp.context(), precision=prec):
+            Jacobi_vals = np.full(zmesh.shape, gp.mpfr("0.", prec))
+            Jacobi_vals[n_array == 0, :] = gp.mpfr("1.", prec)
+        
+        if Nmax >= 1:
+            Jacobi_Nmax = eval_jacobi_recur_gmpy2(Nmax, alpha, beta, z_array, prec=prec)
+            Jacobi_vals[idx_pos, :] = Jacobi_Nmax[n_array[idx_pos], :]
+    
+    else:
+        raise TypeError
+        
+    return Jacobi_vals
+
+
+def eval_jacobi_recur_mpmath(Nmax: int, alpha: mp.mpf, beta: mp.mpf, 
+    z: np.ndarray, dps: int = 32) -> np.ndarray:
+    """Evaluate Jacobi polynomials with recurrence relation up to a degree, 
+    to (arbitrary) multi-precision.
+    
+    This functions generates values for Jacobi polynomials from degree 0
+    up to a specified degree, using recurrence relations.
+    
+    :param int Nmax: maximum degree, required to be >= 1
+    :param mpmath.mpf alpha: alpha index for Jacobi polynomials
+    :param mpmath.mpf beta: beta index for Jacobi polynomials
+    :param np.ndarray z: 1-D array of grid points where the Jacobi polynomials
+        are to be evaluated; assumed to be within interval [-1, +1]
+    :returns: Array with shape (Nmax + 1, z.size), values for Jacobi
+        polynomials at grid points specified in `z`.
+    
+    .. note::
+    
+        The input parameters `alpha` and `beta` as well as `z` 
+        need to at least match the precision of the desired output, 
+        otherwise the multi-precision evaluation is meaningless.
+    """
+    assert Nmax >= 1
+    # Set computing degrees
+    n_array = np.arange(Nmax + 1)
+    
+    Jacobi_vals = np.zeros((n_array.size, z.size), dtype=object)
+    
+    # Arbitrary-precision calculations are best to be wrapped 
+    # in local environments whose precision is fixed.
+    with mp.workdps(dps):
+        
+        Jacobi_vals[0, :] = mp.mpf("1.")
+        # Jacobi_vals[1, :] = [mp.jacobi(1, alpha, beta, z_tmp) for z_tmp in z]
+        Jacobi_vals[1, :] = (alpha - beta)/2 + (alpha + beta + 2)/2*z
+        if Nmax == 1:
+            return Jacobi_vals
+        
+        # # Use recurrence relations
+        # # Computation O(kN) + extra Memory O(kN)
+        # # Buying computational efficiency with extra memory cost
+        n_trunc = n_array[2:]
+        a_array = n_trunc + alpha
+        b_array = n_trunc + beta
+        c_array = a_array + b_array
+        cf_0_array = 2*n_trunc*(c_array - n_trunc)*(c_array - 2)
+        cf_1_array = np.transpose(((c_array - 1)/cf_0_array)
+            *(np.outer(z, c_array*(c_array - 2)) + (alpha**2 - beta**2)))
+        cf_2_array = -2*(a_array - 1)*(b_array - 1)*c_array/cf_0_array
+        for i_n in range(n_array.size - 2):
+            Jacobi_vals[i_n+2, :] = (
+                cf_1_array[i_n]*Jacobi_vals[i_n+1] 
+                + cf_2_array[i_n]*Jacobi_vals[i_n]
+            )
+    
+    return Jacobi_vals
+
+
+def eval_jacobi_recur_gmpy2(Nmax: int, alpha: gp.mpfr, beta: gp.mpfr, 
+    z: np.ndarray, prec: int = 112) -> np.ndarray:
+    """Evaluate Jacobi polynomials with recurrence relation up to a degree, 
+    to (arbitrary) multi-precision, array operations using gmpy2.
+    
+    This functions generates values for Jacobi polynomials from degree 0
+    up to a specified degree, using recurrence relations.
+    
+    :param int Nmax: maximum degree, required to be >= 1
+    :param gmpy2.mpfr alpha: alpha index for Jacobi polynomials
+    :param gmpy2.mpfr beta: beta index for Jacobi polynomials
+    :param np.ndarray z: 1-D array of grid points where the Jacobi polynomials
+        are to be evaluated; assumed to be within interval [-1, +1]
+    :returns: Array with shape (Nmax + 1, z.size), values for Jacobi
+        polynomials at grid points specified in `z`.
+    
+    .. note::
+    
+        The input parameters `alpha` and `beta` as well as `z` 
+        need to at least match the precision of the desired output, 
+        otherwise the multi-precision evaluation is meaningless.
+    """
+    assert Nmax >= 1
+    # Set computing degrees
+    n_array = np.arange(Nmax + 1)
+        
+    Jacobi_vals = np.zeros((n_array.size, z.size), dtype=object)
+    
+    # Arbitrary-precision calculations are best to be wrapped 
+    # in local environments whose precision is fixed.
+    with gp.local_context(gp.context(), precision=prec):
+        
+        Jacobi_vals[0, :] = gp.mpfr("1.", prec)
+        Jacobi_vals[1, :] = (alpha - beta)/2 + (alpha + beta + 2)/2*z
+        if Nmax == 1:
+            return Jacobi_vals
+        
+        # # Use recurrence relations
+        # # Computation O(kN) + extra Memory O(kN)
+        # # Buying computational efficiency with extra memory cost
+        n_trunc = n_array[2:]
+        a_array = n_trunc + alpha
+        b_array = n_trunc + beta
+        c_array = a_array + b_array
+        cf_0_array = 2*n_trunc*(c_array - n_trunc)*(c_array - 2)
+        cf_1_array = np.transpose(((c_array - 1)/cf_0_array)
+            *(np.outer(z, c_array*(c_array - 2)) + (alpha**2 - beta**2)))
+        cf_2_array = -2*(a_array - 1)*(b_array - 1)*c_array/cf_0_array
+        for i_n in range(n_array.size - 2):
+            Jacobi_vals[i_n+2, :] = (
+                cf_1_array[i_n]*Jacobi_vals[i_n+1] 
+                + cf_2_array[i_n]*Jacobi_vals[i_n]
+            )
+    
+    return Jacobi_vals
