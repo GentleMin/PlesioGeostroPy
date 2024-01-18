@@ -12,47 +12,7 @@ import gmpy2 as gp
 from scipy.special import eval_jacobi, roots_jacobi
 from typing import Optional, Union
 
-
-def transform_dps_prec(dps: Optional[int] = None, prec: Optional[int] = None, 
-    dps_default: int = 16, prec_default: int = 53) -> np.ndarray:
-    """Conversion between decimal points and precision
-    
-    The current implementation seems to be consistent with the dps-precision
-    conversion in `sympy`, `mpmath` and `gmpy2`.
-    Currently, 3.322 is used as a proxy for :math:`\log_2(10)`, this value seems
-    accurate enough.
-    """
-    if dps is not None:
-        return dps, int(np.round(3.322*(dps + 1)))
-    elif prec is not None:
-        return int(np.round(prec/3.322)) - 1, prec
-    else:
-        return dps_default, prec_default
-
-def to_gpmy2_f(x: np.ndarray, dps: Optional[int] = None, 
-    prec: Optional[int] = None) -> np.ndarray:
-    """Convert float array to gmpy2 float array
-    """
-    if dps is None and prec is None:
-        return np.vectorize(lambda x: gp.mpfr(str(x)), otypes=(object,))(x)
-    _, prec_target = transform_dps_prec(dps=dps, prec=prec)
-    return np.vectorize(lambda x: gp.mpfr(str(x), prec_target), otypes=(object,))(x)
-
-def to_mpmath_f(x: np.ndarray, dps: Optional[int] = None, 
-    prec: Optional[int] = None) -> np.ndarray:
-    """Convert float array to mpmath float array
-    """
-    if dps is None and prec is None:
-        return np.vectorize(lambda x: mp.mpf(str(x)), otypes=(object,))(x)
-    dps_target, _ = transform_dps_prec(dps=dps, prec=prec)
-    with mp.workdps(dps_target):
-        return np.vectorize(lambda x: mp.mpf(str(x)), otypes=(object,))(x)
-
-def to_numpy_f(x: np.ndarray) -> np.ndarray:
-    """Convert float array to numpy float64 array
-    """
-    return x.astype(np.float64)
-
+from .utils import transform_dps_prec
 
 class RootsJacobiResult:
     """Result object of root-finding routine for Jacobi polynomials

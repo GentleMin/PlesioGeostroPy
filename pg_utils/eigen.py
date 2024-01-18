@@ -389,7 +389,9 @@ def reduce_dimensions(
     
     :returns: a set of reduced dimensional equations
     
-    ..warning:: The current :func:`form_equations` function already
+    ..warning:: 
+    
+        The current :func:`form_equations` function already
         contains functionality to reduce system into low dimensional
         forms. As a result, the plan is to phase out this function.
     """
