@@ -1,6 +1,8 @@
 \section{Conversion between the two dimensionless forms}
 
-\[L = r_0,\quad \tau \sim \frac{L}{U}\]
+The dimensionless forms are derived almost unanimously using the following characteristic length scales and characteristic time scales,
+\[L = r_0,\quad \tau \sim \frac{L}{U}.\]
+The difference lies in the choice of characteristic velocity scale (which also determines the time scale).
 \textcite{holdenried-chernoff_long_2021} uses the Alfven wave velocity
 \[U = V_A = \frac{\mathscr{B}}{\sqrt{\rho_0 \mu_0}}\]
 as the characteristic velocity scale. This scale is ultimately determined by the characteristic magnetic field strength $\mathscr{B}$. The relative strength of Lorentz force to Coriolis is given by the Lehnert number,
@@ -9,7 +11,7 @@ where $V_\Omega = \Omega L$ is the rotation speed. In other words, the character
 \[
     \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + \frac{2}{\mathrm{Le}}\hat{\mathbf{z}}\times \mathbf{u} = -\nabla p + (\nabla\times\mathbf{B})\times \mathbf{B}
 \]
-and the vorticity equation is
+and the streamfunction equation is
 \[\begin{gathered}
     -2\nabla_e^2 \frac{\partial \psi}{\partial t} = \frac{dH}{ds} \left(\mathrm{Le}^{-1}\frac{4}{sH}\frac{\partial \psi}{\partial \phi} - \frac{2}{H}\frac{\partial}{\partial s}\frac{\partial \psi}{\partial t} - \frac{1}{sH}\frac{\partial^2}{\partial \phi^2}\frac{\partial \psi}{\partial t}\right) - \frac{dH}{ds}\left(2f_{e\phi} + \frac{1}{s}\frac{\partial \widetilde{f_\phi}}{\partial \phi}\right) + \hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e} \\ 
     \left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial \psi}{\partial t} = - \mathrm{Le}^{-1}\frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + \frac{dH}{ds} \left(\frac{s}{H} f_\phi^e + \frac{1}{2H}\frac{\partial \widetilde{f_z}}{\partial \phi}\right) - \frac{s}{2H}\hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e}
@@ -21,7 +23,7 @@ as the characteristic velocity, which is particularly useful when the magnetic f
 \[
     \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + 2\hat{\mathbf{z}}\times \mathbf{u} = -\nabla p + \mathrm{Le}^2(\nabla\times\mathbf{B})\times \mathbf{B}
 \]
-and the vorticity equation is
+and the streamfunction equation is
 \[\begin{gathered}
     -2\nabla_e^2 \frac{\partial \psi}{\partial t} = \frac{dH}{ds} \left(\frac{4}{sH}\frac{\partial \psi}{\partial \phi} - \frac{2}{H}\frac{\partial}{\partial s}\frac{\partial \psi}{\partial t} - \frac{1}{sH}\frac{\partial^2}{\partial \phi^2}\frac{\partial \psi}{\partial t}\right) - \mathrm{Le}^2 \left[\frac{dH}{ds}\left(2f_{e\phi} + \frac{1}{s}\frac{\partial \widetilde{f_\phi}}{\partial \phi}\right) + \hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e}\right] \\ 
     \left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial \psi}{\partial t} = - \frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + \mathrm{Le}^2 \left[\frac{dH}{ds} \left(\frac{s}{H} f_\phi^e + \frac{1}{2H}\frac{\partial \widetilde{f_z}}{\partial \phi}\right) - \frac{s}{2H}\hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e}\right]
