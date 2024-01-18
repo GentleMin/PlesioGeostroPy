@@ -8,7 +8,6 @@ __pycache__/
 *.aux
 *.bbl
 *.bcf
-*.sty
 reports/*.gz
 reports/*.log
 reports/*.out

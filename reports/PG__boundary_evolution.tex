@@ -49,7 +49,10 @@ If we look at the right-hand-side of these induction equations, we see that the 
 \[
     \frac{\partial b_a^{\pm}}{\partial t} = \mathcal{L}_i^{\pm} \psi \quad \Longrightarrow \quad b_a^{\pm} = \frac{1}{i\omega} \mathcal{L}_i^\pm \psi
 \]
-where $\mathcal{L}_i^{\pm}$ are some linear operators. In fact, this is a feature that applies to all induction equation, summarized in the following statement.
+where $\mathcal{L}_i^{\pm}$ are some linear operators. In fact, this is a feature that applies to all induction equation, which motivates the following formulation.
+
+\section{Reduced dimensional system}
+
 \begin{proposition}
     The ideal induction equations of the boundary magnetic field or the integrated magnetic moments, when linearized around a background field with zero velocity, involves only the background magnetic field / moment and the perturbed velocity. In other words, all of them can be written as
     \[
@@ -77,19 +80,21 @@ This proposition leads to the following statement.
 This gives a further \textcolor{red}{dilemma: the eigenvalue problem will be closed in the vorticity itself, regardless of the boundary condition.} In other words, changing the boundary condition does not even change the eigenvalue problem. How is that possible? Does that mean the eigenmode is not even affected by the choice of boundary conditions? Will the boundary condition be automatically satisfied by the perturbed magnetic field? For instance, will $b_s^\pm$, $b_\phi^\pm$ and $b_z^\pm$ solved in this way automatically match an insulating boundary condition, and if not, when will it or is it necessary?
 
 Corollary \ref{corollary:reduced-eigen} is useful conceptually, but cannot be directly implemented as an eigenvalue problem, since the right-hand-sides contain both first derivative and stream function itself. We must instead flatten out the second order derivative, and consider the augmented system. One way to achieve this is to write
-\[\begin{aligned}
+\begin{equation}\label{eqn:reduced-dim-form}
+\begin{aligned}
     \left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial \psi}{\partial t} &= - \frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + F \\ 
     \frac{\partial F}{\partial t} &= \mathcal{L}_\mathrm{tot} \psi
-\end{aligned}\]
+\end{aligned}
+\end{equation}
 or in matrix form of the eigenvalue problem
-\[
+\begin{equation}\label{eqn:reduced-dim-matrix-form}
 i\omega \begin{pmatrix}
     \frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) - \frac{m^2}{sH} + \frac{m^2}{2H^2} \frac{dH}{ds} & 0 \\ 
     0 & 1
 \end{pmatrix} \begin{pmatrix} \psi^m \\ F^m \end{pmatrix} = \begin{pmatrix} -\frac{2im}{H^2} \frac{dH}{ds} & 1 \\ \mathcal{L}_\mathrm{tot} & 0 \end{pmatrix} \begin{pmatrix}
     \psi^m \\ F^m
 \end{pmatrix}
-\]
+\end{equation}
 This is similar to the velocity-stress formulation, often used in seismological simulations. Interestingly, since we know $\{\psi^{mn}(s) = s^{|m|}H^3 P_{n}^{(\frac{3}{2}, |m|)}(2s^2 - 1)\}$ are the eigenfunctions for the Sturm-Liouville problem (first equation, without $F$ contribution), we can conclude these $\{\psi^{mn}(s)\}$ form a complete orthogonal basis with respect to weight $\frac{2ism}{H^3} = -\frac{2im}{H^2}\frac{dH}{ds}$. In other words, we should expect that the appropriate expansion for $F$ that can be the solution to the eigenvalue problem should take the form
 \[F^{mn}(s) = \frac{s}{H^3} \psi^{mn}(s) = s^{|m|+1} P_n^{(\frac{3}{2},|m|)}(2s^2 - 1).\]
 

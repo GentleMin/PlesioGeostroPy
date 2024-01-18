@@ -1,0 +1,163 @@
+\section{Dimensional redundancy of the eigenvalue problem}
+
+Eigenvalue problems in the PG model is typically solved using the full PG variables.
+As will be seen in the next chapter (\ref{chap:regularity}), a set of transformed variables and their corresponding equations which are mathematically equivalent to the original system can also be used to solve the eigenvalue problems.
+Either way, the MHD configuration of PG involves solving the following set of equations,
+\[
+    \begin{pmatrix}
+        \mathcal{M}_0 & & & \\
+        & \mathcal{M}_1 & & \\
+        & & \ddots & \\
+        & & & \mathcal{M}_{Q}
+    \end{pmatrix} \frac{d}{dt}
+    \begin{pmatrix}
+        x_0 \\ x_1 \\ \vdots \\ x_{Q}
+    \end{pmatrix} = 
+    \begin{pmatrix}
+        \mathcal{K}_{0,0} & \mathcal{K}_{0,1} & \cdots & \mathcal{K}_{0,Q} \\ 
+        \mathcal{K}_{1,0} & \mathcal{K}_{1,1} & \cdots & \mathcal{K}_{1,Q} \\ 
+        \vdots & \vdots & \ddots & \vdots \\
+        \mathcal{K}_{Q,0} & \mathcal{K}_{Q,1} & \cdots & \mathcal{K}_{Q,Q}
+    \end{pmatrix}
+    \begin{pmatrix}
+        x_0 \\ x_1 \\ \vdots \\ x_{Q}
+    \end{pmatrix}.
+\]
+Here all the dynamical variables are denoted with $x_q$, and the linear operators in space are denoted as $\mathcal{M}_{p}$ and $\mathcal{K}_{pq}$, depending on whether they operate on the time derivative or not.
+This formulation applies to both the original formulation and the transformed formulation (see end of next chapter).
+
+As we see in the previous section, as long as we are working with ideal linearized system around a static background flow, the RHS of magnetic induction equations are always a function of $\psi$, but do not concern magnetic quantities at all. Therefore, the operators $\mathcal{K}_{pq} = 0$ for $p,q\geq 1$. The resulting algebraic eigenvalue problem that comes from Galerkin method is
+\[
+    i\omega \mathbf{M} \mathbf{x} =
+    i\omega \begin{pmatrix}
+        \mathbf{M}_0 & & & \\
+        & \mathbf{M}_1 & & \\
+        & & \ddots & \\
+        & & & \mathbf{M}_{Q}
+    \end{pmatrix} 
+    \begin{pmatrix}
+        \mathbf{x}_0 \\ \mathbf{x}_1 \\ \vdots \\ \mathbf{x}_{Q}
+    \end{pmatrix} = 
+    \begin{pmatrix}
+        \mathbf{K}_{0,0} & \mathbf{K}_{0,1} & \cdots & \mathbf{K}_{0,Q} \\ 
+        \mathbf{K}_{1,0} & \mathbf{0} & \cdots & \mathbf{0} \\ 
+        \vdots & \vdots & \ddots & \vdots \\
+        \mathbf{K}_{Q,0} & \mathbf{0} & \cdots & \mathbf{0}
+    \end{pmatrix}
+    \begin{pmatrix}
+        \mathbf{x}_0 \\ \mathbf{x}_1 \\ \vdots \\ \mathbf{x}_{Q}
+    \end{pmatrix} = \mathbf{K} \mathbf{x}.
+\]
+Since the mass matrix is fully invertible (and diagonal with certain formulations), this generalized eigenvalue problem can be recast into an ordinary eigenvalue problem
+\[
+    \widetilde{\mathbf{K}} \mathbf{x} = 
+    \begin{pmatrix}
+        \mathbf{M}_0^{-1}\mathbf{K}_{0,0} & \mathbf{M}_0^{-1}\mathbf{K}_{0,1} & \cdots & \mathbf{M}_0^{-1}\mathbf{K}_{0,Q} \\ 
+        \mathbf{M}_1^{-1}\mathbf{K}_{1,0} & \mathbf{0} & \cdots & \mathbf{0} \\ 
+        \vdots & \vdots & \ddots & \vdots \\
+        \mathbf{M}_Q^{-1} \mathbf{K}_{Q,0} & \mathbf{0} & \cdots & \mathbf{0}
+    \end{pmatrix}
+    \begin{pmatrix}
+        \mathbf{x}_0 \\ \mathbf{x}_1 \\ \vdots \\ \mathbf{x}_{Q}
+    \end{pmatrix} = i\omega 
+    \begin{pmatrix}
+        \mathbf{x}_0 \\ \mathbf{x}_1 \\ \vdots \\ \mathbf{x}_{Q}
+    \end{pmatrix} = i\omega \mathbf{x}.
+\]
+The total number of magnetic quantities involved in the bulk or at the equatorial plane is given by $Q=13$ for both the original and transformed formulations. If we expand these fields to a uniform truncation level of $N$, the overall mass matrix and the stiffness matrix will have the dimension $\mathbf{M}, \mathbf{K} \in \mathbb{C}^{14N\times 14N}$. 
+\medskip
+
+\noindent \textit{\textbf{Side remark}:} \textcite{holdenried-chernoff_long_2021} suggested that the quadratic moments be expanded to $2N$ instead of $N$, which would give a total dimension of $\mathbb{C}^{22N\times 22N}$. This is sensible for the full equations, but seems rather unnecessary for the linearized system.
+Physically, the pertubations in the quadratic moments are of the form $Bb$. Given that the background field is "band-limited" in degrees of $s$, the entire quantity should inherit its truncation level from $b$ instead of $b^2$.
+One can also see it mathematically by looking at the linearized induction equations, whose RHSs are really just a function of $\psi$. The quantity should thus inherit its truncation level from $\psi$. If following the $2N$ truncation level, one whould see $\sim N$ trailing zeros or very small values in the spectra of these quadratic moments.
+\medskip
+
+Andy has been suggesting recently (Jan. 2024) that one should manually remove components that are trivial since they are inactive under certain background fields, in order to make the stiffness matrix non-singular.
+Now I shall show that it is generally impossible.
+In constrast, regardless of the background field, the formulation, and existence of trivial lines, the stiffness matrix $\mathbf{K}$ or its modified form $\widetilde{\mathbf{K}}$ will always be exactly singular.
+Here I provide two approaches to illustrate this.
+First, simply by casting the original system into the reduced dimensional system (prev. section), the algebraic form is given by
+\[
+    i\omega \begin{pmatrix}
+        \mathbf{M}_\psi & \\
+        & \mathbf{M}_F
+    \end{pmatrix} \mathbf{x}' = 
+    \begin{pmatrix}
+        \mathbf{K}_{\psi,\psi} & \mathbf{K}_{\psi,F} \\ 
+        \mathbf{K}_{F,\psi} & \mathbf{0} 
+    \end{pmatrix} \mathbf{x}' \quad \Longrightarrow \quad 
+    \begin{pmatrix}
+        \mathbf{M}_\psi^{-1} \mathbf{K}_{\psi,\psi} & \mathbf{M}_\psi^{-1} \mathbf{K}_{\psi,F} \\ 
+        \mathbf{M}_F^{-1} \mathbf{K}_{F,\psi} & \mathbf{0} 
+    \end{pmatrix} \mathbf{x}' = i\omega \mathbf{x}'.
+\]
+which, at a truncation degree of $N$ for $\psi$, admits at most $2N$ eigenvalues. This already hints at the fact that the rank of the $14N$- or $22N$-dimensional square matrices $\mathbf{K}$ or $\widetilde{\mathbf{K}}$ should be at most be $2N$.
+
+Next, I will show directly that $\mathrm{rank}(\mathbf{K}) \leq 2N$.
+\medskip
+
+\noindent \textit{\textbf{Proof 1}}: let us consider the blocked form of $\mathbf{K}$,
+\[
+    \mathbf{K} = \begin{pmatrix}
+        \mathbf{A} & \mathbf{B} \\ 
+        \mathbf{C} & \mathbf{D}
+    \end{pmatrix} = \left(\begin{array}{c|ccc}
+        \mathbf{K}_{0,0} & \mathbf{K}_{0,1} & \cdots & \mathbf{K}_{0,Q} \\ 
+        \hline
+        \mathbf{K}_{1,0} & & & \\
+        \vdots & & \mathbf{0} & \\ 
+        \mathbf{K}_{Q,0} & & &
+    \end{array}\right)
+\]
+Note $\mathbf{A} = \mathbf{K}_{0,0}$ is invertible; in the ideal system this is the submatrix for the Coriolis operator, which is diagonal. Based on this observation, the following theorem holds,
+\begin{equation}
+\begin{aligned}
+    \mathrm{rank}(\mathbf{K}) &= \mathrm{rank}(\mathbf{A}) + \mathrm{rank}\left(\mathbf{K}/\mathbf{A}\right) = \mathrm{rank}(\mathbf{A}) + \mathrm{rank} \left(\mathbf{D} - \mathbf{C} \mathbf{A}^{-1} \mathbf{B}\right).
+\end{aligned}
+\end{equation}
+This theorem is known as Guttman's theorem, or Guttman rank additivity formula. Notation $\mathbf{K}/\mathbf{A}$ gives the Schur complement of $\mathbf{A}$. For a good reference material for Schur complement and its properties including the Guttman's theorem, please refer to the wikipedia page or Ouellette \href{https://www.sciencedirect.com/science/article/pii/0024379581902329}{1981}.
+Since $\mathbf{K}_{0,0}$ is an $N\times N$ invertible matrix, $\mathrm{rank}(\mathbf{A}) = \mathrm{rank}(\mathbf{K}_{0,0}) = N$. On the other hand, since $\mathbf{D}$ is really just a trivial matrix, its Schur complement immediately has the factorization
+\[
+    \mathbf{K}/\mathbf{A} = \mathbf{D} - \mathbf{C} \mathbf{A}^{-1} \mathbf{B} = - \begin{pmatrix}
+        \mathbf{K}_{1,0} \\ 
+        \vdots \\ 
+        \mathbf{K}_{Q,0} 
+    \end{pmatrix} \mathbf{K}_{0,0}^{-1}
+    \begin{pmatrix}
+        \mathbf{K}_{0,1} & \cdots & \mathbf{K}_{0,Q}
+    \end{pmatrix}
+\]
+which gives $\mathrm{rank}(\mathbf{K}/\mathbf{A}) \leq \mathrm{rank}(\mathbf{K}_{0,0}^{-1}) = N$. Adding these two ranks, we come to the conclusion
+\begin{equation}
+    \mathrm{rank}(\mathbf{K}) = \mathrm{rank}(\mathbf{A}) + \mathrm{rank}(\mathbf{K}/\mathbf{A}) \leq 2N. \qquad \blacksquare
+\end{equation}
+It is important to understand that there is nothing fancy here. There are many linear transformations one can also to factorize this block matrix or show the linear dependency. As an alternative approach, 
+\medskip
+
+\noindent\textit{\textbf{Proof 2:}} let us consider another blocked form
+\[
+    \mathbf{K} = \begin{pmatrix}
+        \mathbf{K}_0 \\ 
+        \mathbf{K}_{1:Q}
+    \end{pmatrix} = \left(\begin{array}{cccc}
+        \mathbf{K}_{0,0} & \mathbf{K}_{0,1} & \cdots & \mathbf{K}_{0,Q} \\ 
+        \hline
+        \mathbf{K}_{1,0} & \mathbf{0} & \cdots & \mathbf{0} \\
+        \vdots & \vdots & \ddots & \vdots \\ 
+        \mathbf{K}_{Q,0} & \mathbf{0} & \cdots & \mathbf{0}
+    \end{array}\right)
+\]
+The rank of the upper block, $\mathbf{K}_0\in \mathbb{C}^{N\times 14N}$, is bounded by the row dimensions, hence $\mathrm{rank}(\mathbf{K}_0) \leq N$.
+For the rank of the lower block, we need only check its column rank. Since all its columns are trivial except the leading $N$ columns, the column rank is again bounded by $N$, hence $\mathrm{rank}(\mathbf{K}_{1:Q})\leq N$. Concatenating these two matrices together, we have once again $\mathrm{rank}(\mathbf{K}) \leq \mathrm{rank}(\mathbf{K}_0) + \mathrm{rank}(\mathbf{K}_{1:Q}) \leq 2N$. $\blacksquare$
+\medskip
+
+Now I even regret mentioning Schur complement and Guttman's theorem in the first place. The alternative approach is so intuitive and simple, and even stronger: whether $\mathbf{K}_{0,0}$ is invertible or not is irrelevant. The result that a matrix with a huge trivial diagonal block has very small rank is also evident. Resorting to Schur complement is really an indication that I am slipping at linear algebra.
+
+Finally, since $\mathbf{M}$ is an invertible map, $\mathrm{rank}(\widetilde{\mathbf{K}}) = \mathrm{rank}(\mathbf{K}) \leq 2N$.
+
+This result shows that the full system (either original PG or transformed variables), same as the reduced system (as it should be), admits at most $2N$ eigenvalues. In other words, $6/7$ or $10/11$ of the dimensions of the matrix are redudant. Unfortunately, it won't be so easy to just remove the zero rows.
+
+Another indication of this result is that if you are solving a full system, but there are more than $2N$ eigenvalues significantly different from zero, then you are definitely looking at numerical contamination. This might be a good signal to increase the precision for the quadrature (or perhaps also for the eigensolver, although I suspect the eigensolver should be accurate enough at the system's size of interest). In any way, reduced system should be a more robust method.
+
+
+

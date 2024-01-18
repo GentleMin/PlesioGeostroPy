@@ -1,8 +1,10 @@
 # Core packages
 python=3.8.13
+sympy=1.11.1
 numpy=1.22.3
 scipy=1.8.0
-sympy=1.11.1
+mpmath=1.3.0
+gmpy2=2.1.5
 h5py=3.3.0
 # Visualization and presentation
 pandas=1.4.2

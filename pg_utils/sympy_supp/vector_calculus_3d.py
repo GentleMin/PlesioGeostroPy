@@ -366,8 +366,8 @@ class CylindricalCoordinates(OrthogonalCoordinates3D):
         else:
             raise NotImplementedError
     
-    def transform_to(self, v_in, new_sys: OrthogonalCoordinates3D, 
-        coeffs_new=False) -> OrthogonalCoordinates3D:
+    def transform_to(self, v_in: "Vector3D", new_sys: OrthogonalCoordinates3D, 
+        coeffs_new=False) -> "Vector3D":
         """Transform vector under cylindrical coordinates to new coordinate system
         """
         if isinstance(new_sys, SphericalCoordinates):
@@ -464,8 +464,8 @@ class SphericalCoordinates(OrthogonalCoordinates3D):
             + 1/(self[0]*sympy.sin(self[1]))*diff(vector_in[1], self[2], **kwargs)
         return scalar_out
     
-    def transform_to(self, v_in, new_sys: OrthogonalCoordinates3D, 
-            coeffs_new=False) -> OrthogonalCoordinates3D:
+    def transform_to(self, v_in: "Vector3D", new_sys: OrthogonalCoordinates3D, 
+            coeffs_new=False) -> "Vector3D":
         if isinstance(new_sys, CylindricalCoordinates):
             if coeffs_new:
                 v1 = new_sys[0]/sympy.sqrt(new_sys[0]**2 + new_sys[2]**2)*v_in[0] \
@@ -522,7 +522,7 @@ class Tensor3D:
     def transform_to(self, new_sys: OrthogonalCoordinates3D, **kwargs) -> "Tensor3D":
         """Transform to another coordinates system
         """
-        self.coord_sys.transform_to(self, new_sys=new_sys, **kwargs)
+        return self.coord_sys.transform_to(self, new_sys=new_sys, **kwargs)
 
 
 class Scalar3D(Tensor3D):

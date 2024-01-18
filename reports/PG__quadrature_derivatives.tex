@@ -108,3 +108,39 @@ On a related note, the Jacobi polynomial in the form of
 might be a good formula for analytic continuation in $\alpha$, $\beta$, $n$. This formula seems to have finite value for any point, except for a zero-measure set in the 4-D space.
 
 So why does the evaluation fail at $z=-1$ for negative $n$? This is the branch point for the hypergeometric function at $n\in \mathbb{Z}^-$, and evaluation is not available even for the equation above.
+
+
+\section{Jacobi polynomial and Legendre function}
+
+A small but serious trap has recently (Jan 2024) be identified with \texttt{SymPy}. Some Jacobi polynomials will be rewritten in terms of associated Legendre polynomials, which however cannot be evaluated numerically in \texttt{SymPy}.
+
+Recall Jacobi polynomials are a special type of hypergeometric function, via the relation
+\[
+    P_n^{(\alpha,\beta)}(z) = \frac{\Gamma(1 + \alpha + n)}{\Gamma(1 + \alpha) \Gamma(1 + n)} \prescript{}{2}{F}_1\left(-n, 1+\alpha+\beta+n, 1+\alpha, \frac{1-z}{2}\right).
+\]
+At the same time, associated Legendre polynomials can be rewritten with hypergeometric functions as 
+\[
+    P_n^m(z) = \frac{1}{\Gamma(1 - m)}\left(\frac{1 + z}{1 - z}\right)^{\frac{m}{2}} \prescript{}{2}{F}_1 \left(-n, n+1, 1 - m, \frac{1-z}{2}\right).
+\]
+The degree $n$ and order $m$ do not necessarily need to be integers; this expression provides analytic continuation of the normal associated Legendre polynomial outside the unit circle $|z|<1$.
+Using this expression, associated Legendre polynomial is (a) in most cases not a hypergeometric function, unless $m=0$, and (b) not necessarily a polynomial, unless $m$ is even.
+Therefore, the name "associated Legendre polynomial" is really an abuse of terminology. Calling it Legendre function, as Stegun does, is much more reasonable.
+
+We now look at the two cases where the two functions are indeed related. When $\alpha=\beta=0$, the Jacobi polynomial is the ordinary Legendre polynomial, which is the Legendre function with $m=0$,
+\begin{equation}
+    P_n^{(0,0)}(z) = \prescript{}{2}{F}_1 \left(-n, n+1, 1, \frac{1-z}{2}\right) = P_n^0(z) = P_n(z).
+\end{equation}
+Therefore, when $\alpha=\beta=0$ is detected in \colorbox{backcolour}{\lstinline|sympy.jacobi|}, the Jacobi polynomial will be automatically rewritten using \colorbox{backcolour}{\lstinline|sympy.legendre|}, unless \colorbox{backcolour}{\lstinline|evaluation=False|} is specified.
+Another rewriting happens in the case when $\alpha + \beta=0$ although neither is zero. In this case,
+\begin{equation}
+\begin{aligned}
+    P_n^{(-\beta,\beta)} &= \frac{\Gamma(1 - \beta + n)}{\Gamma(1 - \beta) \Gamma(1 + n)} \prescript{}{2}{F}_1 \left(-n, n+1,1-\beta,\frac{1-z}{2}\right) \\ 
+    &= \frac{\Gamma(1 - \beta + n)}{\Gamma(1 + n)} \left(\frac{1 - z}{1 + z}\right)^{\frac{\beta}{2}} P_n^\beta(z).
+\end{aligned}
+\end{equation}
+When $\alpha + \beta = 0$ is detected in \colorbox{backcolour}{\lstinline|sympy.jacobi|}, the Jacobi polynomial will be automatically rewritten using \colorbox{backcolour}{\lstinline|sympy.assoc_legendre|}, unless \colorbox{backcolour}{\lstinline|evaluate=False|} is specified.
+However, as $\alpha,\beta > -1$, the rewritten associated Legendre polynomial always has non-integer order $m$. The current \texttt{SymPy} version cannot evaluate \colorbox{backcolour}{\lstinline|assoc_legendre|} with non-integer $m$ numerically. This causes problem when the evaluating the integrand using \texttt{SymPy}.
+
+Despite this complication, the current (Jan. 2024) implementation of \texttt{PlesioGeostroPy} is unlikely to be affected by this. The reason is that all Jacobi polynomials used in trial basis functions either have half-integer $\alpha$ paired with integer $\beta$ (streamfunction $\Psi$), or integer $\alpha$ paired with half-integer $\beta$ (magnetic quantities).
+This remains true under differentiation, as differentiating a Jacobi polynomial raises both indices by $1$. In the end, $\alpha + \beta = 0$ never occurs, and no rewriting of the Jacobi polynomial will be triggered.
+
