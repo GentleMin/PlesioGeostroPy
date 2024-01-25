@@ -6,7 +6,8 @@
 import numpy as np
 import gmpy2 as gp
 import mpmath as mp
-from typing import Union, List, Optional
+from typing import Union, List, Optional, Callable, Any
+from scipy.sparse import coo_array
 
 
 def eigenfreq_psi_op(m: Union[int, np.ndarray], n: Union[int, np.ndarray]):
@@ -201,4 +202,46 @@ def to_numpy_c(x: np.ndarray) -> np.ndarray:
     """Convert complex array to numpy complex128 array
     """
     return x.astype(np.complex128)
+
+def array_to_str(x: np.ndarray, str_fun: Callable[[Any], str] = str) -> np.ndarray:
+    """Convert array to List of strings
+    
+    :param Callable[[Any], str] str_fun: an optional stringify function,
+        default to the string function `str`.
+    
+    .. warning::
+
+        This function should really be used only for converting 1-D
+        arrays to strings. Otherwise the returned object will not be 
+        a full list of strings, but merely a list of arrays.
+    """
+    # return [str_fun(item) for item in x]
+    return list(np.vectorize(str_fun, otypes=(object,))(x))
+
+
+def is_eq_sparse(array_1, array_2):
+    """Compare if two sparse matrices are identical"""
+    return len((array_1 != array_2).data) == 0
+
+
+def is_eq_coo(array_1: coo_array, array_2: coo_array):
+    """Compare if two COORdinate format sparse arrays are identical
+    
+    This method is reserved for comparing COO arrays that is not of
+    a built-in dtype (i.e. of an object type). These sparse arrays
+    do not support many of the sparse operations, such as conversion to
+    csr
+    """
+    return (
+        array_1.shape == array_2.shape and 
+        np.min(array_1.row == array_2.row) and 
+        np.min(array_1.col == array_2.col) and
+        np.min(array_1.data == array_2.data)
+    )
+
+
+def allclose_sparse(array_1, array_2, rtol=1e-5, atol=1e-8):
+    """Compare if two sparse matrices are close enough"""
+    c = np.abs(array_1 - array_2) - rtol * np.abs(array_2)
+    return c.max() <= atol
 

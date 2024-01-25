@@ -5,6 +5,7 @@ Symbolic parser
 The bridge between the symbolic expressions and numerical computations
 """
 
+import numpy as np
 import sympy
 import mpmath
 import gmpy2
@@ -120,6 +121,24 @@ def jacobi_idx_subs(expr: sympy.Expr, arg: sympy.Symbol,
     return expr.xreplace(replace_map)
 
 
+v_functions_mpmath = {
+    'sin': np.vectorize(mpmath.sin, otypes=(object,)),
+    'cos': np.vectorize(mpmath.cos, otypes=(object,)),
+    'tan': np.vectorize(mpmath.tan, otypes=(object,)),
+    'sqrt': np.vectorize(mpmath.sqrt, otypes=(object,))
+}
+"""Vectorized functions in mpmath"""
+
+
+v_functions_gmpy2 = {
+    'sin': np.vectorize(gmpy2.sin, otypes=(object,)),
+    'cos': np.vectorize(gmpy2.cos, otypes=(object,)),
+    'tan': np.vectorize(gmpy2.tan, otypes=(object,)),
+    'sqrt': np.vectorize(gmpy2.sqrt, otypes=(object,))
+}
+"""Vectorized functions in gmpy2"""
+
+
 class Gmpy2Printer(PythonCodePrinter):
     """
     Lambda printer for gmpy2 which maintains precision for floats
@@ -149,5 +168,11 @@ class Gmpy2Printer(PythonCodePrinter):
         return '{func}({arg})'.format(
             func=self._module_format('gmpy2.mpz'),
             arg=str(e)
+        )
+    
+    def _print_Pi(self, e: sympy.Expr):
+        return '{func}(precision={prec})'.format(
+            func=self._module_format('gmpy2.const_pi'),
+            prec=self.prec
         )
 

@@ -128,7 +128,7 @@ def quad_matrix_mpmath(operand_A: sympy.Expr, operand_B: sympy.Expr,
     """
     lambdify_modules = [{
         "jacobi": functools.partial(special.eval_jacobi_recur_mp, dps=n_dps, backend="mpmath"), 
-        "sqrt": np.vectorize(mp.sqrt, otypes=(object,))}, 
+        **symparser.v_functions_mpmath}, 
         "mpmath"
     ]
     f_A = sympy.lambdify([n_test, xi], operand_A.doit(), modules=lambdify_modules)
@@ -168,8 +168,8 @@ def quad_matrix_gmpy2(operand_A: sympy.Expr, operand_B: sympy.Expr,
     """
     lambdify_funcs = [{
         "jacobi": functools.partial(special.eval_jacobi_recur_mp, dps=n_dps, backend="gmpy2"), 
-        "sqrt": np.vectorize(gp.sqrt, otypes=(object,))}
-    ]
+        **symparser.v_functions_gmpy2
+    }]
     gmpy2_printer=symparser.Gmpy2Printer(settings={
         'fully_qualified_modules': False, 
         'inline': True, 
@@ -814,7 +814,16 @@ class MatrixExpander:
                     raise NotImplementedError
             M_list.append(M_row)
         return np.block(M_list)
-        
+
+
+def sparsify(array: np.ndarray, 
+    clip_threshold: Union[float, np.float64] = np.finfo(np.float64).eps
+    ) -> sparse.coo_array:
+    """Create sparse array from dense array
+    """
+    sparse_array = array.copy()
+    sparse_array[np.abs(sparse_array) <= clip_threshold] = 0.
+    return sparse.coo_array(sparse_array)
 
 
 def invert_block_diag(matrix: np.ndarray, block_seg: List[int]) -> np.ndarray:
