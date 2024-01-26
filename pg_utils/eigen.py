@@ -7,7 +7,7 @@ in the framework of PG model.
 
 import os, h5py, json, warnings
 from typing import List, Any, Optional, Union, Tuple
-from sympy import S, I, Function, Add, diff, Eq, srepr, parse_expr
+from sympy import S, I, Function, Add, diff, Eq, Expr, srepr, parse_expr
 
 from .pg_model import *
 from .pg_model import base, core, params, forcing, bg_fields
@@ -224,11 +224,44 @@ def reduce_eqsys_to_psi(eqsys_old: base.LabeledCollection,
         print("========== Converting to 2nd order dynamical system... ==========")
     eqsys_psi_F = reduce_eqsys_to_force_form(eqsys_old, verbose=verbose-1)
     eq_psi, eq_F = eqsys_psi_F.Psi, eqsys_psi_F.F_ext
-    eqsys_new = Eq(
+    eq_new = Eq(
         diff(eq_psi.lhs, t),
         diff(eq_psi.rhs, t).subs({eq_F.lhs: eq_F.rhs}).doit().expand()
     )
-    return eqsys_new
+    return eq_new
+
+
+def to_fd_ode_pg(eq_sys: base.LabeledCollection, dyn_var: base.CollectionPG):
+    """A convenient function to convert equations to Fourier domain for PG vars
+    """
+    fourier_xpd = xpd.FourierExpansions(
+        xpd.m*core.p + xpd.omega*core.t,
+        dyn_var, xpd.pgvar_s
+    )
+    f_map = base.map_collection(dyn_var, fourier_xpd)
+    return eq_sys.apply(
+        lambda eq: Eq(
+            xpd.FourierExpansions.to_fourier_domain(eq.lhs, f_map, fourier_xpd.bases), 
+            xpd.FourierExpansions.to_fourier_domain(eq.rhs, f_map, fourier_xpd.bases)), 
+        inplace=False, metadata=False
+    )
+
+
+def to_fd_ode_psi(eq: Eq, psi_var: Expr = core.pgvar_ptb.Psi, 
+    verbose: int = 0) -> Eq:
+    """Reduce an eq of psi to ODE form in cylindrical radius s
+    """
+    psi_fun = base.LabeledCollection(["Psi"], Psi=psi_var)
+    psi_s = base.LabeledCollection(["Psi"], Psi=xpd.pgvar_s.Psi)
+    fourier_xpd = xpd.FourierExpansions(
+        xpd.m*core.p + xpd.omega*core.t, 
+        psi_fun, psi_s)
+    f_map = base.map_collection(psi_fun, fourier_xpd)
+    return Eq(
+        xpd.FourierExpansions.to_fourier_domain(eq.lhs, f_map, fourier_xpd.bases).expand(), 
+        xpd.FourierExpansions.to_fourier_domain(eq.rhs, f_map, fourier_xpd.bases).expand()
+    )
+
 
 """Matrix collection utilities"""
 
@@ -294,8 +327,9 @@ def equations_to_matrices(eqs: base.LabeledCollection,
 
 
 
-"""Top-level functions
-Top level functions are mainly functions wrapped with input/output
+"""
+Top-level functions
+functions wrapped with input/output
 utilities to further simplify the procedure
 """
 
