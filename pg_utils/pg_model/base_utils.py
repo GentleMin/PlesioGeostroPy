@@ -147,3 +147,5 @@ def fields_in_term(expr: sympy.Expr, field_collection: base.LabeledCollection):
     expr_fields = tuple(field for field in expr_fields if field in set_tmp)
     return expr_fields
 
+
+
