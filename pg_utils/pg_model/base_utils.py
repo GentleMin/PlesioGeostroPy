@@ -102,7 +102,7 @@ def assemble_background(B0, Psi0=None, mode="PG"):
         Bp_e = B0[1].subs({z: 0}),
         Bz_e = B0[2].subs({z: 0}),
         dBs_dz_e = diff(B0[0], z).doit().subs({z: 0}),
-        dBp_dz_e = diff(B0[0], z).doit().subs({z: 0}),
+        dBp_dz_e = diff(B0[1], z).doit().subs({z: 0}),
         # Magnetic field at the boundary
         Br_b = s*B0[0] + z*B0[2],
         Bs_p = B0[0].subs({z: +H_s}),

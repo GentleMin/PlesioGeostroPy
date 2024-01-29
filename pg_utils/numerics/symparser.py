@@ -52,6 +52,19 @@ def powers_of(expr: sympy.Expr, *args: sympy.Symbol, return_expr: bool = False):
         # all powers for each term separately
         powers = [powers_of(term, *args, return_expr=return_expr) for term in expr.args]
         return powers
+    elif isinstance(expr, sympy.Function):
+        # This is the most intricate part of this method
+        # When the expression is a pure special function
+        # We assume this Function is a polynomial function,
+        # with degree as the first argument
+        # and variable as the last argument.
+        # Further, the variable needs to be a polynomial in symbol
+        powers = [sympy.S.Zero for arg in args]
+        for i_symb, symb in enumerate(args):
+            arg_deg = sympy.degree(expr.args[-1], gen=symb)
+            fun_deg = expr.args[0]
+            powers[i_symb] += arg_deg*fun_deg
+        return powers
     else:
         expr = expr.factor()
         powers = [sympy.S.Zero for arg in args]

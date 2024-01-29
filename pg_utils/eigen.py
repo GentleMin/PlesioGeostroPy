@@ -124,8 +124,8 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
     # Treatment of vorticity equation: do not try to "simplify" the RHS of vorticity
     # equation; it often leads to unnecessary rationalization
     if fname == "Psi":
-        new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H}).expand()
-        new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H}).expand()
+        new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}).expand()
+        new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}).expand()
     # For other equations: try to simplify for visual simplicity
     # !!!!! ==================================================== Note ===========
     # If the code is not used interactively, perhaps all simplify can be skipped?
@@ -139,8 +139,8 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
             new_rhs = new_rhs.subs({z: -H}).doit().simplify()
         elif fname in fnames[-11:-6]:
             new_rhs = new_rhs.subs({z: S.Zero}).doit().simplify()
-        new_lhs = new_lhs.subs({H_s: H}).expand()
-        new_rhs = new_rhs.subs({H_s: H}).expand()
+        new_lhs = new_lhs.subs({H_s: H, H_s**2: H**2}).expand()
+        new_rhs = new_rhs.subs({H_s: H, H_s**2: H**2}).expand()
     return Eq(new_lhs, new_rhs)
 
 
@@ -241,8 +241,8 @@ def to_fd_ode_pg(eq_sys: base.LabeledCollection, dyn_var: base.CollectionPG):
     f_map = base.map_collection(dyn_var, fourier_xpd)
     return eq_sys.apply(
         lambda eq: Eq(
-            xpd.FourierExpansions.to_fourier_domain(eq.lhs, f_map, fourier_xpd.bases), 
-            xpd.FourierExpansions.to_fourier_domain(eq.rhs, f_map, fourier_xpd.bases)), 
+            xpd.FourierExpansions.to_fourier_domain(eq.lhs, f_map, fourier_xpd.bases).expand(), 
+            xpd.FourierExpansions.to_fourier_domain(eq.rhs, f_map, fourier_xpd.bases).expand()), 
         inplace=False, metadata=False
     )
 

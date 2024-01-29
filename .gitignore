@@ -8,10 +8,10 @@ __pycache__/
 *.aux
 *.bbl
 *.bcf
-reports/*.gz
-reports/*.log
-reports/*.out
-reports/*.xml
+reports/**/*.gz
+reports/**/*.log
+reports/**/*.out
+reports/**/*.xml
 presentation/
 out/**/*.png
 out/**/*.pdf
