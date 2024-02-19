@@ -1,0 +1,51 @@
+\section{Induction equation in the equatorial plane}
+
+The induction equations in the equatorial plane are obtained by taking the original induction equation at the equatorial plane, i.e. $z=0$.
+Therefore, it is useful to first introduce this \textit{equator sampling operator},
+\[
+    \mathcal{S}^e: V(\mathbb{R}^3) \mapsto V(\mathbb{R}^2)
+\]
+where $V(\mathbb{R}^3)$ is some vector space of functions defined in 3-D space, and $V(\mathbb{R}^2)$ is some vector space of functions defined on 2-D plane.
+The sampling operator is simply defined as
+\[
+    \mathcal{S}^e f(\mathbf{r}) = f|_{z=0} = f(\mathbf{r}_e, z=0) = f^e(\mathbf{r}_e).
+\]
+Here the superscript $e$ is used to mark a quantity that is evaluated in the equatorial plane. The subscript $e$ is reserved to denote equatorial components of a vector field.
+% Although the expression above only gives the case where $f$ is a function in $x,y,z$, the same process follows regardless of coordinate systems. For functions in cylindrical coordinates, there is no difference.
+Operator $\mathcal{S}^e$ is linear (naturally),
+\[
+    \mathcal{S}^e \left(\alpha f + \beta g\right) = \alpha \mathcal{S}^e f + \beta \mathcal{S}^e g = \alpha f^e + \beta g^e
+\]
+where $f$ and $g$ are functions while $\alpha$ and $\beta$ are constants. It is also distributive,
+\[
+    \mathcal{S}^e \left(f g\right) = \left(\mathcal{S}^e f\right) \left(\mathcal{S}^e g\right) = f^e g^e.
+\]
+Last but not least, it commutes with differential operators in the equatorial plane, as well as functions defined using only equatorial components
+\[\begin{aligned}
+    \mathcal{S}^e \left(f(\mathbf{r}_e) g(\mathbf{r})\right) &= f(\mathbf{r}_e) \mathcal{S}^e g = f(\mathbf{r}_e) g^e(\mathbf{r}_e), \\ 
+    \mathcal{S}^e \left(\nabla_e g(\mathbf{r})\right) &= \nabla_e \left(\mathcal{S}^e g\right) = \nabla_e g^e(\mathbf{r}_e).
+\end{aligned}
+\]
+The properties above are intuitive results, and I shall omit the proof here. Rigorous proof is possible by simply using the definition, sometimes combined with Cartesian coordinates.
+Now let us return to the induction equation. The original equation takes the form,
+\[
+    \frac{\partial \mathbf{B}}{\partial t} = \nabla \times (\mathbf{u} \times \mathbf{B}) = \left(\mathbf{B}\cdot \nabla\right) \mathbf{u} - \left(\mathbf{u} \cdot \nabla\right) \mathbf{B}.
+\]
+To make use of the listed properties, we split the vectors as well as the nabla operator into equatorial and vertical components, i.e. $\mathbf{u} = \mathbf{u}_e + u_z \hat{\mathbf{z}}$, $\mathbf{B} = \mathbf{B}_e + B_z \hat{\mathbf{z}}$ and $\nabla = \nabla_e + \hat{\mathbf{z}} \partial_z$. The equation reads
+\begin{equation}\label{eqn:induction-eqn-equatorial-vertical-split}
+\begin{aligned}
+    \frac{\partial \mathbf{B}}{\partial t} &= \left(\mathbf{B}_e\cdot \nabla_e + B_z \partial_z\right) \left(\mathbf{u}_e + u_z \hat{\mathbf{z}}\right) - \left(\mathbf{u}_e \cdot \nabla_e + u_z \partial_z\right) \mathbf{B} \\ 
+    &= \mathbf{B}_e\cdot \nabla_e \mathbf{u}_e + B_z \partial_z \mathbf{u}_e - \mathbf{u}_e \cdot \nabla_e \mathbf{B} - u_z \partial_z \mathbf{B} + \hat{\mathbf{z}} \left(\mathbf{B}_e\cdot \nabla_e u_z + B_z \partial_z u_z \right) \\ 
+    &= \mathbf{B}_e\cdot \nabla_e \mathbf{u}_e - \mathbf{u}_e \cdot \nabla_e \mathbf{B} - u_z \partial_z \mathbf{B} + \hat{\mathbf{z}} \left(\mathbf{B}_e\cdot \nabla_e u_z + B_z \partial_z u_z \right)
+\end{aligned}
+\end{equation}
+where the column ansatz is used in the last step to remove the term containing $\partial_z \mathbf{u}_e$.
+To obtain the evolution equation for $\mathbf{B}(z=0) = \mathbf{B}^e$, we apply the sampling operator to eq.(\ref{eqn:induction-eqn-equatorial-vertical-split}),
+\begin{equation}
+    \frac{\partial \mathbf{B}^e}{\partial t} = \mathcal{S}^e \frac{\partial \mathbf{B}}{\partial t} = \left(\mathbf{B}_e^e \cdot \nabla_e\right) \mathbf{u}_e - \left(\mathbf{u}_e\cdot \nabla_e\right) \mathbf{B}^e + \hat{\mathbf{z}} B_z^e \left(\partial_z u_z\right)^e.
+\end{equation}
+Here we used the property $u_z^e = 0$, i.e. the axial velocity is zero at the equatorial plane, again dictated by the columnar ansatz.
+To obtain the evolution equation for $\partial_z\mathbf{B}_e|_{(z=0)} = \mathbf{B}_{e,z}^e$, we apply $\mathcal{S}^e \partial_z$ to eq.(\ref{eqn:induction-eqn-equatorial-vertical-split}), and take only the equatorial components,
+\begin{equation}
+    \frac{\partial \mathbf{B}_{e,z}^e}{\partial t} = \mathcal{S}^e \partial_z \frac{\partial \mathbf{B}_e}{\partial t} = \left(\mathbf{B}_{e,z}^e \cdot \nabla_e\right) \mathbf{u}_e - \left(\mathbf{u}_e\cdot \nabla_e\right) \mathbf{B}_{e,z}^e - \mathbf{B}_{e,z}^e \left(\partial_z u_z\right)^e.
+\end{equation}
