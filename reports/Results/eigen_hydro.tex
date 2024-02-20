@@ -1,0 +1,150 @@
+\section{Inviscid hydrodynamic eigenmodes}
+
+We start by considering the eigenmodes in absence of magnetic fields in the inviscid limit.
+From the ideal PG equations, it means that the system is linearized around a background state where both the velocity and the magnetic fields are zero.
+
+\subsection{Linearized equations}
+
+The PG system in purely invscid hydrodynamic case comprises only of the streamfunction equation,
+\begin{equation}
+    \left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} + \frac{s}{2H^3}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial \psi}{\partial t} = \frac{2 s}{H^{3}} \frac{\partial \psi}{\partial \phi}
+\end{equation}
+while all magnetic quantities vanish. There is no difference between the PG equation, the transformed equation, or the reduced dimensional formulation, as only the streamfunction is relevant.
+Note for the hydrodynamic case, the rotation timescale $\tau = \Omega^{-1}$ is used.
+
+\subsection{Standard ODE form}
+
+Using the Fourier ansatz $\psi = \psi^m(s) e^{i \widetilde{\omega} t + im\phi} = \psi^m(s) e^{\lambda t + im \phi}$, the streamfunction equation can be written as an ODE in cylindrical radius $s$,
+\begin{equation}\label{eqn:ode-hydro}
+\begin{aligned}
+    \lambda \left[\frac{d}{d s}\left(\frac{s}{H}\frac{d}{d s}\right) - m^2 \left(\frac{1}{sH} + \frac{s}{2H^3}\right)\right] \psi^m &= \frac{2 s}{H^{3}} im \psi^m \\ 
+    \widetilde{\omega} \left[\frac{d}{d s}\left(\frac{s}{H}\frac{d}{d s}\right) - m^2 \left(\frac{1}{sH} + \frac{s}{2H^3}\right)\right] \psi^m &= \frac{2 s}{H^{3}} m \psi^m \\
+    \left[\frac{d}{d s}\left(\frac{s}{H}\frac{d}{d s}\right) - m^2 \left(\frac{1}{sH} + \frac{s}{2H^3}\right)\right] \psi^m &= \frac{2 s}{H^{3}} \frac{m}{\widetilde{\omega}} \psi^m,
+\end{aligned}
+\end{equation}
+which can also be cast into the standard form,
+\begin{equation}
+    \frac{d^{2}}{d s^{2}} \psi^{m} + \frac{1}{s H^{2}}\frac{d}{d s} \psi^{m} - \left(\frac{m^{2} \left(H^{2} + 1\right)}{2 s^{2} H^{2}} + \frac{2 m}{\widetilde{\omega} H^{2}}\right) \psi^{m} = 0.
+\end{equation}
+All coefficients in the standard form are rational forms of cylindrical radius $s$. The poles of the coefficients give the \textit{singularities} of the equation. These singularities are $s=0$ (at the axis) and $s=1$ ($H=0$, at the equator), and as will be seen in other case studies, these are the same for all cases presented.
+Note $H = (1 - s)^{1/2} (1 + s)^{1/2}$. Therefore, a denominator in the form of $s^a H^b$ produces an $a-$th order pole $s=0$, and an $\frac{b}{2}$-th order pole $s=1$. An integer $b$ that is odd produces an \textit{essential singularity} at $s=1$.
+
+Recalling the properties of ODEs, an $n-$th order ODE
+\[
+    \frac{d^n y}{dx^n} + \sum_{k=0}^{n-1} a_k(x) \frac{d^k y}{dx^k} = 0
+\]
+admits regular solutions in the vicinity of $x=x_0$ so long as the following quantities are analytic:
+\[
+    (x - x_0)^k a_{n-k}(x),\qquad k = 0, 1, \cdots n-1.
+\]
+In other words, $a_{n-k}(x)$ is allowed to have a pole up to the $k-$th order. For the second-order ODE above, $a_1$ has simple poles at $s=0$ and $s=1$, and $a_0$ has a second-order pole at $s=0$, a simple pole at $s=1$. Therefore, all singular points of the coefficients are merely \textit{regular singular points} of the equation, or \textit{apparent singularities}, and the existence of regular solution is guaranteed.
+
+\subsection{Analytical solution}
+
+The hydrodynamic equation (\ref{eqn:ode-hydro}) has known analytical solutions. The eigenvalues are given by
+\begin{equation}
+    \widetilde{\omega}_n^m = \omega_n^m = \frac{-m}{(n + 1)(2n + 2m + 3) + \frac{m}{2} + \frac{m^2}{4}}, \quad 
+    \psi^{m}_n(s) = s^m H^3 P_{n}^{\left(\frac{3}{2}, m\right)}(2s^2 - 1),\quad n \in \mathbb{Z}^*.
+\end{equation}
+This is a rare case where the eigenvalue and eigenfunction can be obtained in closed form.
+These eigenmodes are the inertial modes. Forming a complete (and orthonormal) set in the appropriate Hilbert space, they provide a basis for the streamfunction in the columnar ansatz. The current implementation of the PG model uses these as the radial spectral basis for $\psi^m(s)$.
+
+The analytical solution also indicates that the linear operator
+\[
+    \frac{H^3}{s} \left[\frac{d}{ds}\left(\frac{s}{H} \frac{d}{ds}\right) - \frac{m^2}{sH}\right] = (1 - s^2) \frac{d^2}{ds^2} + \frac{1}{s}\frac{d}{ds} - m^2 \frac{1 - s^2}{s^2}
+\]
+has eigenvalues $\lambda_n' = - 2(n+1)(2n+2m+3) - m$, with corresponding eigenfunctions $\psi_n^m$ as stated above.
+
+\subsection{System spectrum}
+
+The problem is solved numerically using the spectral PG code \texttt{PlesioGeostroPy} for several $m$.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\linewidth]{../../out/eigen/Hydrodynamic/Analytical_error.pdf}
+    \caption{Eigenperiods for $m=3$ modes solved using transformed variables and reduced system, with analytic solutions. Lower panel shows the relative error compared to analytical solutions.}
+    \label{fig:eigenperiod-hydro-m3}
+\end{figure}
+
+The eigenvalues for $m=3$ eigenmodes are presented in Fig.(\ref{fig:eigenperiod-hydro-m3}). The quadratures are computed in double precision, and the matrices are inserted into a double precision eigensolver.
+Both the results of the full system (Transformed variables) and the reduced system are presented. These are both solved using a truncation level of $50$ for the streamfunction $\psi$.
+
+All hydrodynamic eigenmodes, or inertial modes in the PG model, are eastwards modes (Fig.\ref{fig:complex-spectrum-hydro-m3}). As expected from physical arguments, the real parts of the numerically solved eigenvalues are close to machine precision from zero (Fig.\ref{fig:complex-spectrum-hydro-m3}).
+The very small discrepancy from the analytical values (unanimously lower than $10^{-14}$, lower panel of Fig.\ref{fig:eigenperiod-hydro-m3}) indicates that all 51 eigenvalues are solved satisfactorily close to machine precision.
+This is unsurprising since the spectral basis used for the streamfunction is nothing but the analytical eigenmodes, yielding perfect convergence. For this very simple problem, there is virtually no difference between the eigenvalues solved using reduced system or full system, as both are virtually accurate down to machine precision.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\linewidth]{../../out/eigen/Hydrodynamic/Spectrum_m3_Le1e-4.pdf}
+    \caption{Complex spectrum of the $m=3$ eigenvalues.}
+    \label{fig:complex-spectrum-hydro-m3}
+\end{figure}
+
+Taking a step back, the eigenperiods of the fundamental ($n=0$), 2nd-, 5th- and 9th-order modes are shown in Fig.(\ref{fig:period-m-hydro}) as a function of azimuthal wavenumber $m$.
+This is basically a reproduction of Fig.(4.1) in \textcite{holdenried-chernoff_long_2021} and Fig.(1) in \textcite{jackson_plesio-geostrophy_2020}, except the current plot shows numerically solved eigenperiods, while the plots in the cited ones are probably just analytical solutions.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\linewidth]{../../out/eigen/Hydrodynamic/Period_wavenumber_plot_m20_n10.pdf}
+    \caption{Periods as a function of azimuthal wavenumber for different order modes.}
+    \label{fig:period-m-hydro}
+\end{figure}
+
+There is a discrepancy between the \textcite{jackson_plesio-geostrophy_2020} periods and the \textcite{holdenried-chernoff_long_2021} periods. The former one is mostly likely missing a $2\pi$ factor, while the latter one is consistent with the numerical results presented here.The shortest eigenperiod is observed in the fundamental mode for $m=3$, which has a period of circa $26.7$ days. The eigenperiods of all azimuthal wavenumbers increase with higher orders. 
+
+
+\subsection{Selected eigenmodes}
+
+The hydrodynamic eigenmodes are pure and simple.
+As mentioned, they take the analytical form
+\[
+    \psi^{mn} = s^{|m|}H^3 P_n^{\left(\frac{3}{2}, |m|\right)}(2s^2 - 1)\, e^{im\phi}.
+\]
+Several eigenmodes are visualized and their spectra shown below.
+For simplicity, only the results solved using the reduced system are used. However, we have already seen from the eigenvalue comparisons that the full system yields virtually the same solution, at least in this simple eigenvalue problem.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{../../out/eigen/Hydrodynamic/Reduced/mode_equatorial_m3n0.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{../../out/eigen/Hydrodynamic/Reduced/mode_meridional_m3n0.png}
+    \end{subfigure}
+    \caption{Fundamental ($n=0$) hydrodynamic eigenmode for $m=3$. The upper panel and the lower panel show the equatorial ($z=0$) and meridional ($\phi=\pi/4$) slices, respectively.}
+    \label{fig:eigenmode-hydro-m3n0}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/Hydrodynamic/Reduced/spectrum_m3n0.pdf}
+    \caption{Fundamental $m=3$ eigenmode streamfunction spectrum at different truncation levels.}
+    \label{fig:modespec-hydro-m3n0}
+\end{figure}
+
+The fundamental and the 10-th eigenmode for azimuthal wavenumber $m=3$ are visualized in Figs.(\ref{fig:eigenmode-hydro-m3n0}) and (\ref{fig:eigenmode-hydro-m3n10}), respectively. The visualized amplitude is normalized such that the streamfunction $\psi$ has amplitude unity in the equatorial plane.
+Even in the fundamental mode, we see that the azimuthal velocity near the equator is much stronger than any components anywhere else.
+This is even more exaggerated for higher order modes. As a result, the vorticity is also increasingly concentrated near the equator for higher order modes.
+Readers who find this result surprising should read section 1.4 of the Ingredients document, where the analytical bases for velocity components as well as vorticity are derived. The analytical bases show that higher order basis function for $\psi$ translates to strong azimuthal velocity and concentrated vorticity at the equator.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{../../out/eigen/Hydrodynamic/Reduced/mode_equatorial_m3n10.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{../../out/eigen/Hydrodynamic/Reduced/mode_meridional_m3n10.png}
+    \end{subfigure}
+    \caption{10-th hydrodynamic eigenmode for $m=3$. The upper panel and the lower panel show the equatorial ($z=0$) and meridional ($\phi=\pi/4$) slices, respectively.}
+    \label{fig:eigenmode-hydro-m3n10}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/Hydrodynamic/Reduced/spectrum_m3n10.pdf}
+    \caption{10-th $m=3$ eigenmode streamfunction spectrum.}
+    \label{fig:modespec-hydro-m3n10}
+\end{figure}
+
+As alluded to, the eigenmodes coincide with the spectral basis (or rather the other way around: the spectral basis comes from the hydrodynamic eigenmodes). This means that the spectrum will contain only spikes at selected basis, as is the case in Figs.(\ref{fig:modespec-hydro-m3n0}) and (\ref{fig:modespec-hydro-m3n10}).
+The fundamental and 10-th eigenmode only has nontrivial coefficient corresponding to the 0-th and the 10-th spectral basis, while all other coefficients are within 5 times machine precision from zero.
+The result is that the convergence is perfect, meaning as soon as the necessary basis is included within the truncation level, the problem is exactly solvable.
+
+\clearpage
