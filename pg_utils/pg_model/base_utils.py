@@ -148,4 +148,14 @@ def fields_in_term(expr: sympy.Expr, field_collection: base.LabeledCollection):
     return expr_fields
 
 
+def extract_symbols(var_collection: base.LabeledCollection):
+    """Return a collection of symbols, whose names are specified
+    by the input collection items
+    """
+    symb_collection = base.LabeledCollection(
+        var_collection._field_names, 
+        **{fname: sympy.Symbol(var_collection[fname].name) 
+           for fname in var_collection._field_names}
+    )
+    return symb_collection
 
