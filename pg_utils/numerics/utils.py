@@ -6,7 +6,7 @@
 import numpy as np
 import gmpy2 as gp
 import mpmath as mp
-from typing import Union, List, Optional, Callable, Any
+from typing import Union, List, Optional, Callable, Any, Literal
 from scipy.sparse import coo_array
 
 
@@ -153,7 +153,8 @@ def to_gpmy2_f(x: np.ndarray, dps: Optional[int] = None,
     if dps is None and prec is None:
         return np.vectorize(lambda x: gp.mpfr(str(x)), otypes=(object,))(x)
     _, prec_target = transform_dps_prec(dps=dps, prec=prec)
-    return np.vectorize(lambda x: gp.mpfr(str(x), prec_target), otypes=(object,))(x)
+    with mp.workprec(prec_target):
+        return np.vectorize(lambda x: gp.mpfr(str(x), prec_target), otypes=(object,))(x)
 
 def to_mpmath_f(x: np.ndarray, dps: Optional[int] = None, 
     prec: Optional[int] = None) -> np.ndarray:
@@ -179,10 +180,11 @@ def to_gpmy2_c(x: np.ndarray, dps: Optional[int] = None,
             lambda x: gp.mpc(gp.mpfr(str(x.real)), imag=gp.mpfr(str(x.imag))), 
             otypes=(object,))(x)
     _, prec_target = transform_dps_prec(dps=dps, prec=prec)
-    return np.vectorize(
-        lambda x: gp.mpc(gp.mpfr(str(x.real)), imag=gp.mpfr(str(x.imag)), 
-                         precision=prec_target), 
-        otypes=(object,))(x)
+    with mp.workprec(prec_target):
+        return np.vectorize(
+            lambda x: gp.mpc(gp.mpfr(str(x.real), prec_target), imag=gp.mpfr(str(x.imag), prec_target), 
+                            precision=prec_target), 
+            otypes=(object,))(x)
 
 def to_mpmath_c(x: np.ndarray, dps: Optional[int] = None, 
     prec: Optional[int] = None) -> np.ndarray:
@@ -245,3 +247,19 @@ def allclose_sparse(array_1, array_2, rtol=1e-5, atol=1e-8):
     c = np.abs(array_1 - array_2) - rtol * np.abs(array_2)
     return c.max() <= atol
 
+
+def to_dense_obj(obj_array: coo_array, fill_zero: Any):
+    """Convert a sparse object array to dense form
+    """
+    dense_array = np.full(obj_array.shape, fill_zero, dtype=object)
+    for i_data, data in enumerate(obj_array.data):
+        dense_array[obj_array.row[i_data], obj_array.col[i_data]] = data
+    return dense_array
+
+
+def to_dense_gmpy2(gmpy2_array: coo_array, prec: int, 
+    mode: Literal['c', 'f'] = 'c') -> np.ndarray:
+    """Convert a sparse gmpy2 array to dense form
+    """
+    gmpy2_zero = gp.mpfr('0.0', prec) if mode == 'f' else gp.mpc('0.0+0.0j', prec)
+    return to_dense_obj(gmpy2_array, gmpy2_zero)
