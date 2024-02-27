@@ -647,7 +647,9 @@ def compute_matrix_numerics(
                 num_io.sparse_coo_save_to_group(coo_array(K_val), matrix_gp)
             
         elif format == "pickle":
-            save_meta = {"xpd": xpd_recipe.identifier, **par_val}
+            save_meta = {srepr(par): float(val) for par, val in par_val.items()}
+            save_meta["xpd"] = xpd_recipe.identifier
+            # save_meta = {"xpd": xpd_recipe.identifier, **par_val}
             rows = {"names": fnames, "ranges": np.array([len(nrange) for nrange in ranges_test])}
             cols = {"names": cnames, "ranges": np.array([len(nrange) for nrange in ranges_trial])}
             matrix_m = num_io.serialize_coo(coo_array(M_val), format="pickle")
@@ -681,6 +683,7 @@ def compute_eigen(
     read_from: Union[str, Tuple[np.ndarray, np.ndarray, List]], 
     read_fmt: Literal["hdf5", "pickle", "json"] = "hdf5",
     save_to: Optional[str] = None, 
+    save_fmt: Literal["hdf5", "pickle"] = "hdf5",
     diag: bool = False,
     prec: Optional[int] = None,
     overwrite: bool = False,
@@ -759,10 +762,10 @@ def compute_eigen(
     else:
         eig_val, eig_vec = lin_alg.eig_generalized(
             M_val, K_val, diag=diag, solver=lin_alg.MultiPrecLinSolver(prec=prec))
-        eig_val = eig_val.astype(np.complex128)
-        eig_vec = eig_vec.astype(np.complex128)
+        # eig_val = eig_val.astype(np.complex128)
+        # eig_vec = eig_vec.astype(np.complex128)
     
-    # Sorting
+    # Sorting (note: we are sorting w.r.t. double-precision absolute values)
     eig_sort = np.argsort(-np.abs(eig_val))
     eig_val = eig_val[eig_sort]
     eig_vec = eig_vec[:, eig_sort]
@@ -771,20 +774,30 @@ def compute_eigen(
     if save_to is not None:
         os.makedirs(os.path.dirname(save_to), exist_ok=True)
         mode = 'w' if overwrite else 'x'
-        with h5py.File(save_to, mode) as fwrite:
-            str_type = h5py.string_dtype(encoding="utf-8")
-            for par, val in par_dict.items():
-                if isinstance(par, Symbol):
-                    fwrite.attrs[srepr(par)] = float(val)
-                else:
+        
+        if save_fmt == "hdf5":
+            with h5py.File(save_to, mode) as fwrite:
+                str_type = h5py.string_dtype(encoding="utf-8")
+                for par, val in par_dict.items():
                     fwrite.attrs[par] = val
-            gp = fwrite.create_group("bases")
-            gp.create_dataset("names", data=cnames, dtype=str_type)
-            gp.create_dataset("ranges", data=np.asarray(crange))            
-            fwrite.create_dataset("eigval", data=eig_val)
-            fwrite.create_dataset("eigvec", data=eig_vec)
+                gp = fwrite.create_group("bases")
+                gp.create_dataset("names", data=cnames, dtype=str_type)
+                gp.create_dataset("ranges", data=np.asarray(crange))            
+                fwrite.create_dataset("eigval", data=eig_val.astype(np.complex128))
+                fwrite.create_dataset("eigvec", data=eig_vec.astype(np.complex128))
+        elif save_fmt == "pickle":
+            with open(save_to, mode + 'b') as fwrite:
+                pickle.dump({
+                    "meta": par_dict, 
+                    "bases": {"names": cnames, "ranges": crange}, 
+                    "eigval": eig_val, 
+                    "eigvec": eig_vec}, fwrite)
+        else:
+            raise NotImplementedError("Unknown output format!")
+        
         if verbose > 0:
             print("Results saved to {:s}".format(save_to))
+    
     return eig_val, eig_vec
 
 
