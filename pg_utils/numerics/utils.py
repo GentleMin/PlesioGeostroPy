@@ -10,13 +10,21 @@ from typing import Union, List, Optional, Callable, Any, Literal
 from scipy.sparse import coo_array
 
 
-def eigenfreq_psi_op(m: Union[int, np.ndarray], n: Union[int, np.ndarray]):
+def eigenfreq_psi_op(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
+    prec: Optional[int]=None) -> Union[float, np.ndarray]:
     """Analytic eigenfrequency for the self-adjoint operator
     for stream function Psi in the vorticity equation
     
     .. math:: \\omega = - \\frac{m}{n(2n + 2m + 1) + \\frac{m}{2} + \\frac{m^2}{4}}
+    
+    .. note:: If `prec` is specified other than None, then the input must be
+        consistently in gmpy2 form in order to properly compute in multi-precision.
     """
-    return -m/(n*(2*n + 2*m + 1) + m/2 + m**2/4)
+    if prec is None:
+        return -m/(n*(2*n + 2*m + 1) + m/2 + m**2/4)
+    else:
+        with gp.local_context(gp.context(), precision=prec):
+            return -m/(n*(2*n + 2*m + 1) + m/2 + m**2/4)
 
 
 def eigenfreq_inertial3d(m: Union[int, np.ndarray], n: Union[int, np.ndarray]):
@@ -31,7 +39,7 @@ def eigenfreq_inertial3d(m: Union[int, np.ndarray], n: Union[int, np.ndarray]):
 
 
 def eigenfreq_Malkus_pg(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
-    Le: float, mode: str="all", timescale: str="spin"):
+    Le: Union[float, gp.mpfr], mode: str="all", timescale: str="spin", prec: Optional[int] = None):
     """Analytic eigenfrequency for the PG model with Malkus bg field
     
     :param Union[int, np.ndarray] m: azimuthal wavenumber
@@ -40,6 +48,8 @@ def eigenfreq_Malkus_pg(m: Union[int, np.ndarray], n: Union[int, np.ndarray],
     :param str mode: fast or slow, default to "all"
     :param str timescale: characteristic timescale, default to "spin", 
         alternative: "alfven". See note below for more details.
+    :param Optional[int] prec: precision to be computed to. 
+        Default to None, calculate to double precision using numpy.
     
     :returns: eigenfrequency array(s)
     
@@ -63,21 +73,27 @@ def eigenfreq_Malkus_pg(m: Union[int, np.ndarray], n: Union[int, np.ndarray],
         see :func:`eigenfreq_psi_op` for details. The plus sign gives the fast mode,
         and the minus sign gives the slow mode.
     """
-    omega0 = eigenfreq_psi_op(m, n)
-    bg_field_mod = Le**2*(4*m*(m - omega0))/(omega0**2)
-    if timescale.lower() == "spin":
-        prefactor = omega0/2
-    elif timescale.lower() == "alfven":
-        prefactor = omega0/2/Le
+    omega0 = eigenfreq_psi_op(m, n, prec=prec)
+    if prec is None:
+        if timescale.lower() == "spin":
+            prefactor = omega0/2
+        elif timescale.lower() == "alfven":
+            prefactor = omega0/2/Le
+        else:
+            raise AttributeError
+        bg_field_mod = np.sqrt(1 + Le**2*(4*m*(m - omega0))/(omega0**2))
+        return prefactor*(1 + bg_field_mod), prefactor*(1 - bg_field_mod)
     else:
-        raise AttributeError
-    if mode == "fast":
-        return prefactor*(1 + np.sqrt(1 + bg_field_mod))
-    elif mode == "slow":
-        return prefactor*(1 - np.sqrt(1 + bg_field_mod))
-    else:
-        return prefactor*(1 + np.sqrt(1 + bg_field_mod)), \
-            prefactor*(1 - np.sqrt(1 + bg_field_mod))
+        with gp.local_context(gp.context(), precision=prec):
+            if timescale.lower() == "spin":
+                prefactor = omega0/2
+            elif timescale.lower() == "alfven":
+                prefactor = omega0/2/Le
+            else:
+                raise AttributeError
+            bg_field_mod = 1 + Le**2*(4*m*(m - omega0))/(omega0**2)
+            bg_field_mod = np.vectorize(gp.sqrt, otypes=(object,))(bg_field_mod)
+            return prefactor*(1 + bg_field_mod), prefactor*(1 - bg_field_mod)
 
 
 def eigenfreq_Malkus_3d(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
@@ -146,6 +162,7 @@ def transform_dps_prec(dps: Optional[int] = None, prec: Optional[int] = None,
     else:
         return dps_default, prec_default
 
+
 def to_gpmy2_f(x: np.ndarray, dps: Optional[int] = None, 
     prec: Optional[int] = None) -> np.ndarray:
     """Convert float array to gmpy2 float array
@@ -155,6 +172,7 @@ def to_gpmy2_f(x: np.ndarray, dps: Optional[int] = None,
     _, prec_target = transform_dps_prec(dps=dps, prec=prec)
     with mp.workprec(prec_target):
         return np.vectorize(lambda x: gp.mpfr(str(x), prec_target), otypes=(object,))(x)
+
 
 def to_mpmath_f(x: np.ndarray, dps: Optional[int] = None, 
     prec: Optional[int] = None) -> np.ndarray:
@@ -166,10 +184,12 @@ def to_mpmath_f(x: np.ndarray, dps: Optional[int] = None,
     with mp.workdps(dps_target):
         return np.vectorize(lambda x: mp.mpf(str(x)), otypes=(object,))(x)
 
+
 def to_numpy_f(x: np.ndarray) -> np.ndarray:
     """Convert float array to numpy float64 array
     """
     return x.astype(np.float64)
+
 
 def to_gpmy2_c(x: np.ndarray, dps: Optional[int] = None, 
     prec: Optional[int] = None) -> np.ndarray:
@@ -186,6 +206,7 @@ def to_gpmy2_c(x: np.ndarray, dps: Optional[int] = None,
                             precision=prec_target), 
             otypes=(object,))(x)
 
+
 def to_mpmath_c(x: np.ndarray, dps: Optional[int] = None, 
     prec: Optional[int] = None) -> np.ndarray:
     """Convert float array to mpmath float array
@@ -200,10 +221,12 @@ def to_mpmath_c(x: np.ndarray, dps: Optional[int] = None,
             lambda x: mp.mpc(real=str(x.real), imag=str(x.imag)), 
             otypes=(object,))(x)
 
+
 def to_numpy_c(x: np.ndarray) -> np.ndarray:
     """Convert complex array to numpy complex128 array
     """
     return x.astype(np.complex128)
+
 
 def array_to_str(x: np.ndarray, str_fun: Callable[[Any], str] = str) -> np.ndarray:
     """Convert array to List of strings
