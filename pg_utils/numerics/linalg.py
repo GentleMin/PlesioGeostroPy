@@ -26,6 +26,19 @@ class LinSysSolver:
     
     def inv(self, A: np.ndarray, **kwargs) -> np.ndarray:
         raise NotImplementedError
+    
+    def solve_diag(self, A: np.ndarray, B: np.ndarray, **kwargs) -> np.ndarray:
+        raise NotImplementedError
+    
+    def solve_explicit(self, A: np.ndarray, B: np.ndarray, **kwargs) -> np.ndarray:
+        raise NotImplementedError
+    
+    def solve(self, A: np.ndarray, B: np.ndarray, diag: bool = False, explicit: bool = True, **kwargs) -> np.ndarray:
+        if diag:
+            return self.solve_diag(A, B, **kwargs)
+        if explicit:
+            return self.solve_explicit(A, B, **kwargs)
+        raise NotImplementedError
 
 
 class StdLinSolver(LinSysSolver):
@@ -46,6 +59,12 @@ class StdLinSolver(LinSysSolver):
     
     def inv(self, A: np.ndarray, **kwargs) -> np.ndarray:
         return np.linalg.inv(A)
+    
+    def solve_diag(self, A: np.ndarray, B: np.ndarray, **kwargs) -> np.ndarray:
+        return (B.T / np.diag(A)).T
+    
+    def solve_explicit(self, A: np.ndarray, B: np.ndarray, **kwargs) -> np.ndarray:
+        return self.inv(A) @ B
 
 
 class MultiPrecLinSolver(LinSysSolver):
@@ -67,6 +86,14 @@ class MultiPrecLinSolver(LinSysSolver):
     def inv(self, A: np.ndarray, **kwargs) -> np.ndarray:
         with gmpy2.local_context(gmpy2.context(), precision=self._prec):
             return flamp.inverse(A)
+    
+    def solve_diag(self, A: np.ndarray, B: np.ndarray, **kwargs) -> np.ndarray:
+        with gmpy2.local_context(gmpy2.context(), precision=self._prec):
+            return (B.T / np.diag(A)).T
+    
+    def solve_explicit(self, A: np.ndarray, B: np.ndarray, **kwargs) -> np.ndarray:
+        with gmpy2.local_context(gmpy2.context(), precision=self._prec):
+            return self.inv(A) @ B
 
 
 def eig_generalized(M: np.ndarray, K: np.ndarray, diag: bool = False, 
@@ -75,10 +102,6 @@ def eig_generalized(M: np.ndarray, K: np.ndarray, diag: bool = False,
     This should serve as the final interface for generalized eigenproblems.
     """
     
-    if diag:
-        A = (K.T / np.diag(M)).T
-    else:
-        A = solver.inv(M) @ K
-    
+    A = solver.solve(M, K, diag=diag, explicit=True)
     return solver.eig(A, **kwargs)
 
