@@ -10,6 +10,19 @@ from typing import Union, List, Optional, Callable, Any, Literal
 from scipy.sparse import coo_array
 
 
+"""
+--------------------------------------
+Analytical references
+--------------------------------------
+
+* Analytical eigenfrequencies for the PG inertial modes
+* Analytical eigenfrequencies for the 3-D inertial modes
+* Analytical eigenfrequencies for the Malkus bg field in PG
+* Analytical eigenfrequencies for the Malkus bg field in 3D
+
+"""
+
+
 def eigenfreq_psi_op(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
     prec: Optional[int]=None) -> Union[float, np.ndarray]:
     """Analytic eigenfrequency for the self-adjoint operator
@@ -144,6 +157,18 @@ def eigenfreq_Malkus_3d(m: Union[int, np.ndarray], n: Union[int, np.ndarray],
     else:
         return prefactor*(1 + np.sqrt(1 + bg_field_mod)), \
             prefactor*(1 - np.sqrt(1 + bg_field_mod))
+
+
+"""
+------------------------------
+Conversion utilities
+------------------------------
+
+* Decimal places - binary precision conversion
+* Conversion between numpy, gmpy2 and mpmath dtypes (float/complex)
+* Conversion between dense and sparse object arrays
+
+"""
 
 
 def transform_dps_prec(dps: Optional[int] = None, prec: Optional[int] = None, 
@@ -286,3 +311,78 @@ def to_dense_gmpy2(gmpy2_array: coo_array, prec: int,
     """
     gmpy2_zero = gp.mpfr('0.0', prec) if mode == 'f' else gp.mpc('0.0+0.0j', prec)
     return to_dense_obj(gmpy2_array, gmpy2_zero)
+
+
+"""
+-----------------------------
+Eigenvalue processing
+-----------------------------
+"""
+
+def cluster_modes(eig_vals: np.ndarray, rtol: float = 1e-5, atol: float = 1e-8):
+    counter = 0
+    modes = []
+    eig_ref = eig_vals[0]
+    for eig_tmp in eig_vals:
+        if np.abs(eig_tmp - eig_ref) > rtol*np.abs(eig_ref) + atol:
+            eig_ref = eig_tmp
+            counter += 1
+        modes.append(counter)
+    return np.array(modes)
+
+
+def intermodal_separation(eig_vals: np.ndarray, **opt_cluster) -> np.ndarray:
+    mode_idx = cluster_modes(eig_vals, **opt_cluster)
+    mode_eigens = np.zeros(mode_idx.max() + 1, np.complex128)
+    assert mode_eigens.size >= 1
+    for i_eig, eig_tmp in enumerate(eig_vals):
+        mode_eigens[mode_idx[i_eig]] = eig_tmp
+    mode_dist = np.zeros(mode_eigens.size)
+    mode_dist[0] = np.abs(mode_eigens[1] - mode_eigens[0])
+    mode_dist[-1] = np.abs(mode_eigens[-2] - mode_eigens[-1])
+    mode_dist[1:-1] = (
+        + np.abs(mode_eigens[2:] - mode_eigens[1:-1])
+        + np.abs(mode_eigens[:-2] - mode_eigens[1:-1])
+    )/2
+    return mode_dist[mode_idx]
+
+    
+def eigen_drift(eig_base: np.ndarray, eig_comp: np.ndarray, waterlevel: float = 0., 
+    **opt_cluster):
+    """Calculate eigenvalue drift ratio using Boyd's method ([Boyd]_)
+    
+    .. [Boyd] Boyd, *Chebyshev and Fourier Spectral Methods*.
+    
+    .. note:: Be sure to pass in pre-sorted eigenvalues.
+    """
+    eig_dist = intermodal_separation(eig_base, **opt_cluster)
+    eig_diff, _ = np.meshgrid(eig_comp, eig_base, indexing='ij')
+    eig_diff = np.abs(eig_diff - eig_base)
+    eig_nearest_idx = np.argmin(eig_diff, axis=0)
+    eig_diff = np.min(eig_diff, axis=0)
+    return eig_diff/(eig_dist + waterlevel), eig_nearest_idx
+
+
+def spec_tail_exp_rate(spectrum: np.ndarray):
+    """Calculate maximum *exponential rate of convergence* 
+    from the trailing part of a spectrum.
+    """
+    lg_coeff = np.log10(np.abs(spectrum) / np.max(np.abs(spectrum), axis=0))
+    max_idx = np.argmax(lg_coeff, axis=0)
+    max_tail = np.zeros_like(lg_coeff)
+    max_tail[-1, ...] = lg_coeff[-1, ...]
+    
+    for idx in reversed(range(max_tail.shape[0] - 1)):
+        max_tail[idx, ...] = max_tail[idx + 1, ...]
+        update_idx = lg_coeff[idx, ...] > max_tail[idx, ...]
+        max_tail[idx][update_idx] = lg_coeff[idx][update_idx]
+        
+    n_idx = np.tensordot(
+        np.arange(lg_coeff.shape[0]), 
+        np.ones_like(lg_coeff[0, ...]), 
+        axes=0
+    )
+    tail_exp_rate = max_tail / (np.abs(max_idx - n_idx) + 1)
+    return np.min(tail_exp_rate, axis=0)
+
+
