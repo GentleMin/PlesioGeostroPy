@@ -21,7 +21,7 @@ from .numerics import linalg as lin_alg
 from .numerics import utils as num_utils
 
 import numpy as np
-import gmpy2 as gp
+import gmpy2
 from scipy.sparse import coo_array
 
 
@@ -685,6 +685,7 @@ def compute_eigen(
     save_to: Optional[str] = None, 
     save_fmt: Literal["hdf5", "pickle"] = "hdf5",
     diag: bool = False,
+    chop: Optional[float] = None,
     prec: Optional[int] = None,
     overwrite: bool = False,
     verbose: int = 0) -> List[np.ndarray]:
@@ -715,6 +716,9 @@ def compute_eigen(
                 crange = fread["cols"]["ranges"][()]
                 M_val = num_io.matrix_load_from_group(fread["M"]).todense()
                 K_val = num_io.matrix_load_from_group(fread["K"]).todense()
+            if chop is not None:
+                M_val[np.abs(M_val) < chop] = 0.
+                K_val[np.abs(K_val) < chop] = 0.
         if read_fmt == "pickle":
             with open(read_from, 'rb') as fread:
                 serialized_obj = pickle.load(fread)
@@ -727,6 +731,9 @@ def compute_eigen(
             else:
                 M_val = num_utils.to_dense_gmpy2(M_val, prec=prec)
                 K_val = num_utils.to_dense_gmpy2(K_val, prec=prec)
+            if chop is not None:
+                M_val[np.abs(M_val) < chop] = gmpy2.mpc("0.", prec)
+                K_val[np.abs(K_val) < chop] = gmpy2.mpc("0.", prec)
         if read_fmt == "json":
             non_sympy_keys = ("xpd",)
             with open(read_from, 'r') as fread:
@@ -739,9 +746,12 @@ def compute_eigen(
                         save_meta[parse_expr(key)] = val
                 cnames, crange = serialized_obj["cols"]["names"], serialized_obj["cols"]["ranges"]
                 M_val = num_io.parse_coo(serialized_obj["M"], 
-                    transform=np.vectorize(lambda x: gp.mpc(x, precision=113), otypes=(object,)))
+                    transform=np.vectorize(lambda x: gmpy2.mpc(x, precision=113), otypes=(object,)))
                 K_val = num_io.parse_coo(serialized_obj["K"], 
-                    transform=np.vectorize(lambda x: gp.mpc(x, precision=113), otypes=(object,)))
+                    transform=np.vectorize(lambda x: gmpy2.mpc(x, precision=113), otypes=(object,)))
+            if chop is not None:
+                M_val[np.abs(M_val) < chop] = gmpy2.mpc("0.", prec)
+                K_val[np.abs(K_val) < chop] = gmpy2.mpc("0.", prec)
     else:
         M_val = read_from[0]
         K_val = read_from[1]
@@ -758,7 +768,8 @@ def compute_eigen(
     # eig_val, eig_vec = np.linalg.eig(A_val)
     
     if prec is None:
-        eig_val, eig_vec = lin_alg.eig_generalized(M_val, K_val, diag=diag)
+        eig_val, eig_vec = lin_alg.eig_generalized(
+            M_val.astype(np.complex128), K_val.astype(np.complex128), diag=diag)
     else:
         eig_val, eig_vec = lin_alg.eig_generalized(
             M_val, K_val, diag=diag, solver=lin_alg.MultiPrecLinSolver(prec=prec))
