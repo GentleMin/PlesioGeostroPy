@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Expansion configuration file - 
-Expansion for the streamfunction-force formulation 
-with self-orthogonal forcing basis.
+Expansion for the streamfunction-force formulation
+with forcing spectrum as compact as streamfunction.
 
 .. note:: This set of bases and expansions has to be used
     together with the reduced system of equations, 
@@ -20,20 +20,24 @@ Using this expansion configuration, the basis functions takes the form
     
     \\Psi^{nm}(s) = s^{|m|} H^3 J_n^{(\\frac{3}{2}, |m|)}(2s^2 - 1)
     
-    F^{nm}(s) = s^{|m|} J_n^{(0, |m|+\\frac{1}{2})}(2s^2 - 1)
+    F^{nm}(s) = s^{|m|} J_n^{(\\frac{3}{2}, |m|)}(2s^2 - 1)
 
-This has the orthogonality:
+Unlike :py:mod:~pg_utils.pg_model.expand_stream_force_orth``,
+the forcing basis in this configuration is not self-orthogonal.
+The orthgonality property reads
 
 .. math:: 
     
     \\int_0^1 \\Psi^{n'm}(s) \\Psi^{nm}(s) \\frac{s}{H^3} ds = N_{\\Psi}^{nm} \\delta_{nn'}
     
-    \\int_0^1 F^{n'm}(s) F^{nm}(s) ds = N_{F}^{nm} \\delta_{nn'}
+    \\int_0^1 \\Psi^{n'm}(s) F^{nm}(s) ds = N_{F}^{nm} \\delta_{nn'}
 
-However, under this configuration, a compact streamfunction spectrum
-does not translate to a compact forcing spectrum.
-This is due to the fact that the forcing basis is
-not directly linked with the streamfunction basis.
+Hence the two fields share the same set of test functions.
+
+This configuration has the desirable property that 
+a compact streamfunction spectrum translates to a compact
+forcing spectrum. This is due to the fact that 
+the forcing basis is directly linked with the streamfunction basis.
 """
 
 import numpy as np
@@ -42,7 +46,7 @@ from .core import s, p, t, H, H_s, reduced_var
 from .expansion import n, m, xi, xi_s, s_xi
 from . import expansion, base
 
-identifier = "expand_reduced_Psi-F_orthogonal"
+identifier = "expand_reduced_Psi-F_compact"
 
 
 # Which equations to use
@@ -75,7 +79,7 @@ bases_s_expression = base.LabeledCollection(field_names,
     # Streamfunction
     Psi = H_s**3*s**Abs(m)*jacobi(n, Rational(3, 2), Abs(m), xi_s),
     # External body force
-    F_ext = s**(Abs(m) + 1)*jacobi(n, 0, Abs(m) + Rational(1, 2), xi_s)
+    F_ext = s**(Abs(m) + 1)*jacobi(n, Rational(3, 2), Abs(m), xi_s)
 )
 
 # coefficients
@@ -97,6 +101,11 @@ test_s = base.LabeledCollection(field_names,
     **{fname: Function(r"\Phi_{%s}^{mn'}" % subscript_str[idx])(s) 
        for idx, fname in enumerate(field_names)})
 
+test_s_expression = base.LabeledCollection(field_names, 
+    Psi = bases_s_expression.Psi,
+    F_ext = bases_s_expression.Psi
+)
+
 
 """Inner products"""
 
@@ -112,6 +121,6 @@ recipe = expansion.ExpansionRecipe(
     rad_test=test_s,
     inner_prod_op=inner_prod_op,
     base_expr=bases_s_expression.subs({n: expansion.n_trial}),
-    test_expr=bases_s_expression.subs({n: expansion.n_test})
+    test_expr=test_s_expression.subs({n: expansion.n_test})
 )
 
