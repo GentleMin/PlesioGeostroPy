@@ -13,6 +13,7 @@ reports/**/*.log
 reports/**/*.out
 reports/**/*.xml
 presentation/
+/materials/
 out/**/*.png
 out/**/*.pdf
 out/archived/
