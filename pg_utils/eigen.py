@@ -410,6 +410,10 @@ def form_equations(
                 fwrite, indent=4)
         if verbose > 0:
             print("Results saved to {:s}".format(save_to))
+    
+    if verbose > 0:
+        print()
+    
     return eqs, par_list
 
 
@@ -464,6 +468,10 @@ def reduce_dimensions(
                     "equations": eqs_new.serialize(serializer=srepr)
                 }, 
                 fwrite, indent=4)
+    
+    if verbose > 0:
+        print()
+
     return eqs_new, par_list
 
 
@@ -532,6 +540,10 @@ def collect_matrix_elements(
             json.dump(serialized_obj, fwrite, indent=4)
         if verbose > 0:
             print("Results saved to {:s}".format(save_to))
+    
+    if verbose > 0:
+        print()
+
     return M_expr, K_expr, par_list
 
 
@@ -677,6 +689,10 @@ def compute_matrix_numerics(
                 
         if verbose > 0:
             print("Results saved to {:s}".format(save_to))
+    
+    if verbose > 0:
+        print()
+
     return M_val, K_val
 
 
@@ -819,6 +835,9 @@ def compute_eigen(
         if verbose > 0:
             print("Results saved to {:s}".format(save_to))
     
+    if verbose > 0:
+        print()
+
     return eig_val, eig_vec
 
 
