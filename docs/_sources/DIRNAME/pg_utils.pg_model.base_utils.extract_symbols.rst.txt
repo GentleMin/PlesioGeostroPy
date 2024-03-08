@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.base\_utils.extract\_symbols
+================================================
+
+.. currentmodule:: pg_utils.pg_model.base_utils
+
+.. autofunction:: extract_symbols

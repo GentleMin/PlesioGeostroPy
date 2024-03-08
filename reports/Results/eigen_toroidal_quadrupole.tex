@@ -1,0 +1,80 @@
+\section{Ideal eigenmodes under toroidal quadrupolar background field}
+
+The background field is given by
+\[
+    \mathbf{B}^0 = \gamma r\sin\theta (1 - r^2) \hat{\bm{\phi}} = \gamma s (1 - s^2 - z^2) \hat{\bm{\phi}}
+\]
+which translates to the following background PG quantities
+\begin{equation}
+\begin{aligned}
+    \overline{M_{\phi\phi}}^0 &= \frac{16}{15}\gamma^2 s^2 H^5 \\
+    \widetilde{zM_{\phi\phi}}^0 &= \frac{1}{3}\gamma^2 s^2 H^6 \\
+    B_{\phi}^{0e} &= \gamma s H^{2} \\
+    \Psi^{0} &= \overline{M_{ss}}^0 = \overline{M_{s\phi}}^0 = \widetilde{M_{sz}}^0 = \widetilde{M_{\phi z}}^0 = \widetilde{zM_{ss}}^0 = \widetilde{zM_{s\phi}}^0 \\
+    &= B_{z}^{0e} = B_{s}^{0e} = B_{s,z}^{0e} = B_{\phi,z}^{0,e} = B_s^{0\pm} = B_{\phi}^{0\pm} = B_z^{0\pm} = 0.
+\end{aligned}
+\end{equation}
+
+\subsection{Linearized equations}
+
+Under the toroidal quadrupolar background field, the streamfunction equation takes the form,
+\begin{equation}\label{eqn:eigen-pgpsi-toroidal-quadrupole}
+\begin{aligned}
+    i\widetilde{\omega} \left[\frac{d}{d s}\left(\frac{s}{H}\frac{d}{d s}\right) - m^2 \left(\frac{1}{sH} + \frac{s}{2H^3}\right)\right] \psi &= \frac{2 i m s}{\mathrm{Le} H^{3}} \psi \\
+    &\mkern-240mu + \frac{i m}{2 H} \frac{d\overline{m_{ss}}}{d s} + \frac{i m}{2sH} \overline{m_{ss}} - \frac{i m}{2 H} \frac{d\overline{m_{\phi\phi}}}{d s} - \frac{i m}{2 sH} \overline{m_{\phi\phi}} - \frac{s}{2 H} \frac{d^{2}\overline{m_{s\phi}}}{d s^{2}} - \frac{3}{2 H} \frac{d\overline{m_{s\phi}}}{d s} - \frac{m^{2}}{2sH} \overline{m_{s\phi}} \\
+    &\mkern-240mu - \frac{i m s}{2 H^{2}} \frac{d\widetilde{m_{sz}}}{d s} - \frac{i m}{2 H^{2}}\widetilde{m_{sz}} + \frac{m^{2}}{2 H^{2}}\widetilde{m_{\phi z}} + 2 \gamma \frac{s^{2} \left(2 s^{2} - 1\right)}{H^{2}} b_{s}^e - i \gamma m s^{2} b_{\phi}^e.
+\end{aligned}
+\end{equation}
+The magnetic quantities are described by the induction equations in the PG model, which are given by
+\begin{equation}\label{eqn:eigen-pgmag-toroidal-quadrupole}
+\begin{aligned}
+    % i \omega \overline{m_{\phi\phi}} &= - \frac{64 i \gamma^{2} m s^{2} \left(s - 1\right) \left(s + 1\right) \psi}{15} - \frac{32 i \gamma^{2} m s \left(s - 1\right)^{2} \left(s + 1\right)^{2} \frac{d}{d s} \psi}{15} \\
+    i \widetilde{\omega} \overline{m_{\phi\phi}} &= - i \frac{32}{15}\gamma^2 m \left[s H^4 \frac{d\psi}{d s} - 2s^2H^2 \psi \right] \\
+    % i \omega \overline{m_{s\phi}} &= - \frac{16 \gamma^{2} m^{2} \left(s - 1\right)^{2} \left(s + 1\right)^{2} \psi}{15} \\
+    i \widetilde{\omega} \overline{m_{s\phi}} &= - \frac{16}{15} \gamma^{2} m^{2} H^4 \psi \\
+    % i \omega \widetilde{m_{\phi z}} &= \frac{\gamma^{2} m^{2} s \left(s - 1\right)^{2} \left(s + 1\right)^{2} \psi}{3 H} \\
+    i \widetilde{\omega} \widetilde{m_{\phi z}} &= \frac{1}{3} \gamma^{2} m^{2} s H^3 \psi \\
+    % i \omega \widetilde{zm_{\phi\phi}} &= \frac{4 i \gamma^{2} m s^{2} \left(s - 1\right)^{2} \left(s + 1\right)^{2} \psi}{3 H} + \frac{2 i \gamma^{2} m s \left(s - 1\right)^{3} \left(s + 1\right)^{3} \frac{d}{d s} \psi}{3 H} \\
+    i \widetilde{\omega} \widetilde{zm_{\phi\phi}} &= -i \frac{2}{3}\gamma^2 m \left[sH^5 \frac{d\psi}{d s} - 2s^2 H^3 \psi\right] \\
+    % i \omega \widetilde{zm_{s\phi}} &= \frac{\gamma^{2} m^{2} \left(s - 1\right)^{3} \left(s + 1\right)^{3} \psi}{3 H} \\
+    i \widetilde{\omega} \widetilde{zm_{s\phi}} &= -\frac{1}{3}\gamma^{2} m^{2} H^5 \psi \\
+    % i \omega b_{s}^e &= - \frac{\gamma m^{2} \sqrt{1 - s} \sqrt{s + 1} \psi}{s} \\
+    i \widetilde{\omega} b_{s}^e &= - \gamma m^{2} \frac{H}{s} \psi \\
+    % i \omega b_{\phi}^e &= \frac{2 i \gamma m s \psi}{H} + \frac{i \gamma m \left(s - 1\right) \left(s + 1\right) \frac{d}{d s} \psi}{H} \\
+    i \widetilde{\omega} b_{\phi}^e &= -i \gamma m \left[H \frac{d\psi}{d s} - \frac{2 s}{H}\psi\right] \\
+    \overline{m_{ss}} &= \widetilde{m_{sz}} = \widetilde{zm_{ss}} = b_{z}^e = b_{s, z}^e = b_{\phi, z}^e = 0
+\end{aligned}
+\end{equation}
+The boundary induction equations are all trivial; all components vanish at the boundary:
+\begin{equation}\label{eqn:eigen-bound-toroidal-quadrupole}
+    b^{\pm}_{s} = b^{\pm}_{\phi} = b^{\pm}_{z} = 0.
+\end{equation}
+The streamfunction has been validated by comparing the hand-derived result and the symbolic engine result. All the PG induction equations are validated against and are exactly the same as in \textcite{holdenried-chernoff_long_2021}. The fact that magnetic perturbations vanish at the boundary is a direct consequence of vanishing background field at the boundary. Therefore, I am comfident that these equations are valid.
+
+
+\subsection{Standard ODE form}
+
+To check the regularity of the system, we form the standard ODE of $\psi$ as a function of $s$ by merging the PG equations and boundary induction equations into one single ODE (\ref{eqn:ode-poloidal-dipole}).
+The standard form is a second order equation in $\psi$.
+% The singularities of the equations are $s=0$, i.e. at the axis, and $H=0$ ($s=1$), i.e. at the equator. The singularities of the coefficients are analyzed below.
+\begin{equation}\label{eqn:ode-toroidal-quadrupole}
+\begin{aligned}
+    % \left(- \frac{8 \gamma^{2} m^{2} s \left(s - 1\right)^{2} \left(s + 1\right)^{2}}{15 H} + \frac{\omega^{2} s}{H}\right) \frac{d^{2}}{d s^{2}} \psi + \left(- \frac{\gamma^{2} m^{2} \left(s - 1\right) \left(s + 1\right) \left(25 s^{2} - 8\right)}{15 H} + \frac{\omega^{2}}{H^{3}}\right) \frac{d}{d s} \psi + \left(- \frac{2 \gamma^{2} m^{2} s \left(1 - s\right)^{\frac{3}{2}} \left(s + 1\right)^{\frac{3}{2}}}{15 H^{2}} - \frac{\gamma^{2} m^{4} \left(s - 1\right)^{2} \left(s + 1\right)^{2} \cdot \left(11 s^{2} - 16\right)}{30 H^{3} s} + \frac{\omega^{2} m^{2} \left(- H^{2} - 1\right)}{2 H^{3} s} - \frac{2 \omega m s}{H^{3} \mathrm{Le}}\right) \psi = 0
+    &\left(- \frac{8}{15}\gamma^{2} m^{2} s H^4 + \omega^{2} s\right) \frac{d^{2}\psi}{d s^{2}} \\
+    &+ \left(\frac{\gamma^{2} m^{2}}{15} H^2 \left(25 s^{2} - 8\right) + \frac{\omega^{2}}{H^{2}}\right) \frac{d\psi}{d s} \\
+    &+ \left(- \frac{2}{15} \gamma^{2} m^{2} s H^2 - \frac{\gamma^{2} m^{4}}{30} \frac{H^2 \left(11 s^{2} - 16\right)}{s} + \frac{\omega^{2} m^{2} \left(s^2 - 2\right)}{2 H^{2} s} - \frac{2}{\mathrm{Le}} \frac{\omega m s}{H^{2}}\right) \psi = 0
+\end{aligned}
+\end{equation}
+Amazingly, this is identical to eq.(5.41) in \textcite{holdenried-chernoff_long_2021}.
+
+The 3-rd order term has a simple pole at $s=0$ and a simple pole at $s=1$;
+
+The 2-nd order term has a 2-nd order pole at $s=0$ and a 2-nd order pole at $s=1$;
+
+The 1-st order term has a 3-rd order pole at $s=0$ and a 3-rd order pole at $s=1$;
+
+The 0-th order term has a 4-th order pole at $s=0$ and a 3-rd order pole at $s=1$.
+
+The overall conclusion is that the singularities of the equation are both regular singularities, so regular solutions should exist.
+
+\clearpage

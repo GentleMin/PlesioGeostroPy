@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.forcing.Lz\_asym\_lin\_cg
+=============================================
+
+.. currentmodule:: pg_utils.pg_model.forcing
+
+.. autodata:: Lz_asym_lin_cg

@@ -1,0 +1,6 @@
+pg\_utils.eigen.compute\_matrix\_numerics
+=========================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: compute_matrix_numerics

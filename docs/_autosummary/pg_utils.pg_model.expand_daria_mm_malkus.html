@@ -67,7 +67,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_cpt.html">pg_utils.pg_model.expand_stream_force_cpt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_orth.html">pg_utils.pg_model.expand_stream_force_orth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.html">pg_utils.pg_model.forcing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
@@ -111,14 +112,15 @@
 Daria’s expansion for Malkus background field, with only
 coupling in equatorial components implemented, consistent
 with <cite>quad_malkus_reg_diff.nb</cite></p>
-<dl class="simple">
-<dt>..Note: This is now the active implementation of the original expansion</dt><dd><p>as documented in Daria’s MM code <cite>quad_malkus_reg_diff.nb</cite>.
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is now the active implementation of the original expansion
+as documented in Daria’s MM code <cite>quad_malkus_reg_diff.nb</cite>.
 However, this contains a mistake in the leading order prefactor of 
 Msp, as does <cite>quad_malkus_reg_diff.nb</cite>. Therefore, it is recommended
-to use <cite>expand_daria_thesis.py</cite> for the full and correct coupling, 
-as documented in Daria’s thesis.</p>
-</dd>
-</dl>
+to use <a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html#module-pg_utils.pg_model.expand_daria_thesis" title="pg_utils.pg_model.expand_daria_thesis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">expand_daria_thesis</span></code></a> for the 
+full and correct coupling, as documented in Daria’s thesis.</p>
+</div>
 <p>Jingtao Min &#64; ETH Zurich 2023</p>
 <p class="rubric">Module Attributes</p>
 <table class="autosummary longtable docutils align-default">

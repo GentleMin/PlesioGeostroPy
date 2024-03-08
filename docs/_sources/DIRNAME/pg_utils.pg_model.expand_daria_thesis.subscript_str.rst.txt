@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.expand\_daria\_thesis.subscript\_str
+========================================================
+
+.. currentmodule:: pg_utils.pg_model.expand_daria_thesis
+
+.. autodata:: subscript_str

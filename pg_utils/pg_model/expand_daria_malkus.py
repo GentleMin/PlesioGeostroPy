@@ -5,11 +5,11 @@ Daria's expansion for Malkus background field, with only
 coupling in equatorial components implemented, consistent
 with `quad_malkus_reg_diff.nb`
 
-..Note: This is now a historical version of the code, and will 
+.. warning:: This is now a historical version of the code, and will 
     no longer be actively maintained.
     For the current implementation of the original expansion
     as documented in Daria's MM code `quad_malkus_reg_diff.nb`, 
-    use `expand_daria_mm_malkus.py`
+    use :py:mod:`~pg_utils.pg_model.expand_daria_mm_malkus` instead.
 
 Jingtao Min @ ETH Zurich 2023
 """

@@ -1,0 +1,6 @@
+pg\_utils.sympy\_supp.simplify.process\_leaf\_node
+==================================================
+
+.. currentmodule:: pg_utils.sympy_supp.simplify
+
+.. autofunction:: process_leaf_node

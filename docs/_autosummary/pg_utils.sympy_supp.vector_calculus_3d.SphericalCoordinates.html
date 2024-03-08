@@ -54,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.html">pg_utils.pg_model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pg_utils.processing.html">pg_utils.processing</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pg_utils.sympy_supp.html">pg_utils.sympy_supp</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.sympy_supp.simplify.html">pg_utils.sympy_supp.simplify</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.html">pg_utils.sympy_supp.vector_calculus_3d</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.cross.html">pg_utils.sympy_supp.vector_calculus_3d.cross</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.dot.html">pg_utils.sympy_supp.vector_calculus_3d.dot</a></li>
@@ -132,28 +133,13 @@ coordinates are r (radius), t (colatitude) and p (azimuth):</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'p'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.8/library/constants.html#None" title="(in Python v3.8)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/sympy_supp/vector_calculus_3d.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Constructor</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x1</strong> (<em>sympy.Symbol</em>) – first coordinate</p></li>
-<li><p><strong>x2</strong> (<em>sympy.Symbol</em>) – second coordinate</p></li>
-<li><p><strong>x3</strong> (<em>sympy.Symbol</em>) – third coordinate</p></li>
-<li><p><strong>x1_name</strong> (<a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – optional name for x1; 
-if given, the attribute will be named by <cite>x1_name</cite>;
-else, the attribute will be named “x1”.</p></li>
-<li><p><strong>x2_name</strong> (<a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – see <cite>x1_name</cite></p></li>
-<li><p><strong>x3_name</strong> (<a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – see <cite>x1_name</cite></p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
+<dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.__init__" title="pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(r, t, p[, r_name, t_name, p_name])</p></td>
-<td><p>Constructor</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.curl" title="pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.curl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curl</span></code></a>(vector_in, **kwargs)</p></td>
 <td><p>Vector curl, to be implemented</p></td>
@@ -173,8 +159,8 @@ else, the attribute will be named “x1”.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.surface_grad" title="pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.surface_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_grad</span></code></a>(scalar_in, **kwargs)</p></td>
 <td><p>Surface gradient, to be implemented</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.transform_to" title="pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.transform_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_to</span></code></a>(v_in, new_sys[, coeffs_new])</p></td>
-<td><p>Transform to other coordinate systems</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_to</span></code>(v_in, new_sys[, coeffs_new])</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -252,13 +238,6 @@ components of a vector field.</p></li>
 <dt class="sig sig-object py" id="pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.surface_grad">
 <span class="sig-name descname"><span class="pre">surface_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scalar_in</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/sympy_supp/vector_calculus_3d.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.surface_grad" title="Permalink to this definition"></a></dt>
 <dd><p>Surface gradient, to be implemented</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.transform_to">
-<span class="sig-name descname"><span class="pre">transform_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_sys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D.html#pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D" title="pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D"><span class="pre">OrthogonalCoordinates3D</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeffs_new</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D.html#pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D" title="pg_utils.sympy_supp.vector_calculus_3d.OrthogonalCoordinates3D"><span class="pre">OrthogonalCoordinates3D</span></a></span></span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/sympy_supp/vector_calculus_3d.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.sympy_supp.vector_calculus_3d.SphericalCoordinates.transform_to" title="Permalink to this definition"></a></dt>
-<dd><p>Transform to other coordinate systems</p>
-<p>abstract method, to be overriden</p>
 </dd></dl>
 
 </dd></dl>

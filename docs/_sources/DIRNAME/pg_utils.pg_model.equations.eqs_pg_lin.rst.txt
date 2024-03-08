@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.equations.eqs\_pg\_lin
+==========================================
+
+.. currentmodule:: pg_utils.pg_model.equations
+
+.. autodata:: eqs_pg_lin

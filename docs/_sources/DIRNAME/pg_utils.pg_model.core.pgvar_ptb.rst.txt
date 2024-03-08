@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.core.pgvar\_ptb
+===================================
+
+.. currentmodule:: pg_utils.pg_model.core
+
+.. autodata:: pgvar_ptb

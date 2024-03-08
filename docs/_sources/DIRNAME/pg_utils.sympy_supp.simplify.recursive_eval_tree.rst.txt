@@ -1,0 +1,6 @@
+pg\_utils.sympy\_supp.simplify.recursive\_eval\_tree
+====================================================
+
+.. currentmodule:: pg_utils.sympy_supp.simplify
+
+.. autofunction:: recursive_eval_tree

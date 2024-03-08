@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.spec\_tail\_exp\_rate
+==============================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: spec_tail_exp_rate

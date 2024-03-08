@@ -52,12 +52,20 @@
 <li class="toctree-l2"><a class="reference internal" href="pg_utils.eigen.html">pg_utils.eigen</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pg_utils.numerics.html">pg_utils.numerics</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.io.html">pg_utils.numerics.io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.linalg.html">pg_utils.numerics.linalg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pg_utils.numerics.special</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_nrange.html">pg_utils.numerics.special.eval_jacobi_nrange</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_to_Nmax.html">pg_utils.numerics.special.eval_jacobi_to_Nmax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur.html">pg_utils.numerics.special.eval_jacobi_recur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_Nmax.html">pg_utils.numerics.special.eval_jacobi_recur_Nmax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_gmpy2.html">pg_utils.numerics.special.eval_jacobi_recur_gmpy2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_mp.html">pg_utils.numerics.special.eval_jacobi_recur_mp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_mpmath.html">pg_utils.numerics.special.eval_jacobi_recur_mpmath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.roots_jacobi_mp.html">pg_utils.numerics.special.roots_jacobi_mp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.RootsJacobiResult.html">pg_utils.numerics.special.RootsJacobiResult</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.symparser.html">pg_utils.numerics.symparser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.utils.html">pg_utils.numerics.utils</a></li>
 </ul>
 </li>
@@ -105,8 +113,31 @@ as this will be a computation-/memory-intensive part in quadratures</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_nrange.html#pg_utils.numerics.special.eval_jacobi_nrange" title="pg_utils.numerics.special.eval_jacobi_nrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_jacobi_nrange</span></code></a>(n_min, n_max, alpha, beta, z)</p></td>
 <td><p>Evaluate Jacobi polynomials for a range of degrees</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_to_Nmax.html#pg_utils.numerics.special.eval_jacobi_to_Nmax" title="pg_utils.numerics.special.eval_jacobi_to_Nmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_jacobi_to_Nmax</span></code></a>(Nmax, alpha, beta, z)</p></td>
-<td><p>Evaluate Jacobi polynomials up to a degree</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur.html#pg_utils.numerics.special.eval_jacobi_recur" title="pg_utils.numerics.special.eval_jacobi_recur"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_jacobi_recur</span></code></a>(Nmesh, alpha, beta, zmesh)</p></td>
+<td><p>Evaluate Jacobi polynomials using recurrence relations</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_Nmax.html#pg_utils.numerics.special.eval_jacobi_recur_Nmax" title="pg_utils.numerics.special.eval_jacobi_recur_Nmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_jacobi_recur_Nmax</span></code></a>(Nmax, alpha, beta, z)</p></td>
+<td><p>Evaluate Jacobi polynomials with recurrence relation up to a degree</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_gmpy2.html#pg_utils.numerics.special.eval_jacobi_recur_gmpy2" title="pg_utils.numerics.special.eval_jacobi_recur_gmpy2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_jacobi_recur_gmpy2</span></code></a>(Nmax, alpha, beta, z)</p></td>
+<td><p>Evaluate Jacobi polynomials with recurrence relation up to a degree,  to (arbitrary) multi-precision, array operations using gmpy2.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_mp.html#pg_utils.numerics.special.eval_jacobi_recur_mp" title="pg_utils.numerics.special.eval_jacobi_recur_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_jacobi_recur_mp</span></code></a>(Nmesh, alpha, beta, zmesh)</p></td>
+<td><p>Evaluate Jacobi polynomials using recurrence relations to arb prec</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_mpmath.html#pg_utils.numerics.special.eval_jacobi_recur_mpmath" title="pg_utils.numerics.special.eval_jacobi_recur_mpmath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_jacobi_recur_mpmath</span></code></a>(Nmax, alpha, beta, z)</p></td>
+<td><p>Evaluate Jacobi polynomials with recurrence relation up to a degree,  to (arbitrary) multi-precision.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.special.roots_jacobi_mp.html#pg_utils.numerics.special.roots_jacobi_mp" title="pg_utils.numerics.special.roots_jacobi_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roots_jacobi_mp</span></code></a>(n, alpha, beta[, n_dps, ...])</p></td>
+<td><p>Multi-precision Jacobi root calculation.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.special.RootsJacobiResult.html#pg_utils.numerics.special.RootsJacobiResult" title="pg_utils.numerics.special.RootsJacobiResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RootsJacobiResult</span></code></a>(xi, wt, flag, msg)</p></td>
+<td><p>Result object of root-finding routine for Jacobi polynomials</p></td>
 </tr>
 </tbody>
 </table>

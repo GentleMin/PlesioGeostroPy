@@ -1,0 +1,6 @@
+pg\_utils.numerics.linalg.eig\_generalized
+==========================================
+
+.. currentmodule:: pg_utils.numerics.linalg
+
+.. autofunction:: eig_generalized

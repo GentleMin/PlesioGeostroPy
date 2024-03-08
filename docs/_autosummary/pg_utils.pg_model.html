@@ -23,7 +23,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pg_utils.pg_model.base" href="pg_utils.pg_model.base.html" />
-    <link rel="prev" title="pg_utils.numerics.utils.eigenfreq_psi_op" href="pg_utils.numerics.utils.eigenfreq_psi_op.html" /> 
+    <link rel="prev" title="pg_utils.numerics.utils.transform_dps_prec" href="pg_utils.numerics.utils.transform_dps_prec.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -61,7 +61,8 @@
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_cpt.html">pg_utils.pg_model.expand_stream_force_cpt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_orth.html">pg_utils.pg_model.expand_stream_force_orth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.html">pg_utils.pg_model.forcing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
@@ -140,16 +141,19 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html#module-pg_utils.pg_model.expand_daria_thesis" title="pg_utils.pg_model.expand_daria_thesis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.expand_daria_thesis</span></code></a></p></td>
 <td><p>Expansion configuration file -  Daria's expansion as documented in dissertation,  consistent with <cite>C1QP_reg_diff_visc_daria.nb</cite></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html#module-pg_utils.pg_model.expand_stream_force" title="pg_utils.pg_model.expand_stream_force"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.expand_stream_force</span></code></a></p></td>
-<td><p>Expansion configuration file -  Expansion for the streamfunction-force formulation</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_cpt.html#module-pg_utils.pg_model.expand_stream_force_cpt" title="pg_utils.pg_model.expand_stream_force_cpt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.expand_stream_force_cpt</span></code></a></p></td>
+<td><p>Expansion configuration file -  Expansion for the streamfunction-force formulation with forcing spectrum as compact as streamfunction.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.html#module-pg_utils.pg_model.expansion" title="pg_utils.pg_model.expansion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.expansion</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_orth.html#module-pg_utils.pg_model.expand_stream_force_orth" title="pg_utils.pg_model.expand_stream_force_orth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.expand_stream_force_orth</span></code></a></p></td>
+<td><p>Expansion configuration file -  Expansion for the streamfunction-force formulation  with self-orthogonal forcing basis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.expansion.html#module-pg_utils.pg_model.expansion" title="pg_utils.pg_model.expansion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.expansion</span></code></a></p></td>
 <td><p>Define expansions of the fields.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.forcing.html#module-pg_utils.pg_model.forcing" title="pg_utils.pg_model.forcing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.forcing</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.forcing.html#module-pg_utils.pg_model.forcing" title="pg_utils.pg_model.forcing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.forcing</span></code></a></p></td>
 <td><p>Forcings in Plesio-Geostrophy Model</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.params.html#module-pg_utils.pg_model.params" title="pg_utils.pg_model.params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.params</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.params.html#module-pg_utils.pg_model.params" title="pg_utils.pg_model.params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pg_utils.pg_model.params</span></code></a></p></td>
 <td><p>Controlling parameters of the system</p></td>
 </tr>
 </tbody>
@@ -160,7 +164,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pg_utils.numerics.utils.eigenfreq_psi_op.html" class="btn btn-neutral float-left" title="pg_utils.numerics.utils.eigenfreq_psi_op" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.numerics.utils.transform_dps_prec.html" class="btn btn-neutral float-left" title="pg_utils.numerics.utils.transform_dps_prec" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="pg_utils.pg_model.base.html" class="btn btn-neutral float-right" title="pg_utils.pg_model.base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

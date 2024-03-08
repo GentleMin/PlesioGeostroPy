@@ -1,0 +1,202 @@
+pg\_utils.pg\_model.expansion.InnerProduct1D
+============================================
+
+.. currentmodule:: pg_utils.pg_model.expansion
+
+.. autoclass:: InnerProduct1D
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~InnerProduct1D.__init__
+      ~InnerProduct1D.adjoint
+      ~InnerProduct1D.apart
+      ~InnerProduct1D.args_cnc
+      ~InnerProduct1D.as_base_exp
+      ~InnerProduct1D.as_coeff_Add
+      ~InnerProduct1D.as_coeff_Mul
+      ~InnerProduct1D.as_coeff_add
+      ~InnerProduct1D.as_coeff_exponent
+      ~InnerProduct1D.as_coeff_mul
+      ~InnerProduct1D.as_coefficient
+      ~InnerProduct1D.as_coefficients_dict
+      ~InnerProduct1D.as_content_primitive
+      ~InnerProduct1D.as_dummy
+      ~InnerProduct1D.as_expr
+      ~InnerProduct1D.as_independent
+      ~InnerProduct1D.as_leading_term
+      ~InnerProduct1D.as_numer_denom
+      ~InnerProduct1D.as_ordered_factors
+      ~InnerProduct1D.as_ordered_terms
+      ~InnerProduct1D.as_poly
+      ~InnerProduct1D.as_powers_dict
+      ~InnerProduct1D.as_real_imag
+      ~InnerProduct1D.as_terms
+      ~InnerProduct1D.aseries
+      ~InnerProduct1D.atoms
+      ~InnerProduct1D.cancel
+      ~InnerProduct1D.change_variable
+      ~InnerProduct1D.class_key
+      ~InnerProduct1D.coeff
+      ~InnerProduct1D.collect
+      ~InnerProduct1D.combsimp
+      ~InnerProduct1D.commute_factor_in
+      ~InnerProduct1D.commute_factor_out
+      ~InnerProduct1D.compare
+      ~InnerProduct1D.compute_leading_term
+      ~InnerProduct1D.conjugate
+      ~InnerProduct1D.copy
+      ~InnerProduct1D.could_extract_minus_sign
+      ~InnerProduct1D.count
+      ~InnerProduct1D.count_ops
+      ~InnerProduct1D.diff
+      ~InnerProduct1D.dir
+      ~InnerProduct1D.doit
+      ~InnerProduct1D.dummy_eq
+      ~InnerProduct1D.equals
+      ~InnerProduct1D.evalf
+      ~InnerProduct1D.expand
+      ~InnerProduct1D.extract_additively
+      ~InnerProduct1D.extract_branch_factor
+      ~InnerProduct1D.extract_multiplicatively
+      ~InnerProduct1D.factor
+      ~InnerProduct1D.find
+      ~InnerProduct1D.fourier_series
+      ~InnerProduct1D.fps
+      ~InnerProduct1D.fromiter
+      ~InnerProduct1D.gammasimp
+      ~InnerProduct1D.getO
+      ~InnerProduct1D.getn
+      ~InnerProduct1D.has
+      ~InnerProduct1D.has_free
+      ~InnerProduct1D.integral_form
+      ~InnerProduct1D.integrand
+      ~InnerProduct1D.integrate
+      ~InnerProduct1D.invert
+      ~InnerProduct1D.is_algebraic_expr
+      ~InnerProduct1D.is_constant
+      ~InnerProduct1D.is_hypergeometric
+      ~InnerProduct1D.is_meromorphic
+      ~InnerProduct1D.is_polynomial
+      ~InnerProduct1D.is_rational_function
+      ~InnerProduct1D.leadterm
+      ~InnerProduct1D.limit
+      ~InnerProduct1D.lseries
+      ~InnerProduct1D.match
+      ~InnerProduct1D.matches
+      ~InnerProduct1D.n
+      ~InnerProduct1D.normal
+      ~InnerProduct1D.nseries
+      ~InnerProduct1D.nsimplify
+      ~InnerProduct1D.powsimp
+      ~InnerProduct1D.primitive
+      ~InnerProduct1D.radsimp
+      ~InnerProduct1D.ratsimp
+      ~InnerProduct1D.rcall
+      ~InnerProduct1D.refine
+      ~InnerProduct1D.removeO
+      ~InnerProduct1D.replace
+      ~InnerProduct1D.rewrite
+      ~InnerProduct1D.round
+      ~InnerProduct1D.separate
+      ~InnerProduct1D.serialize
+      ~InnerProduct1D.series
+      ~InnerProduct1D.simplify
+      ~InnerProduct1D.sort_key
+      ~InnerProduct1D.split
+      ~InnerProduct1D.subs
+      ~InnerProduct1D.taylor_term
+      ~InnerProduct1D.together
+      ~InnerProduct1D.transpose
+      ~InnerProduct1D.trigsimp
+      ~InnerProduct1D.xreplace
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~InnerProduct1D.args
+      ~InnerProduct1D.assumptions0
+      ~InnerProduct1D.canonical_variables
+      ~InnerProduct1D.default_assumptions
+      ~InnerProduct1D.expr_free_symbols
+      ~InnerProduct1D.free_symbols
+      ~InnerProduct1D.func
+      ~InnerProduct1D.is_Add
+      ~InnerProduct1D.is_AlgebraicNumber
+      ~InnerProduct1D.is_Atom
+      ~InnerProduct1D.is_Boolean
+      ~InnerProduct1D.is_Derivative
+      ~InnerProduct1D.is_Dummy
+      ~InnerProduct1D.is_Equality
+      ~InnerProduct1D.is_Float
+      ~InnerProduct1D.is_Function
+      ~InnerProduct1D.is_Indexed
+      ~InnerProduct1D.is_Integer
+      ~InnerProduct1D.is_MatAdd
+      ~InnerProduct1D.is_MatMul
+      ~InnerProduct1D.is_Matrix
+      ~InnerProduct1D.is_Mul
+      ~InnerProduct1D.is_Not
+      ~InnerProduct1D.is_Number
+      ~InnerProduct1D.is_NumberSymbol
+      ~InnerProduct1D.is_Order
+      ~InnerProduct1D.is_Piecewise
+      ~InnerProduct1D.is_Point
+      ~InnerProduct1D.is_Poly
+      ~InnerProduct1D.is_Pow
+      ~InnerProduct1D.is_Rational
+      ~InnerProduct1D.is_Relational
+      ~InnerProduct1D.is_Symbol
+      ~InnerProduct1D.is_Vector
+      ~InnerProduct1D.is_Wild
+      ~InnerProduct1D.is_algebraic
+      ~InnerProduct1D.is_antihermitian
+      ~InnerProduct1D.is_commutative
+      ~InnerProduct1D.is_comparable
+      ~InnerProduct1D.is_complex
+      ~InnerProduct1D.is_composite
+      ~InnerProduct1D.is_even
+      ~InnerProduct1D.is_extended_negative
+      ~InnerProduct1D.is_extended_nonnegative
+      ~InnerProduct1D.is_extended_nonpositive
+      ~InnerProduct1D.is_extended_nonzero
+      ~InnerProduct1D.is_extended_positive
+      ~InnerProduct1D.is_extended_real
+      ~InnerProduct1D.is_finite
+      ~InnerProduct1D.is_hermitian
+      ~InnerProduct1D.is_imaginary
+      ~InnerProduct1D.is_infinite
+      ~InnerProduct1D.is_integer
+      ~InnerProduct1D.is_irrational
+      ~InnerProduct1D.is_negative
+      ~InnerProduct1D.is_noninteger
+      ~InnerProduct1D.is_nonnegative
+      ~InnerProduct1D.is_nonpositive
+      ~InnerProduct1D.is_nonzero
+      ~InnerProduct1D.is_number
+      ~InnerProduct1D.is_odd
+      ~InnerProduct1D.is_polar
+      ~InnerProduct1D.is_positive
+      ~InnerProduct1D.is_prime
+      ~InnerProduct1D.is_rational
+      ~InnerProduct1D.is_real
+      ~InnerProduct1D.is_scalar
+      ~InnerProduct1D.is_symbol
+      ~InnerProduct1D.is_transcendental
+      ~InnerProduct1D.is_zero
+      ~InnerProduct1D.kind
+   
+   

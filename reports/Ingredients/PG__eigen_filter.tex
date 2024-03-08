@@ -1,0 +1,11 @@
+\section{Eigenvalue filtering}
+
+Boyd's eigenvalue shift:
+\begin{equation}
+    \delta_j = \min_{k\in[1, N_2]} \frac{\left|\lambda_j(N_1) - \lambda_k(N_2)\right|}{\sigma_j}
+\end{equation}
+
+Maximum trailing rate of exponential convergence:
+\begin{equation}
+    C_j = \min_{n} \frac{\max_{k\geq n} \log\left|\frac{a_k^{(j)}}{a_n^{(j)}}\right|}{\left|n - n_0^{(j)}\right| + 1}
+\end{equation}

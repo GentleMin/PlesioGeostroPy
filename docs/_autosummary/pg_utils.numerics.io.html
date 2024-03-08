@@ -55,12 +55,17 @@
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.matrices_load_h5.html">pg_utils.numerics.io.matrices_load_h5</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.matrices_save_h5.html">pg_utils.numerics.io.matrices_save_h5</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.matrix_load_from_group.html">pg_utils.numerics.io.matrix_load_from_group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.parse_coo.html">pg_utils.numerics.io.parse_coo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.serialize_coo.html">pg_utils.numerics.io.serialize_coo</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.sparse_coo_load_from_group.html">pg_utils.numerics.io.sparse_coo_load_from_group</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.sparse_coo_save_to_group.html">pg_utils.numerics.io.sparse_coo_save_to_group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.CompactArrayJSONEncoder.html">pg_utils.numerics.io.CompactArrayJSONEncoder</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.linalg.html">pg_utils.numerics.linalg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.special.html">pg_utils.numerics.special</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.symparser.html">pg_utils.numerics.symparser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.utils.html">pg_utils.numerics.utils</a></li>
 </ul>
 </li>
@@ -106,17 +111,31 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.io.matrices_load_h5.html#pg_utils.numerics.io.matrices_load_h5" title="pg_utils.numerics.io.matrices_load_h5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matrices_load_h5</span></code></a>(fread)</p></td>
 <td><p>Load matrices to h5py file/group</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.io.matrices_save_h5.html#pg_utils.numerics.io.matrices_save_h5" title="pg_utils.numerics.io.matrices_save_h5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matrices_save_h5</span></code></a>(fwrite, f_attrs[, rows, cols])</p></td>
-<td><p>Save matrices to h5py file/group</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.io.matrices_save_h5.html#pg_utils.numerics.io.matrices_save_h5" title="pg_utils.numerics.io.matrices_save_h5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matrices_save_h5</span></code></a>(fwrite, matrix[, f_attrs, ...])</p></td>
+<td><p>Save matrices to h5py file/group.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.io.matrix_load_from_group.html#pg_utils.numerics.io.matrix_load_from_group" title="pg_utils.numerics.io.matrix_load_from_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matrix_load_from_group</span></code></a>(sp_gp)</p></td>
 <td><p>Load matrix from h5py group</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.io.parse_coo.html#pg_utils.numerics.io.parse_coo" title="pg_utils.numerics.io.parse_coo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_coo</span></code></a>(serialized_obj[, transform])</p></td>
+<td><p>Retrieve COOrdinate format sparse array from serialized obj</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.io.serialize_coo.html#pg_utils.numerics.io.serialize_coo" title="pg_utils.numerics.io.serialize_coo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serialize_coo</span></code></a>(sp_array[, transform, format])</p></td>
+<td><p>Retrieve serializable objs of COOrdinate format sparse array</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.io.sparse_coo_load_from_group.html#pg_utils.numerics.io.sparse_coo_load_from_group" title="pg_utils.numerics.io.sparse_coo_load_from_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse_coo_load_from_group</span></code></a>(sp_gp)</p></td>
 <td><p>Load sparse matrix in coordinate format from h5py group</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.io.sparse_coo_save_to_group.html#pg_utils.numerics.io.sparse_coo_save_to_group" title="pg_utils.numerics.io.sparse_coo_save_to_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse_coo_save_to_group</span></code></a>(sp_matrix, sp_gp)</p></td>
 <td><p>Save sparse matrix in coordinate format to h5py group</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.io.CompactArrayJSONEncoder.html#pg_utils.numerics.io.CompactArrayJSONEncoder" title="pg_utils.numerics.io.CompactArrayJSONEncoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CompactArrayJSONEncoder</span></code></a>(*args, **kwargs)</p></td>
+<td><p>A Json encoder that puts long arrays on one line</p></td>
 </tr>
 </tbody>
 </table>

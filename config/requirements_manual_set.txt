@@ -3,14 +3,17 @@ python=3.8.13
 sympy=1.11.1
 numpy=1.22.3
 scipy=1.8.0
+h5py=3.3.0
+# Multi-precision calculation and algebra, dependencies of some functions
 mpmath=1.3.0
 gmpy2=2.1.5
-h5py=3.3.0
-# Visualization and presentation
+flamp=1.0.1
+# Visualization and presentation, postprocessing dependencies
 pandas=1.4.2
 matplotlib=3.5.2
 jupyterlab=3.4.0
-# Documentation and testing
+# Documentation and testing: 
+# comment out if you don't want to run tests, compile documentations, etc
 sphinx=5.0.2
 pytest=7.4.2
 perfplot=0.10.2

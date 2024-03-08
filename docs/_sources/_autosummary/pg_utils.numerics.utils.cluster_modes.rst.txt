@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.cluster\_modes
+=======================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: cluster_modes

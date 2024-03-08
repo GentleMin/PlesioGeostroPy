@@ -1,0 +1,6 @@
+pg\_utils.numerics.special.roots\_jacobi\_mp
+============================================
+
+.. currentmodule:: pg_utils.numerics.special
+
+.. autofunction:: roots_jacobi_mp

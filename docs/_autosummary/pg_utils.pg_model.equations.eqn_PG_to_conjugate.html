@@ -68,7 +68,8 @@
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_cpt.html">pg_utils.pg_model.expand_stream_force_cpt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_orth.html">pg_utils.pg_model.expand_stream_force_orth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.html">pg_utils.pg_model.forcing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
@@ -111,8 +112,21 @@
 <h1>pg_utils.pg_model.equations.eqn_PG_to_conjugate<a class="headerlink" href="#pg-utils-pg-model-equations-eqn-pg-to-conjugate" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pg_utils.pg_model.equations.eqn_PG_to_conjugate">
-<span class="sig-prename descclassname"><span class="pre">pg_utils.pg_model.equations.</span></span><span class="sig-name descname"><span class="pre">eqn_PG_to_conjugate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eqset_pg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pg_utils.pg_model.base.CollectionPG.html#pg_utils.pg_model.base.CollectionPG" title="pg_utils.pg_model.base.CollectionPG"><span class="pre">CollectionPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">subs_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#dict" title="(in Python v3.8)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/pg_model/equations.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.pg_model.equations.eqn_PG_to_conjugate" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">pg_utils.pg_model.equations.</span></span><span class="sig-name descname"><span class="pre">eqn_PG_to_conjugate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eqset_pg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pg_utils.pg_model.base.CollectionPG.html#pg_utils.pg_model.base.CollectionPG" title="pg_utils.pg_model.base.CollectionPG"><span class="pre">CollectionPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">subs_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#dict" title="(in Python v3.8)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pg_utils.pg_model.base.CollectionConjugate.html#pg_utils.pg_model.base.CollectionConjugate" title="pg_utils.pg_model.base.CollectionConjugate"><span class="pre">CollectionConjugate</span></a></span></span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/pg_model/equations.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.pg_model.equations.eqn_PG_to_conjugate" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a set of PG equations to transformed form</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eqset_pg</strong> (<a class="reference internal" href="pg_utils.pg_model.base.CollectionPG.html#pg_utils.pg_model.base.CollectionPG" title="pg_utils.pg_model.base.CollectionPG"><em>CollectionPG</em></a>) – set of PG equations;</p></li>
+<li><p><strong>subs_map</strong> (<a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – substitution map that maps 
+PG variables to expressions in transformed variables</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>set of transformed equations.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

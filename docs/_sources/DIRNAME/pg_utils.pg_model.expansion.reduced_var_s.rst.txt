@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.expansion.reduced\_var\_s
+=============================================
+
+.. currentmodule:: pg_utils.pg_model.expansion
+
+.. autodata:: reduced_var_s

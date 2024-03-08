@@ -1,0 +1,26 @@
+pg\_utils.sympy\_supp.vector\_calculus\_3d.Tensor3D
+===================================================
+
+.. currentmodule:: pg_utils.sympy_supp.vector_calculus_3d
+
+.. autoclass:: Tensor3D
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Tensor3D.__init__
+      ~Tensor3D.transform_to
+   
+   
+
+   
+   
+   

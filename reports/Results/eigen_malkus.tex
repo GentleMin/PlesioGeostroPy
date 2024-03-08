@@ -1,0 +1,80 @@
+\section{Ideal eigenmodes under Malkus background field}
+
+The background field is given by
+\[
+    \mathbf{B}^0 = s \hat{\bm{\phi}}
+\]
+translating to the following background PG quantities:
+\begin{equation}
+\begin{aligned}
+    \overline{M_{\phi\phi}}^0 &= 2 s^{2} H \\ 
+    \widetilde{zM_{\phi\phi}}^0 &= s^{2} H^{2} \\ 
+    B_{\phi}^{0e} &= s \\ 
+    B_\phi^{0+} &= s \\
+    B_\phi^{0-} &= s \\
+    \Psi^{0} &= \overline{M_{ss}}^0 = \overline{M_{s\phi}}^0 
+    = \widetilde{M_{sz}}^0 = \widetilde{M_{\phi z}}^0 = \widetilde{zM_{ss}}^0 = \widetilde{zM_{s\phi}}^0 = 0 \\
+    B_{s}^{0e} &= B_{z}^{0e} = B_{s, z}^{0e} = B_{\phi, z}^{0e} = B_s^{0+} = B_z^{0+} = B_s^{0-} = B_z^{0-} = 0
+\end{aligned}
+\end{equation}
+
+\subsection{Linearized equations}
+
+In the Fourier domain (ansatz $\psi = \psi(s) e^{i\widetilde{\omega}t + im\phi} = \psi(s)e^{\lambda t + im\phi}$), the set of linearized equations under the Malkus background field reads
+\begin{equation}\label{eqn:eigen-pg-malkus}
+\begin{aligned}
+    i\widetilde{\omega} \left[\frac{d}{d s}\left(\frac{s}{H}\frac{d}{d s}\right) - m^2 \left(\frac{1}{sH} + \frac{s}{2H^3}\right)\right] \psi &= \frac{2 i m s}{\mathrm{Le} H^{3}} \psi \\
+    &\mkern-260mu + \frac{i m}{2 H} \left( \frac{d \overline{m_{ss}}}{d s} - \frac{d \overline{m_{\phi\phi}}}{d s}\right) + \frac{i m}{2 sH} \left(\overline{m_{ss}} - \overline{m_{\phi\phi}}\right) - \frac{s}{2 H} \frac{d^{2} \overline{m_{s\phi}}}{d s^{2}} - \frac{3}{2 H} \frac{d\overline{m_{s\phi}}}{d s} - \frac{m^{2}}{2 H s} \overline{m_{s\phi}} \\
+    &\mkern-260mu - \frac{i m s}{2 H^{2}} \frac{d \widetilde{m_{sz}}}{d s} + \frac{m^{2}}{2 H^{2}} \widetilde{m_{\phi z}} - \frac{i m}{2 H^{2}} \widetilde{m_{sz}} - \frac{i m s^{2}}{H^{2}} b_{\phi}^e - \frac{2 s^{2}}{H^{2}}b_{s}^e \\
+    &\mkern-260mu - \frac{s^{3}}{2 H^{2}} \left(\frac{db^{+}_{s}}{d s} + \frac{d b^{-}_{s}}{ds}\right) + \left(- \frac{3 s^{2}}{2 H^{2}} - \frac{s^{4}}{2 H^{4}}\right) \left( b^{+}_{s} + b^{-}_{s} \right) - \frac{s^{2}}{2 H} \left(\frac{d b^{+}_{z}}{d s} - \frac{d b^{-}_{z}}{d s}\right) - \frac{s}{H} \left(b^{+}_{z} - b^{-}_{z}\right)\\
+    i \widetilde{\omega} \overline{m_{\phi\phi}} &= - 4 i m s \frac{d \psi}{d s} \\
+    i \widetilde{\omega} \overline{m_{s\phi}} &= - 2 m^{2} \psi \\
+    i \widetilde{\omega} \widetilde{m_{\phi z}} &= \frac{m^{2} s}{H} \psi \\
+    i \widetilde{\omega} \widetilde{zm_{\phi\phi}} &= - 2 i m s H \frac{d \psi}{d s} \\
+    i \widetilde{\omega} \widetilde{zm_{s\phi}} &= - m^{2} H \psi\\
+    i \widetilde{\omega} b_{s}^e &= - \frac{m^{2}}{s H} \psi \\
+    i \widetilde{\omega} b_{\phi}^e &= - \frac{i m}{H} \frac{d \psi}{d s} \\
+    \overline{m_{ss}} = \widetilde{zm_{ss}} = \widetilde{m_{sz}} &= b_{z}^e = b_{s, z}^e = b_{\phi, z}^e = 0
+\end{aligned}
+\end{equation}
+with induction equations at the boundary given by
+\begin{equation}\label{eqn:eigen-bound-malkus}
+    \begin{aligned}
+        i \widetilde{\omega} b^{+}_{s} &= i \widetilde{\omega} b^{-}_{s} = - \frac{m^{2}}{s H} \psi\\
+        i \widetilde{\omega} b^{+}_{\phi} &= i \widetilde{\omega} b^{-}_{\phi} = - \frac{i m}{H} \frac{d \psi}{d s}\\
+        i \widetilde{\omega} b^{+}_{z} &= -i \widetilde{\omega} b^{-}_{z} = - \frac{m^{2}}{H^{2}} \psi.
+    \end{aligned}
+\end{equation}
+The induction equations in (\ref{eqn:eigen-pg-malkus}) and (\ref{eqn:eigen-bound-malkus}) have been validated against and are indeed exactly the same as those reported in \textcite{holdenried-chernoff_long_2021}.
+There is no reference for the streamfunction equation, but its validity can be partially checked when the equation is further reduced into lower dimensions, as shown in the next subsection.
+
+As a final side remark, note that the boundary magnetic terms in the momentum equation (\ref{eqn:eigen-pg-malkus}) either consist of sums of or differences between the upper boundary and the lower boundary terms, as a result of the symmetry of the background field with respect to the equatorial plane.
+The same parity leads to the boundary terms as dictated by (\ref{eqn:eigen-bound-malkus}) to be either odd or even functions.
+The overall outcome is that the boundary terms cancel each other out, and have no effects in the system whatsoever.
+Although not explicitly pointed out in \textcite{holdenried-chernoff_long_2021}, the original implementation in \texttt{Mathematica} ignores the contribution of the boundary terms, but nevertheless yields the correct output. This is most likely due to the fact that the boundary terms play no role anyway in the Malkus model.
+
+\subsection{Standard ODE form}
+
+The Malkus field, despite its complicated momentum equation, has a particularly simple reduced form.
+The 2-order form of the dynamical system takes the following form,
+\begin{equation}
+\begin{aligned}
+    i\widetilde{\omega} \left(1 - \frac{m^2}{\widetilde{\omega}^2}\right) \left[\frac{d}{d s}\left(\frac{s}{H}\frac{d}{d s}\right) - m^2 \left(\frac{1}{sH} + \frac{s}{2H^3}\right)\right] \psi &= 2i \left(\frac{m}{\mathrm{Le}} - \frac{m^2}{\widetilde{\omega}}\right)\frac{s}{H^3} \psi \\ 
+    \left[\frac{d}{d s}\left(\frac{s}{H}\frac{d}{d s}\right) - m^2 \left(\frac{1}{sH} + \frac{s}{2H^3}\right)\right] \psi &= 2 \frac{\frac{1}{\mathrm{Le}} m\widetilde{\omega} - m^2}{\widetilde{\omega}^2 - m^2}\frac{s}{H^3} \psi
+\end{aligned}
+\end{equation}
+which only differs from the hydrodynamic case (\ref{eqn:ode-hydro}) by a factor. 
+\[
+    \frac{d^{2}}{d s^{2}} \psi + \frac{1}{sH^{2}} \frac{d\psi}{d s} + \frac{m}{m^2 - \widetilde{\omega}^2} \frac{1}{2s^2H^2} \left(\frac{4\widetilde{\omega}s^2}{\mathrm{Le}} + m(m^2 - \widetilde{\omega}^2)(s^2 -2) - 4ms^2\right) \psi = 0
+\]
+At the current stage, this form really doesn't seem to yield more information than the fact that both $s=0$ and $s=1$ are regular singularities of the equation, and regular solutions should exist.
+
+\subsection{Analytical solution}
+As the ODE in $\psi$ only differs from eq.(\ref{eqn:ode-hydro}) by a factor, the Malkus background field also inherits the analytical solution from the hydrodynamic case.
+The analytical eigenvalues are calculated from
+\[
+    \frac{\frac{1}{\mathrm{Le}} m\widetilde{\omega} - m^2}{\widetilde{\omega}^2 - m^2} = \frac{m}{\omega_{\mathrm{hydro}}^{mn}}
+\]
+
+\clearpage
+

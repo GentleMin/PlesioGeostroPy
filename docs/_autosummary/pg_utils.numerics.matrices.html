@@ -19,11 +19,13 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pg_utils.numerics.matrices.invert_block_diag" href="pg_utils.numerics.matrices.invert_block_diag.html" />
-    <link rel="prev" title="pg_utils.numerics.io.sparse_coo_save_to_group" href="pg_utils.numerics.io.sparse_coo_save_to_group.html" /> 
+    <link rel="prev" title="pg_utils.numerics.linalg.StdLinSolver" href="pg_utils.numerics.linalg.StdLinSolver.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,9 +54,14 @@
 <li class="toctree-l2"><a class="reference internal" href="pg_utils.eigen.html">pg_utils.eigen</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pg_utils.numerics.html">pg_utils.numerics</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.io.html">pg_utils.numerics.io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.linalg.html">pg_utils.numerics.linalg</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pg_utils.numerics.matrices</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.matrices.invert_block_diag.html">pg_utils.numerics.matrices.invert_block_diag</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.matrices.powers_of.html">pg_utils.numerics.matrices.powers_of</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.matrices.quad_matrix_gmpy2.html">pg_utils.numerics.matrices.quad_matrix_gmpy2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.matrices.quad_matrix_mpmath.html">pg_utils.numerics.matrices.quad_matrix_mpmath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.matrices.quad_matrix_scipy.html">pg_utils.numerics.matrices.quad_matrix_scipy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.matrices.quad_matrix_sympy.html">pg_utils.numerics.matrices.quad_matrix_sympy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.matrices.sparsify.html">pg_utils.numerics.matrices.sparsify</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.matrices.InnerProdQuad.html">pg_utils.numerics.matrices.InnerProdQuad</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.matrices.InnerQuad_GaussJacobi.html">pg_utils.numerics.matrices.InnerQuad_GaussJacobi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.matrices.InnerQuad_Rule.html">pg_utils.numerics.matrices.InnerQuad_Rule</a></li>
@@ -65,6 +72,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.special.html">pg_utils.numerics.special</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.symparser.html">pg_utils.numerics.symparser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.utils.html">pg_utils.numerics.utils</a></li>
 </ul>
 </li>
@@ -103,17 +111,32 @@
              
   <section id="module-pg_utils.numerics.matrices">
 <span id="pg-utils-numerics-matrices"></span><h1>pg_utils.numerics.matrices<a class="headerlink" href="#module-pg_utils.numerics.matrices" title="Permalink to this heading"></a></h1>
-<p>Symbolic manipulation and numerical computations 
-of the coefficient matrices (mass and stiffness matrices)</p>
-<p>The bridge between the symbolic expressions and numerical computations</p>
+<p>Numerical computations of coefficient matrices (mass and stiffness matrices)</p>
+<p>This module aims to compute quadrature of inner product matrices where
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">M_</span><span class="p">{</span><span class="n">ij</span><span class="p">}</span> <span class="o">=</span> \<span class="n">sum_k</span> <span class="p">(</span><span class="n">w_k</span> <span class="n">f_A</span><span class="p">(</span><span class="n">NA_i</span><span class="p">,</span> \<span class="n">xi_k</span><span class="p">)</span> <span class="n">f_B</span><span class="p">(</span><span class="n">NB_j</span><span class="p">,</span> \<span class="n">xi_k</span><span class="p">))</span>
+</pre></div>
+</div>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.matrices.invert_block_diag.html#pg_utils.numerics.matrices.invert_block_diag" title="pg_utils.numerics.matrices.invert_block_diag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert_block_diag</span></code></a>(matrix, block_seg)</p></td>
 <td><p>Invert a block diagonal matrix</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.matrices.powers_of.html#pg_utils.numerics.matrices.powers_of" title="pg_utils.numerics.matrices.powers_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">powers_of</span></code></a>(expr, *args)</p></td>
-<td><p>Retrieve the power of symbols in a given expression.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.matrices.quad_matrix_gmpy2.html#pg_utils.numerics.matrices.quad_matrix_gmpy2" title="pg_utils.numerics.matrices.quad_matrix_gmpy2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quad_matrix_gmpy2</span></code></a>(operand_A, operand_B, ...)</p></td>
+<td><p>Compute quadrature matrix using gmpy2,  where <span class="math notranslate nohighlight">\(w_k\)</span> is <cite>wt_quad[k]</cite>, <span class="math notranslate nohighlight">\(\xi_k\)</span> is <cite>xi_quad[k]</cite>, <span class="math notranslate nohighlight">\(f_A\)</span> is <cite>operand_A</cite> and <span class="math notranslate nohighlight">\(f_B\)</span> is <cite>operand_B</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.matrices.quad_matrix_mpmath.html#pg_utils.numerics.matrices.quad_matrix_mpmath" title="pg_utils.numerics.matrices.quad_matrix_mpmath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quad_matrix_mpmath</span></code></a>(operand_A, operand_B, ...)</p></td>
+<td><p>Compute quadrature matrix using mpmath,  where <span class="math notranslate nohighlight">\(w_k\)</span> is <cite>wt_quad[k]</cite>, <span class="math notranslate nohighlight">\(\xi_k\)</span> is <cite>xi_quad[k]</cite>, <span class="math notranslate nohighlight">\(f_A\)</span> is <cite>operand_A</cite> and <span class="math notranslate nohighlight">\(f_B\)</span> is <cite>operand_B</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.matrices.quad_matrix_scipy.html#pg_utils.numerics.matrices.quad_matrix_scipy" title="pg_utils.numerics.matrices.quad_matrix_scipy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quad_matrix_scipy</span></code></a>(operand_A, operand_B, ...)</p></td>
+<td><p>Compute quadrature matrix using scipy,  where <span class="math notranslate nohighlight">\(w_k\)</span> is <cite>wt_quad[k]</cite>, <span class="math notranslate nohighlight">\(\xi_k\)</span> is <cite>xi_quad[k]</cite>, <span class="math notranslate nohighlight">\(f_A\)</span> is <cite>operand_A</cite> and <span class="math notranslate nohighlight">\(f_B\)</span> is <cite>operand_B</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.matrices.quad_matrix_sympy.html#pg_utils.numerics.matrices.quad_matrix_sympy" title="pg_utils.numerics.matrices.quad_matrix_sympy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quad_matrix_sympy</span></code></a>(operand_A, operand_B, ...)</p></td>
+<td><p>Compute quadrature matrix using sympy, where <span class="math notranslate nohighlight">\(w_k\)</span> is <cite>wt_quad[k]</cite>, <span class="math notranslate nohighlight">\(\xi_k\)</span> is <cite>xi_quad[k]</cite>, <span class="math notranslate nohighlight">\(f_A\)</span> is <cite>operand_A</cite> and <span class="math notranslate nohighlight">\(f_B\)</span> is <cite>operand_B</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.matrices.sparsify.html#pg_utils.numerics.matrices.sparsify" title="pg_utils.numerics.matrices.sparsify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparsify</span></code></a>(array[, clip_threshold])</p></td>
+<td><p>Create sparse array from dense array</p></td>
 </tr>
 </tbody>
 </table>
@@ -149,7 +172,7 @@ of the coefficient matrices (mass and stiffness matrices)</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pg_utils.numerics.io.sparse_coo_save_to_group.html" class="btn btn-neutral float-left" title="pg_utils.numerics.io.sparse_coo_save_to_group" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.numerics.linalg.StdLinSolver.html" class="btn btn-neutral float-left" title="pg_utils.numerics.linalg.StdLinSolver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="pg_utils.numerics.matrices.invert_block_diag.html" class="btn btn-neutral float-right" title="pg_utils.numerics.matrices.invert_block_diag" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

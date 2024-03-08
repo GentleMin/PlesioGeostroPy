@@ -5,9 +5,9 @@ This file contains the code for solving an eigenvalue problem
 in the framework of PG model.
 """
 
-import os, h5py, json, warnings
-from typing import List, Any, Optional, Union, Tuple
-from sympy import S, I, Function, Add, diff, Eq, srepr, parse_expr
+import os, h5py, json, pickle, warnings
+from typing import List, Any, Optional, Union, Tuple, Literal
+from sympy import S, I, Function, Add, diff, Eq, Expr, srepr, parse_expr, Symbol
 
 from .pg_model import *
 from .pg_model import base, core, params, forcing, bg_fields
@@ -17,8 +17,11 @@ from .pg_model.expansion import omega, xi, m
 
 from .numerics import matrices as nmatrix
 from .numerics import io as num_io
+from .numerics import linalg as lin_alg
+from .numerics import utils as num_utils
 
 import numpy as np
+import gmpy2
 from scipy.sparse import coo_array
 
 
@@ -124,8 +127,8 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
     # Treatment of vorticity equation: do not try to "simplify" the RHS of vorticity
     # equation; it often leads to unnecessary rationalization
     if fname == "Psi":
-        new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H}).expand()
-        new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H}).expand()
+        new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}).expand()
+        new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}).expand()
     # For other equations: try to simplify for visual simplicity
     # !!!!! ==================================================== Note ===========
     # If the code is not used interactively, perhaps all simplify can be skipped?
@@ -139,8 +142,8 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
             new_rhs = new_rhs.subs({z: -H}).doit().simplify()
         elif fname in fnames[-11:-6]:
             new_rhs = new_rhs.subs({z: S.Zero}).doit().simplify()
-        new_lhs = new_lhs.subs({H_s: H}).expand()
-        new_rhs = new_rhs.subs({H_s: H}).expand()
+        new_lhs = new_lhs.subs({H_s: H, H_s**2: H**2}).expand()
+        new_rhs = new_rhs.subs({H_s: H, H_s**2: H**2}).expand()
     return Eq(new_lhs, new_rhs)
 
 
@@ -224,11 +227,44 @@ def reduce_eqsys_to_psi(eqsys_old: base.LabeledCollection,
         print("========== Converting to 2nd order dynamical system... ==========")
     eqsys_psi_F = reduce_eqsys_to_force_form(eqsys_old, verbose=verbose-1)
     eq_psi, eq_F = eqsys_psi_F.Psi, eqsys_psi_F.F_ext
-    eqsys_new = Eq(
+    eq_new = Eq(
         diff(eq_psi.lhs, t),
         diff(eq_psi.rhs, t).subs({eq_F.lhs: eq_F.rhs}).doit().expand()
     )
-    return eqsys_new
+    return eq_new
+
+
+def to_fd_ode_pg(eq_sys: base.LabeledCollection, dyn_var: base.CollectionPG):
+    """A convenient function to convert equations to Fourier domain for PG vars
+    """
+    fourier_xpd = xpd.FourierExpansions(
+        xpd.m*core.p + xpd.omega*core.t,
+        dyn_var, xpd.pgvar_s
+    )
+    f_map = base.map_collection(dyn_var, fourier_xpd)
+    return eq_sys.apply(
+        lambda eq: Eq(
+            xpd.FourierExpansions.to_fourier_domain(eq.lhs, f_map, fourier_xpd.bases).expand(), 
+            xpd.FourierExpansions.to_fourier_domain(eq.rhs, f_map, fourier_xpd.bases).expand()), 
+        inplace=False, metadata=False
+    )
+
+
+def to_fd_ode_psi(eq: Eq, psi_var: Expr = core.pgvar_ptb.Psi, 
+    verbose: int = 0) -> Eq:
+    """Reduce an eq of psi to ODE form in cylindrical radius s
+    """
+    psi_fun = base.LabeledCollection(["Psi"], Psi=psi_var)
+    psi_s = base.LabeledCollection(["Psi"], Psi=xpd.pgvar_s.Psi)
+    fourier_xpd = xpd.FourierExpansions(
+        xpd.m*core.p + xpd.omega*core.t, 
+        psi_fun, psi_s)
+    f_map = base.map_collection(psi_fun, fourier_xpd)
+    return Eq(
+        xpd.FourierExpansions.to_fourier_domain(eq.lhs, f_map, fourier_xpd.bases).expand(), 
+        xpd.FourierExpansions.to_fourier_domain(eq.rhs, f_map, fourier_xpd.bases).expand()
+    )
+
 
 """Matrix collection utilities"""
 
@@ -294,8 +330,9 @@ def equations_to_matrices(eqs: base.LabeledCollection,
 
 
 
-"""Top-level functions
-Top level functions are mainly functions wrapped with input/output
+"""
+Top-level functions
+functions wrapped with input/output
 utilities to further simplify the procedure
 """
 
@@ -320,6 +357,7 @@ def form_equations(
     components: List = ["Lorentz"],
     timescale: str = "Alfven", 
     bg: bg_fields.BackgroundFieldMHD = bg_fields.BackgroundHydro(),
+    deactivate: List[int] = list(),
     save_to: Optional[str] = None, 
     overwrite: bool = False,
     verbose: int = 0) -> Tuple[base.LabeledCollection, List]:
@@ -344,6 +382,9 @@ def form_equations(
     # Input
     with open(EQS_FILES[i_mode], 'r') as fread:
         eqs = base.LabeledCollection.load_json(fread, parser=parse_expr)
+    
+    for idx in deactivate:
+        eqs[idx] = Eq(eqs[idx].lhs, S.Zero)
     
     # Assemble forcing
     eqs, par_list_nd = assemble_forcing(eqs, 
@@ -502,6 +543,7 @@ def compute_matrix_numerics(
     jacobi_rule_opt: dict = {"automatic": True, "quadN": None},
     quadrature_opt: dict = {"backend": "scipy", "output": "numpy", "outer": True},
     save_to: Optional[str] = None, 
+    format: Literal["hdf5", "json", "pickle"] = "hdf5",
     overwrite: bool = False,
     verbose: int = 0) -> Tuple[np.ndarray, np.ndarray]:
     """Eigensolver step III: computation of matrix elements
@@ -522,6 +564,7 @@ def compute_matrix_numerics(
         to be passed to :class:`~pg_utils.numerics.matrices.InnerQuad_GaussJacobi.gramian`
     :param Optional[str] save_to: output json file name, 
         if None (default), no file will be written.
+    :param Literal["hdf5", "json", "pickle"] format: output format
     :param bool overwrite: whether to overwrite existing file upon output, 
         False by default.
     :param int verbose: verbosity level, default to 0.
@@ -582,31 +625,69 @@ def compute_matrix_numerics(
     if save_to is not None:
         os.makedirs(os.path.dirname(save_to), exist_ok=True)
         mode = 'w' if overwrite else 'x'
-        with h5py.File(save_to, mode) as fwrite:
-            str_type = h5py.string_dtype(encoding="utf-8")
-            fwrite.attrs["xpd"] = xpd_recipe.identifier
-            for par, val in par_val.items():
-                fwrite.attrs[srepr(par)] = float(val)
-            gp = fwrite.create_group("rows")
-            gp.create_dataset("names", data=fnames, dtype=str_type)
-            gp.create_dataset("ranges", 
-                data=np.array([len(nrange) for nrange in ranges_test]))
-            gp = fwrite.create_group("cols")
-            gp.create_dataset("names", data=cnames, dtype=str_type)
-            gp.create_dataset("ranges", 
-                data=np.array([len(nrange) for nrange in ranges_trial]))
-            matrix_gp = fwrite.create_group("M")
-            num_io.sparse_coo_save_to_group(coo_array(M_val), matrix_gp)
-            matrix_gp = fwrite.create_group("K")
-            num_io.sparse_coo_save_to_group(coo_array(K_val), matrix_gp)
+        if format == "hdf5":
+            # If the output is hdf5 format, the matrix must be in numpy double-prec format
+            # M_val = M_val.astype(np.complex128)
+            # K_val = K_val.astype(np.complex128)
+            with h5py.File(save_to, mode) as fwrite:
+                str_type = h5py.string_dtype(encoding="utf-8")
+                fwrite.attrs["xpd"] = xpd_recipe.identifier
+                for par, val in par_val.items():
+                    fwrite.attrs[srepr(par)] = float(val)
+                gp = fwrite.create_group("rows")
+                gp.create_dataset("names", data=fnames, dtype=str_type)
+                gp.create_dataset("ranges", 
+                    data=np.array([len(nrange) for nrange in ranges_test]))
+                gp = fwrite.create_group("cols")
+                gp.create_dataset("names", data=cnames, dtype=str_type)
+                gp.create_dataset("ranges", 
+                    data=np.array([len(nrange) for nrange in ranges_trial]))
+                matrix_gp = fwrite.create_group("M")
+                num_io.sparse_coo_save_to_group(coo_array(M_val), matrix_gp)
+                matrix_gp = fwrite.create_group("K")
+                num_io.sparse_coo_save_to_group(coo_array(K_val), matrix_gp)
+            
+        elif format == "pickle":
+            save_meta = {srepr(par): float(val) for par, val in par_val.items()}
+            save_meta["xpd"] = xpd_recipe.identifier
+            # save_meta = {"xpd": xpd_recipe.identifier, **par_val}
+            rows = {"names": fnames, "ranges": np.array([len(nrange) for nrange in ranges_test])}
+            cols = {"names": cnames, "ranges": np.array([len(nrange) for nrange in ranges_trial])}
+            matrix_m = num_io.serialize_coo(coo_array(M_val), format="pickle")
+            matrix_k = num_io.serialize_coo(coo_array(K_val), format="pickle")
+            with open(save_to, mode + 'b') as fwrite:
+                pickle.dump({"meta": save_meta, "rows": rows, "cols": cols, 
+                    "M": matrix_m, "K": matrix_k}, fwrite)
+        
+        elif format == "json":
+            save_meta = {srepr(par): float(val) for par, val in par_val.items()}
+            save_meta["xpd"] = xpd_recipe.identifier
+            rows = {"names": fnames, "ranges": [len(nrange) for nrange in ranges_test]}
+            cols = {"names": cnames, "ranges": [len(nrange) for nrange in ranges_trial]}
+            matrix_m = num_io.serialize_coo(coo_array(M_val), format="json")
+            matrix_k = num_io.serialize_coo(coo_array(K_val), format="json")
+            with open(save_to, mode) as fwrite:
+                fwrite.write(json.dumps(
+                    {"meta": save_meta, "rows": rows, "cols": cols, "M": matrix_m, "K": matrix_k},
+                    cls=num_io.CompactArrayJSONEncoder, indent=2
+                ))
+        
+        else:
+            raise NotImplementedError("Unknown output format")
+                
         if verbose > 0:
             print("Results saved to {:s}".format(save_to))
     return M_val, K_val
 
 
 def compute_eigen(
-    read_from: Union[str, Tuple[np.ndarray, np.ndarray]], 
-    save_to: Optional[str], 
+    read_from: Union[str, Tuple[np.ndarray, np.ndarray, List]], 
+    read_fmt: Literal["hdf5", "pickle", "json"] = "hdf5",
+    save_to: Optional[str] = None, 
+    save_fmt: Literal["hdf5", "pickle"] = "hdf5",
+    diag: bool = False,
+    chop: Optional[float] = None,
+    prec: Optional[int] = None,
     overwrite: bool = False,
     verbose: int = 0) -> List[np.ndarray]:
     """Eigensolver step IV: compute eigenvalues and eigenvectors from matrices
@@ -615,8 +696,17 @@ def compute_eigen(
         file name to be loaded as the starting set of equations.
         If two arrays are given, they are interpreted as mass and stiffness
         matrices, respectively.
+    :param Literal["hdf5", "pickle", "json"] read_fmt: input format of the file
+        default to "hdf5" format (restricted to double prec numpy arrays)
     :param Optional[str] save_to: output json file name, 
         if None (default), no file will be written.
+    :param Literal["hdf5", "pickle"] save_fmt: output format of the file
+        default to "hdf5" format (restricted to double-prec numpy arrays)
+    :param bool diag: whether to enforce diagonality of mass matrix, default=False
+    :param Optional[float] chop: setting numbers whose absolute values are 
+        smaller than a threshold to zero. If None, then no chopping performed.
+    :param Optional[int] prec: precision (no. of binary digits) for eigensolver.
+        If None set, then double-prec numpy/scipy backend is used.
     :param bool overwrite: whether to overwrite existing file upon output, 
         False by default.
     :param int verbose: verbosity level, default to 0.
@@ -625,18 +715,53 @@ def compute_eigen(
     """
     # Input
     if isinstance(read_from, str):
-        with h5py.File(read_from, 'r') as fread:
-            par_dict = {par: val for par, val in fread.attrs.items()}
-            # identifier = fread.attrs["xpd"]
-            # m_val = fread.attrs["azm"]
-            # Le = fread.attrs["Le"]
-            # Lu = fread.attrs["Lu"]
-            fnames = list(fread["rows"]["names"].asstr()[()])
-            frange = fread["rows"]["ranges"][()]
-            cnames = list(fread["cols"]["names"].asstr()[()])
-            crange = fread["cols"]["ranges"][()]
-            M_val = num_io.matrix_load_from_group(fread["M"]).todense()
-            K_val = num_io.matrix_load_from_group(fread["K"]).todense()
+        if read_fmt == "hdf5":
+            with h5py.File(read_from, 'r') as fread:
+                par_dict = {par: val for par, val in fread.attrs.items()}
+                # identifier = fread.attrs["xpd"]
+                # m_val = fread.attrs["azm"]
+                # Le = fread.attrs["Le"]
+                # Lu = fread.attrs["Lu"]
+                cnames = list(fread["cols"]["names"].asstr()[()])
+                crange = fread["cols"]["ranges"][()]
+                M_val = num_io.matrix_load_from_group(fread["M"]).todense()
+                K_val = num_io.matrix_load_from_group(fread["K"]).todense()
+            if chop is not None:
+                M_val[np.abs(M_val) < chop] = 0.
+                K_val[np.abs(K_val) < chop] = 0.
+        if read_fmt == "pickle":
+            with open(read_from, 'rb') as fread:
+                serialized_obj = pickle.load(fread)
+                par_dict = serialized_obj["meta"]
+                cnames, crange = serialized_obj["cols"]["names"], serialized_obj["cols"]["ranges"]
+                M_val = num_io.parse_coo(serialized_obj["M"])
+                K_val = num_io.parse_coo(serialized_obj["K"])
+            if prec is None:
+                M_val, K_val = M_val.todense(), K_val.todense()
+            else:
+                M_val = num_utils.to_dense_gmpy2(M_val, prec=prec)
+                K_val = num_utils.to_dense_gmpy2(K_val, prec=prec)
+            if chop is not None:
+                M_val[np.abs(M_val) < chop] = gmpy2.mpc("0.", prec)
+                K_val[np.abs(K_val) < chop] = gmpy2.mpc("0.", prec)
+        if read_fmt == "json":
+            non_sympy_keys = ("xpd",)
+            with open(read_from, 'r') as fread:
+                serialized_obj = json.load(fread)
+                save_meta = dict()
+                for key, val in serialized_obj["meta"].items():
+                    if key in non_sympy_keys:
+                        save_meta[key] = val
+                    else:
+                        save_meta[parse_expr(key)] = val
+                cnames, crange = serialized_obj["cols"]["names"], serialized_obj["cols"]["ranges"]
+                M_val = num_io.parse_coo(serialized_obj["M"], 
+                    transform=np.vectorize(lambda x: gmpy2.mpc(x, precision=113), otypes=(object,)))
+                K_val = num_io.parse_coo(serialized_obj["K"], 
+                    transform=np.vectorize(lambda x: gmpy2.mpc(x, precision=113), otypes=(object,)))
+            if chop is not None:
+                M_val[np.abs(M_val) < chop] = gmpy2.mpc("0.", prec)
+                K_val[np.abs(K_val) < chop] = gmpy2.mpc("0.", prec)
     else:
         M_val = read_from[0]
         K_val = read_from[1]
@@ -644,12 +769,24 @@ def compute_eigen(
     if verbose > 0:
         print("========== Calculating eigenvalues... ==========")
     
-    # Convert to ordinary eigenvalue problem and solve
-    assert np.linalg.cond(M_val) < 1e+8
-    A_val = np.linalg.inv(M_val) @ K_val
-    eig_val, eig_vec = np.linalg.eig(A_val)
+    # # Convert to ordinary eigenvalue problem and solve
+    # if diag:
+    #     A_val = (K_val.T / np.diag(M_val)).T
+    # else:
+    #     assert np.linalg.cond(M_val) < 1e+8
+    #     A_val = np.linalg.inv(M_val) @ K_val
+    # eig_val, eig_vec = np.linalg.eig(A_val)
     
-    # Sorting
+    if prec is None:
+        eig_val, eig_vec = lin_alg.eig_generalized(
+            M_val.astype(np.complex128), K_val.astype(np.complex128), diag=diag)
+    else:
+        eig_val, eig_vec = lin_alg.eig_generalized(
+            M_val, K_val, diag=diag, solver=lin_alg.MultiPrecLinSolver(prec=prec))
+        # eig_val = eig_val.astype(np.complex128)
+        # eig_vec = eig_vec.astype(np.complex128)
+    
+    # Sorting (note: we are sorting w.r.t. double-precision absolute values)
     eig_sort = np.argsort(-np.abs(eig_val))
     eig_val = eig_val[eig_sort]
     eig_vec = eig_vec[:, eig_sort]
@@ -658,15 +795,78 @@ def compute_eigen(
     if save_to is not None:
         os.makedirs(os.path.dirname(save_to), exist_ok=True)
         mode = 'w' if overwrite else 'x'
+        
+        if save_fmt == "hdf5":
+            with h5py.File(save_to, mode) as fwrite:
+                str_type = h5py.string_dtype(encoding="utf-8")
+                for par, val in par_dict.items():
+                    fwrite.attrs[par] = val
+                gp = fwrite.create_group("bases")
+                gp.create_dataset("names", data=cnames, dtype=str_type)
+                gp.create_dataset("ranges", data=np.asarray(crange))            
+                fwrite.create_dataset("eigval", data=eig_val.astype(np.complex128))
+                fwrite.create_dataset("eigvec", data=eig_vec.astype(np.complex128))
+        elif save_fmt == "pickle":
+            with open(save_to, mode + 'b') as fwrite:
+                pickle.dump({
+                    "meta": par_dict, 
+                    "bases": {"names": cnames, "ranges": crange}, 
+                    "eigval": eig_val, 
+                    "eigvec": eig_vec}, fwrite)
+        else:
+            raise NotImplementedError("Unknown output format!")
+        
+        if verbose > 0:
+            print("Results saved to {:s}".format(save_to))
+    
+    return eig_val, eig_vec
+
+
+def compute_eigen_mp(
+    read_from: Union[str, Tuple[np.ndarray, np.ndarray]],
+    save_to: Optional[str], 
+    diag: bool = False,
+    prec: int = 113,
+    overwrite: bool = False,
+    verbose: int = 0) -> List[np.ndarray]:
+    """Compute eigenvalue problem to multiple precision
+    """
+    if isinstance(read_from, str):
+        raise NotImplementedError
+    else:
+        M_val, K_val = read_from[0], read_from[1]
+    
+    if verbose > 0:
+        print("========== Calculating eigenvalues... ==========")
+    
+    # Convert to ordinary eigenvalue problem and solve
+    eig_val, eig_vec = lin_alg.eig_generalized(
+        M_val, K_val, diag=diag, solver=lin_alg.MultiPrecLinSolver(prec=prec))
+    
+    # Sorting
+    eig_sort = np.argsort(-np.abs(eig_val))
+    eig_val = eig_val[eig_sort]
+    eig_vec = eig_vec[:, eig_sort]
+    
+    eig_val = eig_val.astype(np.complex128)
+    eig_vec = eig_vec.astype(np.complex128)
+    
+    # Output
+    if save_to is not None:
+        os.makedirs(os.path.dirname(save_to), exist_ok=True)
+        mode = 'w' if overwrite else 'x'
         with h5py.File(save_to, mode) as fwrite:
-            str_type = h5py.string_dtype(encoding="utf-8")
-            for par, val in par_dict.items():
-                fwrite.attrs[par] = val
-            gp = fwrite.create_group("bases")
-            gp.create_dataset("names", data=cnames, dtype=str_type)
-            gp.create_dataset("ranges", data=np.asarray(crange))            
+            # str_type = h5py.string_dtype(encoding="utf-8")
+            # for par, val in par_dict.items():
+            #     fwrite.attrs[par] = val
+            # gp = fwrite.create_group("bases")
+            # gp.create_dataset("names", data=cnames, dtype=str_type)
+            # gp.create_dataset("ranges", data=np.asarray(crange))            
             fwrite.create_dataset("eigval", data=eig_val)
             fwrite.create_dataset("eigvec", data=eig_vec)
         if verbose > 0:
             print("Results saved to {:s}".format(save_to))
+    
     return eig_val, eig_vec
+    
+    

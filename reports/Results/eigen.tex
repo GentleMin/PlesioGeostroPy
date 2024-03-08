@@ -1,0 +1,47 @@
+\chapter{Solutions to the eigenvalue problems}
+
+I present here the solutions to the eigenvalue problems in the PG model.
+The full PG model is a dynamical system described by system of PDEs
+\[
+    \mathcal{M}_i \frac{\partial x_i}{\partial t} = \mathcal{F}_i (x_i, \cdots x_N), \qquad i = 1, 2\cdots N.
+\]
+$x_i$ are the dynamical variables in the PG model, $\Psi$, $\overline{M_{ss}}$, $\overline{M_{\phi\phi}}$, etc. If the boundary magnetic field is described by $B_r$, then $N=15$; alternatively, if the boundary magnetic field is described by $B_s^{\pm}$, $B_\phi^{\pm}$ and $B_z^{\pm}$, then $N=20$.
+The former provides a closed system under certain boundary conditions, but requires a cylindrical-to-spherical transform. On the other hand, the latter is intrinsically in cylindrical coordinates, but is not closed in the nonlinear case. However, in eigenvalue problems with static background flow, the latter formulation is closed. For details, refer to the Ingredients document.
+Introducing
+\[
+    \mathcal{M} = \begin{pmatrix}
+        \mathcal{M}_1 & & \\ 
+        & \ddots & \\
+        & & \mathcal{M}_N
+    \end{pmatrix},\qquad 
+    \mathcal{F} = \begin{pmatrix} \mathcal{F}_1 \\ \vdots \\ \mathcal{F}_N \end{pmatrix}, \qquad 
+    \mathbf{x} = \begin{pmatrix} x_1 \\ \vdots \\ x_N \end{pmatrix},
+\]
+we can formally write the system as
+\[
+    \mathcal{M} \frac{\partial \mathbf{x}}{\partial t} = \mathcal{F}(\mathbf{x}).
+\]
+If we consider perturbations near a time-invariant background field denoted as $\mathbf{x}^0$, the perturbed quantities follow the linearized equations
+\[
+    \mathcal{M} \frac{\partial \mathbf{x}}{\partial t} = D\mathcal{F}(\mathbf{x}^0) \, \mathbf{x} = \frac{\partial \mathcal{F}(\mathbf{x}^0)}{\partial \mathbf{x}^0} \, \mathbf{x} = \mathcal{K}(\mathbf{x}^0) \, \mathbf{x}.
+\]
+This linear, autonomous dynamical system admits general solutions in the form of time-harmonic functions $\mathbf{x}(t) = \mathbf{x}(0) e^{\lambda t} = \mathbf{x}^0 e^{i\widetilde{\omega}t}$.
+The purpose of this chapter is therefore to present the solution of eigenvalues $\lambda$ and eigenmodes $\mathbf{x}(t=0)$ to the eigenvalue problem in the form of
+\begin{equation}\label{eqn:eigenproblem}
+    \lambda \mathcal{M} \mathbf{x} = i \widetilde{\omega} \mathcal{M} \mathbf{x} = \mathcal{K}(\mathbf{x}^0) \, \mathbf{x}.
+\end{equation}
+Unless otherwise specified, throughout this chapter the term \textit{eigenvalue} refers to $\lambda = i\widetilde{\omega} \in \mathbb{C}$ defined in eq.(\ref{eqn:eigenproblem}). $\sigma = \mathrm{Re}[\lambda]$ gives the exponential growth / decay rate, while $\omega = \mathrm{Im}[\lambda]$ gives the angular frequency of temporal oscillations (\textit{eigenfrequency}).
+For systems free of both viscous and magnetic diffusion, physics dictates that $\mathrm{Re}[\lambda] = 0$ or $\widetilde{\omega} = \omega$, except for small numerical errors. Hereinafter such systems are described as \textit{ideal}.
+
+I shall present the solutions to the eigenvalue problems under several background fields $\mathbf{x}^0$. In each case, I shall provide the solved system, simplified equation, spectrum of the system, as well as selected eigenmodes.
+In this chapter, \textit{the spectrum of a system or matrix} refers to the set of eigenvalues, whereas \textit{the spectrum of an eigenmode} refers to the composition of the mode in terms of basis functions.
+
+\clearpage
+
+\input{eigen_hydro.tex}
+
+\input{eigen_malkus.tex}
+
+\input{eigen_toroidal_quadrupole.tex}
+
+\input{eigen_poloidal_dipole.tex}

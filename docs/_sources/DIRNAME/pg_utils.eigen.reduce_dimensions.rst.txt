@@ -1,0 +1,6 @@
+pg\_utils.eigen.reduce\_dimensions
+==================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: reduce_dimensions

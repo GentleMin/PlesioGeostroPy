@@ -1,0 +1,6 @@
+pg\_utils.numerics.symparser.powers\_of
+=======================================
+
+.. currentmodule:: pg_utils.numerics.symparser
+
+.. autofunction:: powers_of

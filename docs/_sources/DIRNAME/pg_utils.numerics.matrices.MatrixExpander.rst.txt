@@ -1,0 +1,26 @@
+pg\_utils.numerics.matrices.MatrixExpander
+==========================================
+
+.. currentmodule:: pg_utils.numerics.matrices
+
+.. autoclass:: MatrixExpander
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MatrixExpander.__init__
+      ~MatrixExpander.expand
+   
+   
+
+   
+   
+   

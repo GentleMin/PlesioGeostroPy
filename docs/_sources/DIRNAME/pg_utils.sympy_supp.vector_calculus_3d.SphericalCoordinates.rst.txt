@@ -1,0 +1,38 @@
+pg\_utils.sympy\_supp.vector\_calculus\_3d.SphericalCoordinates
+===============================================================
+
+.. currentmodule:: pg_utils.sympy_supp.vector_calculus_3d
+
+.. autoclass:: SphericalCoordinates
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SphericalCoordinates.__init__
+      ~SphericalCoordinates.curl
+      ~SphericalCoordinates.div
+      ~SphericalCoordinates.grad
+      ~SphericalCoordinates.laplacian
+      ~SphericalCoordinates.surface_div
+      ~SphericalCoordinates.surface_grad
+      ~SphericalCoordinates.transform_to
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SphericalCoordinates.coords
+   
+   

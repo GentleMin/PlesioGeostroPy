@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.forcing.force\_explicit
+===========================================
+
+.. currentmodule:: pg_utils.pg_model.forcing
+
+.. autodata:: force_explicit

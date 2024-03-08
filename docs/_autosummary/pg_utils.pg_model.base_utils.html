@@ -55,6 +55,7 @@
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.base.html">pg_utils.pg_model.base</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pg_utils.pg_model.base_utils</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.base_utils.assemble_background.html">pg_utils.pg_model.base_utils.assemble_background</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.base_utils.extract_symbols.html">pg_utils.pg_model.base_utils.extract_symbols</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.base_utils.field_to_moment.html">pg_utils.pg_model.base_utils.field_to_moment</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.base_utils.fields_in_term.html">pg_utils.pg_model.base_utils.fields_in_term</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.base_utils.integrate_asym.html">pg_utils.pg_model.base_utils.integrate_asym</a></li>
@@ -69,7 +70,8 @@
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_cpt.html">pg_utils.pg_model.expand_stream_force_cpt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_orth.html">pg_utils.pg_model.expand_stream_force_orth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.html">pg_utils.pg_model.forcing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
@@ -117,19 +119,22 @@ Jingtao Min &#64; ETH-EPM, 09.2023</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.assemble_background.html#pg_utils.pg_model.base_utils.assemble_background" title="pg_utils.pg_model.base_utils.assemble_background"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assemble_background</span></code></a>(B0[, Psi0, mode])</p></td>
 <td><p>Assemble background fields</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.field_to_moment.html#pg_utils.pg_model.base_utils.field_to_moment" title="pg_utils.pg_model.base_utils.field_to_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field_to_moment</span></code></a>(B_field)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.extract_symbols.html#pg_utils.pg_model.base_utils.extract_symbols" title="pg_utils.pg_model.base_utils.extract_symbols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_symbols</span></code></a>(var_collection)</p></td>
+<td><p>Return a collection of symbols, whose names are specified by the input collection items</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.field_to_moment.html#pg_utils.pg_model.base_utils.field_to_moment" title="pg_utils.pg_model.base_utils.field_to_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field_to_moment</span></code></a>(B_field)</p></td>
 <td><p>Convert magnetic field to integrated quadratic moments.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.fields_in_term.html#pg_utils.pg_model.base_utils.fields_in_term" title="pg_utils.pg_model.base_utils.fields_in_term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fields_in_term</span></code></a>(expr, field_collection)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.fields_in_term.html#pg_utils.pg_model.base_utils.fields_in_term" title="pg_utils.pg_model.base_utils.fields_in_term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fields_in_term</span></code></a>(expr, field_collection)</p></td>
 <td><p>Extract all fields in a term from a collection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.integrate_asym.html#pg_utils.pg_model.base_utils.integrate_asym" title="pg_utils.pg_model.base_utils.integrate_asym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_asym</span></code></a>(field)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.integrate_asym.html#pg_utils.pg_model.base_utils.integrate_asym" title="pg_utils.pg_model.base_utils.integrate_asym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_asym</span></code></a>(field)</p></td>
 <td><p>equatorially antisymmetric / odd integral</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.integrate_sym.html#pg_utils.pg_model.base_utils.integrate_sym" title="pg_utils.pg_model.base_utils.integrate_sym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_sym</span></code></a>(field)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.integrate_sym.html#pg_utils.pg_model.base_utils.integrate_sym" title="pg_utils.pg_model.base_utils.integrate_sym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_sym</span></code></a>(field)</p></td>
 <td><p>Equatorially symmetric / even integral</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.linearize.html#pg_utils.pg_model.base_utils.linearize" title="pg_utils.pg_model.base_utils.linearize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearize</span></code></a>(expr, *subs_maps[, perturb_var])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.pg_model.base_utils.linearize.html#pg_utils.pg_model.base_utils.linearize" title="pg_utils.pg_model.base_utils.linearize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearize</span></code></a>(expr, *subs_maps[, perturb_var])</p></td>
 <td><p>Linearize expression</p></td>
 </tr>
 </tbody>

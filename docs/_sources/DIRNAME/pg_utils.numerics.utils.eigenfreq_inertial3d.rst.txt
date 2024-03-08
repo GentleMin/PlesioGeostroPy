@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.eigenfreq\_inertial3d
+==============================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: eigenfreq_inertial3d

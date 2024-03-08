@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.to\_gpmy2\_f
+=====================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: to_gpmy2_f

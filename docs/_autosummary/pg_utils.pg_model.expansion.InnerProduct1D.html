@@ -63,7 +63,8 @@
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_cpt.html">pg_utils.pg_model.expand_stream_force_cpt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_orth.html">pg_utils.pg_model.expand_stream_force_orth</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.expansion.n.html">pg_utils.pg_model.expansion.n</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.expansion.m.html">pg_utils.pg_model.expansion.m</a></li>
@@ -448,8 +449,8 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#pg_utils.pg_model.expansion.InnerProduct1D.simplify" title="pg_utils.pg_model.expansion.InnerProduct1D.simplify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simplify</span></code></a>(**kwargs)</p></td>
 <td><p>See the simplify function in sympy.simplify</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pg_utils.pg_model.expansion.InnerProduct1D.sort_key" title="pg_utils.pg_model.expansion.InnerProduct1D.sort_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort_key</span></code></a>([order])</p></td>
-<td><p>Return a sort key.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort_key</span></code>([order])</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pg_utils.pg_model.expansion.InnerProduct1D.split" title="pg_utils.pg_model.expansion.InnerProduct1D.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>([opd])</p></td>
 <td><p>Split the inner product into sum of inner products.</p></td>
@@ -3148,25 +3149,6 @@ flag will not alter the results.</p>
 <dt class="sig sig-object py" id="pg_utils.pg_model.expansion.InnerProduct1D.simplify">
 <span class="sig-name descname"><span class="pre">simplify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/pg_model/expansion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.pg_model.expansion.InnerProduct1D.simplify" title="Permalink to this definition"></a></dt>
 <dd><p>See the simplify function in sympy.simplify</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pg_utils.pg_model.expansion.InnerProduct1D.sort_key">
-<span class="sig-name descname"><span class="pre">sort_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/pg_model/expansion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.pg_model.expansion.InnerProduct1D.sort_key" title="Permalink to this definition"></a></dt>
-<dd><p>Return a sort key.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">S</span><span class="p">,</span> <span class="n">I</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">([</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="o">-</span><span class="n">I</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sort_key</span><span class="p">())</span>
-<span class="go">[1/2, -I, I]</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">S</span><span class="p">(</span><span class="s2">&quot;[x, 1/x, 1/x**2, x**2, x**(1/2), x**(1/4), x**(3/2)]&quot;</span><span class="p">)</span>
-<span class="go">[x, 1/x, x**(-2), x**2, sqrt(x), x**(1/4), x**(3/2)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sort_key</span><span class="p">())</span>
-<span class="go">[x**(-2), 1/x, x**(1/4), sqrt(x), x, x**(3/2), x**2]</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py method">

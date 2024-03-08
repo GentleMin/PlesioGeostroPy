@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.core.U0\_vec
+================================
+
+.. currentmodule:: pg_utils.pg_model.core
+
+.. autodata:: U0_vec

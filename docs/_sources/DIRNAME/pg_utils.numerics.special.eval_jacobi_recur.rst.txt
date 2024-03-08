@@ -1,0 +1,6 @@
+pg\_utils.numerics.special.eval\_jacobi\_recur
+==============================================
+
+.. currentmodule:: pg_utils.numerics.special
+
+.. autofunction:: eval_jacobi_recur

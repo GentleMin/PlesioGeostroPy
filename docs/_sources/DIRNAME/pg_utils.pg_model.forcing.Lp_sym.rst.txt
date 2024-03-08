@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.forcing.Lp\_sym
+===================================
+
+.. currentmodule:: pg_utils.pg_model.forcing
+
+.. autodata:: Lp_sym

@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.is\_eq\_coo
+====================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: is_eq_coo

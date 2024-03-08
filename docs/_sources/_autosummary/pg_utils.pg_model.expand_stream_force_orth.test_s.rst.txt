@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.expand\_stream\_force\_orth.test\_s
+=======================================================
+
+.. currentmodule:: pg_utils.pg_model.expand_stream_force_orth
+
+.. autodata:: test_s

@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.eigen\_drift
+=====================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: eigen_drift

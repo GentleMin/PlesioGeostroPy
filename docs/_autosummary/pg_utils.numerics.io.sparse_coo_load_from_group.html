@@ -23,7 +23,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pg_utils.numerics.io.sparse_coo_save_to_group" href="pg_utils.numerics.io.sparse_coo_save_to_group.html" />
-    <link rel="prev" title="pg_utils.numerics.io.matrix_load_from_group" href="pg_utils.numerics.io.matrix_load_from_group.html" /> 
+    <link rel="prev" title="pg_utils.numerics.io.serialize_coo" href="pg_utils.numerics.io.serialize_coo.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,12 +55,17 @@
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.matrices_load_h5.html">pg_utils.numerics.io.matrices_load_h5</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.matrices_save_h5.html">pg_utils.numerics.io.matrices_save_h5</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.matrix_load_from_group.html">pg_utils.numerics.io.matrix_load_from_group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.parse_coo.html">pg_utils.numerics.io.parse_coo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.serialize_coo.html">pg_utils.numerics.io.serialize_coo</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pg_utils.numerics.io.sparse_coo_load_from_group</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.sparse_coo_save_to_group.html">pg_utils.numerics.io.sparse_coo_save_to_group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.io.CompactArrayJSONEncoder.html">pg_utils.numerics.io.CompactArrayJSONEncoder</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.linalg.html">pg_utils.numerics.linalg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.special.html">pg_utils.numerics.special</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.symparser.html">pg_utils.numerics.symparser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.utils.html">pg_utils.numerics.utils</a></li>
 </ul>
 </li>
@@ -102,7 +107,7 @@
 <h1>pg_utils.numerics.io.sparse_coo_load_from_group<a class="headerlink" href="#pg-utils-numerics-io-sparse-coo-load-from-group" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pg_utils.numerics.io.sparse_coo_load_from_group">
-<span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.io.</span></span><span class="sig-name descname"><span class="pre">sparse_coo_load_from_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp_gp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Group</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">coo_matrix</span></span></span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/io.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.io.sparse_coo_load_from_group" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.io.</span></span><span class="sig-name descname"><span class="pre">sparse_coo_load_from_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp_gp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Group</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">coo_array</span></span></span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/io.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.io.sparse_coo_load_from_group" title="Permalink to this definition"></a></dt>
 <dd><p>Load sparse matrix in coordinate format from h5py group</p>
 </dd></dl>
 
@@ -112,7 +117,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pg_utils.numerics.io.matrix_load_from_group.html" class="btn btn-neutral float-left" title="pg_utils.numerics.io.matrix_load_from_group" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.numerics.io.serialize_coo.html" class="btn btn-neutral float-left" title="pg_utils.numerics.io.serialize_coo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="pg_utils.numerics.io.sparse_coo_save_to_group.html" class="btn btn-neutral float-right" title="pg_utils.numerics.io.sparse_coo_save_to_group" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

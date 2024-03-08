@@ -1,0 +1,25 @@
+\section{Calculation of energies}
+
+In almost all quasi-geostrophic models, the topic of energy is relatively simple.
+Density gradient or compositional convection are almost never (to my knowledge, never ever) considered except in buoyancy term, and hence no potential energy coming from chemical differentiation or background advection is put into the system. 
+Chemical reactions and phase changes are never included, and no energy is generated or extracted from the system in this way.
+If radioactive energy is ever considered, it merely serves to provide a heat source.
+The only energies at play are kinetic energy (Boussinesq approximation does not seem to be consistent without potential energy fluctuation, but I have not seen any discussion on this intermediate type of energy), eletromagnetic energy, and internal energy (or other thermodynamic potential functions).
+
+Among the three, the representation of kinetic energy is inherantly supported by the PG model.
+This is because PG model has a 3-D (albeit columnar) representation of the velocity field.
+The kinetic energy density is given by
+\[
+    \mathcal{E}_k = \frac{1}{2} u^2 = \frac{1}{2} \left(u_s^2 + u_\phi^2 + u_z^2\right) = \frac{1}{2} \left[\frac{1}{s^2H^2} \left(\frac{\partial \psi}{\partial \phi}\right)^2 + \frac{1}{H^2} \left(\frac{\partial \psi}{\partial s}\right)^2 + \frac{z^2}{H^6} \left(\frac{\partial \psi}{\partial \phi}\right)^2\right].
+\]
+Given a columnar ansatz with $\psi = \psi(s, \phi)$, we can first write down the total kinetic energy
+\begin{equation}\begin{aligned}
+    E_k &= \int_V \mathcal{E}_k \, dV = \int_{0}^{1} \int_{0}^{2\pi} \int_{-H}^{H} \mathcal{E}_k \, dz s d\phi ds \\ 
+    &= \int_{0}^{1} \int_{0}^{2\pi} \left[\frac{1}{s^2H} \left(\frac{\partial \psi}{\partial \phi}\right)^2 + \frac{1}{H} \left(\frac{\partial \psi}{\partial s}\right)^2 + \frac{1}{3H^3} \left(\frac{\partial \psi}{\partial \phi}\right)^2\right] s d\phi ds.
+\end{aligned}\end{equation}
+Expanding $\psi$ in Fourier series in the azimuthal direction, i.e. $\psi(s, \phi) = \sum_m \psi^m(s) e^{im\phi}$, and recalling the orthogonality of the Fourier basis $e^{im\phi}$ in interval $[0, 2\pi]$, we can rewrite the total kinetic energy as a summation of different components with different azimuthal wavenumber,
+\[
+    E_k = \sum_m \int_0^1 \frac{1}{H} \left[\frac{1}{s^2} \left(\psi^m\right)^2 + \left(\frac{d \psi^m}{d s}\right)^2 + \frac{1}{3H^2} \left(\psi^m\right)^2\right] \, ds = \sum_m \int_0^1 \frac{1}{H} \left[\frac{3-2s^2}{3s^2H^2} \left(\psi^m\right)^2 + \left(\frac{d \psi^m}{d s}\right)^2\right] \, ds
+\]
+
+

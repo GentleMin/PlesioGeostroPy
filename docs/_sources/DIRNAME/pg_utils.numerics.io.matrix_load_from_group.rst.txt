@@ -1,0 +1,6 @@
+pg\_utils.numerics.io.matrix\_load\_from\_group
+===============================================
+
+.. currentmodule:: pg_utils.numerics.io
+
+.. autofunction:: matrix_load_from_group

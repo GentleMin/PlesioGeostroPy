@@ -1,0 +1,48 @@
+pg\_utils.pg\_model.base.CollectionConjugate
+============================================
+
+.. currentmodule:: pg_utils.pg_model.base
+
+.. autoclass:: CollectionConjugate
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CollectionConjugate.__init__
+      ~CollectionConjugate.apply
+      ~CollectionConjugate.as_empty
+      ~CollectionConjugate.copy
+      ~CollectionConjugate.deserialize
+      ~CollectionConjugate.generate_collection
+      ~CollectionConjugate.load_json
+      ~CollectionConjugate.save_json
+      ~CollectionConjugate.serialize
+      ~CollectionConjugate.subs
+      ~CollectionConjugate.subset_B_bound
+      ~CollectionConjugate.subset_B_bound_cyl
+      ~CollectionConjugate.subset_B_equator
+      ~CollectionConjugate.subset_mag
+      ~CollectionConjugate.subset_moments
+      ~CollectionConjugate.vorticity
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CollectionConjugate.cg_field_names
+      ~CollectionConjugate.iter_filter
+      ~CollectionConjugate.iter_name
+   
+   

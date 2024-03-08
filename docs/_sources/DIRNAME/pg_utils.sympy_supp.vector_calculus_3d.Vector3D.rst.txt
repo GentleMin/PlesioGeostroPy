@@ -1,0 +1,29 @@
+pg\_utils.sympy\_supp.vector\_calculus\_3d.Vector3D
+===================================================
+
+.. currentmodule:: pg_utils.sympy_supp.vector_calculus_3d
+
+.. autoclass:: Vector3D
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Vector3D.__init__
+      ~Vector3D.curl
+      ~Vector3D.div
+      ~Vector3D.laplacian
+      ~Vector3D.transform_to
+   
+   
+
+   
+   
+   

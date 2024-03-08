@@ -1,0 +1,6 @@
+pg\_utils.numerics.io.serialize\_coo
+====================================
+
+.. currentmodule:: pg_utils.numerics.io
+
+.. autofunction:: serialize_coo

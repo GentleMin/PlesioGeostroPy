@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.expand\_stream\_force\_cpt.test\_s\_expression
+==================================================================
+
+.. currentmodule:: pg_utils.pg_model.expand_stream_force_cpt
+
+.. autodata:: test_s_expression

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_utils.numerics.symparser.Gmpy2Printer &mdash; PlesioGeostroPy 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pg_utils.numerics.utils" href="pg_utils.numerics.utils.html" />
+    <link rel="prev" title="pg_utils.numerics.symparser.powers_of" href="pg_utils.numerics.symparser.powers_of.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PlesioGeostroPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">PlesioGeostroPy</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pg_utils.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.eigen.html">pg_utils.eigen</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pg_utils.numerics.html">pg_utils.numerics</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.io.html">pg_utils.numerics.io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.linalg.html">pg_utils.numerics.linalg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.special.html">pg_utils.numerics.special</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pg_utils.numerics.symparser.html">pg_utils.numerics.symparser</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.symparser.v_functions_mpmath.html">pg_utils.numerics.symparser.v_functions_mpmath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.symparser.v_functions_gmpy2.html">pg_utils.numerics.symparser.v_functions_gmpy2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.symparser.jacobi_idx_subs.html">pg_utils.numerics.symparser.jacobi_idx_subs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.symparser.powers_of.html">pg_utils.numerics.symparser.powers_of</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pg_utils.numerics.symparser.Gmpy2Printer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.utils.html">pg_utils.numerics.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.pg_model.html">pg_utils.pg_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.processing.html">pg_utils.processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg_utils.sympy_supp.html">pg_utils.sympy_supp</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PlesioGeostroPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.html">pg_utils</a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.numerics.html">pg_utils.numerics</a></li>
+          <li class="breadcrumb-item"><a href="pg_utils.numerics.symparser.html">pg_utils.numerics.symparser</a></li>
+      <li class="breadcrumb-item active">pg_utils.numerics.symparser.Gmpy2Printer</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/pg_utils.numerics.symparser.Gmpy2Printer.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pg-utils-numerics-symparser-gmpy2printer">
+<h1>pg_utils.numerics.symparser.Gmpy2Printer<a class="headerlink" href="#pg-utils-numerics-symparser-gmpy2printer" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pg_utils.numerics.symparser.Gmpy2Printer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.symparser.</span></span><span class="sig-name descname"><span class="pre">Gmpy2Printer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.Optional" title="(in Python v3.8)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.Optional" title="(in Python v3.8)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/symparser.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.symparser.Gmpy2Printer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PythonCodePrinter</span></code></p>
+<p>Lambda printer for gmpy2 which maintains precision for floats</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pg_utils.numerics.symparser.Gmpy2Printer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.Optional" title="(in Python v3.8)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.Optional" title="(in Python v3.8)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/symparser.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.symparser.Gmpy2Printer.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pg_utils.numerics.symparser.Gmpy2Printer.__init__" title="pg_utils.numerics.symparser.Gmpy2Printer.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([settings, dps, prec])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pg_utils.numerics.symparser.Gmpy2Printer.doprint" title="pg_utils.numerics.symparser.Gmpy2Printer.doprint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">doprint</span></code></a>(expr[, assign_to])</p></td>
+<td><p>Print the expression as code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">emptyPrinter</span></code>(expr)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parenthesize</span></code>(item, level[, strict])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pg_utils.numerics.symparser.Gmpy2Printer.set_global_settings" title="pg_utils.numerics.symparser.Gmpy2Printer.set_global_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_global_settings</span></code></a>(**settings)</p></td>
+<td><p>Set system-wide printing settings.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">stringify</span></code>(args, sep[, level])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">language</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">modules</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">printmethod</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reserved_words</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tab</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pg_utils.numerics.symparser.Gmpy2Printer.doprint">
+<span class="sig-name descname"><span class="pre">doprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assign_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/symparser.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.symparser.Gmpy2Printer.doprint" title="Permalink to this definition"></a></dt>
+<dd><p>Print the expression as code.</p>
+<dl class="simple">
+<dt>expr<span class="classifier">Expression</span></dt><dd><p>The expression to be printed.</p>
+</dd>
+<dt>assign_to<span class="classifier">Symbol, string, MatrixSymbol, list of strings or Symbols (optional)</span></dt><dd><p>If provided, the printed code will set the expression to a variable or multiple variables
+with the name or names given in <code class="docutils literal notranslate"><span class="pre">assign_to</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pg_utils.numerics.symparser.Gmpy2Printer.set_global_settings">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_global_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/symparser.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.symparser.Gmpy2Printer.set_global_settings" title="Permalink to this definition"></a></dt>
+<dd><p>Set system-wide printing settings.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pg_utils.numerics.symparser.powers_of.html" class="btn btn-neutral float-left" title="pg_utils.numerics.symparser.powers_of" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.numerics.utils.html" class="btn btn-neutral float-right" title="pg_utils.numerics.utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, GentleMin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

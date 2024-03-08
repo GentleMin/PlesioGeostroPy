@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.to\_dense\_gmpy2
+=========================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: to_dense_gmpy2

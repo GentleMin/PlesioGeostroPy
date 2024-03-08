@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.expansion.placeholder\_collection
+=====================================================
+
+.. currentmodule:: pg_utils.pg_model.expansion
+
+.. autofunction:: placeholder_collection

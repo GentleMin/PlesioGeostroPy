@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.expansion.n\_trial
+======================================
+
+.. currentmodule:: pg_utils.pg_model.expansion
+
+.. autodata:: n_trial

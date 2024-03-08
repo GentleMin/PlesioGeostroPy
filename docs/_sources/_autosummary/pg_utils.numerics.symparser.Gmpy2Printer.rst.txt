@@ -1,0 +1,41 @@
+pg\_utils.numerics.symparser.Gmpy2Printer
+=========================================
+
+.. currentmodule:: pg_utils.numerics.symparser
+
+.. autoclass:: Gmpy2Printer
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Gmpy2Printer.__init__
+      ~Gmpy2Printer.doprint
+      ~Gmpy2Printer.emptyPrinter
+      ~Gmpy2Printer.parenthesize
+      ~Gmpy2Printer.set_global_settings
+      ~Gmpy2Printer.stringify
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Gmpy2Printer.language
+      ~Gmpy2Printer.modules
+      ~Gmpy2Printer.order
+      ~Gmpy2Printer.printmethod
+      ~Gmpy2Printer.reserved_words
+      ~Gmpy2Printer.tab
+   
+   
