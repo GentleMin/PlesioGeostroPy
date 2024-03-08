@@ -438,13 +438,13 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         
         # Throw warning of singularity if alpha or beta <= -1
         if alpha <= -1:
+            warnings.warn("Endpoint singularity detected (alpha={:s})! Check for integrability!".format(str(alpha)))
             alpha = sympy.S.Zero
             quadN *= 2
-            warnings.warn("Endpoint singularity detected! Check for integrability!")
         if beta <= -1:
+            warnings.warn("Endpoint singularity detected (beta={:s})! Check for integrability!".format(str(beta)))
             beta = sympy.S.Zero
             quadN *= 2
-            warnings.warn("Endpoint singularity detected! Check for integrability!")
         
         if verbose:
             print("Integrating with alpha={}, beta={}, N={}".format(alpha, beta, quadN))
