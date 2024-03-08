@@ -320,6 +320,27 @@ Eigenvalue processing
 """
 
 def cluster_modes(eig_vals: np.ndarray, rtol: float = 1e-5, atol: float = 1e-8):
+    """Clustering of eigenvalues.
+    This function takes in an array of eigenvalues, and decide whether they
+    are degenerate or distinct, and then outputs the clustered result.
+    
+    :param np.ndarray eig_vals: array of eigenvalues;
+    :param float rtol: relative tolerance between eigenvalues considered degenerate
+    :param float atol: absolute tolerance between eigenvalues considered degenerate
+    :returns: index of distinct modes, degenerate ones share the same index
+    
+    .. note:: The input eigenvalue array should be already "sorted" in some ways,
+        so that clustering only occurs for adjacent eigenvalues.
+    
+    Example:
+    
+    .. code-block:: python
+
+        >>> a = np.array([1., 2., 2.0000001, 2.99999999, 3.0, 3.00000001, 4.5])
+        >>> clusters = cluster_modes(a, rtol=1e-5, atol=1e-5)
+        >>> clusters
+        np.array([0, 1, 1, 1, 2, 2, 3])
+    """
     counter = 0
     modes = []
     eig_ref = eig_vals[0]
@@ -332,6 +353,17 @@ def cluster_modes(eig_vals: np.ndarray, rtol: float = 1e-5, atol: float = 1e-8):
 
 
 def intermodal_separation(eig_vals: np.ndarray, **opt_cluster) -> np.ndarray:
+    """Calculate intermodal separation ([Boyd]_)
+    
+    :param np.ndarray eig_vals: array of eigenvalues
+    :param \**opt_cluster: keywords for clustering options, 
+        see :py:func:`cluster_modes`
+    
+    .. note:: The input eigenvalue array should be already "sorted" in some ways,
+        so that clustering only occurs for adjacent eigenvalues.
+        
+    .. [Boyd] Boyd, *Chebyshev and Fourier Spectral Methods*.
+    """
     mode_idx = cluster_modes(eig_vals, **opt_cluster)
     mode_eigens = np.zeros(mode_idx.max() + 1, np.complex128)
     assert mode_eigens.size >= 1
@@ -350,6 +382,13 @@ def intermodal_separation(eig_vals: np.ndarray, **opt_cluster) -> np.ndarray:
 def eigen_drift(eig_base: np.ndarray, eig_comp: np.ndarray, waterlevel: float = 0., 
     **opt_cluster):
     """Calculate eigenvalue drift ratio using Boyd's method ([Boyd]_)
+    
+    :param np.ndarray eig_base: eigenvalue array used as a base
+    :param np.ndarray eig_comp: eigenvalue array used for comparison
+    :param float waterlevel: waterlevel for near-trivial eigenvalue to avoid
+        division by zero; default to zero (assuming nontrivial eigenvalues).
+    :param \**opt_cluster: optional keyword arguments for clustering,
+        see :py:func:`cluster_modes`
     
     .. [Boyd] Boyd, *Chebyshev and Fourier Spectral Methods*.
     

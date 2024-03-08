@@ -12,7 +12,8 @@ reports/**/*.gz
 reports/**/*.log
 reports/**/*.out
 reports/**/*.xml
-presentation/
+reports/Presentation/
+reports/Materials/
 /materials/
 out/**/*.png
 out/**/*.pdf

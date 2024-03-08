@@ -1,0 +1,32 @@
+pg\_utils.numerics.linalg.StdLinSolver
+======================================
+
+.. currentmodule:: pg_utils.numerics.linalg
+
+.. autoclass:: StdLinSolver
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~StdLinSolver.__init__
+      ~StdLinSolver.eig
+      ~StdLinSolver.eig_g
+      ~StdLinSolver.eigh
+      ~StdLinSolver.inv
+      ~StdLinSolver.solve
+      ~StdLinSolver.solve_diag
+      ~StdLinSolver.solve_explicit
+   
+   
+
+   
+   
+   

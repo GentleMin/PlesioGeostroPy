@@ -1,0 +1,6 @@
+pg\_utils.numerics.io.parse\_coo
+================================
+
+.. currentmodule:: pg_utils.numerics.io
+
+.. autofunction:: parse_coo

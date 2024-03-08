@@ -2,7 +2,7 @@
 """
 Define expansions of the fields.
 The methods and classes in this file are mainly for expanding fields
-in polar coordinates, in the unit disk (s in (0, 1), phi in (0, pi)).
+in polar coordinates, in the unit disk (:math:`s \\in (0, 1), \\phi \\in (0, \\pi)`).
 
 These utilities depend on coordinate variables in the PG formulation,
 but are not directly linked to PG variables.

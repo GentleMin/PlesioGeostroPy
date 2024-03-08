@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.expand\_stream\_force\_orth.fourier\_expand
+===============================================================
+
+.. currentmodule:: pg_utils.pg_model.expand_stream_force_orth
+
+.. autodata:: fourier_expand

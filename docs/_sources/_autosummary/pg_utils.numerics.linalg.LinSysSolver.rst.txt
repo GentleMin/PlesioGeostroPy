@@ -1,0 +1,32 @@
+pg\_utils.numerics.linalg.LinSysSolver
+======================================
+
+.. currentmodule:: pg_utils.numerics.linalg
+
+.. autoclass:: LinSysSolver
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LinSysSolver.__init__
+      ~LinSysSolver.eig
+      ~LinSysSolver.eig_g
+      ~LinSysSolver.eigh
+      ~LinSysSolver.inv
+      ~LinSysSolver.solve
+      ~LinSysSolver.solve_diag
+      ~LinSysSolver.solve_explicit
+   
+   
+
+   
+   
+   

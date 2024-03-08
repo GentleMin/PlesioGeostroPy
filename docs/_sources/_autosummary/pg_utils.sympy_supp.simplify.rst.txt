@@ -1,0 +1,33 @@
+pg\_utils.sympy\_supp.simplify
+==============================
+
+.. automodule:: pg_utils.sympy_supp.simplify
+  
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      process_leaf_node
+      recursive_collect
+      recursive_collect_tree
+      recursive_eval_tree
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

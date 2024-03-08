@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.to\_dense\_obj
+=======================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: to_dense_obj

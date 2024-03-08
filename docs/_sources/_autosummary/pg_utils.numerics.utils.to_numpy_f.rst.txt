@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.to\_numpy\_f
+=====================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: to_numpy_f

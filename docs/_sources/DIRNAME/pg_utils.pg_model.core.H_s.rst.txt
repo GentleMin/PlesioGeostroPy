@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.core.H\_s
+=============================
+
+.. currentmodule:: pg_utils.pg_model.core
+
+.. autodata:: H_s
