@@ -1,0 +1,6 @@
+pg\_utils.eigen.reduce\_eqsys\_to\_force\_form
+==============================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: reduce_eqsys_to_force_form

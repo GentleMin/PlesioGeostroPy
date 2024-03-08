@@ -1,0 +1,6 @@
+pg\_utils.numerics.matrices.quad\_matrix\_mpmath
+================================================
+
+.. currentmodule:: pg_utils.numerics.matrices
+
+.. autofunction:: quad_matrix_mpmath

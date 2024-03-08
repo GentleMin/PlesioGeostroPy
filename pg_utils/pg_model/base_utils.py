@@ -80,7 +80,7 @@ def assemble_background(B0, Psi0=None, mode="PG"):
         containing no derivative of undefined functions.
         Otherwise, substitution will return incorrect results.
         The background field at the boundary are not immediately 
-        evaluated at $z=\pm H$, since their z-derivatives are 
+        evaluated at :math:`z=\\pm H`, since their z-derivatives are 
         present in the induction equations. One has to evaluate 
         after substitution and simplification.
     """

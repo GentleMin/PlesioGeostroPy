@@ -1,0 +1,25 @@
+pg\_utils.numerics.special.RootsJacobiResult
+============================================
+
+.. currentmodule:: pg_utils.numerics.special
+
+.. autoclass:: RootsJacobiResult
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~RootsJacobiResult.__init__
+   
+   
+
+   
+   
+   

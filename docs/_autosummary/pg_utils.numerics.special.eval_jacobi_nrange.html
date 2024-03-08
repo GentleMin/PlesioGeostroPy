@@ -22,7 +22,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pg_utils.numerics.special.eval_jacobi_to_Nmax" href="pg_utils.numerics.special.eval_jacobi_to_Nmax.html" />
+    <link rel="next" title="pg_utils.numerics.special.eval_jacobi_recur" href="pg_utils.numerics.special.eval_jacobi_recur.html" />
     <link rel="prev" title="pg_utils.numerics.special" href="pg_utils.numerics.special.html" /> 
 </head>
 
@@ -52,12 +52,20 @@
 <li class="toctree-l2"><a class="reference internal" href="pg_utils.eigen.html">pg_utils.eigen</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pg_utils.numerics.html">pg_utils.numerics</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.io.html">pg_utils.numerics.io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.linalg.html">pg_utils.numerics.linalg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pg_utils.numerics.special.html">pg_utils.numerics.special</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pg_utils.numerics.special.eval_jacobi_nrange</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_to_Nmax.html">pg_utils.numerics.special.eval_jacobi_to_Nmax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur.html">pg_utils.numerics.special.eval_jacobi_recur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_Nmax.html">pg_utils.numerics.special.eval_jacobi_recur_Nmax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_gmpy2.html">pg_utils.numerics.special.eval_jacobi_recur_gmpy2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_mp.html">pg_utils.numerics.special.eval_jacobi_recur_mp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.eval_jacobi_recur_mpmath.html">pg_utils.numerics.special.eval_jacobi_recur_mpmath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.roots_jacobi_mp.html">pg_utils.numerics.special.roots_jacobi_mp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.special.RootsJacobiResult.html">pg_utils.numerics.special.RootsJacobiResult</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.symparser.html">pg_utils.numerics.symparser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.utils.html">pg_utils.numerics.utils</a></li>
 </ul>
 </li>
@@ -99,7 +107,7 @@
 <h1>pg_utils.numerics.special.eval_jacobi_nrange<a class="headerlink" href="#pg-utils-numerics-special-eval-jacobi-nrange" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pg_utils.numerics.special.eval_jacobi_nrange">
-<span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.special.</span></span><span class="sig-name descname"><span class="pre">eval_jacobi_nrange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#float" title="(in Python v3.8)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#float" title="(in Python v3.8)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/special.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.special.eval_jacobi_nrange" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.special.</span></span><span class="sig-name descname"><span class="pre">eval_jacobi_nrange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#float" title="(in Python v3.8)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#float" title="(in Python v3.8)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/special.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.special.eval_jacobi_nrange" title="Permalink to this definition"></a></dt>
 <dd><p>Evaluate Jacobi polynomials for a range of degrees</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -127,7 +135,7 @@ values of the Jacobi polynomials at grid points</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="pg_utils.numerics.special.html" class="btn btn-neutral float-left" title="pg_utils.numerics.special" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pg_utils.numerics.special.eval_jacobi_to_Nmax.html" class="btn btn-neutral float-right" title="pg_utils.numerics.special.eval_jacobi_to_Nmax" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pg_utils.numerics.special.eval_jacobi_recur.html" class="btn btn-neutral float-right" title="pg_utils.numerics.special.eval_jacobi_recur" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

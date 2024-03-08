@@ -1,0 +1,36 @@
+﻿pg\_utils
+=========
+
+.. automodule:: pg_utils
+  
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pg_utils.eigen
+   pg_utils.numerics
+   pg_utils.pg_model
+   pg_utils.processing
+   pg_utils.sympy_supp
+

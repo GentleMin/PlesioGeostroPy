@@ -22,8 +22,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pg_utils.numerics.utils.eigenfreq_Malkus_3d" href="pg_utils.numerics.utils.eigenfreq_Malkus_3d.html" />
-    <link rel="prev" title="pg_utils.numerics.special.eval_jacobi_to_Nmax" href="pg_utils.numerics.special.eval_jacobi_to_Nmax.html" /> 
+    <link rel="next" title="pg_utils.numerics.utils.allclose_sparse" href="pg_utils.numerics.utils.allclose_sparse.html" />
+    <link rel="prev" title="pg_utils.numerics.symparser.Gmpy2Printer" href="pg_utils.numerics.symparser.Gmpy2Printer.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,13 +52,32 @@
 <li class="toctree-l2"><a class="reference internal" href="pg_utils.eigen.html">pg_utils.eigen</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pg_utils.numerics.html">pg_utils.numerics</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.io.html">pg_utils.numerics.io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.linalg.html">pg_utils.numerics.linalg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.special.html">pg_utils.numerics.special</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.symparser.html">pg_utils.numerics.symparser</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pg_utils.numerics.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.allclose_sparse.html">pg_utils.numerics.utils.allclose_sparse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.array_to_str.html">pg_utils.numerics.utils.array_to_str</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.cluster_modes.html">pg_utils.numerics.utils.cluster_modes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.eigen_drift.html">pg_utils.numerics.utils.eigen_drift</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_Malkus_3d.html">pg_utils.numerics.utils.eigenfreq_Malkus_3d</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_Malkus_pg.html">pg_utils.numerics.utils.eigenfreq_Malkus_pg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_inertial3d.html">pg_utils.numerics.utils.eigenfreq_inertial3d</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_psi_op.html">pg_utils.numerics.utils.eigenfreq_psi_op</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.intermodal_separation.html">pg_utils.numerics.utils.intermodal_separation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.is_eq_coo.html">pg_utils.numerics.utils.is_eq_coo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.is_eq_sparse.html">pg_utils.numerics.utils.is_eq_sparse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.spec_tail_exp_rate.html">pg_utils.numerics.utils.spec_tail_exp_rate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_dense_gmpy2.html">pg_utils.numerics.utils.to_dense_gmpy2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_dense_obj.html">pg_utils.numerics.utils.to_dense_obj</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_gpmy2_c.html">pg_utils.numerics.utils.to_gpmy2_c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_gpmy2_f.html">pg_utils.numerics.utils.to_gpmy2_f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_mpmath_c.html">pg_utils.numerics.utils.to_mpmath_c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_mpmath_f.html">pg_utils.numerics.utils.to_mpmath_f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_numpy_c.html">pg_utils.numerics.utils.to_numpy_c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_numpy_f.html">pg_utils.numerics.utils.to_numpy_f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.transform_dps_prec.html">pg_utils.numerics.utils.transform_dps_prec</a></li>
 </ul>
 </li>
 </ul>
@@ -102,17 +121,68 @@
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.allclose_sparse.html#pg_utils.numerics.utils.allclose_sparse" title="pg_utils.numerics.utils.allclose_sparse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allclose_sparse</span></code></a>(array_1, array_2[, rtol, atol])</p></td>
+<td><p>Compare if two sparse matrices are close enough</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.array_to_str.html#pg_utils.numerics.utils.array_to_str" title="pg_utils.numerics.utils.array_to_str"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_to_str</span></code></a>(x[, str_fun])</p></td>
+<td><p>Convert array to List of strings</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.cluster_modes.html#pg_utils.numerics.utils.cluster_modes" title="pg_utils.numerics.utils.cluster_modes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cluster_modes</span></code></a>(eig_vals[, rtol, atol])</p></td>
+<td><p>Clustering of eigenvalues.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.eigen_drift.html#pg_utils.numerics.utils.eigen_drift" title="pg_utils.numerics.utils.eigen_drift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eigen_drift</span></code></a>(eig_base, eig_comp[, waterlevel])</p></td>
+<td><p>Calculate eigenvalue drift ratio using Boyd's method (<a class="reference internal" href="pg_utils.numerics.utils.intermodal_separation.html#boyd" id="id1"><span>[Boyd]</span></a>)</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_Malkus_3d.html#pg_utils.numerics.utils.eigenfreq_Malkus_3d" title="pg_utils.numerics.utils.eigenfreq_Malkus_3d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eigenfreq_Malkus_3d</span></code></a>(m, n, Le[, mode, timescale])</p></td>
 <td><p>Analytic eigenfrequency for 3D eigemodes with Malkus bg field</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_Malkus_pg.html#pg_utils.numerics.utils.eigenfreq_Malkus_pg" title="pg_utils.numerics.utils.eigenfreq_Malkus_pg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eigenfreq_Malkus_pg</span></code></a>(m, n, Le[, mode, timescale])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_Malkus_pg.html#pg_utils.numerics.utils.eigenfreq_Malkus_pg" title="pg_utils.numerics.utils.eigenfreq_Malkus_pg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eigenfreq_Malkus_pg</span></code></a>(m, n, Le[, mode, ...])</p></td>
 <td><p>Analytic eigenfrequency for the PG model with Malkus bg field</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_inertial3d.html#pg_utils.numerics.utils.eigenfreq_inertial3d" title="pg_utils.numerics.utils.eigenfreq_inertial3d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eigenfreq_inertial3d</span></code></a>(m, n)</p></td>
 <td><p>Analytic eigenfrequency for the 3D inertial modes</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_psi_op.html#pg_utils.numerics.utils.eigenfreq_psi_op" title="pg_utils.numerics.utils.eigenfreq_psi_op"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eigenfreq_psi_op</span></code></a>(m, n)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_psi_op.html#pg_utils.numerics.utils.eigenfreq_psi_op" title="pg_utils.numerics.utils.eigenfreq_psi_op"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eigenfreq_psi_op</span></code></a>(m, n[, prec])</p></td>
 <td><p>Analytic eigenfrequency for the self-adjoint operator for stream function Psi in the vorticity equation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.intermodal_separation.html#pg_utils.numerics.utils.intermodal_separation" title="pg_utils.numerics.utils.intermodal_separation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intermodal_separation</span></code></a>(eig_vals, **opt_cluster)</p></td>
+<td><p>Calculate intermodal separation (<a class="reference internal" href="pg_utils.numerics.utils.intermodal_separation.html#boyd" id="id2"><span>[Boyd]</span></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.is_eq_coo.html#pg_utils.numerics.utils.is_eq_coo" title="pg_utils.numerics.utils.is_eq_coo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_eq_coo</span></code></a>(array_1, array_2)</p></td>
+<td><p>Compare if two COORdinate format sparse arrays are identical</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.is_eq_sparse.html#pg_utils.numerics.utils.is_eq_sparse" title="pg_utils.numerics.utils.is_eq_sparse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_eq_sparse</span></code></a>(array_1, array_2)</p></td>
+<td><p>Compare if two sparse matrices are identical</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.spec_tail_exp_rate.html#pg_utils.numerics.utils.spec_tail_exp_rate" title="pg_utils.numerics.utils.spec_tail_exp_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec_tail_exp_rate</span></code></a>(spectrum)</p></td>
+<td><p>Calculate maximum <em>exponential rate of convergence</em>  from the trailing part of a spectrum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.to_dense_gmpy2.html#pg_utils.numerics.utils.to_dense_gmpy2" title="pg_utils.numerics.utils.to_dense_gmpy2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dense_gmpy2</span></code></a>(gmpy2_array, prec[, mode])</p></td>
+<td><p>Convert a sparse gmpy2 array to dense form</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.to_dense_obj.html#pg_utils.numerics.utils.to_dense_obj" title="pg_utils.numerics.utils.to_dense_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dense_obj</span></code></a>(obj_array, fill_zero)</p></td>
+<td><p>Convert a sparse object array to dense form</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.to_gpmy2_c.html#pg_utils.numerics.utils.to_gpmy2_c" title="pg_utils.numerics.utils.to_gpmy2_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_gpmy2_c</span></code></a>(x[, dps, prec])</p></td>
+<td><p>Convert float array to gmpy2 float array</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.to_gpmy2_f.html#pg_utils.numerics.utils.to_gpmy2_f" title="pg_utils.numerics.utils.to_gpmy2_f"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_gpmy2_f</span></code></a>(x[, dps, prec])</p></td>
+<td><p>Convert float array to gmpy2 float array</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.to_mpmath_c.html#pg_utils.numerics.utils.to_mpmath_c" title="pg_utils.numerics.utils.to_mpmath_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mpmath_c</span></code></a>(x[, dps, prec])</p></td>
+<td><p>Convert float array to mpmath float array</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.to_mpmath_f.html#pg_utils.numerics.utils.to_mpmath_f" title="pg_utils.numerics.utils.to_mpmath_f"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mpmath_f</span></code></a>(x[, dps, prec])</p></td>
+<td><p>Convert float array to mpmath float array</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.to_numpy_c.html#pg_utils.numerics.utils.to_numpy_c" title="pg_utils.numerics.utils.to_numpy_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_numpy_c</span></code></a>(x)</p></td>
+<td><p>Convert complex array to numpy complex128 array</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.numerics.utils.to_numpy_f.html#pg_utils.numerics.utils.to_numpy_f" title="pg_utils.numerics.utils.to_numpy_f"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_numpy_f</span></code></a>(x)</p></td>
+<td><p>Convert float array to numpy float64 array</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.numerics.utils.transform_dps_prec.html#pg_utils.numerics.utils.transform_dps_prec" title="pg_utils.numerics.utils.transform_dps_prec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_dps_prec</span></code></a>([dps, prec, dps_default, ...])</p></td>
+<td><p>Conversion between decimal points and precision</p></td>
 </tr>
 </tbody>
 </table>
@@ -122,8 +192,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pg_utils.numerics.special.eval_jacobi_to_Nmax.html" class="btn btn-neutral float-left" title="pg_utils.numerics.special.eval_jacobi_to_Nmax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pg_utils.numerics.utils.eigenfreq_Malkus_3d.html" class="btn btn-neutral float-right" title="pg_utils.numerics.utils.eigenfreq_Malkus_3d" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pg_utils.numerics.symparser.Gmpy2Printer.html" class="btn btn-neutral float-left" title="pg_utils.numerics.symparser.Gmpy2Printer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pg_utils.numerics.utils.allclose_sparse.html" class="btn btn-neutral float-right" title="pg_utils.numerics.utils.allclose_sparse" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

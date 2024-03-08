@@ -1,0 +1,6 @@
+pg\_utils.eigen.apply\_bg\_to\_set
+==================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: apply_bg_to_set

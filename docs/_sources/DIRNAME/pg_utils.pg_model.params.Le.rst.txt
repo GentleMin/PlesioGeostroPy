@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.params.Le
+=============================
+
+.. currentmodule:: pg_utils.pg_model.params
+
+.. autodata:: Le

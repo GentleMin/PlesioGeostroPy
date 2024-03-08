@@ -1,0 +1,38 @@
+pg\_utils.numerics.io.CompactArrayJSONEncoder
+=============================================
+
+.. currentmodule:: pg_utils.numerics.io
+
+.. autoclass:: CompactArrayJSONEncoder
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CompactArrayJSONEncoder.__init__
+      ~CompactArrayJSONEncoder.default
+      ~CompactArrayJSONEncoder.encode
+      ~CompactArrayJSONEncoder.iterencode
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CompactArrayJSONEncoder.CONTAINER_TYPES
+      ~CompactArrayJSONEncoder.SINGLELINE_THRESHOLD
+      ~CompactArrayJSONEncoder.indent_str
+      ~CompactArrayJSONEncoder.item_separator
+      ~CompactArrayJSONEncoder.key_separator
+   
+   

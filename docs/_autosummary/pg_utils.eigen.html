@@ -55,12 +55,16 @@
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.assemble_forcing.html">pg_utils.eigen.assemble_forcing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.collect_matrix_elements.html">pg_utils.eigen.collect_matrix_elements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.compute_eigen.html">pg_utils.eigen.compute_eigen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.compute_eigen_mp.html">pg_utils.eigen.compute_eigen_mp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.compute_matrix_numerics.html">pg_utils.eigen.compute_matrix_numerics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.equations_to_matrices.html">pg_utils.eigen.equations_to_matrices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.form_equations.html">pg_utils.eigen.form_equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.process_matrix_element.html">pg_utils.eigen.process_matrix_element</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.reduce_dimensions.html">pg_utils.eigen.reduce_dimensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.reduce_eqsys_to_force_form.html">pg_utils.eigen.reduce_eqsys_to_force_form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.reduce_eqsys_to_psi.html">pg_utils.eigen.reduce_eqsys_to_psi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.to_fd_ode_pg.html">pg_utils.eigen.to_fd_ode_pg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.eigen.to_fd_ode_psi.html">pg_utils.eigen.to_fd_ode_psi</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pg_utils.numerics.html">pg_utils.numerics</a></li>
@@ -114,28 +118,40 @@ in the framework of PG model.</p>
 <td><p>Assemble components of the forcing in the PG system</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pg_utils.eigen.collect_matrix_elements.html#pg_utils.eigen.collect_matrix_elements" title="pg_utils.eigen.collect_matrix_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collect_matrix_elements</span></code></a>(read_from, ...[, ...])</p></td>
-<td><p>Top-level function: collect matrix elements in symbolic forms</p></td>
+<td><p>Eigensolver step II: collect matrix elements in symbolic forms</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.eigen.compute_eigen.html#pg_utils.eigen.compute_eigen" title="pg_utils.eigen.compute_eigen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_eigen</span></code></a>(read_from, save_to[, verbose])</p></td>
-<td><p>Top-level routine function Stage 4: Computing eigenvalues and eigenvectors from Matrices</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.eigen.compute_eigen.html#pg_utils.eigen.compute_eigen" title="pg_utils.eigen.compute_eigen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_eigen</span></code></a>(read_from[, read_fmt, ...])</p></td>
+<td><p>Eigensolver step IV: compute eigenvalues and eigenvectors from matrices</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.eigen.compute_matrix_numerics.html#pg_utils.eigen.compute_matrix_numerics" title="pg_utils.eigen.compute_matrix_numerics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_matrix_numerics</span></code></a>(read_from, ...[, ...])</p></td>
-<td><p>Top-level function: computation of matrix elements</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.eigen.compute_eigen_mp.html#pg_utils.eigen.compute_eigen_mp" title="pg_utils.eigen.compute_eigen_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_eigen_mp</span></code></a>(read_from, save_to[, diag, ...])</p></td>
+<td><p>Compute eigenvalue problem to multiple precision</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.eigen.equations_to_matrices.html#pg_utils.eigen.equations_to_matrices" title="pg_utils.eigen.equations_to_matrices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">equations_to_matrices</span></code></a>(eqs, xpd_recipe[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.eigen.compute_matrix_numerics.html#pg_utils.eigen.compute_matrix_numerics" title="pg_utils.eigen.compute_matrix_numerics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_matrix_numerics</span></code></a>(read_from, ...[, ...])</p></td>
+<td><p>Eigensolver step III: computation of matrix elements</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.eigen.equations_to_matrices.html#pg_utils.eigen.equations_to_matrices" title="pg_utils.eigen.equations_to_matrices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">equations_to_matrices</span></code></a>(eqs, xpd_recipe[, ...])</p></td>
 <td><p>Collect matrix elements</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.eigen.form_equations.html#pg_utils.eigen.form_equations" title="pg_utils.eigen.form_equations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">form_equations</span></code></a>([eq_mode, components, ...])</p></td>
-<td><p>Top-level function: form set of equations</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.eigen.form_equations.html#pg_utils.eigen.form_equations" title="pg_utils.eigen.form_equations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">form_equations</span></code></a>([eq_mode, components, ...])</p></td>
+<td><p>Eigensolver step I: form set of equations</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.eigen.process_matrix_element.html#pg_utils.eigen.process_matrix_element" title="pg_utils.eigen.process_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_matrix_element</span></code></a>(element, map_trial, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.eigen.process_matrix_element.html#pg_utils.eigen.process_matrix_element" title="pg_utils.eigen.process_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_matrix_element</span></code></a>(element, map_trial, ...)</p></td>
 <td><p>Process matrix elements to desired form</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.eigen.reduce_dimensions.html#pg_utils.eigen.reduce_dimensions" title="pg_utils.eigen.reduce_dimensions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_dimensions</span></code></a>(read_from[, save_to, verbose])</p></td>
-<td><p>Top-level function: reduce dimension of the system</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.eigen.reduce_dimensions.html#pg_utils.eigen.reduce_dimensions" title="pg_utils.eigen.reduce_dimensions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_dimensions</span></code></a>(read_from[, save_to, ...])</p></td>
+<td><p>Eigensolver step Ib: reduce dimension of the system</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.eigen.reduce_eqsys_to_force_form.html#pg_utils.eigen.reduce_eqsys_to_force_form" title="pg_utils.eigen.reduce_eqsys_to_force_form"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_eqsys_to_force_form</span></code></a>(eqsys_old[, verbose])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.eigen.reduce_eqsys_to_force_form.html#pg_utils.eigen.reduce_eqsys_to_force_form" title="pg_utils.eigen.reduce_eqsys_to_force_form"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_eqsys_to_force_form</span></code></a>(eqsys_old[, verbose])</p></td>
 <td><p>Reduce a system of equations to streamfunction-force formulation, thus drastically reducing the dimensionality of the dynamical system</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.eigen.reduce_eqsys_to_psi.html#pg_utils.eigen.reduce_eqsys_to_psi" title="pg_utils.eigen.reduce_eqsys_to_psi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_eqsys_to_psi</span></code></a>(eqsys_old[, verbose])</p></td>
+<td><p>Reduce a system of eqs to 2nd-order formulation in stream function</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pg_utils.eigen.to_fd_ode_pg.html#pg_utils.eigen.to_fd_ode_pg" title="pg_utils.eigen.to_fd_ode_pg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_fd_ode_pg</span></code></a>(eq_sys, dyn_var)</p></td>
+<td><p>A convenient function to convert equations to Fourier domain for PG vars</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pg_utils.eigen.to_fd_ode_psi.html#pg_utils.eigen.to_fd_ode_psi" title="pg_utils.eigen.to_fd_ode_psi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_fd_ode_psi</span></code></a>(eq[, psi_var, verbose])</p></td>
+<td><p>Reduce an eq of psi to ODE form in cylindrical radius s</p></td>
 </tr>
 </tbody>
 </table>

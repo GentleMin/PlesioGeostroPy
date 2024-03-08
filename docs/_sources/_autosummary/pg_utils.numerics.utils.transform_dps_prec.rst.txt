@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.transform\_dps\_prec
+=============================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: transform_dps_prec

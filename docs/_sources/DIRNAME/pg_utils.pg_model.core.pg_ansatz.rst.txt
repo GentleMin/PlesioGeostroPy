@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.core.pg\_ansatz
+===================================
+
+.. currentmodule:: pg_utils.pg_model.core
+
+.. autofunction:: pg_ansatz

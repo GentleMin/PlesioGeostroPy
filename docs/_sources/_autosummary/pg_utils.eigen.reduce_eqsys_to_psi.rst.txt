@@ -1,0 +1,6 @@
+pg\_utils.eigen.reduce\_eqsys\_to\_psi
+======================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: reduce_eqsys_to_psi

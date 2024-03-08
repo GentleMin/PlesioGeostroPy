@@ -1,0 +1,6 @@
+pg\_utils.eigen.to\_fd\_ode\_psi
+================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: to_fd_ode_psi

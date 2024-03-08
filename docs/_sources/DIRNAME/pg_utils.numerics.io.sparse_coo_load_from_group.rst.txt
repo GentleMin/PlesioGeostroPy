@@ -1,0 +1,6 @@
+pg\_utils.numerics.io.sparse\_coo\_load\_from\_group
+====================================================
+
+.. currentmodule:: pg_utils.numerics.io
+
+.. autofunction:: sparse_coo_load_from_group

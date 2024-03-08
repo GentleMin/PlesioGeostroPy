@@ -1,0 +1,47 @@
+pg\_utils.numerics.symparser
+============================
+
+.. automodule:: pg_utils.numerics.symparser
+  
+   
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      v_functions_mpmath
+      v_functions_gmpy2
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      jacobi_idx_subs
+      powers_of
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      Gmpy2Printer
+   
+   
+
+   
+   
+   
+
+
+

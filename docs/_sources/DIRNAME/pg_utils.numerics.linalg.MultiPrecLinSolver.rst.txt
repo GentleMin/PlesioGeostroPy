@@ -1,0 +1,32 @@
+pg\_utils.numerics.linalg.MultiPrecLinSolver
+============================================
+
+.. currentmodule:: pg_utils.numerics.linalg
+
+.. autoclass:: MultiPrecLinSolver
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MultiPrecLinSolver.__init__
+      ~MultiPrecLinSolver.eig
+      ~MultiPrecLinSolver.eig_g
+      ~MultiPrecLinSolver.eigh
+      ~MultiPrecLinSolver.inv
+      ~MultiPrecLinSolver.solve
+      ~MultiPrecLinSolver.solve_diag
+      ~MultiPrecLinSolver.solve_explicit
+   
+   
+
+   
+   
+   

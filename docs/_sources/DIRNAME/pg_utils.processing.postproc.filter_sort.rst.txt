@@ -1,0 +1,6 @@
+pg\_utils.processing.postproc.filter\_sort
+==========================================
+
+.. currentmodule:: pg_utils.processing.postproc
+
+.. autofunction:: filter_sort

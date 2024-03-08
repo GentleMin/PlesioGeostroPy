@@ -124,6 +124,7 @@ def serialize_coo(sp_array: Union[coo_array, coo_matrix],
         if pickle, the objects will be left as it is;
         if json, the numpy arrays will be unparsed into lists, 
         and data are preferrably converted to string using transform
+    :returns: serialized object
     """
     coo_dict = {
         "row": sp_array.row, 
@@ -145,7 +146,13 @@ def serialize_coo(sp_array: Union[coo_array, coo_matrix],
 
 def parse_coo(serialized_obj: dict, 
     transform: Optional[Callable[[Any], Any]] = None) -> coo_array:
-    """
+    """Retrieve COOrdinate format sparse array from serialized obj
+    
+    :param dict serialized_obj: serialized object
+    :param Optional[Callable[[Any], Any]] transform: transformation
+        that takes the serialized sparse data elements to the desired form.
+        Default is None, no transformation
+    :returns: COOrdinate format sparse array
     """
     assert ("row" in serialized_obj and "col" in serialized_obj 
         and "data" in serialized_obj and "shape" in serialized_obj)

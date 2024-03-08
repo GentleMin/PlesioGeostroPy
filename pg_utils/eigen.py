@@ -564,6 +564,7 @@ def compute_matrix_numerics(
         to be passed to :class:`~pg_utils.numerics.matrices.InnerQuad_GaussJacobi.gramian`
     :param Optional[str] save_to: output json file name, 
         if None (default), no file will be written.
+    :param Literal["hdf5", "json", "pickle"] format: output format
     :param bool overwrite: whether to overwrite existing file upon output, 
         False by default.
     :param int verbose: verbosity level, default to 0.
@@ -695,8 +696,17 @@ def compute_eigen(
         file name to be loaded as the starting set of equations.
         If two arrays are given, they are interpreted as mass and stiffness
         matrices, respectively.
+    :param Literal["hdf5", "pickle", "json"] read_fmt: input format of the file
+        default to "hdf5" format (restricted to double prec numpy arrays)
     :param Optional[str] save_to: output json file name, 
         if None (default), no file will be written.
+    :param Literal["hdf5", "pickle"] save_fmt: output format of the file
+        default to "hdf5" format (restricted to double-prec numpy arrays)
+    :param bool diag: whether to enforce diagonality of mass matrix, default=False
+    :param Optional[float] chop: setting numbers whose absolute values are 
+        smaller than a threshold to zero. If None, then no chopping performed.
+    :param Optional[int] prec: precision (no. of binary digits) for eigensolver.
+        If None set, then double-prec numpy/scipy backend is used.
     :param bool overwrite: whether to overwrite existing file upon output, 
         False by default.
     :param int verbose: verbosity level, default to 0.

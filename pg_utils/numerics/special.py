@@ -10,9 +10,12 @@ import numpy as np
 import mpmath as mp
 import gmpy2 as gp
 from scipy.special import eval_jacobi, roots_jacobi
-from typing import Optional, Union
+from typing import Optional, Union, Literal
 
 from .utils import transform_dps_prec
+
+QUADPREC_DPS = 33
+QUADPREC_PREC = 113
 
 class RootsJacobiResult:
     """Result object of root-finding routine for Jacobi polynomials
@@ -53,7 +56,7 @@ class RootsJacobiResult:
 
 
 def roots_jacobi_mp(n: int, alpha: mp.mpf, beta: mp.mpf, 
-    n_dps: int = 32, extra_dps: int = 8, 
+    n_dps: int = QUADPREC_DPS, extra_dps: int = 8, 
     max_iter: int = 10) -> RootsJacobiResult:
     """Multi-precision Jacobi root calculation.
     
@@ -65,7 +68,7 @@ def roots_jacobi_mp(n: int, alpha: mp.mpf, beta: mp.mpf,
         consistent with the desired precision of output
     :param mpmath.mpf beta: beta value, with precision that is 
         consistent with the desired precision of output
-    :param int n_dps: number of decimal digits, default=32, i.e.
+    :param int n_dps: number of decimal digits, default=33, i.e.
         approx. quadruple precision
     :param int extra_dps: additional decimal digits during calculation
     :param int max_iter: maximum iteration, default=10
@@ -241,7 +244,7 @@ def eval_jacobi_recur_Nmax(Nmax: int, alpha: float, beta: float,
 
 def eval_jacobi_recur_mp(Nmesh: np.ndarray, 
     alpha: Union[mp.mpf, gp.mpfr], beta: Union[mp.mpf, gp.mpfr], zmesh: np.ndarray, 
-    dps: int = 32, backend: str = "gp.mpfr") -> np.ndarray:
+    dps: int = QUADPREC_DPS, backend: Literal["mpmath", "gmpy2"] = "gmpy2") -> np.ndarray:
     """Evaluate Jacobi polynomials using recurrence relations to arb prec
     
     This function is intended to maintain the same signature 
@@ -252,6 +255,9 @@ def eval_jacobi_recur_mp(Nmesh: np.ndarray,
     :param mpmath.mpf alpha: alpha index
     :param mpmath.mpf beta: beta index
     :param np.ndarray zmesh: mesh for evaluation grid *(N,Nz)*
+    :param int dps: number of decimal places for calculation, default to 113.
+    :param Literal["mpmath", "gmpy2"] backend: backend for calculation.
+        Default to "gmpy2".
     
     .. note::
     
@@ -304,7 +310,7 @@ def eval_jacobi_recur_mp(Nmesh: np.ndarray,
 
 
 def eval_jacobi_recur_mpmath(Nmax: int, alpha: mp.mpf, beta: mp.mpf, 
-    z: np.ndarray, dps: int = 32) -> np.ndarray:
+    z: np.ndarray, dps: int = QUADPREC_DPS) -> np.ndarray:
     """Evaluate Jacobi polynomials with recurrence relation up to a degree, 
     to (arbitrary) multi-precision.
     
@@ -316,6 +322,7 @@ def eval_jacobi_recur_mpmath(Nmax: int, alpha: mp.mpf, beta: mp.mpf,
     :param mpmath.mpf beta: beta index for Jacobi polynomials
     :param np.ndarray z: 1-D array of grid points where the Jacobi polynomials
         are to be evaluated; assumed to be within interval [-1, +1]
+    :param int dps: number of decimal places for calculation
     :returns: Array with shape (Nmax + 1, z.size), values for Jacobi
         polynomials at grid points specified in `z`.
     
@@ -362,7 +369,7 @@ def eval_jacobi_recur_mpmath(Nmax: int, alpha: mp.mpf, beta: mp.mpf,
 
 
 def eval_jacobi_recur_gmpy2(Nmax: int, alpha: gp.mpfr, beta: gp.mpfr, 
-    z: np.ndarray, prec: int = 112) -> np.ndarray:
+    z: np.ndarray, prec: int = QUADPREC_PREC) -> np.ndarray:
     """Evaluate Jacobi polynomials with recurrence relation up to a degree, 
     to (arbitrary) multi-precision, array operations using gmpy2.
     
@@ -374,6 +381,7 @@ def eval_jacobi_recur_gmpy2(Nmax: int, alpha: gp.mpfr, beta: gp.mpfr,
     :param gmpy2.mpfr beta: beta index for Jacobi polynomials
     :param np.ndarray z: 1-D array of grid points where the Jacobi polynomials
         are to be evaluated; assumed to be within interval [-1, +1]
+    :param int prec: precision (no. of binary digits) for calculation
     :returns: Array with shape (Nmax + 1, z.size), values for Jacobi
         polynomials at grid points specified in `z`.
     
