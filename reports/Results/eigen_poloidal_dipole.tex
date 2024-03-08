@@ -1,0 +1,130 @@
+\section{Ideal eigenmodes under poloidal dipolar background field}
+
+The background field is given by
+\[
+    \mathbf{B}^0 = -6sz \hat{\mathbf{s}} + (12s^2 + 6z^2 - 10) \hat{\mathbf{z}}
+\]
+which translates to the following background PG quantities
+\begin{equation}
+\begin{aligned}
+    \overline{M_{ss}}^0 &= 24 H^{3} s^{2} \\ 
+    \widetilde{M_{sz}}^0 &= - 18 H^{4} s + 2 H^{2} \left(- 36 s^{3} + 30 s\right) \\
+    \widetilde{zM_{ss}}^0 &= 18 H^{4} s^{2} \\
+    B_{z}^{0e} &= 12 s^{2} - 10 \\
+    B_{s, z}^{0e} &= - 6 s \\
+    B_s^{0+} &= - 6 H s \\
+    B_z^{0+} &= 6 s^{2} - 4 \\
+    B_s^{0-} &= 6 H s \\
+    B_z^{0-} &= 6 s^{2} - 4 \\
+    \Psi^{0} &= \overline{M_{\phi\phi}}^0 = \overline{M_{s\phi}}^0 = \widetilde{M_{\phi z}}^0 = \widetilde{zM_{\phi\phi}}^0 = \widetilde{zM_{s\phi}}^0 = 0 \\ 
+    B_{s}^{0e} &= B_{\phi}^{0e} = B_{\phi, z}^{0e} = B_\phi^{0+} = B_\phi^{0-} = 0.
+\end{aligned}
+\end{equation}
+
+\subsection{Linearized equations}
+
+As always, the most complicated part is the streamfunction equation. Under the poloidal dipolar background field, it takes the form,
+\begin{equation}\label{eqn:eigen-pgpsi-poloidal-dipole}
+\begin{aligned}
+    i\widetilde{\omega} \left[\frac{d}{d s}\left(\frac{s}{H}\frac{d}{d s}\right) - m^2 \left(\frac{1}{sH} + \frac{s}{2H^3}\right)\right] \psi &= \frac{2 i m s}{\mathrm{Le} H^{3}} \psi \\
+    &\mkern-240mu + \frac{i m}{2 H} \frac{d\overline{m_{ss}}}{d s} + \frac{i m}{2 H s} \overline{m_{ss}} - \frac{i m}{2 H} \frac{d \overline{m_{\phi\phi}}}{d s} - \frac{i m}{2 H s} \overline{m_{\phi\phi}} - \frac{s}{2 H} \frac{d^{2}\overline{m_{s\phi}}}{d s^{2}} - \frac{3}{2 H} \frac{d\overline{m_{s\phi}}}{d s} - \frac{m^{2}}{2 sH} \overline{m_{s\phi}} \\
+    &\mkern-240mu - \frac{i m s}{2 H^{2}} \frac{d\widetilde{m_{sz}}}{d s} - \frac{i m}{2 H^{2}}\widetilde{m_{sz}} + \frac{m^{2}}{2 H^{2}} \widetilde{m_{\phi z}} + 4 i ms\frac{6 s^{2} - 5}{H^{2}} b_{z}^e - 2s^2\frac{6 s^{2} - 5}{H^{2}} b_{\phi, z}^e \\
+    &\mkern-240mu + \frac{2 s}{H} \left(\frac{db^{+}_{\phi}}{d s} - \frac{db^{-}_{\phi}}{d s}\right) + \frac{2}{H} \left(b^{+}_{\phi} - b^{-}_{\phi}\right) + \frac{i m s}{H^{2}} \left(b^{+}_{z} + b^{-}_{z}\right) + \frac{i m \left(s^2 - 2\right)}{H^{3}} \left(b^{+}_{s} - b^{-}_{s}\right).
+\end{aligned}
+\end{equation}
+The magnetic quantities are described by the induction equations in the PG model, which are given by
+\begin{equation}\label{eqn:eigen-pgmag-poloidal-dipole}
+\begin{aligned}
+    i \widetilde{\omega} \overline{m_{ss}} &= i48m \left[ sH^2 \frac{d\psi}{d s} + \left(4 s^{2} - 2\right) \psi\right] \\ 
+    % i \widetilde{\omega} \overline{m_{s\phi}} &= - 24 H^{2} s^{2} \frac{d^{2}}{d s^{2}} \psi + \left(24 H^{2} s - 24 s^{3}\right) \frac{d}{d s} \psi \\
+    i \widetilde{\omega} \overline{m_{s\phi}} &= 24 \left[-s^2 H^{2} \frac{d^{2} \psi}{d s^{2}} + s\left(1-2s^2\right) \frac{d\psi}{d s}\right] \\
+    % i \widetilde{\omega} \widetilde{m_{sz}} &= \left(- \frac{324 i m s^{3}}{H} + \frac{342 i m s}{H} - \frac{84 i m}{H s}\right) \psi + \left(\frac{72 i m s^{4}}{H} - \frac{114 i m s^{2}}{H} + \frac{42 i m}{H}\right) \frac{d}{d s} \psi \\
+    i \widetilde{\omega} \widetilde{m_{sz}} &= i6m \left[\frac{12s^4 - 19s^2 + 7}{H} \frac{d\psi}{d s} - \frac{54s^4 - 57s^2 + 14}{sH} \psi\right] \\
+    % i \widetilde{\omega} \widetilde{m_{\phi z}} &= \left(54 H s^{3} - 42 H s\right) \frac{d^{2}}{d s^{2}} \psi + \left(- 54 H s^{2} + 42 H + \frac{54 s^{4}}{H} - \frac{42 s^{2}}{H}\right) \frac{d}{d s} \psi \\
+    i \widetilde{\omega} \widetilde{m_{\phi z}} &= 6 \left[sH \left(9 s^{2} - 7\right) \frac{d^{2}\psi}{d s^{2}} + \frac{1}{H}\left(2s^2 - 1\right)\left(9s^2 - 7\right) \frac{d\psi}{d s}\right] \\
+    % i \widetilde{\omega} \widetilde{zm_{ss}} &= 36 i H^{3} m s \frac{d}{d s} \psi + \left(- 36 i H^{3} m + 108 i H m s^{2} - 36 i H m\right) \psi \\
+    i \widetilde{\omega} \widetilde{zm_{ss}} &= i36 m \left[s H^{3} \frac{d\psi}{d s} + 2H \left(2 s^{2} - 1 \right) \psi\right] \\
+    % i \widetilde{\omega} \widetilde{zm_{s\phi}} &= - 18 H^{3} s^{2} \frac{d^{2}}{d s^{2}} \psi + \left(18 H^{3} s - 18 H s^{3}\right) \frac{d}{d s} \psi \\
+    i \widetilde{\omega} \widetilde{zm_{s\phi}} &= 18 \left[- s^2 H^{3} \frac{d^{2}\psi}{d s^{2}} + sH \left(1 - 2s^2\right) \frac{d \psi}{d s} \right] \\
+    % i \widetilde{\omega} b_{z}^e &= \left(\frac{12 i m s^{2}}{H^{3}} - \frac{14 i m}{H^{3}}\right) \psi \\
+    i \widetilde{\omega} b_{z}^e &= i2m \frac{6s^2 - 7}{H^3} \psi \\
+    % i \widetilde{\omega} b_{s, z}^e &= \left(\frac{12 i m}{H s} - \frac{12 i m s}{H^{3}}\right) \psi - \frac{6 i m \frac{d}{d s} \psi}{H} \\
+    i \widetilde{\omega} b_{s, z}^e &= i6m \left[- \frac{1}{H}\frac{d\psi}{d s} + \frac{2(1 - 2s^2)}{sH^3} \psi\right] \\
+    % i \widetilde{\omega} b_{\phi, z}^e &= \left(- \frac{6}{H} + \frac{6 s^{2}}{H^{3}}\right) \frac{d}{d s} \psi + \frac{6 s \frac{d^{2}}{d s^{2}} \psi}{H} \\
+    i \widetilde{\omega} b_{\phi, z}^e &= 6\left[\frac{s}{H}\frac{d^{2}\psi}{d s^{2}} + \frac{2s^2 - 1}{H^3} \frac{d\psi}{d s} \right] \\
+    \overline{m_{\phi\phi}} &= \widetilde{zm_{\phi\phi}} = b_{s}^e = b_{\phi}^e = 0
+\end{aligned}
+\end{equation}
+All the PG induction equations are validated against and are exactly the same as in \textcite{holdenried-chernoff_long_2021}.
+In contrast, the boundary induction equations are given as follows
+\begin{equation}\label{eqn:eigen-bound-poloidal-dipole}
+\begin{aligned}
+    i \widetilde{\omega} b^{+}_{s} &= - i \widetilde{\omega} b^{-}_{s} = i 6m \left[-\frac{d\psi}{d s} + \frac{2(1 - 2s^2)}{sH^2} \psi\right], \\
+    % i \widetilde{\omega} b^{+}_{\phi} &= -i \widetilde{\omega} b^{-}_{\phi} = 6 s \frac{d^{2}}{d s^{2}} \psi + \left(-6 + \frac{6 s^{2}}{H^{2}}\right) \frac{d}{d s} \psi \\
+    i \widetilde{\omega} b^{+}_{\phi} &= -i \widetilde{\omega} b^{-}_{\phi} = 6 \left[s \frac{d^{2}\psi}{d s^{2}} + \frac{2s^2 - 1}{H^2} \frac{d\psi}{d s} \right], \\ 
+    i \widetilde{\omega} b^{+}_{z} &= i \widetilde{\omega} b^{-}_{z} = i2m \left[\frac{3 s}{H} \frac{d\psi}{d s} + \frac{4(3s^2 - 1)}{H^3} \psi \right].
+\end{aligned}
+\end{equation}
+While the meridional components $b_s^{\pm}$ and $b_z^{\pm}$ share the same expression as in \textcite{holdenried-chernoff_long_2021}, the azimuthal components $b_\phi^{\pm}$ are not mentioned in the previous work.
+It is unclear what argument was made to ignore this boundary term, but the calculation here seems to suggest that this component is however not trivial.
+Is this used or not in the previously obtained results? This is a question that only the original author can answer.
+
+We see that contrary to the boundary fields for Malkus field, the boundary fields for the poloidal dipolar background field has another parity.
+The equatorial components $b_s$ and $b_\phi$ are opposite at the upper and the lower boundary, while the vertical component $b_z$ matches.
+This means that the boundary terms in (\ref{eqn:eigen-pgpsi-poloidal-dipole}) do not cancel out like they do in (\ref{eqn:eigen-pg-malkus}), and thus boundary terms do matter.
+
+
+\subsection{Standard ODE form}
+
+To check the regularity of the system, we form the standard ODE of $\psi$ as a function of $s$ by merging the PG equations and boundary induction equations into one single ODE (\ref{eqn:ode-poloidal-dipole}).
+The standard form is a 4-th order system in $\psi$. The singularities of the equations are $s=0$, i.e. at the axis, and $H=0$ ($s=1$), i.e. at the equator. The singularities of the coefficients are analyzed below.
+\begin{equation}\label{eqn:ode-poloidal-dipole}
+\begin{aligned}
+    &\frac{d^{4}\psi}{d s^{4}} + \frac{8 - 9 s^{2}}{sH^{2}} \frac{d^{3}\psi}{d s^{3}} \\
+    +& \left(\frac{\omega^{2}}{12 H^{2} s^{2}} + \frac{- m^{2} \left(s^{4} - 5 s^{2} + 4\right) - 16 s^{2} + 20}{4 s^{2} H^{4}}\right) \frac{d^{2}\psi}{d s^{2}} \\
+    +& \left(\frac{\omega^{2}}{12 s^{3} H^{4}} + \frac{- m^{2} \left(s^{6} - 2 s^{4} - 2 s^{2} + 3\right) + 18 s^{6} - 51 s^{4} + 41 s^{2} - 5}{s^3 H^{6}}\right) \frac{d\psi}{d s} \\
+    +& \left(\frac{\omega^{2} m^{2} \left(s^2 - 2\right)}{24 s^{4} H^{4}} - \frac{1}{\mathrm{Le}} \frac{\omega m}{6 s^{2} H^{4}} - \frac{m^{2} \cdot \left(30 s^{6} - 127 s^{4} + 156 s^{2} - 32\right)}{4 s^{4} H^{6}}\right) \psi = 0
+\end{aligned}
+\end{equation}
+% \begin{itemize}
+%     \item The 3-rd order term has a simple pole at $s=0$ and a simple pole at $s=1$.
+%     \item The 2-nd order term has a 2-nd order pole at $s=0$ and a 2-nd order pole at $s=1$.
+%     \item The 1-st order term has a 3-rd order pole at $s=0$ and a 3-rd order pole at $s=1$.
+%     \item The 0-th order term has a 4-th order pole at $s=0$ and a 3-rd order pole at $s=1$.
+% \end{itemize}
+
+The 3-rd order term has a simple pole at $s=0$ and a simple pole at $s=1$;
+
+The 2-nd order term has a 2-nd order pole at $s=0$ and a 2-nd order pole at $s=1$;
+
+The 1-st order term has a 3-rd order pole at $s=0$ and a 3-rd order pole at $s=1$;
+
+The 0-th order term has a 4-th order pole at $s=0$ and a 3-rd order pole at $s=1$.
+
+The overall conclusion is that the singularities of the equation are both regular singularities, so regular solutions should exist.
+However, singularity aside, these coefficients differ from the ones as provided in \textcite{holdenried-chernoff_long_2021}. Some coefficients are the same, but not all. Recalling that in the previous work, the $b_\phi^{\pm}$ may be ignored, I tried to remove these equations before assembling the 2-nd order ODE. The result is as follows
+\begin{equation}
+\begin{aligned}
+    &\frac{d^{4}\psi}{d s^{4}} + \frac{6 - 9 s^{2}}{sH^{2}} \frac{d^{3}\psi}{d s^{3}} \\
+    +& \left(\frac{\omega^{2}}{12 s^{2} H^{2}} + \frac{m^{2} \left(- s^{4} + 5 s^{2} - 4\right) - 16 s^{2} + 12}{4 s^{2} H^{4}}\right) \frac{d^{2}\psi}{d s^{2}} \\
+    +& \left(\frac{\omega^{2}}{12 s^{3} H^{4}} + \frac{- m^{2} \left(s^{6} - 2 s^{4} - 2 s^{2} + 3\right) + 18 s^{6} - 47 s^{4} + 31 s^{2} - 3}{s^{3} H^{6}}\right) \frac{d\psi}{d s} \\
+    +& \left(\frac{\omega^{2} m^{2} \left(s^2 - 2\right)}{24 s^{4} H^{4}} - \frac{1}{\mathrm{Le}} \frac{\omega m}{6 s^{2} H^{4}} - \frac{m^{2} \cdot \left(30 s^{6} - 127 s^{4} + 156 s^{2} - 32\right)}{4 s^{4} H^{6}}\right) \psi = 0
+\end{aligned}
+\end{equation}
+Now the first three coefficients all match with \textcite{holdenried-chernoff_long_2021}. However, the coefficients of the lowest two order terms still do not match. The only difference, as it seems, lies in the terms containing $m^2$ in these coefficients.
+It does not seem to be possible to tell the right from wrong here, so a thorough symbolic re-analysis seems necessary.
+
+One notable feature that might aid debugging is that according to the equations presented here, there aren't even terms that can give $s^7$ on the numerator. However, both discrepant coefficients contain $s^7m^2$ terms in \textcite{holdenried-chernoff_long_2021}. "Dimension" analysis of the streamfunction equation (\ref{eqn:eigen-pgpsi-poloidal-dipole}) seems to indicate that such a high degree is not possible. If something is wrong with the derivation, the mistake may have already occurred at eq.(\ref{eqn:eigen-pgpsi-poloidal-dipole}). Understanding how this $s^7$ term comes about might be a key to finding out potential errors.
+
+
+\subsection{System spectrum}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.9\linewidth]{../../out/eigen/Poloidal_Dipole/Reduced/Spectrum_m3_Le-1.414e-4.pdf}
+    \caption{Spectrum for $m=3$ modes.}
+\end{figure}
+
+\subsection{Selected eigenmodes}
+
+\clearpage

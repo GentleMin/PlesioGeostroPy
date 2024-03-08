@@ -128,16 +128,20 @@ def quad_matrix_mpmath(operand_A: sympy.Expr, operand_B: sympy.Expr,
     """
     lambdify_modules = [{
         "jacobi": functools.partial(special.eval_jacobi_recur_mp, dps=n_dps, backend="mpmath"), 
-        "sqrt": np.vectorize(mp.sqrt, otypes=(object,))}, 
+        **symparser.v_functions_mpmath}, 
         "mpmath"
     ]
     f_A = sympy.lambdify([n_test, xi], operand_A.doit(), modules=lambdify_modules)
     f_B = sympy.lambdify([n_trial, xi], operand_B.doit(), modules=lambdify_modules)
-    Ntest, Xi_test = np.meshgrid(nrange_A, xi_quad, indexing='ij')
-    Phi_A = f_A(Ntest, Xi_test)
-    Ntrial, Xi_trial = np.meshgrid(nrange_B, xi_quad, indexing='ij')
-    Phi_B = f_B(Ntrial, Xi_trial)
-    return (Phi_A*wt_quad) @ Phi_B.T
+    
+    with mp.workdps(n_dps):
+        Ntest, Xi_test = np.meshgrid(nrange_A, xi_quad, indexing='ij')
+        Phi_A = f_A(Ntest, Xi_test)
+        Ntrial, Xi_trial = np.meshgrid(nrange_B, xi_quad, indexing='ij')
+        Phi_B = f_B(Ntrial, Xi_trial)
+        quad_matrix = (Phi_A*wt_quad) @ Phi_B.T
+    
+    return quad_matrix
 
 
 def quad_matrix_gmpy2(operand_A: sympy.Expr, operand_B: sympy.Expr, 
@@ -168,22 +172,31 @@ def quad_matrix_gmpy2(operand_A: sympy.Expr, operand_B: sympy.Expr,
     """
     lambdify_funcs = [{
         "jacobi": functools.partial(special.eval_jacobi_recur_mp, dps=n_dps, backend="gmpy2"), 
-        "sqrt": np.vectorize(gp.sqrt, otypes=(object,))}
-    ]
+        # "jacobi": lambda Nmesh, a, b, zmesh: special.eval_jacobi_recur_mp(Nmesh, a, b, zmesh, dps=32, backend="gmpy2"),
+        **symparser.v_functions_gmpy2
+    }]
     gmpy2_printer=symparser.Gmpy2Printer(settings={
         'fully_qualified_modules': False, 
         'inline': True, 
         'allow_unknown_functions': True, 
-        'user_functions': {"jacobi": "jacobi", "sqrt": "sqrt"}}, prec=112)
+        'user_functions': {"jacobi": "jacobi", "sqrt": "sqrt"}
+        }, prec=112)
+    
     f_A = sympy.lambdify([n_test, xi], operand_A.doit(), 
         modules=lambdify_funcs, printer=gmpy2_printer)
     f_B = sympy.lambdify([n_trial, xi], operand_B.doit(), 
         modules=lambdify_funcs, printer=gmpy2_printer)
-    Ntest, Xi_test = np.meshgrid(nrange_A, xi_quad, indexing='ij')
-    Phi_A = f_A(Ntest, Xi_test)
-    Ntrial, Xi_trial = np.meshgrid(nrange_B, xi_quad, indexing='ij')
-    Phi_B = f_B(Ntrial, Xi_trial)
-    return (Phi_A*wt_quad) @ Phi_B.T
+    
+    _, target_prec = utils.transform_dps_prec(dps=n_dps)
+    with gp.local_context(gp.context(), precision=target_prec) as ctx:
+        
+        Ntest, Xi_test = np.meshgrid(nrange_A, xi_quad, indexing='ij')
+        Phi_A = f_A(Ntest, Xi_test)
+        Ntrial, Xi_trial = np.meshgrid(nrange_B, xi_quad, indexing='ij')
+        Phi_B = f_B(Ntrial, Xi_trial)
+        quad_matrix = (Phi_A*wt_quad) @ Phi_B.T
+    
+    return quad_matrix
 
 
 class InnerQuad_Rule:
@@ -425,13 +438,13 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         
         # Throw warning of singularity if alpha or beta <= -1
         if alpha <= -1:
-            alpha = 0
+            warnings.warn("Endpoint singularity detected (alpha={:s})! Check for integrability!".format(str(alpha)))
+            alpha = sympy.S.Zero
             quadN *= 2
-            warnings.warn("Endpoint singularity detected! Check for integrability!")
         if beta <= -1:
-            beta = 0
+            warnings.warn("Endpoint singularity detected (beta={:s})! Check for integrability!".format(str(beta)))
+            beta = sympy.S.Zero
             quadN *= 2
-            warnings.warn("Endpoint singularity detected! Check for integrability!")
         
         if verbose:
             print("Integrating with alpha={}, beta={}, N={}".format(alpha, beta, quadN))
@@ -555,6 +568,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             beta_mp = mp.mpf(str(beta.evalf(n_dps)))
         root_result = special.roots_jacobi_mp(int(quad_N), alpha_mp, beta_mp, n_dps=n_dps)
         xi_quad, wt_quad = root_result.xi, root_result.wt
+        # mp.nprint(xi_quad[0], 32)
         return quad_matrix_mpmath(opd_A, opd_B, nrange_test, nrange_trial, 
             xi_quad, wt_quad, n_dps=n_dps)
         
@@ -814,7 +828,16 @@ class MatrixExpander:
                     raise NotImplementedError
             M_list.append(M_row)
         return np.block(M_list)
-        
+
+
+def sparsify(array: np.ndarray, 
+    clip_threshold: Union[float, np.float64] = np.finfo(np.float64).eps
+    ) -> sparse.coo_array:
+    """Create sparse array from dense array
+    """
+    sparse_array = array.copy()
+    sparse_array[np.abs(sparse_array) <= clip_threshold] = 0.
+    return sparse.coo_array(sparse_array)
 
 
 def invert_block_diag(matrix: np.ndarray, block_seg: List[int]) -> np.ndarray:

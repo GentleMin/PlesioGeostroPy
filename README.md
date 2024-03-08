@@ -1,7 +1,7 @@
 # PlesioGeostroPy: Plesio-Geostrophy Model in Python
 
 
-This repo offers a realization for the Plesio-geostrophy (PG) model, a reduced dimensional model for MHD equations in an axisymmetric geometry with nearly geostrophic velocity ansatz. The model is proposed by [Jackson and Maffei, 2020](https://doi.org/10.1098/rspa.2020.0513).
+This repo offers a spectral method realization for the Plesio-geostrophy (PG) model, a reduced dimensional model for MHD equations in an axisymmetric geometry with nearly geostrophic velocity ansatz. The model is proposed by [Jackson and Maffei, 2020](https://doi.org/10.1098/rspa.2020.0513).
 
 Ingredients of the system:
 - Navier-Stokes equation (optionally with uniform viscous diffusivity) in the (rapidly) rotating frame
@@ -14,11 +14,11 @@ Systems fulfilling these conditions can be exactly described using the PG model.
 
 ## Eigenvalue problems
 
-Framework of eigenvalue solver set up
+Framework of ideal eigenvalue solvers
 
 - [x] Malkus background field
-- [ ] Toroidal quadrupolar field
-- [ ] Poloidal dipolar field
+- [?] Toroidal quadrupolar field
+- [x] Poloidal dipolar field
 
 ## Data Assimilation
 

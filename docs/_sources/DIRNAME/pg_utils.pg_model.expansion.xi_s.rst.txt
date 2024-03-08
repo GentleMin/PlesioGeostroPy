@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.expansion.xi\_s
+===================================
+
+.. currentmodule:: pg_utils.pg_model.expansion
+
+.. autodata:: xi_s

@@ -1,0 +1,40 @@
+pg\_utils.numerics.linalg
+=========================
+
+.. automodule:: pg_utils.numerics.linalg
+  
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      eig_generalized
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      LinSysSolver
+      MultiPrecLinSolver
+      StdLinSolver
+   
+   
+
+   
+   
+   
+
+
+

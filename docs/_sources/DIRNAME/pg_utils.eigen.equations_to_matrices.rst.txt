@@ -1,0 +1,6 @@
+pg\_utils.eigen.equations\_to\_matrices
+=======================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: equations_to_matrices

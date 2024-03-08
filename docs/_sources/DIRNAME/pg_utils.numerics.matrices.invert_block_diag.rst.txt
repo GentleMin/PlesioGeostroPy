@@ -1,0 +1,6 @@
+pg\_utils.numerics.matrices.invert\_block\_diag
+===============================================
+
+.. currentmodule:: pg_utils.numerics.matrices
+
+.. autofunction:: invert_block_diag

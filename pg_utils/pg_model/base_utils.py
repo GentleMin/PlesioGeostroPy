@@ -80,7 +80,7 @@ def assemble_background(B0, Psi0=None, mode="PG"):
         containing no derivative of undefined functions.
         Otherwise, substitution will return incorrect results.
         The background field at the boundary are not immediately 
-        evaluated at $z=\pm H$, since their z-derivatives are 
+        evaluated at :math:`z=\\pm H`, since their z-derivatives are 
         present in the induction equations. One has to evaluate 
         after substitution and simplification.
     """
@@ -102,7 +102,7 @@ def assemble_background(B0, Psi0=None, mode="PG"):
         Bp_e = B0[1].subs({z: 0}),
         Bz_e = B0[2].subs({z: 0}),
         dBs_dz_e = diff(B0[0], z).doit().subs({z: 0}),
-        dBp_dz_e = diff(B0[0], z).doit().subs({z: 0}),
+        dBp_dz_e = diff(B0[1], z).doit().subs({z: 0}),
         # Magnetic field at the boundary
         Br_b = s*B0[0] + z*B0[2],
         Bs_p = B0[0].subs({z: +H_s}),
@@ -146,4 +146,16 @@ def fields_in_term(expr: sympy.Expr, field_collection: base.LabeledCollection):
     expr_fields = expr.atoms(sympy.Function)
     expr_fields = tuple(field for field in expr_fields if field in set_tmp)
     return expr_fields
+
+
+def extract_symbols(var_collection: base.LabeledCollection):
+    """Return a collection of symbols, whose names are specified
+    by the input collection items
+    """
+    symb_collection = base.LabeledCollection(
+        var_collection._field_names, 
+        **{fname: sympy.Symbol(var_collection[fname].name) 
+           for fname in var_collection._field_names}
+    )
+    return symb_collection
 

@@ -161,7 +161,14 @@ eqs_pg.Bz_m = sympy.Eq(
 
 # Conjugate equations
 
-def eqn_PG_to_conjugate(eqset_pg: CollectionPG, subs_map: dict):
+def eqn_PG_to_conjugate(eqset_pg: CollectionPG, subs_map: dict) -> CollectionConjugate:
+    """Convert a set of PG equations to transformed form
+    
+    :param CollectionPG eqset_pg: set of PG equations;
+    :param dict subs_map: substitution map that maps 
+        PG variables to expressions in transformed variables
+    :returns: set of transformed equations.
+    """
     eqset_pg = eqset_pg.apply(lambda eq: eq.subs(subs_map), inplace=False)
     eqset_cg = PG_to_conjugate(eqset_pg)
     return eqset_cg

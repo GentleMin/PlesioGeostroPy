@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.forcing.force\_explicit\_lin\_cg
+====================================================
+
+.. currentmodule:: pg_utils.pg_model.forcing
+
+.. autodata:: force_explicit_lin_cg

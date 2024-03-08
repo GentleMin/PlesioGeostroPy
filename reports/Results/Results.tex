@@ -1,0 +1,79 @@
+\documentclass[a4paper, 11pt]{report}
+\usepackage{doc_default}
+\allowdisplaybreaks[1]
+\usepackage{newtxtext, newtxmath}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage[
+    backend=biber,
+    style=authoryear,
+    sorting=nyt
+]{biblatex}
+\addbibresource{../references.bib}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    filecolor=blue,
+}
+\lstset{style=stdcodestyle}
+
+% \DeclareMathOperator{\arcsec}{arcsec}
+% \DeclareMathOperator{\arccot}{arccot}
+% \DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\sgn}{sgn}
+
+\newcommand{\todoitem}[1]{\textcolor{purple}{[#1]}}
+\newenvironment{todoremark}{\color{purple}}{}
+% \newcommand{\todoproblem}[1]{\textcolor{purple}{#1}}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}[proposition]{Corollary}
+
+
+\title{Plesio-Geostrophy and Data Assimilation: Products \\ {\Large Results and Discussions}}
+\author{Jingtao Min}
+\date{Feb 1, 2024, last update \today}
+
+
+\begin{document}
+
+\maketitle
+
+\input{eigen.tex}
+
+\appendix
+
+\chapter{3-D slow hydromagnetic modes}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{../../materials/meridional_qgmc_1.png}
+    \caption{Meridional section of 3-D QGMC modes}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{../../materials/surface_qgmc_1.png}
+    \caption{Surface expression of 3-D QGMC modes}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{../../materials/meridional_qgmc_2.png}
+    \caption{Meridional section of 3-D QGMC modes}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{../../materials/surface_qgmc_2.png}
+    \caption{Surface expression of 3-D QGMC modes}
+\end{figure}
+
+
+\printbibliography
+
+\end{document}
+

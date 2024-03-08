@@ -19,10 +19,12 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pg_utils.pg_model.base_utils.field_to_moment" href="pg_utils.pg_model.base_utils.field_to_moment.html" />
+    <link rel="next" title="pg_utils.pg_model.base_utils.extract_symbols" href="pg_utils.pg_model.base_utils.extract_symbols.html" />
     <link rel="prev" title="pg_utils.pg_model.base_utils" href="pg_utils.pg_model.base_utils.html" /> 
 </head>
 
@@ -55,6 +57,7 @@
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.base.html">pg_utils.pg_model.base</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pg_utils.pg_model.base_utils.html">pg_utils.pg_model.base_utils</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pg_utils.pg_model.base_utils.assemble_background</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.base_utils.extract_symbols.html">pg_utils.pg_model.base_utils.extract_symbols</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.base_utils.field_to_moment.html">pg_utils.pg_model.base_utils.field_to_moment</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.base_utils.fields_in_term.html">pg_utils.pg_model.base_utils.fields_in_term</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.pg_model.base_utils.integrate_asym.html">pg_utils.pg_model.base_utils.integrate_asym</a></li>
@@ -69,7 +72,8 @@
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_malkus.html">pg_utils.pg_model.expand_daria_malkus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_mm_malkus.html">pg_utils.pg_model.expand_daria_mm_malkus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_daria_thesis.html">pg_utils.pg_model.expand_daria_thesis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force.html">pg_utils.pg_model.expand_stream_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_cpt.html">pg_utils.pg_model.expand_stream_force_cpt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expand_stream_force_orth.html">pg_utils.pg_model.expand_stream_force_orth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.expansion.html">pg_utils.pg_model.expansion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.forcing.html">pg_utils.pg_model.forcing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.pg_model.params.html">pg_utils.pg_model.params</a></li>
@@ -145,7 +149,7 @@ variables “CG”. Default is PG.</p></li>
 containing no derivative of undefined functions.
 Otherwise, substitution will return incorrect results.
 The background field at the boundary are not immediately 
-evaluated at $z=pm H$, since their z-derivatives are 
+evaluated at <span class="math notranslate nohighlight">\(z=\pm H\)</span>, since their z-derivatives are 
 present in the induction equations. One has to evaluate 
 after substitution and simplification.</p>
 </div>
@@ -158,7 +162,7 @@ after substitution and simplification.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="pg_utils.pg_model.base_utils.html" class="btn btn-neutral float-left" title="pg_utils.pg_model.base_utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pg_utils.pg_model.base_utils.field_to_moment.html" class="btn btn-neutral float-right" title="pg_utils.pg_model.base_utils.field_to_moment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pg_utils.pg_model.base_utils.extract_symbols.html" class="btn btn-neutral float-right" title="pg_utils.pg_model.base_utils.extract_symbols" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

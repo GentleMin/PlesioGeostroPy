@@ -1,0 +1,6 @@
+pg\_utils.numerics.utils.intermodal\_separation
+===============================================
+
+.. currentmodule:: pg_utils.numerics.utils
+
+.. autofunction:: intermodal_separation

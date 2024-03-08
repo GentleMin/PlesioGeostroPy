@@ -1,0 +1,6 @@
+pg\_utils.eigen.apply\_bg\_to\_eq
+=================================
+
+.. currentmodule:: pg_utils.eigen
+
+.. autofunction:: apply_bg_to_eq

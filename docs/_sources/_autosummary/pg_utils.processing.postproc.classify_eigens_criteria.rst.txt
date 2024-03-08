@@ -1,0 +1,6 @@
+pg\_utils.processing.postproc.classify\_eigens\_criteria
+========================================================
+
+.. currentmodule:: pg_utils.processing.postproc
+
+.. autofunction:: classify_eigens_criteria

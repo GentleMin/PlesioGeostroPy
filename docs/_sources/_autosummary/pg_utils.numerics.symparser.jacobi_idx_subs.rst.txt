@@ -1,0 +1,6 @@
+pg\_utils.numerics.symparser.jacobi\_idx\_subs
+==============================================
+
+.. currentmodule:: pg_utils.numerics.symparser
+
+.. autofunction:: jacobi_idx_subs

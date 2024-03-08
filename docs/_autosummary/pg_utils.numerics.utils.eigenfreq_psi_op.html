@@ -24,7 +24,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pg_utils.pg_model" href="pg_utils.pg_model.html" />
+    <link rel="next" title="pg_utils.numerics.utils.intermodal_separation" href="pg_utils.numerics.utils.intermodal_separation.html" />
     <link rel="prev" title="pg_utils.numerics.utils.eigenfreq_inertial3d" href="pg_utils.numerics.utils.eigenfreq_inertial3d.html" /> 
 </head>
 
@@ -54,13 +54,32 @@
 <li class="toctree-l2"><a class="reference internal" href="pg_utils.eigen.html">pg_utils.eigen</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pg_utils.numerics.html">pg_utils.numerics</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.io.html">pg_utils.numerics.io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.linalg.html">pg_utils.numerics.linalg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.matrices.html">pg_utils.numerics.matrices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.special.html">pg_utils.numerics.special</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg_utils.numerics.symparser.html">pg_utils.numerics.symparser</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pg_utils.numerics.utils.html">pg_utils.numerics.utils</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.allclose_sparse.html">pg_utils.numerics.utils.allclose_sparse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.array_to_str.html">pg_utils.numerics.utils.array_to_str</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.cluster_modes.html">pg_utils.numerics.utils.cluster_modes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.eigen_drift.html">pg_utils.numerics.utils.eigen_drift</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_Malkus_3d.html">pg_utils.numerics.utils.eigenfreq_Malkus_3d</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_Malkus_pg.html">pg_utils.numerics.utils.eigenfreq_Malkus_pg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.eigenfreq_inertial3d.html">pg_utils.numerics.utils.eigenfreq_inertial3d</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pg_utils.numerics.utils.eigenfreq_psi_op</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.intermodal_separation.html">pg_utils.numerics.utils.intermodal_separation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.is_eq_coo.html">pg_utils.numerics.utils.is_eq_coo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.is_eq_sparse.html">pg_utils.numerics.utils.is_eq_sparse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.spec_tail_exp_rate.html">pg_utils.numerics.utils.spec_tail_exp_rate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_dense_gmpy2.html">pg_utils.numerics.utils.to_dense_gmpy2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_dense_obj.html">pg_utils.numerics.utils.to_dense_obj</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_gpmy2_c.html">pg_utils.numerics.utils.to_gpmy2_c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_gpmy2_f.html">pg_utils.numerics.utils.to_gpmy2_f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_mpmath_c.html">pg_utils.numerics.utils.to_mpmath_c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_mpmath_f.html">pg_utils.numerics.utils.to_mpmath_f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_numpy_c.html">pg_utils.numerics.utils.to_numpy_c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.to_numpy_f.html">pg_utils.numerics.utils.to_numpy_f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_utils.numerics.utils.transform_dps_prec.html">pg_utils.numerics.utils.transform_dps_prec</a></li>
 </ul>
 </li>
 </ul>
@@ -103,11 +122,16 @@
 <h1>pg_utils.numerics.utils.eigenfreq_psi_op<a class="headerlink" href="#pg-utils-numerics-utils-eigenfreq-psi-op" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pg_utils.numerics.utils.eigenfreq_psi_op">
-<span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.utils.</span></span><span class="sig-name descname"><span class="pre">eigenfreq_psi_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.Union" title="(in Python v3.8)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.Union" title="(in Python v3.8)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.utils.eigenfreq_psi_op" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pg_utils.numerics.utils.</span></span><span class="sig-name descname"><span class="pre">eigenfreq_psi_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.Union" title="(in Python v3.8)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.Union" title="(in Python v3.8)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.Optional" title="(in Python v3.8)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#int" title="(in Python v3.8)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.8/library/typing.html#typing.Union" title="(in Python v3.8)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#float" title="(in Python v3.8)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/GentleMin/PlesioGeostroPy/blob/main/pg_utils/numerics/utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pg_utils.numerics.utils.eigenfreq_psi_op" title="Permalink to this definition"></a></dt>
 <dd><p>Analytic eigenfrequency for the self-adjoint operator
 for stream function Psi in the vorticity equation</p>
 <div class="math notranslate nohighlight">
 \[\omega = - \frac{m}{n(2n + 2m + 1) + \frac{m}{2} + \frac{m^2}{4}}\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <cite>prec</cite> is specified other than None, then the input must be
+consistently in gmpy2 form in order to properly compute in multi-precision.</p>
+</div>
 </dd></dl>
 
 </section>
@@ -117,7 +141,7 @@ for stream function Psi in the vorticity equation</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="pg_utils.numerics.utils.eigenfreq_inertial3d.html" class="btn btn-neutral float-left" title="pg_utils.numerics.utils.eigenfreq_inertial3d" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pg_utils.pg_model.html" class="btn btn-neutral float-right" title="pg_utils.pg_model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pg_utils.numerics.utils.intermodal_separation.html" class="btn btn-neutral float-right" title="pg_utils.numerics.utils.intermodal_separation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

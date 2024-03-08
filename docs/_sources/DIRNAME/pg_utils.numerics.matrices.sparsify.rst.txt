@@ -1,0 +1,6 @@
+pg\_utils.numerics.matrices.sparsify
+====================================
+
+.. currentmodule:: pg_utils.numerics.matrices
+
+.. autofunction:: sparsify

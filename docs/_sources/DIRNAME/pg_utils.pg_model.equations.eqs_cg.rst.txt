@@ -1,0 +1,6 @@
+pg\_utils.pg\_model.equations.eqs\_cg
+=====================================
+
+.. currentmodule:: pg_utils.pg_model.equations
+
+.. autodata:: eqs_cg
