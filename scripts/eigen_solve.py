@@ -37,7 +37,7 @@ Step 2: Collect symbolic expressions of matrix elements
 ===========================================================
 """
 
-from pg_utils.pg_model import expand_stream_force_cpt as xpd_cfg
+from pg_utils.pg_model import expand_stream_force_orth as xpd_cfg
 import numpy as np
 
 eigen.collect_matrix_elements(
