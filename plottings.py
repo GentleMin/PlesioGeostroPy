@@ -206,19 +206,19 @@ if __name__ == "__main__":
     save_name = None
     # save_name = "./out/imgs/Obs_domain_plot_short"
     # save_name = "./out/imgs/Model_domain_sphere_disc_padding"
-    save_name = "./presentation/elements/polar_rank2_2ssin_0_scos_scos"
+    # save_name = "./presentation/elements/polar_rank2_2ssin_0_scos_scos"
     file_type = (
         "png",
         # "pdf",
     )
     
     # fig, ax = polar_singularity_vector()
-    fig, ax = polar_singularity_rank2tensor(
-        tfunc_ss=lambda s, p: s*np.sin(p),
-        tfunc_pp=lambda s, p: np.zeros_like(s),
-        tfunc_sp=lambda s, p: s*np.cos(p)/2,
-        tfunc_ps=lambda s, p: s*np.cos(p)/2
-    )
+    # fig, ax = polar_singularity_rank2tensor(
+    #     tfunc_ss=lambda s, p: s*np.sin(p),
+    #     tfunc_pp=lambda s, p: np.zeros_like(s),
+    #     tfunc_sp=lambda s, p: s*np.cos(p)/2,
+    #     tfunc_ps=lambda s, p: s*np.cos(p)/2
+    # )
     
     # plt.tight_layout()
     if save_name is not None:
