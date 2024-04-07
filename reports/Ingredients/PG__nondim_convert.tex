@@ -1,13 +1,267 @@
-\section{Conversion between the two dimensionless forms}
+\section{Nondimensionalizations, conversions, background field scaling}
 
-The dimensionless forms are derived almost unanimously using the following characteristic length scales and characteristic time scales,
-\[L = r_0,\quad \tau \sim \frac{L}{U}.\]
-The difference lies in the choice of characteristic velocity scale (which also determines the time scale).
-\textcite{holdenried-chernoff_long_2021} uses the Alfven wave velocity
-\[U = V_A = \frac{\mathscr{B}}{\sqrt{\rho_0 \mu_0}}\]
-as the characteristic velocity scale. This scale is ultimately determined by the characteristic magnetic field strength $\mathscr{B}$. The relative strength of Lorentz force to Coriolis is given by the Lehnert number,
-\[\mathrm{Le} = \frac{\mathscr{B}}{\sqrt{\rho_0 \mu_0}\Omega L} = \frac{V_A}{V_\Omega}\]
-where $V_\Omega = \Omega L$ is the rotation speed. In other words, the characteristic scales for the magnetic field and the spin rate are linked via this dimensionless number. The dimensionless Navier-Stokes equation takes the form
+In this section I discuss three dimensionless forms of the governing equations, and their conversions.
+In the basic MHD in rotating frame setting, the governing equations are the Navier Stokes equation (with Coriolis force and Lorentz force) and the magnetic induction equation,
+\begin{equation}
+\begin{aligned}
+    & \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + 2\Omega \hat{\mathbf{z}}\times \mathbf{u} = -\nabla \frac{P}{\rho} + \frac{1}{\rho \mu_0}(\nabla\times\mathbf{B})\times \mathbf{B} + \nu \nabla^2 \mathbf{u} \\ 
+    & \frac{\partial \mathbf{B}}{\partial t} = \nabla\times (\mathbf{u}\times \mathbf{B}) + \eta \nabla^2 \mathbf{B}
+\end{aligned}
+\end{equation}
+These equations only couple the kinematic quantities (i.e. velocity) and magnetic quantities (i.e. magnetic field). Therefore, four scales are needed to nondimensionalize the equations. These quantities are two scales associated with the dynamic variables, the velocity scale $U$ and the magnetic field scale $\mathscr{B}$, and two scales associated with the spatial/evolution variables, the spatial scale $L$ and the time scale $\tau$. Among these, only three are independent, as the velocity scale is usually linked to the time scale and the spatial scale via $U = L/\tau$. The three independent scales are therefore the length scale $L$, the time scale $\tau$, and the magnetic field scale $\mathscr{B}$. As we are considering a system where the inertial effect dominates, the pressure scale is chosen to be $\Pi = \rho U^2$ (as Jerome would put it, pressure is the slave of velocity). Rewriting the equations in dimensionless quantities using the aforementioned scales, we have
+\[
+\begin{aligned}
+    & \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + \nabla p + 2\Omega \tau \hat{\mathbf{z}}\times \mathbf{u} = \frac{\mathscr{B}^2 \tau^2}{\rho \mu_0 L^2}(\nabla\times\mathbf{B})\times \mathbf{B} + \frac{\nu \tau}{L^2} \nabla^2 \mathbf{u} \\ 
+    & \frac{\partial \mathbf{B}}{\partial t} = \nabla\times (\mathbf{u}\times \mathbf{B}) + \frac{\eta\tau}{L^2} \nabla^2 \mathbf{B}
+\end{aligned}
+\]
+
+A common choice of the length scale is given by the radius of the sphere, i.e. $L = R$. The difference lies in the choice of time scale. In a diffusive MHD system in a rotating frame as such, there are four time scales at play here. First, due to the rotation, one can define the rotation time scale:
+\[
+    \tau_\Omega = \Omega^{-1}.
+\]
+This is the time scale that characterizes the period of rotation (apart from a $2\pi$ factor). Next, due to the presence of magnetic field, an Alfvén time scale can be defined from the scale of the magnetic field
+\[
+    \tau_A = \frac{\sqrt{\rho \mu_0} L}{\mathscr{B}}.
+\]
+This is defined by $\tau_A = L/V_A$, where $V_A = \mathscr{B}/\sqrt{\rho \mu_0}$ is the Alfvén wave velocity associated with a magnetic field with magnitude $\mathscr{B}$.
+Thirdly, due to the finite conductivity, there is a characteristic magnetic diffusion time scale
+\[
+    \tau_\eta = \frac{L^2}{\eta}.
+\]
+And finally due to viscosity, there is a characteristic viscous diffusion time scale
+\[
+    \tau_\nu = \frac{L^2}{\nu}.
+\]
+In the regime of Earth's core, these time scales are separated from one another by at least three orders of magnitude, if not even more. The relative magnitudes of these time scales are 
+\begin{equation}
+    \tau_\Omega \left(\sim 10^4 \mathrm{s}\right) \ll \tau_A \left(\sim 10^1 \mathrm{yr}\right) \ll \tau_\eta \left(\sim 10^5 \mathrm{yr}\right) \ll \tau_\nu \left(\sim 10^{10} \mathrm{yr}\right).
+\end{equation}
+The actual core flow (as e.g. estimated from surface flow inversion) induces a circulation time scale that is somewhere in between the Alfvén time scale and the magnetic diffusion time scale, closer to the former. It is approx. one order of magnitude larger than the Alfvén time scale, or the core flow velocity is one order of magnitude slower than the Alfvén velocity. That being said, in a turbulent system as the one in Earth's core, the observed flow velocity is likely dependent on the time scale where such observation takes place.
+
+Using these time scales, the nondimensional equations can be rewritten as
+\begin{equation}
+    \begin{aligned}
+        & \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + \nabla p + 2\frac{\tau}{\tau_\Omega} \hat{\mathbf{z}}\times \mathbf{u} = \frac{\tau^2}{\tau_A^2}(\nabla\times\mathbf{B})\times \mathbf{B} + \frac{\tau}{\tau_\nu} \nabla^2 \mathbf{u} \\ 
+        & \frac{\partial \mathbf{B}}{\partial t} = \nabla\times (\mathbf{u}\times \mathbf{B}) + \frac{\tau}{\tau_\eta} \nabla^2 \mathbf{B}
+    \end{aligned}
+\end{equation}
+It now boils down to what to use for $\tau$, which is the key to different nondimensionalizations. Since the velocity scale is probably closest to Alfvén wave speed, the most common strategy seems to use $\tau = \tau_A$ as the time scale (see e.g. \cite{canet_hydromagnetic_2014}; \cite{holdenried-chernoff_long_2021}; \cite{luo_waves_2022}). The Lorentz force term will then have unit factor. The full equations take the form
+\begin{equation}
+    \begin{aligned}
+        & \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + \nabla p + \frac{2}{\mathrm{Le}} \hat{\mathbf{z}}\times \mathbf{u} = (\nabla\times\mathbf{B})\times \mathbf{B} + \frac{\mathrm{Pm}}{\mathrm{Lu}} \nabla^2 \mathbf{u} \\ 
+        & \frac{\partial \mathbf{B}}{\partial t} = \nabla\times (\mathbf{u}\times \mathbf{B}) + \frac{1}{\mathrm{Lu}} \nabla^2 \mathbf{B}
+    \end{aligned}
+\end{equation}
+where the prefactors of the Coriolis term, viscous diffusion term and magnetic diffusion term are described by the Lehnert number ($\mathrm{Le}$), the magnetic Prandtl number ($\mathrm{Pm}$), and the Lundquist number ($\mathrm{Lu}$), which are defined as
+\begin{equation}
+\begin{aligned}
+    \mathrm{Le} &= \frac{\tau_\Omega}{\tau_A} = \frac{V_A}{V_\Omega} = \frac{\mathscr{B}}{\sqrt{\rho \mu_0}\Omega L}, \\ 
+    \mathrm{Pm} &= \frac{\tau_\eta}{\tau_\nu} = \frac{\nu}{\eta}, \\
+    \mathrm{Lu} &= \frac{\tau_\eta}{\tau_A} = \frac{\mathscr{B} L}{\sqrt{\rho \mu_0}\eta}.
+\end{aligned}
+\end{equation}
+
+The second nondimensionalization uses the rotation time as the time scale, i.e. $\tau = \tau_\Omega$ \parencite{jackson_plesio-geostrophy_2020}. This is particularly useful in abscence of magnetic field, when a purely hydromagnetic system is considered. The equations then read
+\begin{equation}
+    \begin{aligned}
+        & \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + \nabla p + 2\hat{\mathbf{z}}\times \mathbf{u} = \mathrm{Le}^2 (\nabla\times\mathbf{B})\times \mathbf{B} + E \nabla^2 \mathbf{u} \\ 
+        & \frac{\partial \mathbf{B}}{\partial t} = \nabla\times (\mathbf{u}\times \mathbf{B}) + E_\eta \nabla^2 \mathbf{B}
+    \end{aligned}
+\end{equation}
+where the prefactors of the Lorentz force term, viscous diffusion term and magnetic diffusion term are described by the Lehnert number ($\mathrm{Le}$), the Ekman number ($E$), and the magnetic Ekman number ($E_\eta$). The latter two are defined as
+\begin{equation}
+\begin{aligned}
+    E &= \frac{\tau_\Omega}{\tau_\nu} = \frac{\nu}{\Omega L^2} = \mathrm{Pm} E_\eta, \\
+    E_\eta &= \frac{\tau_\Omega}{\tau_\eta} = \frac{\eta}{\Omega L^2}.
+\end{aligned}
+\end{equation}
+
+The third nondimensionalization uses the magnetic diffusion time as the time scale, i.e. $\tau = \tau_\eta$ \parencite{luo_waves2_2022}. This might be more useful when describing dynamo actions that sustain the field over long time scales. The equations read
+\[
+    \begin{aligned}
+        & \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + \nabla p + \frac{2}{E_\eta} \hat{\mathbf{z}}\times \mathbf{u} = \frac{\Lambda}{E_\eta} (\nabla\times\mathbf{B})\times \mathbf{B} + \mathrm{Pm} \nabla^2 \mathbf{u} \\ 
+        & \frac{\partial \mathbf{B}}{\partial t} = \nabla\times (\mathbf{u}\times \mathbf{B}) + \nabla^2 \mathbf{B}
+    \end{aligned}
+\]
+or alternatively 
+\begin{equation}
+    \begin{aligned}
+        & E_\eta \left(\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + \nabla p\right) + 2 \hat{\mathbf{z}}\times \mathbf{u} = \Lambda (\nabla\times\mathbf{B})\times \mathbf{B} + E \nabla^2 \mathbf{u} \\ 
+        & \frac{\partial \mathbf{B}}{\partial t} = \nabla\times (\mathbf{u}\times \mathbf{B}) + \nabla^2 \mathbf{B}
+    \end{aligned}
+\end{equation}
+where the prefactors of the inertial term, Lorentz force term and the viscous diffusion term are described by the magnetic Ekman number ($E_\eta$), the Elsasser number $\Lambda$, and the Ekman number ($E$), respectively. The Elsasser number is defined as
+\begin{equation}
+\Lambda = \frac{\tau_\Omega \tau_\eta}{\tau_A^2} = \frac{\mathscr{B}^2}{\rho \mu_0 \eta \Omega}
+\end{equation}
+It is somehow confusing to interpret Elsasser number as ratio between different time scales. The more straightforward explanation is that it is merely a factor that measures the ratio of Lorentz to Coriolis forces, arising when time is measured in magnetic diffusion time scale.
+
+\subsection{Conversion of dimensionless numbers}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}[c]{p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}}
+    \toprule
+    Dimless Params & Rotation tscale, $\mathrm{Le}$, $E_\eta$, $E$ & Alfvén tscale, $\mathrm{Le}$, $\mathrm{Lu}$, $\mathrm{Pm}$ & Diffusion tscale, $\Lambda$, $E_\eta$, $E$ & Diffusion div2, $\Lambda'$, $E_\eta'$, $E'$ \\
+    \hline
+    Rotation tscale, $\mathrm{Le}$, $E_\eta$, $E$ & / 
+    & $\begin{aligned}
+        \mathrm{Le} &= \mathrm{Le} \\ 
+        E_\eta &= \mathrm{Le} / \mathrm{Lu} \\ 
+        E &= \mathrm{Pm} \mathrm{Le} / \mathrm{Lu} \\
+        t :&= t / \mathrm{Le} 
+    \end{aligned}$
+    & $\begin{aligned}
+        \mathrm{Le} &= \sqrt{E_\eta \Lambda} \\ 
+        E_\eta &= E_\eta \\ 
+        E &= E \\
+        t :&= t / E_\eta
+    \end{aligned}$
+    & $\begin{aligned}
+        \mathrm{Le} &= 2\sqrt{E_\eta' \Lambda'} \\ 
+        E_\eta &= 2E_\eta' \\ 
+        E &= 2E' \\
+        t :&= t / 2E_\eta'
+    \end{aligned}$ \\
+    \hline
+    Alfvén tscale, $\mathrm{Le}$, $\mathrm{Lu}$, $\mathrm{Pm}$ 
+    & $\begin{aligned}
+        \mathrm{Le} &= \mathrm{Le} \\ 
+        \mathrm{Lu} &= \mathrm{Le} / E_\eta \\ 
+        \mathrm{Pm} &= E/E_\eta \\ 
+        t :&= \mathrm{Le} \cdot t
+    \end{aligned}$ & /
+    & $\begin{aligned}
+        \mathrm{Le} &= \sqrt{E_\eta \Lambda} \\ 
+        \mathrm{Lu} &= \sqrt{\Lambda / E_\eta} \\ 
+        \mathrm{Pm} &= E/E_\eta \\
+        t :&= \sqrt{\Lambda / E_\eta} \, t
+    \end{aligned}$ 
+    & $\begin{aligned}
+        \mathrm{Le} &= 2\sqrt{E_\eta' \Lambda'} \\ 
+        \mathrm{Lu} &= \sqrt{\Lambda' / E_\eta'} \\ 
+        \mathrm{Pm} &= E'/E_\eta' \\
+        t :&= \sqrt{\Lambda' / E_\eta'} \, t
+    \end{aligned}$ \\
+    \hline
+    Diffusion tscale, $\Lambda$, $E_\eta$, $E$ 
+    & $\begin{aligned}
+        \Lambda &= E_\eta \mathrm{Le}^2 \\ 
+        E_\eta &= E_\eta \\ 
+        E &= E \\
+        t :&= E_\eta \, t
+    \end{aligned}$ 
+    & $\begin{aligned}
+        \Lambda &= \mathrm{Le} \mathrm{Lu} \\ 
+        E_\eta &= \mathrm{Le} / \mathrm{Lu} \\ 
+        E &= \mathrm{Pm} \mathrm{Le} / \mathrm{Lu} \\
+        t :&= t/\mathrm{Lu}
+    \end{aligned}$ & / 
+    & $\begin{aligned}
+        \Lambda &= 2\Lambda' \\ 
+        E_\eta &= 2E_\eta' \\
+        E &= 2E' \\
+        t :&= t
+    \end{aligned}$ \\
+    \hline
+    Diffusion div2, $\Lambda'$, $E_\eta'$, $E'$ 
+    & $\begin{aligned}
+        \Lambda' &= E_\eta \mathrm{Le}^2/2 \\ 
+        E_\eta' &= E_\eta/2 \\ 
+        E' &= E/2 \\
+        t :&= E_\eta \, t
+    \end{aligned}$ 
+    & $\begin{aligned}
+        \Lambda' &= \mathrm{Le} \mathrm{Lu}/2 \\ 
+        E_\eta' &= \mathrm{Le} / 2\mathrm{Lu} \\ 
+        E' &= \mathrm{Pm} \mathrm{Le} / 2\mathrm{Lu} \\
+        t :&= t/\mathrm{Lu}
+    \end{aligned}$ 
+    & $\begin{aligned}
+        \Lambda' &= \Lambda/2 \\ 
+        E_\eta' &= E_\eta/2 \\
+        E' &= E/2 \\
+        t :&= t
+    \end{aligned}$ & / \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Operators form, linearizations}
+
+\begin{equation}
+    \frac{\partial}{\partial t} \begin{pmatrix} \alpha_u \mathcal{M}_u & \\ & \alpha_b \mathcal{M}_b \end{pmatrix}
+    \begin{pmatrix} \hat{u} \\ \hat{B} \end{pmatrix} = 
+    \begin{pmatrix}
+        \alpha_C \mathcal{K}_C \hat{u} + \alpha_L \mathcal{F}_{L}(\hat{B}) + \alpha_\nu \mathcal{K}_\nu \hat{u} \\ 
+        \alpha_I \mathcal{F}_{I}(\hat{u}, \hat{B}) + \alpha_\eta \mathcal{K}_\eta \hat{B}
+    \end{pmatrix}
+\end{equation}
+Linearization:
+\[
+    \mathcal{K}_L(\hat{B}_0) = \mathsf{D}_b \mathcal{F}_L|_{\hat{B} = \hat{B}_0},\quad 
+    \mathcal{K}_{I,u}(\hat{B}_0) = \mathsf{D}_u \mathcal{F}_I|_{\hat{B} = \hat{B}_0},\quad 
+    \mathcal{K}_{I,b}(\hat{u}_0) = \mathsf{D}_b \mathcal{F}_I|_{\hat{u} = \hat{u}_0}
+\]
+Linearized system:
+\begin{equation}
+    \frac{\partial}{\partial t} \begin{pmatrix} \alpha_u \mathcal{M}_u & \\ & \alpha_b \mathcal{M}_b \end{pmatrix}
+    \begin{pmatrix} \hat{u} \\ \hat{b} \end{pmatrix} = 
+    \begin{pmatrix}
+        \alpha_C \mathcal{K}_C + \alpha_\nu \mathcal{K}_\nu & \alpha_L \mathcal{K}_{L}(\hat{B}_0) \\ 
+        \alpha_I \mathcal{K}_{I,u}(\hat{B}_0) & \alpha_I \mathcal{K}_{I,b}(\hat{u}_0) + \alpha_\eta \mathcal{K}_\eta
+    \end{pmatrix}
+    \begin{pmatrix} \hat{u} \\ \hat{b} \end{pmatrix}
+\end{equation}
+Linear dynamical systems in the forms of 
+\[\begin{aligned}
+    \frac{\partial}{\partial t}\mathcal{M} \hat{x} = \mathcal{K}_1 \hat{x},\qquad 
+    \frac{\partial}{\partial t}\mathcal{M} \hat{x} = \mathcal{K}_2 \hat{x}
+\end{aligned}\]
+where $\hat{x} \in \mathcal{V}^n$ is the vector of dynamical variables, and $\mathcal{M}$ and $\mathcal{K}$ are linear maps $\mathcal{V}^n \mapsto \mathcal{V}^n$. 
+The two dynamical systems can be transformed into one another with a simple change of scaling \textit{iff} $\exists$ a invertible diagonal transform $\mathbf{A} \in \mathbb{R}^n$ such that the operators $\mathcal{K}_1$ and $\mathcal{K}_2$ are similar to one another under this transform, up to a scalar factor. In other words,
+\[
+    \exists \mathbf{a} \in \mathbb{R}^n (a_i\neq 0), \mathbf{A} = \mathrm{diag}(\mathbf{a}),\quad \exists a_0 \in \mathbb{R}, \quad 
+    s.t.\quad \mathcal{K}_2 = a_0 \mathbf{A}^{-1} \mathcal{K}_1 \mathbf{A}.
+\]
+The $a_0$ factor will give the ratio between two time scales in the two systems.
+
+Using the Alfvén time as the time scale, the linearized system takes the form
+\begin{equation}
+    \frac{\partial}{\partial t} \begin{pmatrix} \mathcal{M}_u & \\ & \mathcal{M}_b \end{pmatrix}
+    \begin{pmatrix} \hat{u} \\ \hat{b} \end{pmatrix} = 
+    \begin{pmatrix}
+        \mathrm{Le}^{-1} \mathcal{K}_C + \mathrm{Pm} \mathrm{Lu}^{-1} \mathcal{K}_\nu & \mathcal{K}_{L}(\hat{B}_0) \\ 
+        \mathcal{K}_{I,u}(\hat{B}_0) & \mathcal{K}_{I,b}(\hat{u}_0) + \mathrm{Lu}^{-1} \mathcal{K}_\eta
+    \end{pmatrix}
+    \begin{pmatrix} \hat{u} \\ \hat{b} \end{pmatrix}
+\end{equation}
+Using the rotation time as the time scale, the linearized system takes the form
+\begin{equation}
+    \frac{\partial}{\partial t} \begin{pmatrix} \mathcal{M}_u & \\ & \mathcal{M}_b \end{pmatrix}
+    \begin{pmatrix} \hat{u} \\ \hat{b} \end{pmatrix} = 
+    \begin{pmatrix}
+        \mathcal{K}_C + E \mathcal{K}_\nu & \mathrm{Le}^2 \mathcal{K}_{L}(\hat{B}_0) \\ 
+        \mathcal{K}_{I,u}(\hat{B}_0) & \mathcal{K}_{I,b}(\hat{u}_0) + E_\eta \mathcal{K}_\eta
+    \end{pmatrix}
+    \begin{pmatrix} \hat{u} \\ \hat{b} \end{pmatrix}
+\end{equation}
+Using the diffusion time as the time scale, the linearized system takes the form
+\begin{equation}
+    \frac{\partial}{\partial t} \begin{pmatrix} \mathcal{M}_u & \\ & \mathcal{M}_b \end{pmatrix}
+    \begin{pmatrix} \hat{u} \\ \hat{b} \end{pmatrix} = 
+    \begin{pmatrix}
+        E_\eta^{-1} \mathcal{K}_C + \mathrm{Pm} \mathcal{K}_\nu & E_\eta^{-1} \Lambda \mathcal{K}_{L}(\hat{B}_0) \\ 
+        \mathcal{K}_{I,u}(\hat{B}_0) & \mathcal{K}_{I,b}(\hat{u}_0) + \mathcal{K}_\eta
+    \end{pmatrix}
+    \begin{pmatrix} \hat{u} \\ \hat{b} \end{pmatrix}
+\end{equation}
+
+
+\subsection{Dimensionless form of PG streamfunction equation}
+
+Using the Alfvén time as the time scale, i.e. $\tau = L/V_A$ \parencite{holdenried-chernoff_long_2021}, the dimensionless momentum equation for inviscid flow takes the form
 \[
     \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + \frac{2}{\mathrm{Le}}\hat{\mathbf{z}}\times \mathbf{u} = -\nabla p + (\nabla\times\mathbf{B})\times \mathbf{B}
 \]
@@ -17,9 +271,7 @@ and the streamfunction equation is
     \left[\frac{\partial}{\partial s}\left(\frac{s}{H}\frac{\partial}{\partial s}\right) + \left(\frac{1}{sH} - \frac{1}{2H^2} \frac{dH}{ds}\right)\frac{\partial^2}{\partial \phi^2}\right] \frac{\partial \psi}{\partial t} = - \mathrm{Le}^{-1}\frac{2}{H^2}\frac{dH}{ds} \frac{\partial \psi}{\partial \phi} + \frac{dH}{ds} \left(\frac{s}{H} f_\phi^e + \frac{1}{2H}\frac{\partial \widetilde{f_z}}{\partial \phi}\right) - \frac{s}{2H}\hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e}
 \end{gathered}
 \]
-In constrast, \textcite{jackson_plesio-geostrophy_2020} uses 
-\[U = \Omega L\]
-as the characteristic velocity, which is particularly useful when the magnetic field is absent. Now it is necessary to nondimensionalize the Lorentz force. While \textcite{jackson_plesio-geostrophy_2020} uses $\mathscr{B} = \sqrt{\rho_0 \mu_0} \Omega L$, meaning $\mathrm{Le} = 1$ in the paper, it lacks flexibility. Instead, we can still use Lehnert number, in which case the Navier-Stokes equation takes the form
+In constrast, \textcite{jackson_plesio-geostrophy_2020} uses the rotation time as the time scale, i.e. $\tau = \Omega^{-1}$, which is particularly useful when the magnetic field is absent. Now it is necessary to nondimensionalize the Lorentz force. While \textcite{jackson_plesio-geostrophy_2020} uses $\mathscr{B} = \sqrt{\rho_0 \mu_0} \Omega L$, meaning $\mathrm{Le} = 1$ in the paper, it lacks flexibility. Instead, using the Lehnert number, the Navier-Stokes equation for inviscid flow takes the form
 \[
     \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + 2\hat{\mathbf{z}}\times \mathbf{u} = -\nabla p + \mathrm{Le}^2(\nabla\times\mathbf{B})\times \mathbf{B}
 \]
@@ -33,7 +285,7 @@ The variables solved in two dimensionless forms can be easily converted to one a
 \[
     \mathbf{u}_\Omega = \frac{\mathbf{u}_A}{\Omega L} \frac{\mathscr{B}}{\sqrt{\rho_0 \mu_0}} = \mathrm{Le} \, \mathbf{u}_A, \qquad t_\Omega = \Omega \frac{\sqrt{\rho_0 \mu_0} L}{\mathscr{B}} t_A = \frac{t_A}{\mathrm{Le}},\qquad \mathbf{B}_\Omega = \mathbf{B}_A.
 \]
-Here the $A$ and $\Omega$ subscripts indicate dimensionless fields in the equations nondimensionalized using Alfven wave velocity and rotation velocity, respectively. Finally, for the eigenvalue problem, the eigenvalues solved follow the following relation, inverse to $t$:
+Here the $A$ and $\Omega$ subscripts indicate dimensionless fields in the equations nondimensionalized using Alfvén wave velocity and rotation velocity, respectively. Finally, for the eigenvalue problem, the eigenvalues solved follow the following relation, inverse to $t$:
 \[
     \omega_\Omega = \frac{\mathscr{B}}{\sqrt{\rho_0 \mu_0} \Omega L} \omega_A = \mathrm{Le} \, \omega_A.
 \]
