@@ -159,3 +159,15 @@ def extract_symbols(var_collection: base.LabeledCollection):
     )
     return symb_collection
 
+
+def forcing_term(psi_eqn: sympy.Eq, dyn_vars: base.LabeledCollection):
+    """Retrieve body force term expression in terms of dynamical variables
+    """
+    F_ext = sympy.S.Zero
+    for term in psi_eqn.rhs.expand().args:
+        for func in term.atoms(sympy.Function):
+            if func in dyn_vars:
+                F_ext += term
+                break
+    return F_ext
+                
