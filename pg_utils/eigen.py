@@ -248,6 +248,22 @@ def to_fd_ode_pg(eq_sys: base.LabeledCollection, dyn_var: base.CollectionPG):
             xpd.FourierExpansions.to_fourier_domain(eq.rhs, f_map, fourier_xpd.bases).expand()), 
         inplace=False, metadata=False
     )
+    
+    
+def to_fd_ode_cg(eq_sys: base.LabeledCollection, dyn_var: base.CollectionConjugate):
+    """A convenient function to convert equations to Fourier domain for transformed vars
+    """
+    fourier_xpd = xpd.FourierExpansions(
+        xpd.m*core.p + xpd.omega*core.t,
+        dyn_var, xpd.cgvar_s
+    )
+    f_map = base.map_collection(dyn_var, fourier_xpd)
+    return eq_sys.apply(
+        lambda eq: Eq(
+            xpd.FourierExpansions.to_fourier_domain(eq.lhs, f_map, fourier_xpd.bases).expand(), 
+            xpd.FourierExpansions.to_fourier_domain(eq.rhs, f_map, fourier_xpd.bases).expand()), 
+        inplace=False, metadata=False
+    )
 
 
 def to_fd_ode_psi(eq: Eq, psi_var: Expr = core.pgvar_ptb.Psi, 
@@ -554,6 +570,7 @@ def compute_matrix_numerics(
     par_val: dict,
     jacobi_rule_opt: dict = {"automatic": True, "quadN": None},
     quadrature_opt: dict = {"backend": "scipy", "output": "numpy", "outer": True},
+    chop: Optional[float] = None,
     save_to: Optional[str] = None, 
     format: Literal["hdf5", "json", "pickle"] = "hdf5",
     overwrite: bool = False,
@@ -632,6 +649,10 @@ def compute_matrix_numerics(
         quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1)
     K_val = nmatrix.MatrixExpander(K_expr, 
         quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1)
+    
+    if chop is not None:
+        M_val[np.abs(M_val) < chop] = 0.
+        K_val[np.abs(K_val) < chop] = 0.
     
     # Output
     if save_to is not None:
