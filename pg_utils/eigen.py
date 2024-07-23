@@ -568,6 +568,7 @@ def compute_matrix_numerics(
     xpd_recipe: xpd.ExpansionRecipe,
     Ntrunc: int, 
     par_val: dict,
+    quadratic_trunc: bool = False,
     jacobi_rule_opt: dict = {"automatic": True, "quadN": None},
     quadrature_opt: dict = {"backend": "scipy", "output": "numpy", "outer": True},
     chop: Optional[float] = None,
@@ -587,6 +588,10 @@ def compute_matrix_numerics(
     :param expansion.ExpansionRecipe expansion_recipe: spectral expansion
     :param int Ntrunc: truncation degree (for the vorticity / magnetic field),
     :param dict par_val: the values to be used for unknown parameters,
+    :param bool quadratic_trunc: whether to use 2*Ntrunc as the truncation level for
+        quadratic magnetic quantities
+        In the full problem, it is probably necessary to use quadratic truncation (True)
+        In eigenvalue problems, it should suffice to use a uniform truncation (False)
     :param dict jacobi_rule_opt: options for Gauss-Jacobi quadrature, 
         to be passed to :class:`~pg_utils.numerics.matrices.InnerQuad_GaussJacobi`
     :param dict quadrature_opt: options for forming the inner product matrix, 
@@ -629,10 +634,14 @@ def compute_matrix_numerics(
     # Configure expansions
     fnames = xpd_recipe.rad_xpd.fields._field_names
     cnames = xpd_recipe.rad_xpd.bases._field_names
-    ranges_trial = [np.arange(2*Ntrunc + 1) 
-        if 'M' in cname else np.arange(Ntrunc + 1) for cname in cnames]
-    ranges_test = [np.arange(2*Ntrunc + 1) 
-        if 'M' in fname else np.arange(Ntrunc + 1) for fname in fnames]
+    if quadratic_trunc:
+        ranges_trial = [np.arange(2*Ntrunc + 1) 
+            if 'M' in cname else np.arange(Ntrunc + 1) for cname in cnames]
+        ranges_test = [np.arange(2*Ntrunc + 1) 
+            if 'M' in fname else np.arange(Ntrunc + 1) for fname in fnames]
+    else:
+        ranges_trial = [np.arange(Ntrunc + 1) for cname in cnames]
+        ranges_test = [np.arange(Ntrunc + 1) for fname in fnames]
     
     # Configure quadrature
     quad_recipe_list = np.array([
