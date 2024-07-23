@@ -1,0 +1,124 @@
+\section{Magnetic diffusion}
+
+Magnetic diffusion is something that is not inherent in the PG model - there is no known closed-form representation of the diffusion term in PG quantities. In other words, the magnetic diffusion is something that is \textit{out of representation} for the PG model. The diffusion term in the quadratic induction equation should take the form
+\begin{equation}
+    \mathscr{D}_{\overline{\mathbf{B}\mathbf{B}}} = \overline{\mathbf{B} \nabla^2 \mathbf{B}} + \overline{\nabla^2 \mathbf{B} \mathbf{B}},\quad 
+    \mathscr{D}_{\widetilde{z^n\mathbf{B}\mathbf{B}}} = \widetilde{z^n \mathbf{B} \nabla^2 \mathbf{B}} + \widetilde{z^n \nabla^2 \mathbf{B} \mathbf{B}}
+\end{equation}
+where $\mathscr{D}$ denotes the diffusion term, and the subscript marks the PG evolution equation to which the diffusion term is associated. For the diffusion term to be \textit{in representation}, we need to be able to find functions such that
+\[
+    \mathscr{D}_{\overline{\mathbf{B}\mathbf{B}}} = \mathcal{F}_{d,\overline{\mathbf{B}\mathbf{B}}} \left(\overline{\mathbf{B}\mathbf{B}}, \widetilde{z^n\mathbf{B}\mathbf{B}}\right),\quad 
+    \mathscr{D}_{\widetilde{z^n\mathbf{B}\mathbf{B}}} = \mathcal{F}_{d,\widetilde{z^n\mathbf{B}\mathbf{B}}} \left(\overline{\mathbf{B}\mathbf{B}}, \widetilde{z^n\mathbf{B}\mathbf{B}}\right)
+\]
+So far it has not been shown to be possible. Instead, the best shot is to find \textit{approximate} functions $\hat{\mathcal{F}}_{d,\overline{\mathbf{B}\mathbf{B}}}$ and $\hat{\mathcal{F}}_{d,\widetilde{z^n\mathbf{B}\mathbf{B}}}$ such that this equality approximately holds.
+
+Let us first look at the quadratic diffusion term in more detail. The vector identity yields that
+\[
+    \mathbf{B} \nabla^2 \mathbf{B} + (\nabla^2 \mathbf{B}) \mathbf{B} = \nabla^2 (\mathbf{B}\mathbf{B}) - 2 (\nabla\mathbf{B})^\intercal \cdot \nabla \mathbf{B} = \nabla_e^2 (\mathbf{B} \mathbf{B}) + \partial_z^2 (\mathbf{B}\mathbf{B}) - 2 (\nabla \mathbf{B})^\intercal \cdot \nabla \mathbf{B}
+\]
+In the component form it reads,
+\[\begin{aligned}
+    B_i (\partial_k \partial_k B_j) + (\partial_k \partial_k B_i) B_j &= \partial_k \partial_k (B_i B_j) - 2 (\partial_k B_i) (\partial_k B_j) \\ 
+    &= \partial_a \partial_a (B_i B_j) + \partial_z^2 (B_i B_j) - 2 (\partial_k B_i) (\partial_k B_j)
+\end{aligned}\]
+where $i,j\in \{1,2,3\}$ can take all Cartesian components, while $a \in \{1,2\}$ denotes the equatorial components. The next step is to take the axial integral. To this purpose we note that
+\[
+    \frac{\partial}{\partial s} \overline{f} = \overline{\frac{\partial f}{\partial s}} - \frac{s}{H} \left(f^+ + f^-\right),\quad 
+    \frac{\partial}{\partial s} \widetilde{f} = \frac{\partial}{\partial s} \overline{\sgn(z)f} = \widetilde{\frac{\partial f}{\partial s}} - \frac{s}{H} \left(f^+ - f^-\right)
+\]
+Using this repeatedly, we obtain the commutation relation
+\[
+    \overline{\nabla_e^2 f} = \nabla_e^2 \overline{f} + \frac{1}{s}\frac{\partial}{\partial s}\frac{s^2}{H} \left(f^+ + f^-\right) + \frac{s}{H}\left(\left(\frac{\partial f}{\partial s}\right)^+ + \left(\frac{\partial f}{\partial s}\right)^-\right)
+    % \widetilde{\nabla_e^2 f} &= \nabla_e^2 \widetilde{f} + \frac{1}{s}\frac{\partial}{\partial s}\frac{s^2}{H} \left(f^+ - f^-\right) + \frac{s}{H}\left(\left(\frac{\partial f}{\partial s}\right)^+ - \left(\frac{\partial f}{\partial s}\right)^-\right) \\
+    % \widetilde{z\nabla_e^2 f} &= \nabla_e^2 \widetilde{zf} + \frac{1}{s}\frac{\partial}{\partial s} s^2 \left(f^+ + f^-\right) + s\left(\left(\frac{\partial f}{\partial s}\right)^+ + \left(\frac{\partial f}{\partial s}\right)^-\right)
+\]
+Combining with the integral for the $z$-derivative
+\[
+    \overline{\partial_z^2 f} = \left[\frac{\partial f}{\partial z}\right]^H_{-H} = \left(\frac{\partial f}{\partial z}\right)^+ - \left(\frac{\partial f}{\partial z}\right)^-
+\]
+We have the total Laplacian
+\[
+    \overline{\nabla^2 f} = \nabla_e^2 \overline{f} + \frac{2 - s^2}{H^3} \left(f^+ + f^-\right) + \frac{s}{H} \left(\frac{\partial f^+}{\partial s} + \frac{\partial f^-}{\partial s}\right) + \frac{1}{H} \left[s\left(\frac{\partial f}{\partial s}\right)^+ + H \left(\frac{\partial f}{\partial z}\right)^+ + s\left(\frac{\partial f}{\partial s}\right)^- - H \left(\frac{\partial f}{\partial z}\right)^-\right]
+\]
+Invoking the relation
+\[
+    \frac{\partial f^\pm}{\partial s} = \pm \frac{1}{H} \frac{\partial f^\pm}{\partial \theta},\quad 
+    \frac{1}{\sqrt{s^2 + z^2}} \left(s \frac{\partial f}{\partial s} + z \frac{\partial f}{\partial z}\right) = \frac{\partial f}{\partial r}
+\]
+The integral of the total Laplacian can be written as
+\begin{equation}
+    \overline{\nabla^2 f} = \nabla_e^2 \overline{f} + \frac{2 - s^2}{H^3} \left(f^+ + f^-\right) + \frac{s}{H^2} \left(\frac{\partial f^+}{\partial \theta} - \frac{\partial f^-}{\partial \theta}\right) + \frac{1}{H} \left[\left(\frac{\partial f}{\partial r}\right)^+ + \left(\frac{\partial f}{\partial r}\right)^-\right]
+\end{equation}
+Replacing $f$ with $\sgn(z) f$, we can directly write down the formula for anti-symmetric axial integrals
+\begin{equation}
+    \widetilde{\nabla^2 f} = \nabla_e^2 \widetilde{f} + \frac{2 - s^2}{H^3} \left(f^+ - f^-\right) + \frac{s}{H^2} \left(\frac{\partial f^+}{\partial \theta} + \frac{\partial f^-}{\partial \theta}\right) + \frac{1}{H} \left[\left(\frac{\partial f}{\partial r}\right)^+ - \left(\frac{\partial f}{\partial r}\right)^-\right] - 2 \left(\frac{\partial f}{\partial z}\right)^e
+\end{equation}
+The extra term in the end is due to the fact that $\sgn(z)$ does not commute with $\partial_z^2$ term, and hence the original derivation of $\overline{\partial_z^2 (\sgn(z) f)}$ is not equal to $\widetilde{\partial_z^2 f} = \overline{\sgn(z) \partial_z^2 f}$. 
+Note that strictly speaking, the derivation above is only on scalars. The derivation for scalars can however be straightforwardly transferred to Cartesian coordinates, and hence one can show that
+\begin{equation}
+\begin{aligned}
+    \overline{\nabla^2 \mathbf{M}} &= \nabla_e^2 \overline{\mathbf{M}} + \frac{2 - s^2}{H^3} \left(\mathbf{M}^+ + \mathbf{M}^-\right) + \frac{s}{H^2} \left(\frac{\partial \mathbf{M}^+}{\partial \theta} - \frac{\partial \mathbf{M}^-}{\partial \theta}\right) + \frac{1}{H} \left[\left(\frac{\partial \mathbf{M}}{\partial r}\right)^+ + \left(\frac{\partial \mathbf{M}}{\partial r}\right)^-\right] \\
+    \widetilde{\nabla^2 \mathbf{M}} &= \nabla_e^2 \widetilde{\mathbf{M}} + \frac{2 - s^2}{H^3} \left(\mathbf{M}^+ - \mathbf{M}^-\right) + \frac{s}{H^2} \left(\frac{\partial \mathbf{M}^+}{\partial \theta} + \frac{\partial \mathbf{M}^-}{\partial \theta}\right) + \frac{1}{H} \left[\left(\frac{\partial \mathbf{M}}{\partial r}\right)^+ - \left(\frac{\partial \mathbf{M}}{\partial r}\right)^-\right] - 2 \left(\frac{\partial \mathbf{M}}{\partial z}\right)^e
+\end{aligned}
+\end{equation}
+This however doesn't mean that the expression in arbitrary coordinate systems will remain the same. The reason is that the basis vectors for curvilinear coordinates have nontrivial derivative with respect to curvilinear coordinates. While $\hat{\mathbf{x}}\cdot \frac{\partial \mathbf{M}}{\partial \theta} \cdot \hat{\mathbf{y}} = \frac{\partial M_{xy}}{\partial \theta}$, we have $\hat{\mathbf{s}}\cdot \frac{\partial \mathbf{M}}{\partial \theta} \cdot \hat{\mathbf{\phi}} \neq \frac{\partial M_{s\phi}}{\partial \theta}$. For quantities with a $z$ prefactor, we use the identity
+\[
+    z \nabla^2 (\mathbf{B}\mathbf{B}) - z (\nabla \mathbf{B})^\intercal \cdot \nabla \mathbf{B} = \nabla^2 (z \mathbf{B}\mathbf{B}) - 2 (\partial_z z) \partial_z (\mathbf{B}\mathbf{B}) - z (\nabla \mathbf{B})^\intercal \cdot \nabla \mathbf{B} = \nabla^2 (z \mathbf{M}) - 2 \partial_z (\mathbf{M}) - z (\nabla \mathbf{B})^\intercal \cdot \nabla \mathbf{B} \\ 
+\]
+and the Laplacian term will have the anti-symmetric integral
+\[\begin{aligned}
+    \widetilde{\nabla^2 (z\mathbf{M})} &= \nabla_e^2 \widetilde{z\mathbf{M}} + \frac{2 - s^2}{H^3} \left(H \mathbf{M}^+ + H \mathbf{M}^-\right) + \frac{s}{H} \frac{\partial}{\partial s} \left(H \mathbf{M}^+ + H \mathbf{M}^-\right) \\
+    &+ \frac{1}{H} \left[s \left(z\frac{\partial \mathbf{M}}{\partial s}\right)^+ - s \left(z\frac{\partial \mathbf{M}}{\partial s}\right)^- + H \left(\mathbf{M} + z\frac{\partial \mathbf{M}}{\partial z}\right)^+ + H \left(\mathbf{M} + z\frac{\partial \mathbf{M}}{\partial z}\right)^-\right] - 2 \left(\mathbf{M} + z\frac{\partial \mathbf{M}}{\partial z}\right)^e \\ 
+    &= \nabla_e^2 \widetilde{z\mathbf{M}} + \frac{2 - s^2}{H^2} \left(\mathbf{M}^+ + \mathbf{M}^-\right) - \frac{s^2}{H^2} \left(\mathbf{M}^+ + \mathbf{M}^-\right) + s \left(\frac{\partial \mathbf{M}^+}{\partial s} + \frac{\partial \mathbf{M}^-}{\partial s}\right) \\
+    &+ \left[s \left(\frac{\partial \mathbf{M}}{\partial s}\right)^+ + s \left(\frac{\partial \mathbf{M}}{\partial s}\right)^- + H \left(\frac{\partial \mathbf{M}}{\partial z}\right)^+ - H \left(\frac{\partial \mathbf{M}}{\partial z}\right)^- + \left(\mathbf{M}^+ + \mathbf{M}^-\right)\right] - 2 \mathbf{M}^e \\ 
+    &= \nabla^e \widetilde{z\mathbf{M}} + 3 (\mathbf{M}^+ + \mathbf{M}^-) + \frac{s}{H} \left(\frac{\partial \mathbf{M}^+}{\partial \theta} - \frac{\partial \mathbf{M}^-}{\partial \theta}\right) + \left[\left(\frac{\partial \mathbf{M}}{\partial r}\right)^+ + \left(\frac{\partial \mathbf{M}}{\partial r}\right)^-\right] - 2 \mathbf{M}^e
+\end{aligned}\]
+In the end we have the full expressions for the diffusion terms
+\begin{equation}
+\begin{aligned}
+    \overline{\mathbf{B}\nabla^2 \mathbf{B}} =& \nabla_e^2 \overline{\mathbf{M}} + \frac{2 - s^2}{H^3} \left(\mathbf{M}^+ + \mathbf{M}^-\right) + \frac{s}{H^2} \left(\frac{\partial \mathbf{M}^+}{\partial \theta} - \frac{\partial \mathbf{M}^-}{\partial \theta}\right) \\
+    &+ \frac{1}{H} \left[\left(\frac{\partial \mathbf{M}}{\partial r}\right)^+ + \left(\frac{\partial \mathbf{M}}{\partial r}\right)^-\right] - 2\overline{(\nabla\mathbf{B})^\intercal\cdot \nabla\mathbf{B}} \\
+    \widetilde{\mathbf{B}\nabla^2 \mathbf{B}} =& \nabla_e^2 \widetilde{\mathbf{M}} + \frac{2 - s^2}{H^3} \left(\mathbf{M}^+ - \mathbf{M}^-\right) + \frac{s}{H^2} \left(\frac{\partial \mathbf{M}^+}{\partial \theta} + \frac{\partial \mathbf{M}^-}{\partial \theta}\right) - 2 \left(\frac{\partial \mathbf{M}}{\partial z}\right)^e \\
+    &+ \frac{1}{H} \left[\left(\frac{\partial \mathbf{M}}{\partial r}\right)^+ - \left(\frac{\partial \mathbf{M}}{\partial r}\right)^-\right] - 2\widetilde{(\nabla\mathbf{B})^\intercal\cdot \nabla\mathbf{B}} \\ 
+    \widetilde{z \mathbf{B}\nabla^2 \mathbf{B}} =& \nabla_e^2 \widetilde{z\mathbf{M}} + \left(\mathbf{M}^+ + \mathbf{M}^-\right) + \frac{s}{H} \left(\frac{\partial \mathbf{M}^+}{\partial \theta} - \frac{\partial \mathbf{M}^-}{\partial \theta}\right) + 2 \mathbf{M}^e \\
+    &+ \left[\left(\frac{\partial \mathbf{M}}{\partial r}\right)^+ + \left(\frac{\partial \mathbf{M}}{\partial r}\right)^-\right] - 2\widetilde{z (\nabla\mathbf{B})^\intercal\cdot \nabla\mathbf{B}}
+\end{aligned}
+\end{equation}
+Although these expressions cannot really be directly used, they help us to identify contributions to the diffusion term, what we can model, and what we can only approximate. To this end, each equation above has been separated into two lines: the first line contains terms that are \textit{in representation}, although many contains boundary terms; the second line contains terms that are \textit{out of representation}. The out-of-representation terms involves two forms. The first forms concerns $\frac{\partial \mathbf{M}}{\partial r}$ at the boundary, which in turn can be written as the product between the boundary magnetic field and the magnetic shear, i.e. $\frac{\partial \mathbf{B}}{\partial r}$. The second term is a bulk term which concerns the symmetric anti-symmetric integral of $(\nabla \mathbf{B})^\intercal \cdot \nabla \mathbf{B}$.
+
+
+\subsection{Linear drag}
+
+\todoitem{More reading needed... Haven't seen linear drag used in bulk, but only in boundary layers (Han, Hirose and Kida 2018, on topographical drag in the bottom boundary layer) or as boundary conditions (Guan and Xie 2004 on wind stress). And even those would only have stress / tension as a linear function of velocity, not the divergence of the stress tensor.}
+
+If we assume an approximate diffusion in magnetic induction equation in the form of
+\[
+    \frac{\partial \mathbf{B}}{\partial t} = \nabla\times (\mathbf{u}\times \mathbf{B}) - \alpha C_d \mathbf{B}
+\]
+then the evolution equation for the quadratic quantity is straightforward, as the drag coefficient is a simple scaler multiplier, and commutes with everything else:
+\[\begin{aligned}
+    \frac{\partial}{\partial t} \left(\mathbf{B} \mathbf{B}\right) &= \mathbf{B}\nabla\times (\mathbf{u}\times \mathbf{B}) + \nabla\times (\mathbf{u}\times \mathbf{B}) \mathbf{B} - 2 \alpha C_d \mathbf{B} \mathbf{B} \\ 
+    \frac{\partial}{\partial t} \overline{\mathbf{B} \mathbf{B}} &= \mathcal{F}_{\mathrm{ind}, \overline{\mathbf{B} \mathbf{B}}} (\overline{\mathbf{B} \mathbf{B}}, \widetilde{z^n \mathbf{B} \mathbf{B}}) - 2 \alpha C_d \overline{\mathbf{B} \mathbf{B}} \\ 
+    \frac{\partial}{\partial t} \widetilde{z^n \mathbf{B} \mathbf{B}} &= \mathcal{F}_{\mathrm{ind}, \widetilde{z^n \mathbf{B} \mathbf{B}}} (\overline{\mathbf{B} \mathbf{B}}, \widetilde{z^n \mathbf{B} \mathbf{B}}) - 2 \alpha C_d \widetilde{z^n \mathbf{B} \mathbf{B}} \\ 
+\end{aligned}\]
+There is no complication of Implementation here.
+
+\begin{table}[htbp]
+    \centering
+    \caption{PG magnetic quantities (without integration) and related diffusion terms in 3-D}
+    \begin{tabular}[t]{llll}
+        \toprule
+        PG quantity & linearized quantity & 3-D diffusion & linearized diffusion \\
+        \midrule
+        $ M_{ss} = B_s^2$ & $m_{ss} = 2 B_s b_s$ & $2B_s \left(\nabla^2 \mathbf{B}\right)_s$ & $2 \left[B_s \left(\nabla^2 \mathbf{b}\right)_s + b_s \left(\nabla^2 \mathbf{B}\right)_s\right]$ \\[2pt] 
+        $ M_{\phi\phi} = B_\phi^2$ & $m_{\phi\phi} = 2 B_\phi b_\phi$ & $2B_\phi \left(\nabla^2 \mathbf{B}\right)_\phi$ & $2 \left[B_\phi \left(\nabla^2 \mathbf{b}\right)_\phi + b_\phi \left(\nabla^2 \mathbf{B}\right)_\phi \right]$ \\[2pt] 
+        $ M_{s\phi} = B_s B_\phi$ & $m_{s\phi} = B_sb_\phi + b_s B_\phi$ &  & \\ 
+        $ M_{sz} = B_sB_z$ &  $m_{sz} = B_s b_z + b_s B_z$ & $b$ & $b$ \\ 
+        $ M_{sz} = B_sB_z$ &  $m_{sz} = B_s b_z + b_s B_z$ & $b$ & $b$ \\ 
+        $ M_{sz} = B_sB_z$ &  $m_{sz} = B_s b_z + b_s B_z$ & $b$ & $b$ \\ 
+        $ M_{sz} = B_sB_z$ &  $m_{sz} = B_s b_z + b_s B_z$ & $b$ & $b$ \\ 
+        $ M_{sz} = B_sB_z$ &  $m_{sz} = B_s b_z + b_s B_z$ & $b$ & $b$ \\ 
+        \bottomrule
+    \end{tabular}
+\end{table}
+
