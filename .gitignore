@@ -36,5 +36,5 @@ test.py
 /docs/.readthedocs.yaml
 
 # Temporary ignoring the large files
-*.h5
-*.pkl
+# *.h5
+# *.pkl
