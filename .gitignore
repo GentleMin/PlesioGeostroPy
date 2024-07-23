@@ -34,3 +34,7 @@ test.py
 /docs/make.bat
 /docs/Makefile
 /docs/.readthedocs.yaml
+
+# Temporary ignoring the large files
+*.h5
+*.pkl
