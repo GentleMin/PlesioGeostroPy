@@ -1,0 +1,128 @@
+\section{Linearisation in PG and 3D}
+
+\subsection{Linearisation of magnetic induction equation in 3D}
+
+The magnetic induction equation reads
+\begin{equation}\label{eqn:induction-total}
+    \frac{\partial \mathbf{B}}{\partial t} = \nabla\times (\mathbf{u}\times \mathbf{B}) + \eta \nabla^2 \mathbf{B}
+\end{equation}
+Separating the fields into background and perturbational quantities
+\[
+    \mathbf{u} = \mathbf{u}^0 + \epsilon \mathbf{u},\quad 
+    \mathbf{B} = \mathbf{B}^0 + \epsilon \mathbf{b}
+\]
+where for our purpose we may safely assume that $\mathbf{u}^0 = \mathbf{0}$, the induction equation is then rewritten as
+\[
+    \frac{\partial}{\partial t} \left(\mathbf{B}^0 + \epsilon \mathbf{b}\right) = \nabla\times \left(\epsilon \mathbf{u}\times (\mathbf{B}^0 + \epsilon \mathbf{b})\right) + \eta \nabla^2 (\mathbf{B}^0 + \epsilon \mathbf{b})
+\]
+which can be separated into zeroth-order equation and first-order equation:
+\begin{equation}\label{eqn:induction-orders-0-1}
+\begin{aligned}
+    \epsilon^0: \quad &\frac{\partial \mathbf{B}^0}{\partial t} = \eta \nabla^2 \mathbf{B}^0, \\ 
+    \epsilon^1: \quad &\frac{\partial \mathbf{b}}{\partial t} = \nabla\times (\mathbf{u}\times \mathbf{B}^0) + \eta \nabla^2 \mathbf{b}.
+\end{aligned}
+\end{equation}
+While the $\epsilon^1$ equation is the actual equation which is solved in any MHD eigenvalue problem, the $\epsilon^0$ equation is quite often ignored. 
+Indeed, in order to plug a static background field $\mathbf{B}^0$ into the $\epsilon^1$ equation (which is almost always the case), we must have justification for $\partial_t \mathbf{B}^0 \sim \mathbf{0}$. 
+
+There are three self-consistent justifications.
+First, any physical background field $\mathbf{B}^0$ is itself a true steady state in the ideal limit, when $\eta \rightarrow 0$. In the ideal limit and in absence of a background flow, there is simply nothing preventing the background field from, well, persisting forever.
+Second, $\mathbf{B}^0$ may still be a true steady state in the diffusive case, which from $\epsilon^0$ equation holds \textit{iff} the field is strictly harmonic.
+And last, $\mathbf{B}^0$ might vary much slower than the perturbational field, which implies $L^2/\eta$ (where $L$ is the length scale of the background field) is much longer than the characteristic time scale of the perturbational field. In this case we might at least justify dumping the time-dependence of the background field when focusing on fast dynamics, at least intuitively and naively (whether this holds from a perturbative point of view is yet to be established).
+
+The first argument is perfect \textit{per se}, except for the fact that it does not hold at all for any diffusive case.
+The second argument may be true for some background fields that are of very low degree, such as the Malkus field, but is in general not true for e.g. S1 or T1 fields.
+The last argument is more relaxed, but still fails for low-order eigenmodes with similar characteristic length scales as the background field. In many cases (even most cases), none of the arguments apply, and people proceed to solving the $\epsilon^1$ equation anyway - it is surely a legitimate mathematical problem, but we might have to say that there is no self-consistency between the $\epsilon^1$ equation and the full system (\ref{eqn:induction-total}).
+
+
+\subsection{Linearisation for the quadratic induction equation}
+
+In PG, we do not work with vector field $\mathbf{B}$; instead, we work with the quadratic quantity $\mathbf{B}\mathbf{B}$ in the integrated form. The evolution of the quadratic quantity is derived using the magnetic induction equation
+\begin{equation}
+\begin{aligned}
+    \frac{\partial}{\partial t} \left(\mathbf{B} \mathbf{B}\right) &= \mathbf{B} \frac{\partial \mathbf{B}}{\partial t} + \frac{\partial \mathbf{B}}{\partial t} \mathbf{B} = \mathbf{B} \nabla\times (\mathbf{u}\times \mathbf{B}) + \mathbf{B}\eta \nabla^2 \mathbf{B} + \nabla\times (\mathbf{u}\times \mathbf{B}) \mathbf{B} + \eta \left(\nabla^2 \mathbf{B}\right) \mathbf{B} \\
+    &= \mathbf{B} \nabla\times (\mathbf{u}\times \mathbf{B}) + \nabla\times (\mathbf{u}\times \mathbf{B}) \mathbf{B} + \eta \left(\mathbf{B}\nabla^2 \mathbf{B} + \nabla^2 \mathbf{B} \mathbf{B}\right)
+\end{aligned}
+\end{equation}
+Introducing the bilinear form
+\[\mathcal{F}_\mathrm{diff}(\mathbf{A}, \mathbf{B}) = \mathbf{A} \nabla^2 \mathbf{B} + \nabla^2 \mathbf{A} \mathbf{B}\]
+and the trilinear form
+\[\mathcal{F}_\mathrm{ind}(\mathbf{u}, \mathbf{A}, \mathbf{B}) = \mathbf{A} \nabla \times (\mathbf{u} \times \mathbf{B}) + \nabla \times (\mathbf{u} \times \mathbf{A}) \mathbf{B}\]
+the evolution equation for the quadratic quantity now has the short-hand form
+\begin{equation}
+    \frac{\partial \mathbf{M}}{\partial t} = \frac{\partial}{\partial t} \left(\mathbf{B} \mathbf{B}\right) = \mathcal{F}_\mathrm{ind}(\mathbf{u}, \mathbf{B}, \mathbf{B}) + \eta \mathcal{F}_\mathrm{diff}(\mathbf{B}, \mathbf{B})
+\end{equation}
+Separating the fields into background and perturbational quantities
+\[
+    \mathbf{M} = \mathbf{M}^0 + \epsilon \mathbf{m},\quad 
+    \mathbf{B} = \mathbf{B}^0 + \epsilon \mathbf{b},\quad 
+    \mathbf{u} = \mathbf{u}^0 + \epsilon \mathbf{u},
+\]
+and again assuming $\mathbf{u}^0 = \mathbf{0}$, the quadratic magnetic induction equation is then rewritten as
+\[
+\begin{aligned}
+    \frac{\partial \mathbf{M}^0}{\partial t} + \epsilon \frac{\partial \mathbf{m}}{\partial t} &= \mathcal{F}_\mathrm{ind}(\epsilon \mathbf{u}, \mathbf{B}^0 + \epsilon \mathbf{b}, \mathbf{B}^0 + \epsilon \mathbf{b}) + \eta \mathcal{F}_\mathrm{diff}(\mathbf{B}^0 + \epsilon \mathbf{b}, \mathbf{B}^0 + \epsilon \mathbf{b}) \\ 
+    &= \eta \mathcal{F}_\mathrm{diff}(\mathbf{B}^0, \mathbf{B}^0) + \epsilon \left(\mathcal{F}_\mathrm{ind}(\mathbf{u}, \mathbf{B}^0, \mathbf{B}^0) + \eta \mathcal{F}_\mathrm{diff}(\mathbf{B}^0, \mathbf{b}) + \eta \mathcal{F}_\mathrm{diff}(\mathbf{b}, \mathbf{B}^0)\right) + O(\epsilon^2)
+\end{aligned}
+\]
+yielding the zeroth-order and the first-order equations
+\begin{equation}\label{eqn:induction-quadratic}
+\begin{aligned}
+    \epsilon^0:\quad &\frac{\partial \mathbf{M}^0}{\partial t} = \eta \mathcal{F}_\mathrm{diff}(\mathbf{B}^0, \mathbf{B}^0) = \eta \left(\mathbf{B}^0 \nabla^2 \mathbf{B}^0 + \nabla^2 \mathbf{B}^0 \mathbf{B}^0\right), \\
+    \epsilon^1:\quad &\frac{\partial \mathbf{m}}{\partial t} = \mathcal{F}_\mathrm{ind}(\mathbf{u}, \mathbf{B}^0, \mathbf{B}^0) + \eta \left(\mathcal{F}_\mathrm{diff}(\mathbf{B}^0, \mathbf{b}) + \mathcal{F}_\mathrm{diff}(\mathbf{b}, \mathbf{B}^0)\right) \\
+    &= \mathbf{B}^0 \nabla\times (\mathbf{u}\times \mathbf{B}^0) + \nabla\times (\mathbf{u}\times \mathbf{B}^0) \mathbf{B}^0 + \eta \left(\mathbf{B}^0 \nabla^2 \mathbf{b} + \nabla^2 \mathbf{B}^0 \mathbf{b} + \mathbf{b} \nabla^2 \mathbf{B}^0 + \nabla^2 \mathbf{b} \mathbf{B}^0\right)
+\end{aligned}
+\end{equation}
+This is consistent with linearising the vector magnetic induction equation first and then taking the product to form the quadratic quantity. To see this, first note that the background and perturbational quantities for the quadratic tensor is linked to the background and perturbational magnetic field via
+\[\begin{gathered}
+    \mathbf{M} = (\mathbf{B}^0 + \epsilon \mathbf{b}) (\mathbf{B}^0 + \epsilon \mathbf{b}) = \mathbf{B}^0 \mathbf{B}^0 + \epsilon (\mathbf{B}^0 \mathbf{b} + \mathbf{b} \mathbf{B}^0) + O(\epsilon^2) \\
+    \Longrightarrow \quad \mathbf{M}^0 = \mathbf{B}^0 \mathbf{B}^0,\quad \mathbf{m} = \mathbf{B}^0 \mathbf{b} + \mathbf{b} \mathbf{B}^0
+\end{gathered}\]
+and hence the evolution equations for $\mathbf{M}^0$ and $\mathbf{m}$ can be formed by invoking eq.(\ref{eqn:induction-orders-0-1}),
+\[\begin{aligned}
+    &\frac{\partial \mathbf{M}^0}{\partial t} = \mathbf{B}^0 \frac{\partial \mathbf{B}^0}{\partial t} + \frac{\partial \mathbf{B}^0}{\partial t} \mathbf{B}^0 = \eta \left(\mathbf{B}^0 \nabla^2 \mathbf{B}^0 + \nabla^2 \mathbf{B}^0 \mathbf{B}^0\right),\\
+    &\frac{\partial \mathbf{m}}{\partial t} = \mathbf{B}^0 \frac{\partial \mathbf{b}}{\partial t} + \frac{\partial \mathbf{B}^0}{\partial t} \mathbf{b} + \mathbf{b} \frac{\partial \mathbf{B}^0}{\partial t} + \frac{\partial \mathbf{b}}{\partial t} \mathbf{B}^0 \\
+    &= \mathbf{B}^0 \left(\nabla\times (\mathbf{u}\times \mathbf{B}^0) + \eta \nabla^2 \mathbf{b}\right) + \eta \nabla^2 \mathbf{B}^0 \mathbf{b} + \mathbf{b} \eta \nabla^2 \mathbf{B}^0 + \left(\nabla\times (\mathbf{u}\times \mathbf{B}^0) + \eta \nabla^2 \mathbf{b}\right) \mathbf{B}^0 \\ 
+    &= \mathbf{B}^0 \nabla\times (\mathbf{u}\times \mathbf{B}^0) + \nabla\times (\mathbf{u}\times \mathbf{B}^0) \mathbf{B}^0 + \eta \left(\mathbf{B}^0 \nabla^2 \mathbf{b} + \nabla^2 \mathbf{B}^0 \mathbf{b} + \mathbf{b}\nabla^2 \mathbf{B}^0 + \nabla^2 \mathbf{b} \mathbf{B}^0\right)
+\end{aligned}\]
+and the results are exactly the same as eq.(\ref{eqn:induction-quadratic}).
+
+If we again employ the steady-state background field assumption, i.e. $\partial_t \mathbf{B}^0 = \eta \nabla^2 \mathbf{B}^0 \sim 0$, then the $\epsilon^0$ equation of the quadratic quantity (\ref{eqn:induction-quadratic}) is automatically satisfied and does not require solution. In addition, the Laplacian of the background field in the $\epsilon^1$ equation can be omitted (equivalently, the $\partial_t \mathbf{B}^0$ on the left hand side can be omitted), giving rise to the modified form
+\begin{equation}\label{eqn:induction-quadratic-steady-bg}
+    \epsilon^1:\quad \frac{\partial \mathbf{m}}{\partial t} = \mathbf{B}^0 \nabla\times (\mathbf{u}\times \mathbf{B}^0) + \nabla\times (\mathbf{u}\times \mathbf{B}^0) \mathbf{B}^0 + \eta \left(\mathbf{B}^0 \nabla^2 \mathbf{b} + \nabla^2 \mathbf{b} \mathbf{B}^0\right).
+\end{equation}
+
+\subsection{The background field conundrum}
+
+As has been mentioned, the treatment of the $\epsilon^0$ equation (or the background field equation) is quite often done in a very sloppy fashion. The same inconsistency is not only present in the linearisation of the magnetic induction equation, but also exists in the quadratic quantity equation, and in between the magnetic induction equation and the quadratic induction equation.
+I summarise three possible conceptual approaches to the linearised system and the associated eigenvalue problem as follows.
+\begin{enumerate}
+    \item The \textit{legitimate} way. For the magnetic induction equation, solve for $\mathbf{B}^0$ first (the free-decay problem of the background field), and then plug the time-dependent background field into the $\epsilon^1$ equation to solve for first-order perturbation $\mathbf{b}$. This procedure is the same for the quadratic quantities. By doing so, everything will be consistent. \\
+    The problem is, by doing so, there is no conventional eigenvalue problem associated with the $\epsilon^1$ equation in either (\ref{eqn:induction-orders-0-1}) or (\ref{eqn:induction-quadratic}). The dynamical system becomes non-autonomous - there is time-dependent forcing, so to speak, appearing on the right hand side, whose temporal behavior may or may not coincide with that of the perturbational field.
+    \item The \textit{self-consistent} way. In this approach, we consistently assume that the background field is in steady state by enforcing $\partial_t \mathbf{B}^0 = \eta \nabla^2 \mathbf{B}^0 \sim \mathbf{0}$. That way, we will be solving $\epsilon^1$ equation in (\ref{eqn:induction-orders-0-1}) for eigenvalue problems involving the magnetic induction equation, and $\epsilon^1$ equation in (\ref{eqn:induction-quadratic-steady-bg}) for eigenvalue problems involving the quadratic quantity. \\
+    This approach guarantees internal consistency. The aforementioned assumption is the only assumption needed for solving only $\epsilon^1$ equations and taking the magnetic induction equation to the quadratic form. However, as stated in previous sections, this condition is too strict that it fails in any eigenvalue problems with magnetic diffusion and a background field which is not utterly simple, especially when considering the fundamental modes. Therefore, even though it may be \textit{self-consistent}, it is questionable whether it is compatible with the original equations in describing the physics.
+    \item The \textit{invisible-hand} concept. In this concept, we simply discard the $\epsilon^0$ equations by saying, be it the invisible hand or an almighty being, the background field is somehow fixed. We only care about the $\epsilon^1$ equations, which are exactly the same as in the last approach. We should not use $\epsilon^1$ in eq.(\ref{eqn:induction-quadratic}) anymore, because the consistency between this and $\epsilon^1$ in eq.(\ref{eqn:induction-orders-0-1}) requires the $\epsilon^0$ equation, which is $\partial_t \mathbf{B}^0 = \eta \nabla^2 \mathbf{B}^0 \sim \mathbf{0}$, an equation that is discarded. \\
+    The obvious problem with this approach is that, there is simply no going back - there is no compatibility with the original nonlinear equation anymore. There is nothing in the original equation that invokes this \textit{invisible hand}, and yet it is invoked in the background field. If one invokes some background flow as the invisible hand, then the interaction between this background flow and the perturbed magnetic field will add additional terms to the $\epsilon^1$ equation, a process that is almost never done.
+\end{enumerate}
+From the three approaches, it seems that the \textit{self-consistent} approach is the most favorable. It still yields an autonomous linear system, to which we can associate an ordinary eigenvalue problem, and is at least somewhat justifiable.
+
+\subsection{Linearisation in the PG induction equation}
+
+Since axial integration in the form of $\overline{f}$ and $\widetilde{z^n f}$ is a linear process, there is no complication in promoting the linearised quadratic induction equation into the integrated form. The induction equations for the PG quantities then read
+\begin{equation}\label{eqn:induction-pg-lin-sym}
+\begin{aligned}
+    \epsilon^0:\quad &\frac{\partial \overline{\mathbf{M}^0}}{\partial t} = \eta \left(\overline{\mathbf{B}^0 \nabla^2 \mathbf{B}^0} + \overline{\nabla^2 \mathbf{B}^0 \mathbf{B}^0}\right), \\
+    \epsilon^1:\quad &\frac{\partial \overline{\mathbf{m}}}{\partial t} = \overline{\mathbf{B}^0 \nabla\times (\mathbf{u}\times \mathbf{B}^0)} + \overline{\nabla\times (\mathbf{u}\times \mathbf{B}^0) \mathbf{B}^0} \\
+    &+ \eta \left(\overline{\mathbf{B}^0 \nabla^2 \mathbf{b}} + \overline{\nabla^2 \mathbf{B}^0 \mathbf{b}} + \overline{\mathbf{b} \nabla^2 \mathbf{B}^0} + \overline{\nabla^2 \mathbf{b} \mathbf{B}^0}\right)
+\end{aligned}
+\end{equation}
+and for the equatorially anti-symmetric integrals
+\begin{equation}\label{eqn:induction-pg-lin-asym}
+\begin{aligned}
+    \epsilon^0:\quad &\frac{\partial \widetilde{z^n \mathbf{M}^0}}{\partial t} = \eta \left(\widetilde{z^n\mathbf{B}^0 \nabla^2 \mathbf{B}^0} + \widetilde{z^n\nabla^2 \mathbf{B}^0 \mathbf{B}^0}\right), \\
+    \epsilon^1:\quad &\frac{\partial \widetilde{z^n\mathbf{m}}}{\partial t} = \widetilde{z^n\mathbf{B}^0 \nabla\times (\mathbf{u}\times \mathbf{B}^0)} + \widetilde{z^n\nabla\times (\mathbf{u}\times \mathbf{B}^0) \mathbf{B}^0} \\
+    &+ \eta \left(\widetilde{z^n\mathbf{B}^0 \nabla^2 \mathbf{b}} + \widetilde{z^n\nabla^2 \mathbf{B}^0 \mathbf{b}} + \widetilde{z^n\mathbf{b} \nabla^2 \mathbf{B}^0} + \widetilde{z^n\nabla^2 \mathbf{b} \mathbf{B}^0}\right).
+\end{aligned}
+\end{equation}
+These equations inherit all the consistency problems as the previous quadratic quantities.
+For the induction terms, \textcite{jackson_plesio-geostrophy_2020} already shows that there is closed form expression in terms of PG variables. This is not the case for the diffusion terms. The problem with magnetic diffusion in PG will be investigated in the next section.    
