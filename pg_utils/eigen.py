@@ -248,6 +248,22 @@ def to_fd_ode_pg(eq_sys: base.LabeledCollection, dyn_var: base.CollectionPG):
             xpd.FourierExpansions.to_fourier_domain(eq.rhs, f_map, fourier_xpd.bases).expand()), 
         inplace=False, metadata=False
     )
+    
+    
+def to_fd_ode_cg(eq_sys: base.LabeledCollection, dyn_var: base.CollectionConjugate):
+    """A convenient function to convert equations to Fourier domain for transformed vars
+    """
+    fourier_xpd = xpd.FourierExpansions(
+        xpd.m*core.p + xpd.omega*core.t,
+        dyn_var, xpd.cgvar_s
+    )
+    f_map = base.map_collection(dyn_var, fourier_xpd)
+    return eq_sys.apply(
+        lambda eq: Eq(
+            xpd.FourierExpansions.to_fourier_domain(eq.lhs, f_map, fourier_xpd.bases).expand(), 
+            xpd.FourierExpansions.to_fourier_domain(eq.rhs, f_map, fourier_xpd.bases).expand()), 
+        inplace=False, metadata=False
+    )
 
 
 def to_fd_ode_psi(eq: Eq, psi_var: Expr = core.pgvar_ptb.Psi, 
@@ -552,8 +568,10 @@ def compute_matrix_numerics(
     xpd_recipe: xpd.ExpansionRecipe,
     Ntrunc: int, 
     par_val: dict,
+    quadratic_trunc: bool = False,
     jacobi_rule_opt: dict = {"automatic": True, "quadN": None},
     quadrature_opt: dict = {"backend": "scipy", "output": "numpy", "outer": True},
+    chop: Optional[float] = None,
     save_to: Optional[str] = None, 
     format: Literal["hdf5", "json", "pickle"] = "hdf5",
     overwrite: bool = False,
@@ -570,6 +588,10 @@ def compute_matrix_numerics(
     :param expansion.ExpansionRecipe expansion_recipe: spectral expansion
     :param int Ntrunc: truncation degree (for the vorticity / magnetic field),
     :param dict par_val: the values to be used for unknown parameters,
+    :param bool quadratic_trunc: whether to use 2*Ntrunc as the truncation level for
+        quadratic magnetic quantities
+        In the full problem, it is probably necessary to use quadratic truncation (True)
+        In eigenvalue problems, it should suffice to use a uniform truncation (False)
     :param dict jacobi_rule_opt: options for Gauss-Jacobi quadrature, 
         to be passed to :class:`~pg_utils.numerics.matrices.InnerQuad_GaussJacobi`
     :param dict quadrature_opt: options for forming the inner product matrix, 
@@ -612,10 +634,14 @@ def compute_matrix_numerics(
     # Configure expansions
     fnames = xpd_recipe.rad_xpd.fields._field_names
     cnames = xpd_recipe.rad_xpd.bases._field_names
-    ranges_trial = [np.arange(2*Ntrunc + 1) 
-        if 'M' in cname else np.arange(Ntrunc + 1) for cname in cnames]
-    ranges_test = [np.arange(2*Ntrunc + 1) 
-        if 'M' in fname else np.arange(Ntrunc + 1) for fname in fnames]
+    if quadratic_trunc:
+        ranges_trial = [np.arange(2*Ntrunc + 1) 
+            if 'M' in cname else np.arange(Ntrunc + 1) for cname in cnames]
+        ranges_test = [np.arange(2*Ntrunc + 1) 
+            if 'M' in fname else np.arange(Ntrunc + 1) for fname in fnames]
+    else:
+        ranges_trial = [np.arange(Ntrunc + 1) for cname in cnames]
+        ranges_test = [np.arange(Ntrunc + 1) for fname in fnames]
     
     # Configure quadrature
     quad_recipe_list = np.array([
@@ -632,6 +658,10 @@ def compute_matrix_numerics(
         quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1)
     K_val = nmatrix.MatrixExpander(K_expr, 
         quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1)
+    
+    if chop is not None:
+        M_val[np.abs(M_val) < chop] = 0.
+        K_val[np.abs(K_val) < chop] = 0.
     
     # Output
     if save_to is not None:
