@@ -105,6 +105,7 @@ def assemble_forcing(eqs: base.LabeledCollection, *args: str,
                 core.fe_p: fe_p, core.fs_sym: fs_sym, 
                 core.fp_sym: fp_sym, core.fz_asym: fz_asym}).expand())
     
+    par_list = list(set(par_list))
     return eqs_new, par_list
 
 
@@ -366,11 +367,16 @@ FORCING_TERMS = {
     "pg": forcing.force_explicit_lin,
     "cg": forcing.force_explicit_lin_cg,
 }
+DIFFUSION_TERMS = {
+    "pg": forcing.Dm_models_lin,
+    "cg": forcing.Dm_models_cg_lin
+}
 
 
 def form_equations(
     eq_mode: str = "pg", 
     components: List = ["Lorentz"],
+    diff_M: Literal["None", "Linear drag"] = "None",
     timescale: str = "Alfven", 
     bg: bg_fields.BackgroundFieldMHD = bg_fields.BackgroundHydro(),
     deactivate: List[int] = list(),
@@ -409,6 +415,15 @@ def form_equations(
     eqs, par_list_bg = apply_bg_to_set(eqs, bg, mode=i_mode, verbose=verbose-1)
     par_list = par_list_nd + par_list_bg
     
+    # Assemble magnetic diffusion
+    diff_M = diff_M.lower()
+    if diff_M != "none":
+        Dm = DIFFUSION_TERMS[i_mode][diff_M]
+        for field in eqs._field_names:
+            if eqs[field] is not None and Dm[field] is not None:
+                eqs[field] = Eq(eqs[field].lhs, eqs[field].rhs + 1/params.Lu*Dm[field])
+        par_list.append(params.Lu)
+    
     # reduce dimensions if applies
     if eq_mode.lower() == "reduced":
         eqs = reduce_eqsys_to_force_form(eqs, verbose=verbose-1)
@@ -430,6 +445,7 @@ def form_equations(
     if verbose > 0:
         print()
     
+    par_list = list(set(par_list))
     return eqs, par_list
 
 

@@ -14,9 +14,16 @@ from sympy import diff
 from sympy import Derivative as diff_u
 from .core import *
 from .base_utils import linearize
+from .base import CollectionPG, CollectionConjugate
 
 
-# ====================== Lorentz forc =========================
+# ===================== Coriolis force ========================
+
+f_Cor = sympy.Function(r"f_{Cor}")(s, p, t)
+f_Cor_expr = -2/H**2*diff(H, s)*diff(pgvar.Psi, p)
+
+
+# ====================== Lorentz force ========================
 
 #: Placeholder: symmetric integral of the radial Lorentz force
 Ls_sym = sympy.Function(r"\overline{L_s}")(s, p, t)
@@ -135,3 +142,38 @@ force_explicit_lin_cg = {
     Lz_asym: Lz_asym_lin_cg,
     Le_p: Le_p_lin_cg
 }
+
+
+# =================== Magnetic diffusion ======================
+
+Dm_models = dict()
+Dm_models_lin = dict()
+Dm_models_cg = dict()
+Dm_models_cg_lin = dict()
+
+# linear drag model -----------------------
+
+mod_name = "linear drag"
+
+Dm = CollectionPG(**{
+    fname: -pgvar[fname] 
+    for fname in CollectionPG.pg_field_names if fname != 'Psi'
+})
+Dm_cg = PG_to_conjugate(Dm)
+Dm_cg.apply(
+    lambda fname, expr: expr.subs(pg_cg_map).doit().expand() if fname != 'Psi' else expr, 
+    inplace=True, metadata=True
+)
+Dm_lin = Dm.apply(
+    lambda field, expr: linearize(expr, pg_linmap, perturb_var=eps) if field != 'Psi' else expr,
+    inplace=False, metadata=True
+)
+Dm_cg_lin = Dm_cg.apply(
+    lambda field, expr: linearize(expr, cg_linmap, perturb_var=eps) if field != 'Psi' else expr,
+    inplace=False, metadata=True
+)
+   
+Dm_models[mod_name] = Dm
+Dm_models_lin[mod_name] = Dm_lin
+Dm_models_cg[mod_name] = Dm_cg
+Dm_models_cg_lin[mod_name] = Dm_cg_lin

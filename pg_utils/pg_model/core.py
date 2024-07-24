@@ -359,7 +359,7 @@ def PG_to_conjugate(pg_comp: base.CollectionPG) -> base.CollectionConjugate:
     """
     # Decide how to form the conjugate object
     # The method assumes all entries are of the same type
-    if isinstance(pg_comp.Psi, sympy.Expr):
+    if isinstance(pg_comp.Mss, sympy.Expr):
         cg_comp = base.CollectionConjugate(
             Psi = pg_comp.Psi,
             # Moments: conversion
@@ -387,7 +387,7 @@ def PG_to_conjugate(pg_comp: base.CollectionPG) -> base.CollectionConjugate:
             Bz_m = pg_comp.Bz_m,
         )
         return cg_comp
-    elif isinstance(pg_comp.Psi, sympy.Eq):
+    elif isinstance(pg_comp.Mss, sympy.Eq):
         cg_lhs = PG_to_conjugate(pg_comp.apply(lambda eq: eq.lhs, inplace=False))
         cg_rhs = PG_to_conjugate(pg_comp.apply(lambda eq: eq.rhs, inplace=False))
         cg_comp = base.CollectionConjugate(
