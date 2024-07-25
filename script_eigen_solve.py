@@ -13,10 +13,11 @@ from pg_utils.pg_model import bg_fields
 # eigen.form_equations(
 #     eq_mode="cg",
 #     components=["Lorentz"],
+#     diff_M="Linear drag",
 #     timescale="Alfven",
 #     bg=bg_fields.BackgroundToroidalQuadrupole(),
 #     # deactivate=["Bp_p", "Bp_m"],
-#     save_to=os.path.join(output_dir, "Toroidal_Quadrupole/eqs_cg.json"),
+#     save_to=os.path.join(output_dir, "Toroidal_Quadrupole/eqs_cg_drag.json"),
 #     overwrite=True,
 #     verbose=5
 # )
@@ -52,7 +53,7 @@ import sympy
 # }
 # Poloidal dipole field
 parameters = {
-    params.Le: sympy.Rational(1, 100000),
+    params.Le: sympy.Rational(1, 10000),
     expansion.m: sympy.Integer(1)
 }
 
@@ -65,7 +66,7 @@ results = eigen.compute_matrix_numerics(
         # "Poloidal_Dipole/Transformed_ext/matrix_expr.json"
         ),
     xpd_recipe=xpd_cfg.recipe,
-    Ntrunc=80,
+    Ntrunc=120,
     par_val=parameters,
     quadratic_trunc=True,
     jacobi_rule_opt={"automatic": True, "quadN": None},
@@ -81,7 +82,7 @@ results = eigen.compute_matrix_numerics(
         # "Malkus/Reduced/matrix_m3_N50_cpt.h5"
         # "Toroidal_Quadrupole/Reduced/matrix_m3_Le-4_N50_orth.h5"
         # "Poloidal_Dipole/Reduced/matrix_m3_N50_p-quad.h5"
-        "Poloidal_Dipole/Reduced/matrix_m1_Le1e-5_N80_p113_hybrid.h5"
+        "Poloidal_Dipole/Reduced/matrix_m1_Le1e-4_N120_p113_hybrid.h5"
         # "Poloidal_Dipole/Transformed_ext/matrix_m3_Le1e-4_N40_p113.h5"
         # "Poloidal_Dipole/Reduced/matrix_m3_N50_quad-p113_tmp.pkl"
         ),
@@ -98,7 +99,7 @@ eigen.compute_eigen(
         # "Malkus/Reduced/matrix_m3_N50_cpt.h5"
         # "Toroidal_Quadrupole/Reduced/matrix_m3_Le-4_N50_orth.h5"
         # "Poloidal_Dipole/Reduced/matrix_m3_N50_quad-p113_tmp.pkl"
-        "Poloidal_Dipole/Reduced/matrix_m1_Le1e-5_N80_p113_hybrid.h5"
+        "Poloidal_Dipole/Reduced/matrix_m1_Le1e-4_N120_p113_hybrid.h5"
         # "Poloidal_Dipole/Transformed_ext/matrix_m3_Le1e-4_N40_p113.h5"
         # "../tmp/matrix_tmp.pkl"
         ),
@@ -107,7 +108,7 @@ eigen.compute_eigen(
         # "Hydrodynamic/Reduced/eigen_m3_N50_quad-eigen-p113_tmp.h5"
         # "Malkus/Reduced/eigen_m3_N50_cpt.h5"
         # "Toroidal_Quadrupole/Reduced/eigen_m3_Le-4_N50_orth.h5"
-        "Poloidal_Dipole/Reduced/eigen_m1_Le1e-5_N80_p113_hybrid.h5"
+        "Poloidal_Dipole/Reduced/eigen_m1_Le1e-4_N120_p113_hybrid.h5"
         # "Poloidal_Dipole/Transformed_ext/eigen_m3_Le1e-4_N40_p113.h5"
         # "Poloidal_Dipole/Reduced/eigen_m3_N50_quad-eigen-p113_tmp2.pkl"
         ),
