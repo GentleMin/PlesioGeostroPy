@@ -418,10 +418,15 @@ def form_equations(
     # Assemble magnetic diffusion
     diff_M = diff_M.lower()
     if diff_M != "none":
+        prefactor = S.One
+        if timescale.lower() == "alfven":
+            prefactor *= 1/params.Lu
+        if timescale.lower() == "spin":
+            prefactor *= params.Em
         Dm = DIFFUSION_TERMS[i_mode][diff_M]
         for field in eqs._field_names:
             if eqs[field] is not None and Dm[field] is not None:
-                eqs[field] = Eq(eqs[field].lhs, eqs[field].rhs + 1/params.Lu*Dm[field])
+                eqs[field] = Eq(eqs[field].lhs, eqs[field].rhs + prefactor*Dm[field])
         par_list.append(params.Lu)
     
     # reduce dimensions if applies
@@ -656,8 +661,10 @@ def compute_matrix_numerics(
         ranges_test = [np.arange(2*Ntrunc + 1) 
             if 'M' in fname else np.arange(Ntrunc + 1) for fname in fnames]
     else:
-        ranges_trial = [np.arange(Ntrunc + 1) for cname in cnames]
-        ranges_test = [np.arange(Ntrunc + 1) for fname in fnames]
+        ranges_trial = [np.arange(Ntrunc + 5) 
+            if 'M' in cname else np.arange(Ntrunc + 1) for cname in cnames]
+        ranges_test = [np.arange(Ntrunc + 5) 
+            if 'M' in fname else np.arange(Ntrunc + 1) for fname in fnames]
     
     # Configure quadrature
     quad_recipe_list = np.array([

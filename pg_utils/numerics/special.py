@@ -94,10 +94,10 @@ def roots_jacobi_mp(n: int, alpha: mp.mpf, beta: mp.mpf,
         
         def f(n, xi):
             return np.array(
-                [mp.jacobi(n, alpha, beta, xi_tmp) for xi_tmp in xi], dtype=object)
+                [mp.jacobi(n, alpha, beta, xi_tmp, zeroprec=115) for xi_tmp in xi], dtype=object)
         def df(n, xi):
             return (n + alpha + beta + 1)/2*np.array(
-                [mp.jacobi(n-1, alpha+1, beta+1, xi_tmp) for xi_tmp in xi], dtype=object)
+                [mp.jacobi(n-1, alpha+1, beta+1, xi_tmp, zeroprec=115) for xi_tmp in xi], dtype=object)
         
         xi_mp = np2mp(xi_dp)
         xi_prev = xi_mp
