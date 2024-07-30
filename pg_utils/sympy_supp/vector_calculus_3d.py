@@ -208,9 +208,27 @@ class CartesianCoordinates3D(OrthogonalCoordinates3D):
         )
         return vector_out
     
+    def grad_h(self, scalar_in, **kwargs):
+        """Horizontal gradient
+        """
+        vector_out = (
+            diff(scalar_in, self[0], **kwargs),
+            diff(scalar_in, self[1], **kwargs)
+        )
+        return vector_out
+    
     def div(self, vector_in, **kwargs):
         """Vector divergence, to be implemented"""
         return super().div(vector_in, **kwargs)
+    
+    def div_h(self, vector_in, **kwargs):
+        """Horizontal divergence
+        """
+        scalar_out = (
+            + diff(vector_in[0], self[0], **kwargs)
+            + diff(vector_in[1], self[1], **kwargs)
+        )
+        return scalar_out
         
     def curl(self, vector_in, **kwargs):
         """Compute the curl of a vector in 3-D Cartesian coords
@@ -231,6 +249,15 @@ class CartesianCoordinates3D(OrthogonalCoordinates3D):
                 - diff(vector_in[0], self[1], **kwargs)
         )
         return vector_out
+    
+    def curl_h(self, vector_in, **kwargs):
+        """Horizontal curl
+        """
+        scalar_out = (
+            + diff(vector_in[1], self[0], **kwargs)
+            - diff(vector_in[0], self[1], **kwargs)
+        )
+        return scalar_out
     
     def laplacian(self, tensor_in, rank=0, **kwargs):
         """Compute the Laplacian of a tensor
@@ -313,6 +340,15 @@ class CylindricalCoordinates(OrthogonalCoordinates3D):
         )
         return vector_out
     
+    def grad_h(self, scalar_in, **kwargs):
+        """Horizontal gradient
+        """
+        vector_out = (
+            diff(scalar_in, self[0], **kwargs),
+            diff(scalar_in, self[1], **kwargs)/self[0]
+        )
+        return vector_out
+    
     def div(self, vector_in, **kwargs):
         """Compute the divergence of a vector in cylindrical coordinates
         
@@ -325,6 +361,13 @@ class CylindricalCoordinates(OrthogonalCoordinates3D):
         scalar_out = 1/self[0]*diff(self[0]*vector_in[0], self[0], **kwargs) \
             + 1/self[0]*diff(vector_in[1], self[1], **kwargs)\
             + diff(vector_in[2], self[2], **kwargs)
+        return scalar_out
+    
+    def div_h(self, vector_in, **kwargs):
+        scalar_out = (
+            + 1/self[0]*diff(self[0]*vector_in[0], self[0], **kwargs)
+            + 1/self[0]*diff(vector_in[1], self[1], **kwargs)
+        )
         return scalar_out
     
     def curl(self, vector_in, **kwargs):
@@ -346,6 +389,15 @@ class CylindricalCoordinates(OrthogonalCoordinates3D):
                 - diff(vector_in[0], self[1], **kwargs)/self[0]
         )
         return vector_out
+    
+    def curl_h(self, vector_in, **kwargs):
+        """Horizontal curl
+        """
+        scalar_out = (
+            + diff(self[0]*vector_in[1], self[0], **kwargs)/self[0]
+            - diff(vector_in[0], self[1], **kwargs)/self[0]
+        )
+        return scalar_out
     
     def laplacian(self, tensor_in, rank=0, **kwargs):
         """Compute the Laplacian of a tensor in cylindrical coordinates
@@ -443,12 +495,12 @@ class SphericalCoordinates(OrthogonalCoordinates3D):
         """Tensor Laplacian, to be implemented"""
         return super().laplacian(tensor_in, rank, **kwargs)
     
-    def surface_grad(self, scalar_in, **kwargs):
+    def grad_surface(self, scalar_in, **kwargs):
         """Surface gradient, to be implemented
         """
         raise NotImplementedError
     
-    def surface_div(self, vector_in, **kwargs):
+    def div_surface(self, vector_in, **kwargs):
         """Compute the surface divergence of a 2-D vector in spherical coordinates
         
         :param array-like vector_in: input vector, assumed to be 
@@ -463,6 +515,11 @@ class SphericalCoordinates(OrthogonalCoordinates3D):
         scalar_out = 1/(self[0]*sympy.sin(self[1]))*diff(sympy.sin(self[1])*vector_in[0], self[1], **kwargs) \
             + 1/(self[0]*sympy.sin(self[1]))*diff(vector_in[1], self[2], **kwargs)
         return scalar_out
+    
+    def curl_surface(self, vector_in, **kwargs):
+        """Surface curl
+        """
+        raise NotImplementedError
     
     def transform_to(self, v_in: "Vector3D", new_sys: OrthogonalCoordinates3D, 
             coeffs_new=False) -> "Vector3D":
