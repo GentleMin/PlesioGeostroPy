@@ -1,0 +1,113 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{doc_default}
+\usepackage{newtxtext, newtxmath}
+\usepackage[
+    backend=biber,
+    style=authoryear-comp,
+    dashed=false,
+    % compact=true,
+    sorting=nyt
+]{biblatex}
+% \addbibresource{../references.bib}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+% \DeclareMathOperator{\arcsec}{arcsec}
+% \DeclareMathOperator{\arccot}{arccot}
+% \DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\sgn}{sgn}
+
+\newcommand{\todoitem}[1]{\textcolor{purple}{[#1]}}
+
+\title{Fabrication of a magnetic background field radial at the boundary}
+\author{Jingtao Min}
+\date{Sept 26, 2024, last update \today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    \noindent This document aims to construct magnetic background fields in a sphere that are radial at the boundary (i.e., $\hat{\mathbf{r}}\times \mathbf{B}|_{r = a} = \mathbf{0}$). Such fields can be useful for testing boundary layer parameterisations.
+\end{abstract}
+
+\section{Boundary-normal magnetic field}
+
+For a magnetic field $\mathbf{B}$ defined in a sphere $r \leq a$, we want to see what conditions its parameterisation must satisfy in order that it is radial at the boundary. In other words, its tangential components must vanish at the boundary, i.e. 
+\begin{equation}
+    \hat{\mathbf{r}}\times \mathbf{B}|_{r=a} = \mathbf{0}.
+\end{equation}
+Since magnetic field is solenoidal ($\nabla\cdot \mathbf{B} = 0$) by nature (or according to Maxwell equations), we can enforce the divergence-free property easily by utilising the Toroidal-Poloidal representation (Mie representation). This takes the form
+\begin{equation}
+    \mathbf{B} = \nabla\times T \mathbf{r} + \nabla\times \nabla\times S \mathbf{r} = - \hat{\mathbf{r}} \nabla_s^2 \frac{S}{r} + \nabla_s \left(\frac{1}{r}\frac{\partial}{\partial r}(rS)\right) - \hat{\mathbf{r}}\times \nabla_s T
+\end{equation}
+where $T(\mathbf{r}) = T(r,\theta,\phi)$ and $S(\mathbf{r}) = S(r,\theta,\phi)$ are the toroidal and poloidal scalars, respectively. $\nabla_s$ is the surface gradient operator on the surface of a sphere, and can be defined from normal gradient via $\nabla_s = r (\nabla - \hat{\mathbf{r}} \hat{\mathbf{r}}\cdot \nabla) = r (\nabla - \hat{\mathbf{r}} \partial_r)$, and takes the explicit form $\nabla_s = \hat{\bm{\theta}} \partial_\theta + \hat{\bm{\phi}} (\sin\theta)^{-1} \partial_\phi$ in spherical coordinates; 
+$\nabla_s^2$ is the surface Laplacian, and can be defined from normal gradient via $\nabla_s^2 = r^2 (\nabla^2 - r^{-2}\partial_r (r^2 \partial_r)) = r^2 \nabla^2 - \partial_r (r^2 \partial_r)$, and takes the explicit form $\nabla_s^2 = (\sin\theta)^{-1}\partial_\theta (\sin\theta \partial_\theta) + (\sin\theta)^{-2} \partial_\phi^2$ in spherical coordinates.
+We expand the two scalars in spherical harmonics,
+\begin{equation}
+    S = \sum_{l,m} S_{lm}(r) Y_{lm}(\theta, \phi),\qquad 
+    T = \sum_{l,m} T_{lm}(r) Y_{lm}(\theta, \phi).
+\end{equation}
+Using the commutation relation of $\nabla_s^2$ and $\nabla_s$, and the fact that $\nabla_s^2 Y_l^m = -l(l+1)$, the magnetic field can then be rewritten as
+\begin{equation}
+    \mathbf{B} = \sum_{l,m} \left[\frac{l(l+1)}{r} S_{lm}(r) Y_l^m(\theta, \phi) \hat{\mathbf{r}} + 
+    \frac{1}{r}\frac{d(rS_{lm}(r))}{dr} \nabla_s Y_l^m(\theta, \phi) - T_{lm}(r) \hat{\mathbf{r}}\times \nabla_s Y_l^m(\theta, \phi)\right]
+\end{equation}
+Inserting this into the boundary condition $\hat{\mathbf{r}}\times \mathbf{B}|_{r=a} = \mathbf{0}$, we have
+\begin{equation}
+\begin{aligned}
+    \hat{\mathbf{r}}\times \mathbf{B}|_{r=a} &= \sum_{l,m} \left[\frac{1}{r}\frac{d(rS_{lm}(r))}{dr} \hat{\mathbf{r}}\times \nabla_s Y_l^m(\theta, \phi) + T_{lm}(r) \nabla_s Y_l^m(\theta, \phi) \right]_{r=a} \\ 
+    &= \sum_{l,m} \left[\frac{1}{a}\frac{d(rS_{lm}(r))}{dr}\Big|_{a} \mathbf{C}_l^m(\theta, \phi) + T_{lm}(a) \mathbf{B}_l^m(\theta, \phi) \right] = \mathbf{0}
+\end{aligned}
+\end{equation}
+where $\mathbf{B}_l^m = \nabla_s Y_l^m$ and $\mathbf{C}_l^m = \hat{\mathbf{r}}\times \nabla_s Y_l^m$ are the vector spherical harmonics. These vector bases are orthogonal for different $l$ and $m$, and also mutually orthogonal. Therefore, for the series to identically vanish, the coefficients for $\mathbf{B}_l^m$ and $\mathbf{C}_l^m$ must be zero. This yields the conditions
+\begin{equation}\label{eqn:cond-normal}
+\begin{aligned}
+    \frac{d(rS_{lm}(r))}{dr}\Big|_{a} = 0, \\ 
+    T_{lm}(a) = 0.
+\end{aligned}
+\end{equation}
+
+
+\subsection{No strictly normal magnetic field under dynamo condition}
+
+Conditions (\ref{eqn:cond-normal}) are quite strict conditions that apply to every Fourier coefficient of the toroidal and the poloidal components. They appear to be too restrictive when used in combination with the so-called \textit{dynamo condition} (Roberts, Treatise 2015):
+\begin{equation}\label{eqn:cond-dynamo}
+\begin{aligned}
+    \left[\frac{dS_{lm}(r)}{dr} + \frac{l+1}{r} S_{lm}(r)\right]_{r=a} &= 0,\\
+    % = \frac{dS_{lm}(r)}{dr}\Big|_{a} + \frac{l+1}{a} S_{lm}(a) &= 0 \\ 
+    T_{lm}(a) &= 0.
+\end{aligned}
+\end{equation}
+These conditions are the sufficient and necessary conditions that the magnetic field at the boundary can be matched (via continuity of the normal component) to a (quasi-)static magnetic field in electrically insulating medium.
+While the condition for the toroidal coefficient coincides with that in Eq. (\ref{eqn:cond-normal}), the condition for the poloidal coefficient does not. Expanding the poloidal condition from (\ref{eqn:cond-normal}) and collecting the poloidal condition from (\ref{eqn:cond-dynamo}), we have
+\begin{equation}
+    \begin{aligned}
+        \frac{dS_{lm}(r)}{dr}\Big|_{a} + \frac{1}{a} S_{lm}(a) &= 0, \\
+        \frac{dS_{lm}(r)}{dr}\Big|_{a} + \frac{l+1}{a} S_{lm}(a) &= 0.
+    \end{aligned}
+\end{equation}
+We therefore conclude that we must have (i) $l=0$ and $S'_{lm}(a) + S_{lm}(a)/a = 0$, or (ii) $S_{lm}(a) = S'_{lm}(a) = 0$.
+In case (i), the spherical harmonic $Y_{0}^0(\theta, \phi) = 1$, and has only trivial eigenvalue $0$ under the operator $\nabla_s^2$. In case (ii), we have $S_{lm}(a) = 0$. Either way, we have $l(l+1) S_{lm}(r)/r = 0$ at $r=a$. Therefore, not only do the tangent components vanish at the boundary, but the normal component, given by
+\[
+    B_r = \sum_{l,m} \frac{l(l+1)}{r} S_{lm}(r) Y_l^m(\theta, \phi)
+\]
+vanishes as well. Therefore, all we have is 
+\begin{equation}
+    \mathbf{B}|_{r=a} = \mathbf{0}.
+\end{equation}
+There is no such thing as "normal" because there is no non-trivial normal component! We conclude that there is no magnetic field that is normal at the boundary under dynamo condition.
+
+The question now is that how much we need to relax the conditions for a legitimate magnetic field. It is probably unwise to relax the dynamo condition, as it is a physical contraint that should be fulfilled once we make the assumption that the mantle is electrically insulating. The boundary normal condition is merely a goal we want to achieve, and can of course be flexible.
+
+
+\section{Almost boundary normal magnetic field}
+
+
+\end{document}

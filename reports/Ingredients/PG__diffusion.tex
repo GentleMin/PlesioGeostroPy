@@ -1,3 +1,332 @@
+% Diffusion
+
+Advection / transport effects are notorious for bringing complication and challenges to numerical treatment of PDEs, as is in the case of Navier-Stokes equation, the magnetic induction equation, and of course PG as well. The nonlinear interactions between different modes, and the hyperbolicity of the operator amplifies spurious oscillations, causing numerical instability in naive solvers. These effects force people to use sophisticated upwind schemes in FDM/FVM, skewed weighting functions in FEM, and smaller time steps to avoid numerical instability.
+
+One of the cavalries that is often sent in to ease the challenge of advection is diffusion. The convection-diffusion system, for instance, may be solved in a much more relaxed way compared to purely advection equation. Luckily, diffusion is also naturally prevalent in most of the physical systems of interest, not only in numerics. Three types of diffusion may be relevant to our PG problem. First of all, a scalar diffusion is present in the temperature equation:
+\begin{equation}\label{eqn:diff_T_3D}
+    \mathcal{D}_T = \nabla^2 T = \nabla\cdot \nabla T
+\end{equation}
+which comes from the divergence of the heat flux. A vector version of diffusion is present in the momentum equation:
+\[
+    \mathcal{D}_\mathbf{v} = \nabla^2 \mathbf{v} = \nabla\cdot \left[\nabla \mathbf{v} + \nabla \mathbf{v}^\intercal - (\nabla\cdot \mathbf{v})\mathbf{I}\right]
+\]
+which comes from the divergence of the stress tensor, proportional to the deviatoric strain rate in Newtonian fluids. The physical effect of this term is to convert kinetic energy into heat. A similar term also exists in the vector magnetic induction equation
+\[
+    \mathcal{D}_\mathbf{B} = \nabla^2 \mathbf{B} = - \nabla\times \left(\nabla \times \mathbf{B}\right)
+\]
+in which the magnetic energy is converted to electric current. In the PG system, we are further interested in a dyadic version of the magnetic induction equation, where the diffusion takes the form
+\[
+    \mathcal{D}_\mathbf{M} = \mathbf{B} \nabla^2 \mathbf{B} + (\nabla^2 \mathbf{B}) \mathbf{B}.
+\]
+At least some of these diffusions are physically relevant (as they operate on a time scale that is close to the period of interest) and / or numerically desirable for the PG equations. However, the PG equations are not a full 3-D description of the system; instead, it is a reduced-dimensional model where quantities are integrated into 2-D variables. The 3-D diffusion term, however, is in general \textit{out of representation} for the integrated / projected 2-D quantities, \textit{unless} specific assumptions are made on the 3-D structure (e.g. invariant along the integration line, etc). 
+The almost inevitable approximated nature of diffusion in the reduced-dimensional models therefore poses a problem: what properties from the original 3-D diffusions are important, and should be inherited by their reduced dimensional counterparts, and what properties are not so important and can be dropped? 
+In other words, we know that all models from now on are wrong, but which are less wrong than others?
+
+\section{3-D vs 2-D diffusion: properties overview}
+
+The richest discussion on the comparison between the physical 3-D system and the simplified, reduced dimensional 2-D system can be found in hydrology, oceanography or meteorology, where the fluid (water or atmosphere) is simplified in a \textit{Shallow Water} (SW) model due to its large lateral extent and comparatively very small vertical extent.
+In particular, most of the discussion seems to be on what is called the \textit{lateral viscous friction} in the shallow water model \parencite{shchepetkin_physically_1996,gerbeau_derivation_2001,gilbert_form_2014}. In addition to this, Gilbert, Griffiths and Hughes (unpublished work) also studies the appropriate vector magnetic diffusion in the context of \textit{Shallow Water Magnetohydrodynamics} (SWMHD). 
+
+Different physical fields and setups generally have different requirements for their 2-D forms of diffusion. More details on the properties and requirements for this lateral friction will be given in the next section, and some requirements for the magnetic diffusion as required in Gilbert, Griffiths and Hughes' SWMHD setup will be mentioned in the magnetic diffusion part. However, there is one property that is generally true across all physical fields and setups: the diffusion term has to be \textit{dissipative}. This is among the requirements for both viscous diffusion \parencite{shchepetkin_physically_1996} and magnetic diffusion (Gilbert, Griffiths and Hughes).
+
+The dissipative property of the diffusion term is best understood in the context of dynamical system. A system with state variable $x(t)$ and input variable $u(t)$ is said to be \textit{dissipative} with respect to \textit{supply rate} $w(t) = w(u(t), x(t))$ if there exists a non-negative \textit{storage function} $S: X \mapsto \mathbb{R}^+$ such that 
+\begin{equation}\label{eqn:dissipation-def}
+    S(x(t_1)) \leq S(x(t_0)) + \int_{t_0}^{t_1} w(t) \, dt
+\end{equation}
+for any $t_0\leq t_1$ and initial state $x(t_0)$ \parencite{willems_dissipative_1972}. The storage function $S$ is a generalisation of a Lyapunov function. In fact, if the system is dissipative with respect to a zero supply rate $w(t) \equiv 0$, then $S$ is indeed a legitimate Lyapunov function, whose strict local minima will have the notion of stability.
+
+If we try to understand diffusion being dissipative from a dynamical system point of view, we have to consider the whole system. The postulation seems to be that, for a proper diffusion term $\mathcal{D}_A$ of a physical quantity $A$ (not necessarily a scalar), the (approximated) diffusion equation in the form of
+\[
+    \frac{\partial A}{\partial t} = a\mathcal{D}_A (A)
+\]
+subject to some (homogeneous) boundary condition should be dissipative (with respect to zero supply, $w(t) \equiv 0$). Here $a > 0$ is a dimensionless diffusion coefficient. The fact that diffusion should be dissipative is clear in some context based on physical arguments. Whether that should always be the case mathematically is more tricky. 
+
+It is also possible to understand diffusion being dissipative in the context of \textit{dissipative operators}, which I will omit here. This point of view seems to be more restrictive, as (1) it restricts the discussion to linear diffusion operators (although linear operators are probably enough), (2) it does not allow the same degree of flexibility as the storage function does, and (3) it does not have as immediate a connection to the physical properties as the dynamical system does.
+
+Dissipative dynamical system defined as such is not necessarily physically dissipating - a system that conserves certain quantities can also be a dissipative dynamical system, i.e. $S(x(t_1)) \equiv S(x(t_0))$. As we will see later in the discussion of thermal diffusion, for incompressible, non-expanding material, the total internal energy $U$ can be a conserved quantity, and thus a storage function.
+
+
+\section{Viscous diffusion}
+
+The first diffusion of interest is the viscous diffusion. In the context of PG model, it is the only diffusion that is \textit{within representation}, since the entire 3-D velocity field can be represented using the streamfunction $\psi$.
+Therefore, the PG viscous diffusion terms can also be exactly derived as vertical integrals of the 3-D viscous diffusion. The explicit expression for the integrated terms involved has already been derived in Appendix B in \textcite{jackson_plesio-geostrophy_2020}.
+
+While the PG viscous diffusion is already solved and settled, I would also like to include the discussion on the shallow water viscous diffusions. The rich discussion in the hydrology, oceanography and meteorology community on this topic provides valuable insights into the general properties of the 2-D diffusions. The setup of the shallow water system is as follows. A body of fluid under gravity has a very large extent in the lateral direction, while its extent in the vertical direction (with which the gravitational acceleration aligns) is very small. The motion of interest is primarily the horizontal motion, while the system is often assumed to be in hydrostatic equilibrium in the other direction. Let us first write down the shallow water equations in the conservative form, also known as the Saint-Venant system \parencite{gerbeau_derivation_2001,gilbert_form_2014}
+\begin{equation}\label{eqn:SW-SV}
+\begin{gathered}
+    \frac{\partial (h\mathbf{u}_h)}{\partial t} + \nabla\cdot \left(h \mathbf{u}_h \mathbf{u}_h\right) = - gh \nabla h + a h \mathcal{D}_{\mathbf{u}_h}, \\ 
+    \frac{\partial h}{\partial t} + \nabla\cdot (h \mathbf{u}_h) = 0,
+\end{gathered}
+\end{equation}
+The momentum equation can also be written as
+\begin{equation}
+    \frac{\partial \mathbf{u}_h}{\partial t} + \mathbf{u}_h\cdot \nabla \mathbf{u}_h = -g\nabla h + a \mathcal{D}_{\mathbf{u}_h}
+\end{equation}
+Here $\mathbf{u}_h$ is the horizontal / lateral velocity, and $h$ is the fluid column thickness, both of which are only functions of horizontal coordinates $x$ and $y$. As a result, all the $\nabla$ operators can also be understood as $\nabla_h$, giving horizontal gradient / divergence. $\mathcal{D}_{\mathbf{u}_h}$ is the viscous diffusion term, and in the context of shallow water system, often referred to as \textit{lateral friction}. The shallow water setup is often a good description for oceans, sea coasts, and water channels, and the resulting system is often used for studying ocean currents, coastal flows, shallow water waves, etc.
+
+In order to check whether the viscous diffusion terms fulfill the dissipative property, we need to look at the storage function for this system. A proper and physically meaningful choice is the total mechanical energy $E_\mathrm{mech}$, the sum of kinetic and potential energies:
+\[
+    E_\mathrm{mech} = E_k + E_p = \int_S \varepsilon_k \, dS + \int_S \varepsilon_p \, dS = \int_S \frac{1}{2} h \mathbf{u}_h^2 \, dS + \int_S \frac{1}{2} gh^2 \, dS
+\]
+The rate of change of the mechanical energy can be expressed using the shallow water equations. After some algebraic manipulations, it can be shown that under non-penetration boundary condition $\mathbf{u}\cdot \hat{\mathbf{n}}|_{\partial S} = 0 $
+\begin{equation}\label{eqn:SWE-diff-integral}
+\begin{aligned}
+    \frac{dE_\mathrm{mech}}{dt} &= \frac{1}{2} \int_S \frac{\partial (h \mathbf{u}_h^2)}{\partial t} \, dS + \frac{g}{2} \int \frac{\partial (h^2)}{\partial t}\, dS \\ 
+    &= - \frac{1}{2} \oint_{\partial S} h \mathbf{u}_h^2 \mathbf{u}\cdot \hat{\mathbf{n}} \, dl - g \oint_{\partial S} h^2 \mathbf{u}_h \cdot \hat{\mathbf{n}} \, dl + a \int_S h \mathbf{u}_h \cdot \mathcal{D}_{\mathbf{u}_h} \, dS \\
+    \frac{dE_\mathrm{mech}}{dt} &= a \int_S h \mathbf{u}_h \cdot \mathcal{D}_{\mathbf{u}_h} \, dS
+\end{aligned}
+\end{equation}
+The dissipative requirement requires this term be negative semi-definite, or generally negative definite.
+
+\subsection{The horizontal Laplacian}
+
+Let us start with the most obvious form of diffusion, $\nabla_h^2 \mathbf{u}_h$.
+The shallow water equations are in general obtained by vertical integration of what is called the \textit{primitive equations} \parencite{shchepetkin_physically_1996}. The true lateral viscous diffusion, therefore, should be the vertical average of the 3-D diffusion term. If one indeed assumes that the velocity field is 2D (i.e. $\partial_z \mathbf{u}_h = 0$), as is usually the case for the shallow water setup, then the lateral viscous diffusion simply takes the form
+\begin{equation}\label{eqn:diff-visc-naive}
+    \mathcal{D}_\mathbf{u} = \frac{1}{h} \int_{b}^{b+h} \nabla^2 \mathbf{u}_h \, dz = \nabla_h^2 \mathbf{u}_h
+\end{equation}
+(see derivations in e.g. \textcite{krylova_derivation_2017}). Despite its common usage in shallow water model, this term does not fulfill the dissipative property \parencite{gent_energetically_1993}. The integral in \ref{eqn:SWE-diff-integral} reads
+\begin{equation}\label{eqn:diff-visc-naive-integral}
+\begin{aligned}
+    &\int_S h \mathbf{u}_h\cdot \nabla_h^2 \mathbf{u}_h \, dS = \int_S h u_\alpha \partial_\beta \partial_\beta u_\alpha \, dS \\
+    &= \int_S \left[ \partial_\beta (h (\partial_\beta u_\alpha) u_\alpha) - h (\partial_\beta u_\alpha) (\partial_\beta u_\alpha) \right] \, dS - (\partial_\beta h) (\partial_\beta u_\alpha) u_\alpha \\ 
+    &= \int_{\partial S} h n_\beta (\partial_\beta u_\alpha) u_\alpha \, dl - \int_S \left[h (\partial_\beta u_\alpha) (\partial_\beta u_\alpha) + (\partial_\beta h) \partial_\beta (u_\alpha u_\alpha)/2\right] \, dS \\
+    &= \int_{\partial S} \left(h \mathbf{u}_h \cdot \frac{\partial \mathbf{u}_h}{\partial n}\right)_{\partial S} dl - \int_S \nabla \mathbf{u}_h : \nabla \mathbf{u}_h \, h dS - \int_S \left(\nabla h \cdot \nabla \frac{\mathbf{u}_h^2}{2}\right) \, dS.
+\end{aligned}
+\end{equation}
+Here the Greek subscripts denote the horizontal components and are interpreted to take values in $\{1,2\}$ in summation conventions. The first term is a boundary term. For free-slip ($\partial_n \mathbf{u}_\parallel = 0$) and no-slip ($\mathbf{u}_h = 0$) boundary conditions, this term vanishes as the integrand is identically zero at the boundary. For boundary conditions where the velocity and its gradient are both non-zero (might arise with parametric boundary layer), this term also correctly characterises the friction work at the boundary. The second term is negative semi-definite, and corresponds to the loss of mechanical energy due to viscous heating. The last term, however, is where the problem lies. The integrand is an inner product between fluid layer thickness gradient and the kinetic energy density gradient. This creates a source term when the two gradients are in the opposite direction - that is, if velocity is high when the fluid layer is thin. 
+
+The effect of the last term can be illustrated by a counterexample, constructed as follows. The domain of the fluid is a 2-D disk, $s\leq 1$. The 2-D velocity field is a purely azimuthal velocity field, given by $\mathbf{u}_h = (s - \frac{1}{6\pi} \sin 6\pi s) \hat{\phi}$. This field satisfies $\partial_s \mathbf{u}_h = \mathbf{0}$ at the boundary (no shear), and also satisfies the regularity condition for axisymmetric vector field \parencite{lewis_physical_1990}. The fluid layer thickness profile takes the rather exotic form $h = 1 - \tanh (20(s - 0.85))$. It also satisfies the regularity condition for scalars \parencite{lewis_physical_1990}. Although it does not satisfy the symmetry condition ($h(-s) = h(s)$), approximating this form of $h$ using an even function of $s$ is completely possible. Numerical integration shows that the dissipation integrals are 
+\[\begin{gathered}
+    \oint_{\partial S} \left(h \mathbf{u}_h \cdot \frac{\partial \mathbf{u}_h}{\partial n}\right)_{\partial S} dl = 0,\quad 
+    - \int_S \nabla \mathbf{u}_h : \nabla \mathbf{u}_h \, h dS \approx -11.76,\quad
+    - \int_S \left(\nabla h \cdot \nabla \frac{\mathbf{u}_h^2}{2}\right) \, dS \approx +15.27, \\ 
+    \Longrightarrow \quad \int_S h \mathbf{u}_h \cdot \nabla_h^2 \mathbf{u}_h \, dS \approx +3.51 > 0
+\end{gathered}\]
+In comparison, the contribution of the 3-D viscous term to the mechanical energy in 3-D volume is
+\[
+    \int_V \mathbf{u} \cdot \nabla^2 \mathbf{u} \, dS = \int_{\partial V} \left(\mathbf{u}\cdot \frac{\partial \mathbf{u}}{\partial n}\right)_{\partial V} dS - \int_V \nabla \mathbf{u} : \nabla \mathbf{u} \, dV.
+\]
+Only the first two terms (boundary + viscous heating) are present, and hence is guaranteed to be negative semi-definite.
+
+\subsection{The dissipative friction models: the other end of the dilemma}
+
+In light of the lack of negative semi-definiteness in the horizontal Laplacian form of viscous diffusion, other models have been proposed. These models no longer formally use vertical integration of $z$-independent velocities (i.e. dropping the 2-D flow assumption), but instead focus on achieving a dissipative system. 
+
+The first noteable candidate can be directly modified from eq. (\ref{eqn:diff-visc-naive}). Noticing that in eq.(\ref{eqn:diff-visc-naive-integral}), the 3rd term is the only problematic term, one can use a form of diffusion that "absorbs" the $h$ factor:
+\begin{equation}\label{eqn:diff-visc-disp}
+    \mathcal{D}_{\mathbf{u}_h} = \frac{1}{h} \nabla_h \cdot \left(h \nabla_h \mathbf{u}_h\right)
+\end{equation}
+and immediately the total diffusion integral is dissipative, and can be decomposed into a boundary integral and a negative semi-definite part \parencite{gent_energetically_1993}:
+\[
+\int_S \mathbf{u}_h\cdot \mathcal{D}_{\mathbf{u}_h} \, h dS = \int_S \mathbf{u}_h \cdot \nabla_h\cdot \left(h \nabla_h \mathbf{u}_h\right) \, dS = \oint_{\partial S} h \mathbf{u}_h \cdot \frac{\partial \mathbf{u}_h}{\partial n} \, dS  - \int_S \nabla \mathbf{u}_h : \nabla \mathbf{u}_h \, hdS.
+\]
+Now that we have a form of viscous diffusion that dissipates properly, is this the end of the story? It turns out that there are still physical constraints that one might hope the 2-D viscous diffusion satisfy. In additional to energy dissipation, \textcite{shchepetkin_physically_1996} compiled three other criteria that are specific to viscous diffusion. These are
+\begin{itemize}
+    \item Conservation of momentum. Under this constraint, $\int_S \mathcal{D}_{\mathbf{u}_h} \, hdS$ should be convertible to a boundary integral (=impulse exerted at the boundary). \textcite{shchepetkin_physically_1996} further deduced that $\mathcal{D}_{\mathbf{u}_h}$ must be written as $h^{-1} \nabla_h \cdot \sigma_h$, where $\sigma_h$ is a rank-2 tensor.
+    \item Conservation of angular momentum. Under this constraint, $\int_S \mathbf{r}\times \mathcal{D}_{\mathbf{u}_h} \, hdS$ must be convertible to a boundary integral (=torque exerted at the boundary). \textcite{shchepetkin_physically_1996} deduced that this means $\sigma_h$ as defined above needs to be symmetric.
+    \item Dependence on the symmetric part of the local deformation tensor, independence of the anti-symmetric part.
+\end{itemize}
+While diffusion (\ref{eqn:diff-visc-disp}) fulfills dissipative condition and momentum conservation, it does not conserve angular momentum \parencite{shchepetkin_physically_1996}. 
+
+The final candidate in this section is a flexible combination of the local strain rate tensor and its isotropic component, and reads
+\begin{equation}\label{eqn:diff-visc-conserve}
+    \mathcal{D}_{\mathbf{u}_h} = \frac{1}{h} \nabla_h \cdot \left[h \left(\nabla_h \mathbf{u}_h + \nabla_h \mathbf{u}_h^\intercal - \zeta (\nabla_h\cdot \mathbf{u}_h)\mathbf{I}\right)\right]
+\end{equation}
+where $\zeta$ is a tunable parameter.
+This form of viscous diffusion fulfills all the criteria above \parencite{shchepetkin_physically_1996}, and can be shown to guarantee dissipative condition at $\zeta \leq 1$ \parencite{gilbert_form_2014}.
+
+Interesting as these physically meaningful constraints may be, they are not generalisable to other diffusions. The concept of momentum and angular momentum is something quite specific to motion, and there are no such counterparts for temperature, composition or magnetic field. Therefore, the criteria as compiled by \textcite{shchepetkin_physically_1996} may not be necessary for other fields. This frees us from constructing a diffusion term that fulfills many criteria simultaneously; instead, we mostly only need to deal with dissipation (or the corresponding storage function) properly.
+
+\subsection{Lateral friction and bottom friction}
+
+The discussion so far is only on \textit{lateral friction}. This only includes the viscous force as an internal force, redistributing momentum between fluid parcels, and dissipating energy at the same time. As we have shown, the integral of a proper lateral friction can be converted to a boundary integral describing the impulse exerted at the boundary. This is indeed consistent with the shallow water model, but neglects completely the boundary in the 3rd dimension - the bottom. The bottom of the fluid plays no role in the lateral friction, as it should in the shallow water model: if a fluid is invariant in the $z$ direction, there is no vertical diffusion in the form of $\partial_{zz} \mathbf{u}_h$ that can transport the impulse at the bottom into the bulk.
+
+Even if bottom friction is not consistent with a 2-D flow model, it is important in reality. A channel flow should slow down because of this friction, as the bottom exerts a "drag" on the fluid. As this drag is not consistent within the shallow water framework, it has to be introduced in a \textit{parametric fashion} to account for the missing physics. For instance, for the laminar flow, one commonly used parametric boundary condition is a mixed Robin-type boundary condition
+\[
+    \sigma \cdot \mathbf{z} - k \mathbf{u}_h = \bm{\tau}^{(z)} - k \mathbf{u}_h = 0
+\]
+\parencite{gerbeau_derivation_2001}. This equivalently states that $\partial_z \mathbf{u}_h = k' \mathbf{u}_h$. This "linear drag" boundary condition is sometimes referred to as \textit{Navier condition} or \textit{Navier slip boundary condition}. A second choice of boundary condition involves a quadratic form
+\[
+    \sigma \cdot \mathbf{z} - k |\mathbf{u}_h| \mathbf{u}_h = \bm{\tau}^{(z)} - k |\mathbf{u}_h| \mathbf{u}_h = 0.
+\]
+\parencite{marche_derivation_2007,krylova_derivation_2017}. This "quadratic drag" boundary condition is consistent with the empirical formulae in the Manning model and the Chezy model, and is interpreted to represent turbulent friction \parencite{marche_derivation_2007}. By formallying integrating the 3-D Navier-Stokes system with large aspect ratio ($L_x \sim L_y \gg L_z$) and conducting magnitude analysis on the results, \textcite{gerbeau_derivation_2001} and \textcite{marche_derivation_2007} showed that using a Navier condition and a quadratic drag boundary at the bottom of the shallow layer of fluid will transfer to a linear drag and a quadratic drag in the resulting shallow water equations, respectively. This provides an extra term to the right hand side of the shallow water momentum equation \parencite{dong_robust_2020}.
+
+It is worth stressing once again that bottom friction and the linear and quadratic drags obtained by \textcite{gerbeau_derivation_2001} and \textcite{marche_derivation_2007} are NOT a proxy for lateral friction, but instead a proxy for the friction induced by vertically varying flow. Therefore, the resulting drags are an extra term that has nothing to do with the viscous diffusion term discussed above. \textcite{gerbeau_derivation_2001} explicits names the system with only linear drag the \textit{Saint-Venant system}, but the system with both this drag and the lateral viscous diffusion the \textit{viscous Saint-Venant system}. However, there are examples where the linear drag is actually taken as a proxy for viscous diffusion and actually replacing the Laplacian term \parencite{salmon_simplified_1986,hollerbach_modal_1991}. These studies either didn't distinguish the two phenomena properly, or simply employed the model for purely pragmatic reasons.
+
+
+\section{Thermal diffusion}
+
+The second element of diffusion of interest lies in a scalar quantity, temperature. The diffusion of temperature is relevant in the thermal equation, and it is probably the easiest in general 3D-to-2D context because of its scalar nature. We first briefly recap on the properties of thermal diffusion in 3D. The 3-D diffusion term takes the form (\ref{eqn:diff_T_3D}) as defined above, yielding the diffusion equation
+\[
+    \frac{\partial T}{\partial t} = a \nabla^2 T
+\]
+Now is this system dissipative? Mathematically, any non-negative function that maps the temperature into a scalar can be chosen as a storage function, but physical arguments often provide important information on the valid options. Energy is often an obvious choice, and this case is no exception. For incompressible, non-expanding continuum, the internal energy density $\varepsilon_I = \rho C_V T$. Integrating over the entire volume, and assuming homogeneous medium, we have the total internal energy
+\begin{equation}
+    U = \int_V \rho c_V T \, dV = \rho c_V \int_V T\, dV
+\end{equation}
+Hereinafter I shall denote $U = \int_V T \, dV$ as the dimensionless internal energy. Integrating the thermal diffusion equation in the 3-D domain then yields the change of total internal energy, which can be expressed as
+\begin{equation}
+    \frac{dU}{dt} = \int_V \frac{\partial T}{\partial t} \, dV = \int_V a \nabla^2 T \, dV = a \int_V \nabla\cdot \nabla T \, dV = a \oint_{\partial V} \nabla T \cdot d \mathbf{S} = - \oint_{\partial V} \mathbf{q}\cdot d\mathbf{S}
+\end{equation}
+The increase in total internal energy is then not only bounded, but also completely described by the temperature gradient, and thus the heat flux at the boundary - as it should! As mentioned, the thermal diffusion comes from the divergence of the heat flux. This flux merely transports internal energy between different parts of the medium, and it cannot create internal energy out of nothing (nor destroy internal energy) when integrated over the whole domain. 
+Choosing this boundary inflowing heat flux as the supply rate, the internal energy is then a proper storage function, which can then be used to argue the dissipative property of the system. In fact, the equality should always hold for Eq.(\ref{eqn:dissipation-def}); the internal energy is in fact conserved in the system.
+
+Ali Arslan (personal communications) argues that in addition to the internal energy, one can also use the integrated squared temperature
+\[
+    \mathcal{E} = \int_V T^2 \, dV
+\]
+as the storage function. Using this storage function, the thermal diffusion can be shown to be non-conservative but strictly dissipative. Although this quantity has no straightforward physical interpretation, he argues that particularly under Boussinesq approximation, the temperature is not a perfect proxy for internal energy anyway, but merely a parameter for buoyancy. Mathematically useful designations such as $\int_V T^2\, dV$ is therefore also possible.
+
+
+\medskip
+
+In the PG system, the thermal quantities of interest in the momentum equation are integrated from the Boussinesq model
+\[
+    \overline{T} = \int_{-H}^H T \, dz,\quad \widetilde{zT} = \int_{-H}^H \sgn(z)z T\, dz = \int_{-H}^H |z|T \, dz
+\]
+with their respective diffusion terms
+\begin{equation}\label{eqn:diff-T-PG}
+    \mathcal{D}_{\overline{T}} = \overline{\nabla^2 T}, \quad \mathcal{D}_{\widetilde{zT}} = \widetilde{z\nabla^2 T}
+\end{equation}
+The goal now is to devise approximate expressions $\hat{\mathcal{D}}$ as a function of $\overline{T}$ and $\widetilde{zT}$. 
+
+\subsection{The Maffei-Jackson-Livermore diffusion}
+
+Maffei, Jackson and Livermore (unpublished? 2024, hereinafter MJL diffusion) have tested several flavours of approximation, and showed that their choices of thermal diffusion in the forms of
+\begin{equation}\label{eqn:diff-T-PG-Maffei}
+\begin{aligned}
+    \hat{\mathcal{D}}_{\overline{T}}(\overline{T}) &= H \nabla_e^2 \left(\frac{\overline{T}}{H}\right) \simeq \overline{\nabla^2 T}, \\
+    \hat{\mathcal{D}}_{\widetilde{zT}}(\widetilde{zT}) &= H^2 \nabla_e^2 \left(\frac{\widetilde{zT}}{H^2}\right) \simeq \widetilde{z\nabla^2 T}
+\end{aligned}
+\end{equation}
+are superior to the naive $\nabla_e^2 \overline{T}$ and $\nabla_e^2 \widetilde{zT}$ in that the latter ones show pathological behaviour at the equator, i.e. $s=1$, while their choices avoid it.
+
+The next question is whether this invention also fits the dissipation criterion. 
+Better yet, we can continue using the total internal energy as the storage function, as it is even within representation of the PG model and takes the form
+\begin{equation}
+    U = \int_V T \, dV = \int_S \int_{-H}^H T \, dz \, dS = \int_S \overline{T} \, dS
+\end{equation}
+The thermal diffusion equation
+\[
+    \frac{\partial \overline{T}}{\partial t} = a \hat{\mathcal{D}}_{\overline{T}}
+\]
+gives the variation of total internal energy when integrated over the entire domain
+\[
+    \frac{dU}{dt} = a \int_S \frac{\partial \overline{T}}{\partial t} \, dS = a \int_S \hat{\mathcal{D}}_{\overline{T}} \, dS.
+\]
+The task now is to show whether this term is negative semi-definite for some boundary conditions (ideally, insulating BC). Unfortunately, this is not possible for the diffusion devised by Maffei, Jackson and Livermore (2004). The integral reads
+\[\begin{aligned}
+    \int_S \hat{\mathcal{D}_{\overline{T}}} \, dS &= \int_S H \nabla_e^2 \frac{\overline{T}}{H} \, dS = \int_S \nabla_e \cdot \left(H \nabla_e \frac{\overline{T}}{H}\right) \, dS - \int_S \nabla_e H \cdot \nabla_e \frac{\overline{T}}{H} \, dS \\ 
+    &= \oint_{\partial S} H \frac{\partial}{\partial s} \frac{\overline{T}}{H} \, dl - \int_{S} \frac{dH}{ds} \frac{\partial}{\partial s} \frac{\overline{T}}{H} \, dS 
+    = 2\oint_{\partial S} H \frac{\partial \langle T \rangle}{\partial s} \bigg|_{\partial S} dl - 2\int_{S} \frac{dH}{ds} \frac{\partial \langle T \rangle}{\partial s} \, dS
+\end{aligned}\]
+where I took the notation $\langle f \rangle$ from Maffei, Jackson and Livermore (2024) to denote the vertical \textit{average} of a quantity, which is the vertical integration normalized by $2H$
+\[
+    \langle f \rangle = \frac{1}{2H} \int_{-H}^H f \, dz = \frac{\overline{f}}{2H}.
+\]
+Further derivation using Leibniz theorem shows that the cylindrical radial derivative has the following commutation relation with vertical averaging
+\[
+    \frac{\partial \langle T \rangle}{\partial s} = \left\langle \frac{\partial T}{\partial s} \right\rangle - \frac{1}{H} \frac{dH}{ds} \left(\langle T \rangle - \frac{T^+ + T^-}{2}\right)
+\]
+and the diffusion integral is rewritten as 
+\begin{equation}
+    \int_S \hat{\mathcal{D}}_{\bar{T}} \, dS = 
+    \textcolor{teal}{2 \oint_{\partial S} H \frac{\partial \langle T \rangle}{ds} \bigg|_{\partial S} \, dl} 
+    \textcolor{blue}{\,-\, 2 \int_S \frac{dH}{ds} \left\langle \frac{\partial T}{\partial s} \right\rangle \, dS} 
+    \textcolor{red}{\,+\, 2 \int_S \frac{1}{H} \left(\frac{dH}{ds}\right)^2 \left(\langle T \rangle - \frac{T^+ + T^-}{2}\right) \, dS}
+\end{equation}
+We have separated the expression above into three terms. The \textcolor{teal}{first term} gives \textcolor{teal}{a proxy for the heat flux at the lateral boundary}. If the temperature field is strictly 2-D, this term precisely describes the inflowing heat flux at the lateral boundary. For our PG model, $H\rightarrow 0$ at the boundary, and hence this term identically vanishes. The \textcolor{blue}{second term} gives \textcolor{blue}{a proxy for the heat flux at the upper and lower boundaries} (similar to the bottom drag in viscous diffusion). The integrand can be reformed as
+\[
+    - \frac{dH}{ds} \left\langle \frac{\partial T}{\partial s} \right\rangle s ds d\phi = \beta \left\langle \frac{\partial T}{\partial s} \right\rangle s ds d\phi = \tan \hat{\theta} \left\langle \frac{\partial T}{\partial s} \right\rangle s ds d\phi = \frac{s ds d\phi}{\cos\hat{\theta}} \left(\sin\hat{\theta} \left\langle \frac{\partial T}{\partial s} \right\rangle\right)
+\]
+where $\hat{\theta}$ is the slope of the upper (and lower) boundary. In spherical geometry, $\hat{\theta} = \theta$ is the same as the colatitude. The $s ds d\phi/\cos\hat{\theta}$ term gives the area of the surface element on the upper (lower) boundary corresponding to $sdsd\phi$ in the equatorial plane. The $\sin\hat{\theta}$ prefactor in the backet projects a cylindrical radial derivative onto the normal of the sloped upper (lower) boundary. If $T$ is strictly 2D, this term describes exactly the inflowing heat flux at the upper (and lower) boundary.
+The \textcolor{red}{third term} does not seem to have a well-defined physical meaning, but \textcolor{red}{arises when the average temperature cannot be described by the average of the temperatures at the upper and lower boundaries}. This term identically vanishes when the temperature is strictly 2D.
+
+Although this formula works well when the temperature is 2D, it is not dissipative for arbitrary temperature distributions. We illustrate this with an counterexample. Consider a 3-D temperature distribution which has vanishing gradient at the boundary $r=1$:
+\[
+    T = 2r^2 - r^4.
+\]
+In the 3-D case, there is no heat flux in or out the system, and hence $dU/dt$ should be instantaneously zero. However, the integral shows
+\[
+    \int_S \hat{\mathcal{D}}_{\bar{T}} \, dS = \frac{128}{225} \approx 0.5 > 0
+\]
+and hence the diffusion term is artificially injecting energy into the system.
+
+Nevertheless, there are other storage function that may allow the diffusion to be dissipative. For instance, analogous to Ali's $\int_V T^2 \, dV$, we may use
+\[
+    \mathcal{E} = \frac{1}{2} \int_{S} \langle T \rangle^2 \, dS = \frac{1}{2} \int_{S} \frac{\overline{T}^2}{4H^2} \, dS
+\]
+as the storage function. The time derivative of the storage function is given by
+\[\begin{aligned}
+    \frac{d\mathcal{E}}{dt} 
+    &= \int_S \langle T \rangle \frac{d \langle T \rangle}{dt} \, dS = \int_S \frac{1}{4H^2}\overline{T} \frac{d\overline{T}}{dt} \, dS = a\int_S \frac{\overline{T}}{2H} \nabla_e^2 \frac{\overline{T}}{2H} \, dS \\
+    &= a \oint_{\partial S} \frac{\overline{T}}{2H} \frac{\partial}{\partial s} \frac{\overline{T}}{2H}\bigg|_{s=1} \, dl - a \int_S \nabla_e \frac{\overline{T}}{2H} \cdot \nabla_e \frac{\overline{T}}{2H} \, dS = a \oint_{\partial S} \langle T \rangle \frac{\partial \langle T \rangle}{\partial s}\bigg|_{s=1} \, dl - a \int_S |\nabla_e \langle T \rangle |^2 \, dS
+\end{aligned}\]
+Under fixed temperature $\overline{T} = 0$ or no-flux $\partial T/\partial r = 0$ boundary conditions, it can be shown that $\langle T \rangle \partial_s \langle T \rangle |_{s=1} = 0$, and hence the boundary integral vanishes. The remaining integral is in general negative definite, and hence the entire $d\mathcal{E}/dt$ is negative semi-definite.
+This means that the temperature field, measured in the weighted 2-norm $\sqrt{\int_V \overline{T}^2/4H^2 \, dS} = \sqrt{\int_V \langle T \rangle^2 \, dS}$, is bounded by its initial value given appropriate boundary conditions.
+
+
+\subsection{The internal-energy-conserving thermal diffusion}
+
+In light of the failure of the MJL diffusion in conservation of internal energy, we can devise another form of thermal diffusion,
+\begin{equation}\label{eqn:diff-T-PG-conserve}
+\begin{aligned}
+    \hat{D}_{\overline{T}} &= \nabla_e \cdot \left(H \nabla_e \frac{\overline{T}}{H}\right), \\
+    \hat{D}_{\widetilde{zT}} &= \nabla_e \cdot \left(H \nabla_e \frac{\widetilde{zT}}{H}\right).
+\end{aligned}
+\end{equation}
+This form of diffusion conserves internal energy, as
+\[
+    \int_S \hat{D}_{\overline{T}} \, dS = \int_S \nabla_e \cdot \left(H \nabla_e \frac{\overline{T}}{H}\right) \, dS = \oint_{\partial S} H \frac{\partial}{\partial s} \frac{\overline{T}}{H} \bigg|_{s=1} dl = \oint_{\partial S} H \frac{\partial \langle T \rangle}{\partial s}\bigg|_{s=1} dl \equiv 0
+\]
+given that $H|_{s=1}=0$. The good news is that internal energy is conserved. The bad news is that internal energy is \textit{ALWAYS} preserved. This may become a problem because this means there is no way to inject energy into or extract energy from the system by virtue of conduction.
+
+Of course, just like the MJL diffusion, this new form of diffusion can also be made negative definite by using another storage function:
+\[
+    \mathcal{E} = \frac{1}{2}\int_S \langle T \rangle^2 \, 2Hds = \frac{1}{2}\int_V \frac{\overline{T}^2}{2H} \, dS
+\]
+in which case the time derivative is expressed as
+\[\begin{aligned}
+    \frac{d \mathcal{E}}{dt} &= \int_S \overline{T} \frac{\partial \overline{T}}{\partial t} \frac{dS}{2H} = a\int_S \frac{\overline{T}}{2H} \hat{D}_{\overline{T}} dS = a\int_S \frac{\overline{T}}{2H} \nabla_e \cdot \left(H \nabla_e \frac{\overline{T}}{H}\right) dS \\ 
+    &= \frac{a}{2} \oint_{\partial S} \overline{T} \frac{\partial}{\partial s} \frac{\overline{T}}{H} dS - \frac{a}{2} \int_S H \nabla_e \frac{\overline{T}}{H}\cdot \nabla_e \frac{\overline{T}}{H} \, dS 
+    = a \oint_{\partial S} \langle T \rangle \frac{\partial \langle T \rangle}{\partial s} \, 2H dS - a \int_S |\nabla_e \langle T \rangle|^2 \, 2H dS 
+\end{aligned}
+\]
+The boundary integral vanishes when $\overline{T} = 0$ or no-flux $\partial T/\partial r = 0$ at the boundary. The remaining integral is in general negative definite, and hence the entire $d\mathcal{E}/dt$ is negative semi-definite.
+This means that the temperature field, measured in the weighted 2-norm $\sqrt{\int_S \overline{T}^2/2H \, dS} = \sqrt{\int_S \langle T \rangle^2 \, 2H dS}$, is bounded by its initial value given appropriate boundary conditions.
+
+In a way, this storage function is more physically meaningful than the storage function associated with the MJL diffusion, as in the present case $\mathcal{E} \sim \int_V T^2 \, dV$ when $T$ is quasi-2D, and is hence indicative of the integrated $T^2$ in the volume. The storage function associated with the MJL diffusion $\sim \int T^2 \, dS$ when $T$ is quasi-2D, and is not related to the volumetric integral.
+
+
+\section{A summary on diffusion: a dilemma between fish and bear palm}
+
+Let us reflect on the observations we have so far on diffusion for reduced dimensional systems. We have seen that quite often, the diffusion model can either be self-consistent with the model, pragmatically useful, or adhering to physical conservational or disspative laws. It is however almost impossible to find a silver bullet, i.e. the diffusion that fulfills all three criteria. 
+
+Take viscous diffusion as an example. The two endmember types of candidate models are Eq. (\ref{eqn:diff-visc-naive}), coming from integrating a $z$-invariant flow, and Eq. (\ref{eqn:diff-visc-disp}) or (\ref{eqn:diff-visc-conserve}), a diffusion that dissipates kinetic energy or also conserves other physical properties. While deriving (\ref{eqn:diff-visc-naive}), the only assumption made is that the flow is truly 2D; under this assumption of course lies the rest of the assumptions underlying the shallow water model (e.g. no vertical acceleration due to hydrostatic balance). Therefore, it is correct to state that (\ref{eqn:diff-visc-naive}) is an exact representation of the viscous diffusion that is self-consistent with the shallow water model. That self-consistency, unfortunately, does not make it physically reasonable, as the resulting diffusion term is now non-dissipative, and might potentially inject energy into the system out of nowhere.
+
+What exactly goes wrong here? Upon reflection we have no choice but to say that the problem must arise in the assumptions made in the shallow water model. As \textcite{shchepetkin_physically_1996} puts it 
+\begin{quotation}
+    \textit{The derivation fails because the conventional hydrostatic approximation for the Navier-Stokes equations does not account for the difference between isopycnic and cross-isopycnic velocities versus horizontal and vertical velocities, as well as the fact that the emerging isopycnic system of coordinates is curvilinear.}
+\end{quotation}
+\begin{CJK*}{UTF8}{gbsn}
+When considering a spacially varying $h$, the original system simply does not admit strictly 2-D flows in general. The very assumption that the fluid flow is 2D breaks the consistency between the viscous diffusion and the physical reality. On the other hand, the other choices, Eq. (\ref{eqn:diff-visc-disp}) or (\ref{eqn:diff-visc-conserve}), although reasonably dissipative and even conservative in momentum or angular momentum, are not self-consistent with the shallow water model. As an old Chinese saying goes, "鱼与熊掌不可兼得" (one cannot have fish and bear palm at the same time). Being loyal to the 2-D flow assumption means that the viscous diffusion cannot be loyal to the dissipative nature of a proper diffusion, and being loyal to the dissipative nature of diffusion means that it cannot be consistent with the 2-D flow assumption.
+% \todoitem{It then brings a problem whether our PG model (or any of the QG models) suffers from the same problem in the viscous diffusion - as columnar ansatz already introduces an approximation, it may not necessarily be true that the 2-D diffusion integrated as such can maintain physical properties such as dissipation. This will take a long time to verify. For this reason I am unwilling to dive down that rabbit hole at the moment. However, viscous diffusion is a higher order term, and is probably not necessarily even in the end model.}
+% It is probably nothing to worry about for the PG model. Unlike the SW model, where a 2-D flow is not possible when there is height variation, the columnar ansatz gives a legitimate 3-D flow. The only problem here is whether the flow can be kept strictly columnar with the presence of Lorentz force & buoyancy. However, once a flow is there (kinematically imposed), then there is no reason to believe the diffusion, which is exactly integrated, to be problematic.
+\end{CJK*}
+
+Similar things happen with the PG thermal diffusion. The MJL diffusion (\ref{eqn:diff-T-PG-Maffei}) is exact when the temperature is columnar, and \textit{might} also be able to account for boundary heat flux when the temperature is quasi-columnar since it at least contains related terms. Previous numerical experiments conducted by Stefano also shows that it \textit{might} be a pragmatically useful proxy for the actual integrated thermal diffusion. However, it is not dissipative, and might inject ghost energy into the system even with a thermally insulating boundary condition. 
+On the other hand, the internal-energy-conserving diffusion (\ref{eqn:diff-T-PG-conserve}) always, \textit{always} conserves energy, making the system immune to ghost energy injection, but also makes it impossible to conduct energy into or out of the system. Its practical usefulness when internal energy input / output is important is then questionable.
+
+I have already mentioned the fact that for reduced dimensional models as such, all approximate diffusion models are wrong, the only problem being which model is less wrong than others. In other words, we need to decide which properties to sacrifice. In meteorology simulations, for instance, the formulation of the problem depends on whether the simulation is for short-term weather prediction or long-term climate models. The different purpose affects the relative importance of \textit{accuracy} and \textit{conservation}:
+\begin{quotation}
+    \textit{In the early days the weather forecasting and climate simulation the models for the two applications were very distinct and the modelers made very different choices in the model formulation. NWP emphasized accurate prediction of the fluid flow by applying the highest resolution feasible and climate emphasized the parameterized forcing with conservation being essential for very long runs.} \parencite{williamson_evolution_2007}
+\end{quotation}
+I understand this quotation in the sense that conservative property is not always the most important. This means that in the circumstances where artificial input and output of energy in the approximate diffusion is small, occasional, does not strongly affect the solution and does not induce instability, it is possible that we can relax on the conservative / dissipative property, and use the MJL form of diffusion (\ref{eqn:diff-T-PG-Maffei}). Of course, it might also be the case that keeping diffusion dissipative is more important than correctly characterising the input and output of heat flows at the boundary. If so, then diffusion (\ref{eqn:diff-T-PG-conserve}). Which is more relevant in short time scales (or time scale of interest for PG model) is yet to be discussed.
+
+
+
+
 \section{Magnetic diffusion}
 
 Magnetic diffusion is something that is not inherent in the PG model - there is no known closed-form representation of the diffusion term in PG quantities. In other words, the magnetic diffusion is something that is \textit{out of representation} for the PG model. The diffusion term in the quadratic induction equation should take the form
