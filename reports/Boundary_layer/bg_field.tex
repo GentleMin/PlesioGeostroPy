@@ -75,7 +75,7 @@ where $\mathbf{B}_l^m = \nabla_s Y_l^m$ and $\mathbf{C}_l^m = \hat{\mathbf{r}}\t
 \end{equation}
 
 
-\subsection{No strictly normal magnetic field under dynamo condition}
+\section{No strictly normal boundary magnetic field under dynamo condition}
 
 Conditions (\ref{eqn:cond-normal}) are quite strict conditions that apply to every Fourier coefficient of the toroidal and the poloidal components. They appear to be too restrictive when used in combination with the so-called \textit{dynamo condition} (Roberts, Treatise 2015):
 \begin{equation}\label{eqn:cond-dynamo}
@@ -109,5 +109,237 @@ The question now is that how much we need to relax the conditions for a legitima
 
 \section{Almost boundary normal magnetic field}
 
+Now that we know we need to relax the normality constraint, we seek a magnetic field that is \textit{as normal as possible} at the boundary, subject to the dynamo condition as a constraint. The description of our objective naturally points to an optimisation problem, but it remains to be discussed how the objective function can be formulated.
+
+\subsection{Normality measured in 2-norms of normal and tangent components}
+
+The simplest way to form this objective function that I can think of is to penalise the $L^2$ norm of the tangent field, while maintaining the $L^2$ norm of the normal field. In other wise, the problem is
+\begin{equation}
+\begin{gathered}
+    \min_{S(\mathbf{r}), T(\mathbf{r})} \left\|\hat{\mathbf{r}} \times \mathbf{B}(\mathbf{r}; S, T)\right\|^2_{\partial V} = \min_{S(\mathbf{r}), T(\mathbf{r})} \int_{\partial V} |\hat{\mathbf{r}} \times \mathbf{B}(\mathbf{r}; S, T)|_{\partial V}^2 \, d\Sigma \\ 
+    \text{subject to} \quad \left\{\begin{aligned}
+        \left\|\hat{\mathbf{r}}\cdot \mathbf{B}(\mathbf{r};S,T)\right\|^2_{\partial V} = \int_{\partial V} |\hat{\mathbf{r}} \cdot \mathbf{B}(\mathbf{r}; S, T)|_{\partial V}^2 \, d\Sigma = 1, \\ 
+        \frac{dS_{lm}(r)}{dr} \bigg|_{r=a} + \frac{l+1}{a} S_{lm}(a) = 0,\quad T_{lm}(a) = 0.
+    \end{aligned}\right.
+\end{gathered}
+\end{equation}
+Here we write $\mathbf{B}(\mathbf{r}; S, T)$ to show that the magnetic field is a functional (actually, a bilinear functional in this case) of the poloidal and toroidal scalars $S(\mathbf{r})$ and $T(\mathbf{r})$. $\|\cdot \|^2_{\partial V}$ defines an $L^2$-norm on the surface.
+The merit of this formulation is that under $L^2$ norm, the different spherical harmonic modes are mutually orthogonal, and the objective function (as well as the first equality constraint) can be written as a quadratic form of the spherical harmonic coefficients.
+The normal field integral, for instance, can be formulated as
+\[\begin{aligned}
+    \int_{\partial V} |\hat{\mathbf{r}}\cdot \mathbf{B}|^2 \, d\Sigma &= \sum_{l,m} \sum_{l',m'} \frac{ll'(l+1)(l'+1)}{a^2} S_{lm}(a) S_{l'm'}^*(a) a^2 \langle\mathbf{P}_l^m, \mathbf{P}_{l'}^{m'} \rangle_{\partial V} \\ 
+    &= \sum_{l,m} \sum_{l',m'} ll'(l+1)(l'+1) S_{lm}(a) S_{l'm'}^*(a) \delta_{ll'} \delta_{mm'} \\ 
+    \int_{\partial V} |\hat{\mathbf{r}}\cdot \mathbf{B}|^2 \, d\Sigma &= \sum_{l,m} l^2(l+1)^2 |S_{lm}(a)|^2
+\end{aligned}\]
+The tangent field integral can be similarly written as
+\[\begin{aligned}
+    \int_{\partial V} |\hat{\mathbf{r}}\times \mathbf{B}|^2 \, d\Sigma &= \sum_{l,m} \sum_{l',m'} \bigg\{ \left[\frac{1}{r^2}\frac{d(rS_{lm})}{dr} \frac{d(rS_{l'm'}^*)}{dr}\right]_{a} a^2 \langle \mathbf{B}_l^m, \mathbf{B}_{l'}^{m'} \rangle_{\partial V} + T_{lm}(a) T_{l'm'}(a) a^2 \langle \mathbf{C}_l^m, \mathbf{C}_{l'}^{m'}\rangle_{\partial V} \bigg\} \\ 
+    &= \sum_{l,m} \sum_{l',m'} \bigg\{ \left[\frac{d(rS_{lm})}{dr} \frac{d(rS_{l'm'}^*)}{dr}\right]_{a} l(l+1) \delta_{ll'}\delta_{mm'} + a^2 T_{lm}(a) T_{l'm'}(a) l(l+1) \delta_{ll'}\delta_{mm'} \bigg\} \\ 
+    \int_{\partial V} |\hat{\mathbf{r}}\times \mathbf{B}|^2 \, d\Sigma &= \sum_{l,m} l(l+1) \left[\left|\frac{d(rS_{lm})}{dr}\right|_{a}^2 + a^2 |T_{lm}(a)|^2\right]
+\end{aligned}\]
+Hence we have
+\begin{align}
+    \left\|\hat{\mathbf{r}}\cdot \mathbf{B}\right\|^2_{\partial V} = \int_{\partial V} |\hat{\mathbf{r}}\cdot \mathbf{B}|^2 \, d\Sigma &= \sum_{l,m} l^2(l+1)^2 |S_{lm}(a)|^2 \\ 
+    \left\|\hat{\mathbf{r}}\times \mathbf{B}\right\|^2_{\partial V} = \int_{\partial V} |\hat{\mathbf{r}}\times \mathbf{B}|^2 \, d\Sigma &= \sum_{l,m} l(l+1) \left[\left|\frac{d(rS_{lm})}{dr}\right|_{a}^2 + a^2 |T_{lm}(a)|^2\right]
+\end{align}
+In terms of spherical harmonic coefficients, the optimisation problem is formulated as
+\[
+    \begin{gathered}
+        \min_{S_{lm}(r), T_{lm}(r)} \sum_{l,m} l(l+1) \left[\left|\frac{d(rS_{lm})}{dr}\right|_{a}^2 + a^2 |T_{lm}(a)|^2\right] \\ 
+        \text{subject to} \quad \left\{\begin{aligned}
+            \sum_{l,m} l^2(l+1)^2 |S_{lm}(a)|^2 = 1, \\ 
+            \frac{dS_{lm}(r)}{dr} \bigg|_{r=a} + \frac{l+1}{a} S_{lm}(a) = 0,\quad T_{lm}(a) = 0.
+        \end{aligned}\right.
+    \end{gathered}
+\]
+Two observations can be made on the optimisation problem above. First, it is always optimal to set toroidal field to zero. This satisfies the constraints, while minimising the contribution from the toroidal field in the objective function to zero. Hereinafter we shall drop the toroidal field in the calculations. 
+
+Second, although it seems that we need to minimise the objective function over the function space of $S_{lm}(r)$, the only quantities that actually enter any of the objective function or the constraints are the value of the scalar and its derivative evaluated at the boundary (as it should be the case, since the objective and the constraints are all boundary conditions). On the other hand, we know that the function space of $S_{lm}(r)$ is rich enough so that we can find infinitely many $S_{lm}(r)$ such that they fulfill the boundary conditions $S_{lm}(r=a) = A$ and $S_{lm}'(r=a) = B$. Therefore, without loss of generality, we can cast this problem in terms of the boundary values and boundary derivatives of the poloidal scalar. Furthermore, by using the second equality constraint, we can effectively eliminate the dependency on the boundary derivative via
+\[
+    \frac{d(rS_{lm})}{dr}\bigg|_{r=a} = \left(r\frac{d S_{lm}}{dr} + S_{lm}\right)_{r=a} = a \left(-\frac{l+1}{a}S_{lm}(a)\right) + S_{lm}(a) = -l S_{lm}(a)
+\]
+In the end we obtain an optimisation problem in terms of solely the boundary value $S_{lm}(a)$:
+\begin{equation}
+    \begin{gathered}
+        \min_{S_{lm}(a)} \sum_{l,m} l^3 (l+1) |S_{lm}(a)|^2 \\ 
+        \text{subject to} \quad \sum_{l,m} l^2(l+1)^2 |S_{lm}(a)|^2 = 1,
+    \end{gathered}
+\end{equation}
+Now the problem becomes very simple. In mathematical terms, this optimisation problem is equivalent to calculating the smallest eigenvalue of a linear operator, which is already diagonalised. Therefore, we only need to find the smallest diagonal element, i.e.
+\[
+    \hat{l} = \arg \min_{l} \frac{l^3(l+1)}{l^2(l+1)^2} = \arg \min_{l} \frac{l}{l+1}
+\]
+and use only the corresponding mode. Clearly, $\frac{l}{l+1} = 1 - \frac{1}{l+1}$ is the smallest when $l$ is the smallest, i.e. $l=1$. Therefore, a dipolar field always gives the highest content of normal magnetic field at the boundary in terms of $L^2$-norm, followed by quadrupolar field, octupolar field, etc. 
+In general, for a poloidal field of degree $l$ under the dynamo boundary condition, we have
+\begin{equation}
+    \left\|\hat{\mathbf{r}}\times \mathbf{B}^l\right\|^2_{\partial V} = \int_{\partial V} \left|\hat{\mathbf{r}}\times \mathbf{B}^l\right|^2 \, d\Sigma = \frac{l}{l+1} \int_{\partial V} \left|\hat{\mathbf{r}}\cdot \mathbf{B}^l\right|^2 \, d\Sigma = \frac{l}{l+1} \left\|\hat{\mathbf{r}}\cdot \mathbf{B}^l\right\|^2_{\partial V}
+\end{equation}
+regardless of the azimuthal wavenumber content of the magnetic field (nor it should, considering spherical harmonic distribution in different $m$ modes is coordinate dependent).
+For a general poloidal field satisfying the dynamo boundary condition we have the inequality
+\begin{equation}
+    \left\|\hat{\mathbf{r}}\times \mathbf{B}\right\|^2_{\partial V} = \int_{\partial V} \left|\hat{\mathbf{r}}\times \mathbf{B}\right|^2 \, d\Sigma \leq \frac{1}{2} \int_{\partial V} \left|\hat{\mathbf{r}}\cdot \mathbf{B}\right|^2 \, d\Sigma = \frac{1}{2}\left\|\hat{\mathbf{r}}\cdot \mathbf{B}\right\|^2_{\partial V}
+\end{equation}
+and the equality holds \textit{iff} the magnetic field is purely dipolar (in terms of spherical harmonic content), i.e. $\mathbf{B} = \nabla\times \nabla\times \sum_m S_m(r) Y_1^m \mathbf{r}$, regardless of the choice of $S_m(r)$.
+
+As a final remark, the $L^2$-norm formulation with normal field posed as an equality constraint described above can be shown to be equivalent to the following "ratio" formulation:
+\begin{equation}
+    \begin{gathered}
+        \min_{S(\mathbf{r}),T(\mathbf{r})} \frac{\left\|\hat{\mathbf{r}}\times \mathbf{B}\right\|^2_{\partial V}}{\left\|\hat{\mathbf{r}}\cdot \mathbf{B}\right\|^2_{\partial V}} = \min_{S(\mathbf{r}), T(\mathbf{r})} \frac{\int_{\partial V} |\hat{\mathbf{r}} \times \mathbf{B}(\mathbf{r}; S, T)|_{\partial V}^2 \, d\Sigma}{\int_{\partial V} |\hat{\mathbf{r}} \cdot \mathbf{B}(\mathbf{r}; S, T)|_{\partial V}^2 \, d\Sigma} \\[.5em] 
+        \text{subject to} \quad \frac{dS_{lm}(r)}{dr} \bigg|_{r=a} + \frac{l+1}{a} S_{lm}(a) = 0,\quad T_{lm}(a) = 0.
+    \end{gathered}
+\end{equation}
+which can be even more naturally formulated as finding the smallest eigenvalue of a linear operator. The resulting conclusion is that the minimum is $1/2$, achieved at $S(\mathbf{r}) = S_{1m}(r)$ and $T(\mathbf{r})\equiv 0$.
+
+\subsubsection{Verification}
+
+Let us test the conclusion on the background fields we know. We consider the two background fields in Luo \& Jackson (2021), the $S1$ field ($l=1$ axisymmetric poloidal field) and the $S2$ ($l=2$ axisymmetric poloidal field). Both background fields satisfy the poloidal dynamo condition. The $S1$ field reads
+\[
+    \mathbf{B} = \nabla\times \nabla\times r(5 - 3r^2) Y_1^0(\theta, \phi) \mathbf{r}
+\]
+For this field we have the integrals
+\[
+\begin{aligned}
+    \int_{\partial V} |\hat{\mathbf{r}}\times \mathbf{B}|^2 \, d\Sigma = 8 \\ 
+    \int_{\partial V} |\hat{\mathbf{r}}\cdot \mathbf{B}|^2 \, d\Sigma = 16
+\end{aligned}\quad \Longrightarrow \quad
+\left\|\hat{\mathbf{r}}\times \mathbf{B}\right\|^2_{\partial V} = \frac{1}{2} \left\|\hat{\mathbf{r}}\cdot \mathbf{B}\right\|^2_{\partial V}.
+\]
+The ratio is consistent with $l/(l+1) = 1/2$.
+The $S2$ field reads
+\[
+    \mathbf{B} = \nabla\times \nabla\times r^2(157 - 296r^2 + 143r^4) Y_2^0(\theta, \phi) \mathbf{r}
+\]
+For this field we have the integrals
+\[
+\begin{aligned}
+    \int_{\partial V} |\hat{\mathbf{r}}\times \mathbf{B}|^2 \, d\Sigma = 384 \\ 
+    \int_{\partial V} |\hat{\mathbf{r}}\cdot \mathbf{B}|^2 \, d\Sigma = 576
+\end{aligned}\quad \Longrightarrow \quad
+\left\|\hat{\mathbf{r}}\times \mathbf{B}\right\|^2_{\partial V} = \frac{2}{3} \left\|\hat{\mathbf{r}}\cdot \mathbf{B}\right\|^2_{\partial V}.
+\]
+The ratio is consistent with $l/(l+1) = 2/3$. This confirms the conclusion is correct.
+
+
+% Second, introducing the scalar linear operators, 
+% \[
+%     \mathcal{L}_D^l = \sqrt{l(l+1)} \left(\frac{d}{dr}r\right)_{r=a}, \quad \mathcal{L}_E^l = \left(l(l+1)\right)_{r=a}, \quad 
+%     \mathcal{L}_{BC}^l = \left(\frac{d}{dr} + \frac{l+1}{r}\right)_{r=a}
+% \]
+% the optimisation problem takes the form
+% \[
+%     \min_{S_{lm}(r)} \sum_{l,m} |\mathcal{L}_D^l S_{lm}|^2 \qquad 
+%     \text{subject to} \quad \left\{\begin{aligned}
+%         \sum_{l,m} |\mathcal{L}_E^l S_{lm}|^2 = 1, \\ 
+%         \mathcal{L}_{BC}^l S_{lm} = 0.
+%     \end{aligned}\right.
+% \]
+% If we expand these spherical harmonic coefficients further in terms of real radial basis, e.g. the Jones-Worland polynomials $W_{n}^l(r)$, we have 
+% \begin{align}
+%     \int_{\partial V} |\hat{\mathbf{r}}\cdot \mathbf{B}|^2 \, d\Sigma &= \sum_{l,m} l^2(l+1)^2 \sum_{nn'} \left(W_n^l W_{n'}^l\right)_a S_{lmn} S^*_{lmn'} \\ 
+%     \int_{\partial V} |\hat{\mathbf{r}}\times \mathbf{B}|^2 \, d\Sigma &= \sum_{l,m} l(l+1) \sum_{nn'} \left[\left(\frac{d(rW_{n}^l)}{dr} \frac{d(rW_{n'}^l)}{dr}\right)_{a} S_{lmn} S^*_{lmn'} + a^2 \left(W_n^l W_{n'}^l\right)_a T_{lmn} T^*_{lmn'}\right]
+% \end{align}
+% Expressed in spherical harmonic coefficients, we have
+% \[
+%     \begin{gathered}
+%         \min_{S_{lmn}, T_{lmn}} \sum_{l,m} l(l+1) \sum_{nn'} \left[\left(\frac{d(rW_{n}^l)}{dr} \frac{d(rW_{n'}^l)}{dr}\right)_{a} S_{lmn} S^*_{lmn'} + a^2 \left(W_n^l W_{n'}^l\right)_a T_{lmn} T^*_{lmn'}\right] \\ 
+%         \text{subject to} \quad \left\{\begin{aligned}
+%             \sum_{l,m} l^2(l+1)^2 \sum_{nn'} \left(W_n^l W_{n'}^l\right)_a S_{lmn} S^*_{lmn'} = 1, \\ 
+%             \sum_n \left(\frac{d W_{n}^l(r)}{dr} \bigg|_{r=a} + \frac{l+1}{a}W_n^l(a)\right) S_{lmn} = 0,\quad 
+%             \sum_n W_n^l(a) T_{lmn} = 0.
+%         \end{aligned}\right.
+%     \end{gathered}
+% \]
+% We first see that it is always optimal to set toroidal field to zero. Therefore, the problem simplifies into
+% \begin{equation}
+%     \begin{gathered}
+%         \min_{S_{lmn}} \sum_{l,m} l(l+1) \sum_{nn'} \left(\frac{d(rW_{n}^l)}{dr} \frac{d(rW_{n'}^l)}{dr}\right)_{a} S_{lmn} S^*_{lmn'} \\ 
+%         \text{subject to} \quad \left\{\begin{aligned}
+%             \sum_{l,m} l^2(l+1)^2 \sum_{nn'} \left(W_n^l W_{n'}^l\right)_a S_{lmn} S^*_{lmn'} = 1, \\ 
+%             \sum_n \left(\frac{d W_{n}^l(r)}{dr} \bigg|_{r=a} + \frac{l+1}{a}W_n^l(a)\right) S_{lmn} = 0.
+%         \end{aligned}\right.
+%     \end{gathered}
+% \end{equation}
+% Note that contribution from different azimuthal wavenumbers $m$ are decoupled. Now in terms of expansion coefficients $S_{lmn}$, this is a linear least squares problem (quadratic objective function) with a quadratic equality constraint and one linear equality constraint. For this purpose 
+
+
+\subsection{Normality measured in p-norm of angle cosine with the boundary normal}
+
+Another possibility of posing the optimisation problem is to build the objective function based on the cosine of the angle between the magnetic field and the boundary normal, i.e. 
+\[
+    \cos\gamma = \cos <\hat{\mathbf{e}}_B, \hat{\mathbf{n}}> = \cos <\hat{\mathbf{e}}_B, \hat{\mathbf{r}}> = \frac{B_r}{|\mathbf{B}|}.
+\]
+The objective is then to maximise some "average" of the angle cosine on the surface of the sphere, most naturally measured in the normalised $p$-norm:
+\begin{equation}
+\begin{gathered}
+    \max_{\mathbf{B}} \frac{\left\| \cos \gamma(\mathbf{B}) \right\|_p^p}{\left\| 1 \right\|_p^p} = \frac{\left\| \cos \gamma(\mathbf{B}) \right\|_p^p}{4\pi a^2} = \frac{1}{4\pi a^2} \int_{\partial V} \left|\frac{B_r}{|\mathbf{B}|}\right|^p \, d\Sigma \\ 
+    \text{subject to} \quad \frac{dS_{lm}(r)}{dr} \bigg|_{r=a} + \frac{l+1}{a} S_{lm}(a) = 0,\quad T_{lm}(a) = 0.
+\end{gathered}
+\end{equation}
+This formulation has the merit that only the angle matters. Therefore, it downweights background fields who has localised large normal components, but dominated by amplitude-wide weaker tangent components elsewhere. On the other hand, if a background field is almost normal on much of the surface, albeit with a weak normal component but weaker tangent components, but far from normal on localised patches, with very strong tangent components, the field will still be registered with a high objective function in this formulation.
+
+Reusing the expressions derived in the previous section, we can express the angle in the spherical harmonic coefficients
+\[
+    \cos\gamma = \frac{B_r}{|\mathbf{B}|} = \frac{\sum_{l,m} l(l+1) \frac{S_{lm}(a)}{a} Y_l^m}{|\sum_{l,m} l(l+1) \frac{S_{lm}(a)}{a} Y_l^m \hat{\mathbf{r}} + \sum_{l,m} \frac{1}{a} \frac{d(rS_{lm})}{dr}|_a \nabla_s Y_l^m - \sum_{l,m} T_{lm}(a) \hat{\mathbf{r}}\times Y_l^m |}
+\]
+As is the case in the previous formulation, due to the boundary condition for $T_{lm}$, the toroidal contribution simply vanishes at the boundary. Using the poloidal boundary condition, we can again express the derivative of the poloidal scalar at the boundary in boundary values. The result is that the angle cosine is given by
+\[\begin{aligned}
+    \cos\gamma = \frac{B_r}{|\mathbf{B}|} &= \frac{\displaystyle \sum_{l,m} l(l+1) \frac{S_{lm}(a)}{a} Y_l^m}{\displaystyle \left|\sum_{l,m} l(l+1) \frac{S_{lm}(a)}{a} Y_l^m\hat{\mathbf{r}} - \sum_{l,m} l \frac{S_{lm}(a)}{a} \nabla_s Y_l^m \right|} \\ 
+    &= \frac{\displaystyle \sum_{l,m} l(l+1) S_{lm}(a) Y_l^m}{\displaystyle \sqrt{\left(\sum_{l,m} l(l+1) S_{lm}(a) Y_l^m\right)^2 + \left|\sum_{l,m} l S_{lm}(a) \nabla_s Y_l^m\right|^2}} \\ 
+    &= \frac{\displaystyle \sum_{l,m} l(l+1) S_{lm}(a) Y_l^m}{\displaystyle \sqrt{\sum_{l,m} \sum_{l',m'} \left[l(l+1) l'(l'+1) Y_l^m Y_{l'}^{m'} + ll'\left(\partial_\theta Y_{l}^{m} \partial_\theta Y_{l'}^{m'} - \frac{mm'}{\sin^2\theta}Y_l^m Y_{l'}^{m'}\right)\right] S_{lm}(a) S_{l'm'}(a)}}
+\end{aligned}\]
+Let us introduce the notation $\hat{S}_{lm} = S_{lm}(a)$ for the boundary value of $S_{lm}(r)$. Let us introduce a flattened index $p$ for the multi-index $lm$, and collect the infinite-dimensional vector $\hat{S}_{lm} = \hat{S}_p$ as $\mathbf{\hat{\mathbf{s}}}$. We further introduce the linear operators 
+\[\begin{aligned}
+    \mathbf{L}_r(\theta, \phi):& \quad \hat{S}_{lm} \mapsto \sum_{l,m} l(l+1) Y_l^m(\theta, \phi) \hat{S}_{lm} = \mathbf{b}_r^\top \hat{\mathbf{s}}, \\
+    \mathbf{L}_\theta(\theta, \phi):& \quad \hat{S}_{lm} \mapsto \sum_{l,m} l \partial_\theta Y_l^m(\theta, \phi) \hat{S}_{lm} = \mathbf{b}_\theta^\top \hat{\mathbf{s}}, \\
+    \mathbf{L}_\phi(\theta, \phi):& \quad \hat{S}_{lm} \mapsto \sum_{l,m} l \frac{im}{\sin\theta} Y_l^m(\theta, \phi) \hat{S}_{lm} = \mathbf{b}_\phi^\top \hat{\mathbf{s}}
+\end{aligned}\]
+These operators map the vector to scalars, and hence are identified with vectors $\mathbf{b}_r$, $\mathbf{b}_\theta$, $\mathbf{b}_\phi$. The optimisation problem can thus be written using the shorthand notation
+\begin{equation}
+    \max_{\hat{\mathbf{s}}} \frac{1}{4\pi} \int_{4\pi} \left|\frac{\mathbf{b}_r^\top \hat{\mathbf{s}}}{\sqrt{\hat{\mathbf{s}}^\top (\mathbf{b}_r \mathbf{b}_r^\top + \mathbf{b}_\theta \mathbf{b}_\theta^\top + \mathbf{b}_
+    \phi \mathbf{b}_\phi^\top) \hat{\mathbf{s}}}}\right|^p d\Omega = \frac{1}{4\pi} \int_{4\pi} \left|\frac{\mathbf{b}_r^\top \hat{\mathbf{s}}}{\sqrt{\hat{\mathbf{s}}^\top \mathbf{M}_F \hat{\mathbf{s}}}}\right|^p d\Omega
+\end{equation}
+Here I introduced a symmetric positive semi-definite matrix $\mathbf{M}_F$. This matrix links the vector $\hat{\mathbf{s}}$ to the magnitude of the magnetic field at the boundary. If we apply the first order optimality condition on the objective function, we have formally
+\begin{equation}\label{eqn:grad-L-cos}
+\begin{aligned}
+    \nabla \mathcal{L}(\hat{\mathbf{s}}) &= \frac{1}{4\pi} \nabla_s \int_{4\pi} \left|\frac{\mathbf{b}_r^\top \hat{\mathbf{s}}}{\sqrt{\hat{\mathbf{s}}^\top \mathbf{M}_F \hat{\mathbf{s}}}}\right|^p d\Omega = \frac{1}{4\pi} \int_{4\pi} \nabla_s \left|\frac{\mathbf{b}_r^\top \hat{\mathbf{s}}}{\sqrt{\hat{\mathbf{s}}^\top \mathbf{M}_F \hat{\mathbf{s}}}}\right|^p d\Omega \\ 
+    &= \frac{1}{4\pi} \int_{4\pi} p \left(\frac{|\mathbf{b}_r^\top \hat{\mathbf{s}}|}{\sqrt{\hat{\mathbf{s}}^\top \mathbf{M}_F \hat{\mathbf{s}}}}\right)^{p-1} \nabla_s \frac{|\mathbf{b}_r^\top \hat{\mathbf{s}}|}{\sqrt{\hat{\mathbf{s}}^\top \mathbf{M}_F \hat{\mathbf{s}}}} \, d\Omega \\ 
+    &= \frac{p}{4\pi} \int_{4\pi} \left(\frac{|\mathbf{b}_r^\top \hat{\mathbf{s}}|}{\sqrt{\hat{\mathbf{s}}^\top \mathbf{M}_F \hat{\mathbf{s}}}}\right)^{p-1} \frac{\sgn(\mathbf{b}_r^\top \hat{\mathbf{s}}) \mathbf{b} \hat{\mathbf{s}}^\top \mathbf{M}_F \hat{\mathbf{s}} - |\mathbf{b}_r^\top \hat{\mathbf{s}}| \mathbf{M}_F^\top \hat{\mathbf{s}}}{(\hat{\mathbf{s}}^\top \mathbf{M}_F \hat{\mathbf{s}})^{3/2}} \, d\Omega \\ 
+    &= \left[\frac{p}{4\pi} \int_{4\pi} \left(\frac{|\mathbf{b}_r^\top \hat{\mathbf{s}}|}{\sqrt{\hat{\mathbf{s}}^\top \mathbf{M}_F \hat{\mathbf{s}}}}\right)^{p-1} \frac{\left(\sgn(\mathbf{b}_r^\top \hat{\mathbf{s}}) \mathbf{b} \hat{\mathbf{s}}^\top - |\mathbf{b}_r^\top \hat{\mathbf{s}}| \mathbf{I}\right) \mathbf{M}_F}{(\hat{\mathbf{s}}^\top \mathbf{M}_F \hat{\mathbf{s}})^{3/2}} \, d\Omega \right]\, \cdot \hat{\mathbf{s}} = \mathbf{0}
+\end{aligned}
+\end{equation}
+It is unlikely that a nonlinear equation as such can have closed form solutions. Nevertheless, eq. (\ref{eqn:grad-L-cos}) provides a way to optimise this function using gradient-based methods. The gradients at each point can be computed relatively efficiently without ever explicitly forming the matrix $\mathbf{M}_F$ or involving any matrix-vector product, but can always be reduced to vector inner products and scalar-vector products.
+
+We note that this formulation is presented with arbitrary $p$. Although $p=2$ may still seem the most natural choice, there is no point in discussing it separately, as the problem has to be solved numerically anyways. $p=2$ does not provide much implementational advantages, nor does it allow more analytical manipulation.
+
+The problem can however be drastically simplified if we restrict ourselves to very simple fields; that is, if we only consider background fields with one single spherical harmonic mode. For practical purposes for our problem we also assume the field is axisymmetric ($m=0$), although this does not change our conclusion other than complicating the expressions. In this case, all vectors and matrices degenerate into scalars. The objective function reads
+\begin{equation}
+\begin{aligned}
+    \mathcal{L}_l(\hat{s}) &= \frac{1}{4\pi} \int_{4\pi} \left|\frac{b_r \hat{s}}{\sqrt{M_F \hat{s}^2}}\right|^p d\Omega = \frac{1}{4\pi} \int_{4\pi} \left|\frac{b_r}{\sqrt{M_F}}\right|^p \, d\Omega \\
+    &= \frac{1}{4\pi} \int_{4\pi} \left|\frac{l(l+1) Y_l^0}{\sqrt{(l(l+1)Y_l^0)^2 + (l\partial_\theta Y_l^0)^2}}\right|^p d\Omega \\ 
+    &= \frac{1}{2} \int_{-1}^{1} \left|\frac{l(l+1) P_l(\xi)}{\sqrt{(l(l+1)P_l(\xi))^2 + (1 - \xi^2)(l P_l'(\xi))^2}}\right|^p d\xi
+\end{aligned}
+\end{equation}
+This shows that the objective function is independent of the specific choice of $\hat{s}$, but only dependent upon $l$. The conclusion is similar to that in the previous objective function ($2$-norm of components), but in this case the conclusion for single mode does NOT carry over to the full objective function with a combination of spherical harmonic modes, due to the fact that different modes interact in a nonlinear fashion in forming the $\cos\gamma$ term. 
+
+It turns out despite the fact that integrand is regular at the boundary (and hence should be optimally integrated using Gauss-Legendre quadrature), the integrand has quite some high frequency content at high $l$, and the convergence is surprisingly slow. Here I report several converged results.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{llll}
+    \toprule
+    $l$ & $p$ & $\mathcal{L}_l$ (low resolution) & $\mathcal{L}_l$ (N=2000) \\ 
+    \midrule
+    1 & 2 & $\mathbf{0.5272003}1$ (N=16) & $\mathbf{0.5272002}8$ \\
+    2 & 2 & $\mathbf{0.52435494}$ (N=24) & $\mathbf{0.52435494}$ \\
+    4 & 2 & $\mathbf{0.517897}62$ (N=32) & $\mathbf{0.517897}49$ \\
+    8 & 2 & $\mathbf{0.511346}37$ (N=48) & $\mathbf{0.511346}16$ \\ 
+    16 & 2 & $\mathbf{0.506523}98$ (N=96) & $\mathbf{0.506523}88$ \\ 
+    24 & 2 & $\mathbf{0.5045823}1$ (N=144) & $\mathbf{0.5045822}7$ \\
+    32 & 2 & $\mathbf{0.503533}59$ (N=512) & $\mathbf{0.503533}72$ \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+Therefore most of the single spherical harmonic modes has an average $\cos^2\gamma$ of around $\sim 0.5$. If we only want a single spherical harmonic mode background field, choosing $l=1$ or $l=32$ does not really make a big difference by this standard.
 
 \end{document}
