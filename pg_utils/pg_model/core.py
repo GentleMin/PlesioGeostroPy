@@ -30,6 +30,19 @@ H = sympy.Function("H")(s)
 #: Half height as a function of polar radius (expr)
 H_s = sympy.sqrt(1 - s**2)
 
+# Variable transformation
+coordmap_c2s = {
+    s: r*sympy.sin(theta),
+    p: p,
+    z: r*sympy.cos(theta)
+}
+
+coordmap_s2c = {
+    r: sympy.sqrt(s**2 + z**2),
+    theta: sympy.acos(z/sympy.sqrt(s**2 + z**2)),
+    p: p
+}
+
 
 # ============== PG-independent physical fields ===============
 

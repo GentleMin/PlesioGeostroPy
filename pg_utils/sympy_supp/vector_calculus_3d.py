@@ -471,7 +471,12 @@ class SphericalCoordinates(OrthogonalCoordinates3D):
     def grad(self, scalar_in, **kwargs):
         """Scalar gradient, to be implemented
         """
-        return super().grad(scalar_in, **kwargs)
+        grad_out = (
+            sympy.diff(scalar_in, self[0]),
+            sympy.diff(scalar_in, self[1])/self[0],
+            sympy.diff(scalar_in, self[2])/(self[0]*sympy.sin(self[1]))
+        )
+        return grad_out
     
     def div(self, vector_in, **kwargs):
         """Compute the divergence of a vector in spherical coordinates
@@ -489,7 +494,15 @@ class SphericalCoordinates(OrthogonalCoordinates3D):
     
     def curl(self, vector_in, **kwargs):
         """Vector curl, to be implemented"""
-        return super().curl(vector_in, **kwargs)
+        curl_out = (
+            + sympy.diff(sympy.sin(self[1])*vector_in[2], self[1])/(self[0]*sympy.sin(self[1]))
+            - sympy.diff(vector_in[1], self[2])/(self[0]*sympy.sin(self[1])),
+            + sympy.diff(vector_in[0], self[2])/(self[0]*sympy.sin(self[1]))
+            - sympy.diff(self[0]*vector_in[2], self[0])/self[0],
+            + sympy.diff(self[0]*vector_in[1], self[0])/self[0]
+            - sympy.diff(vector_in[0], self[1])/self[0]
+        )
+        return curl_out
     
     def laplacian(self, tensor_in, rank=0, **kwargs):
         """Tensor Laplacian, to be implemented"""
