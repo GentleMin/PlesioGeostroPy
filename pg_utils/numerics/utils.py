@@ -460,6 +460,80 @@ def vector_sph2cart(
 
 
 """
+----------------------------------
+Non-dimensionalisation transforms
+----------------------------------
+"""
+
+def tscale_convert(
+    in_tscale: Literal['rotation', 'Alfven', 'diffusion_mag', 'diffusion_mag_LJ2022'],
+    out_tscale: Literal['rotation', 'Alfven', 'diffusion_mag', 'diffusion_mag_LJ2022'],
+    **dimless_params
+):
+    """Conversion between dimensionless parameters with different time scales
+    """
+    if in_tscale == 'rotation':
+        Le = dimless_params.get('Lehnert')
+        Em = dimless_params.get('Ekman_mag')
+        Ek = dimless_params.get('Ekman', 0.)
+        if (Le is None) or (Em is None) or (Ek is None):
+            raise TypeError("Dimensionless params need to be specified.")
+        t_factor = 1.
+    
+    if in_tscale == 'Alfven':
+        Le = dimless_params.get('Lehnert')
+        Lu = dimless_params.get('Lundquist')
+        Pm = dimless_params.get('Prandtl_mag', 0.)
+        if (Le is None) or (Lu is None) or (Pm is None):
+            raise TypeError("Dimensionless params need to be specified.")
+        Em = Le/Lu
+        Ek = Pm*Em
+        t_factor = 1./Le
+    
+    if in_tscale == 'diffusion_mag':
+        Lambda = dimless_params.get('Elsasser')
+        Em = dimless_params.get('Ekman_mag')
+        Ek = dimless_params.get('Ekman', 0.)
+        if (Lambda is None) or (Em is None) or (Ek is None):
+            raise TypeError("Dimensionless params need to be specified.")
+        Le = np.sqrt(Em*Lambda)
+        t_factor = 1./Em
+    
+    if in_tscale == 'diffusion_mag_LJ2022':
+        Lambda = dimless_params.get('Elsasser')
+        Em = dimless_params.get('Ekman_mag')
+        Ek = dimless_params.get('Ekman', 0.)
+        if (Lambda is None) or (Em is None) or (Ek is None):
+            raise TypeError("Dimensionless params need to be specified.")
+        Le = 2*np.sqrt(Em*Lambda)
+        Em = 2*Em
+        Ek = 2*Ek
+        t_factor = 1./Em
+    
+    if out_tscale == 'rotation':
+        t_factor *= 1.
+        return t_factor, {'Lehnert': Le, 'Ekman_mag': Em, 'Ekman': Ek}
+    
+    if out_tscale == 'Alfven':
+        t_factor *= Le
+        Lu = Le/Em
+        Pm = Ek/Em
+        return t_factor, {'Lehnert': Le, 'Lundquist': Lu, 'Prandtl_mag': Pm}
+    
+    if out_tscale == 'diffusion_mag':
+        t_factor *= Em
+        Lambda = Em*Le**2
+        return t_factor, {'Elsasser': Lambda, 'Ekman_mag': Em, 'Ekman': Ek}
+    
+    if out_tscale == 'diffusion_mag_LJ2022':
+        t_factor *= Em
+        Lambda = Em*Le**2/2
+        Em /= 2
+        Ek /= 2
+        return t_factor, {'Elsasser': Lambda, 'Ekman_mag': Em, 'Ekman': Ek}
+
+
+"""
 -----------------------------
 Eigenvalue processing
 -----------------------------
@@ -761,3 +835,55 @@ def normalize(array: np.ndarray,
         max_idx = np.argmax(np.abs(array))
         normalizer = array.flatten()[max_idx] if zero_phase else np.abs(array.flatten()[max_idx])
     return array/normalizer
+
+
+
+"""
+-----------------------------
+Timing
+-----------------------------
+"""
+
+import time
+
+class ProcTimer:
+    
+    def __init__(self, start: bool = False) -> None:
+        self._starttime = None
+        self._logtimes = None
+        self._loginfos = None
+        if start:
+            self.start()
+        
+    def start(self, num: bool = True) -> None:
+        self._starttime = time.perf_counter()
+        self._logtimes = list((self._starttime,))
+        if num:
+            self._loginfos = list((0,))
+        else:
+            self._loginfos = list(('start',))
+            
+    def clear(self) -> None:
+        self._starttime = None
+        self._logtimes = None
+        self._loginfos = None
+    
+    def flag(self, loginfo=None, print_str: bool = False, **kwargs) -> None:
+        self._logtimes.append(time.perf_counter())
+        self._loginfos.append(loginfo)
+        if print_str:
+            self.print_elapse(**kwargs)
+        
+    def elapse_time(self, increment: bool = True) -> float:
+        if increment:
+            return self._logtimes[-1] - self._logtimes[-2]
+        else:
+            return self._logtimes[-1] - self._logtimes[0]
+    
+    def print_elapse(self, increment: bool = True, **kwargs) -> None:
+        t_elapse = self.elapse_time(increment=increment)
+        t_info = self._loginfos[-1]
+        print("Elapse time = {:8.2f} | Info: {}".format(t_elapse, t_info), **kwargs)
+
+
+
