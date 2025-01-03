@@ -51,6 +51,17 @@ class BackgroundFieldMHD:
             params=list(set(self.params) | set(bg_field.params))
         )
         return summation
+    
+    def subs(self, sub_params, inplace=False) -> 'BackgroundFieldMHD':
+        """Parameter substitution
+        """
+        o_subs = self
+        if not inplace:
+            o_subs = BackgroundFieldMHD(self.U0_val, self.B0_val, self.params)
+            
+        o_subs.U0_val = self.U0_val.subs(sub_params)
+        o_subs.B0_val = self.B0_val.subs(sub_params)
+        return o_subs
 
 
 class BackgroundHydro(BackgroundFieldMHD):
@@ -61,8 +72,8 @@ class BackgroundHydro(BackgroundFieldMHD):
     
     def __init__(self) -> None:
         super().__init__(
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl), 
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl)
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl)
         )
 
 
@@ -74,8 +85,8 @@ class BackgroundMalkus(BackgroundFieldMHD):
     
     def __init__(self) -> None:
         super().__init__(
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl), 
-            v3d.Vector3D((S.Zero, s, S.Zero), core.cyl)
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
+            v3d.Vector3D([S.Zero, s, S.Zero], core.cyl)
         )
 
 
@@ -92,8 +103,8 @@ class BackgroundToroidalQuadrupole(BackgroundFieldMHD):
     def __init__(self) -> None:
         cf_gamma = Symbol(r"\gamma")
         super().__init__(
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl), 
-            v3d.Vector3D((S.Zero, cf_gamma*s*(1 - s**2 - z**2), S.Zero), core.cyl),
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
+            v3d.Vector3D([S.Zero, cf_gamma*s*(1 - s**2 - z**2), S.Zero], core.cyl),
             params=[cf_gamma,]
         )
         self.params_ref = [[3*sqrt(Integer(3))/2],]
@@ -109,18 +120,43 @@ class Background_T1(BackgroundFieldMHD):
         T1 = (T1*r*SH.Ynm(1, 0, theta, p).expand(func=True), S.Zero, S.Zero)
         B_T1_sph = core.sph.curl(T1)
         B_T1_sph = tuple(comp.simplify() for comp in B_T1_sph)
-        B_T1_cyl = (
+        B_T1_cyl = [
             cf_gamma*(B_T1_sph[0]*sin(theta) + B_T1_sph[1]*cos(theta)).subs(core.coordmap_s2c).simplify(),
             cf_gamma*B_T1_sph[2].subs(core.coordmap_s2c).simplify(),
             cf_gamma*(B_T1_sph[0]*cos(theta) - B_T1_sph[1]*sin(theta)).subs(core.coordmap_s2c).simplify()
-        )
+        ]
         super().__init__(
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl), 
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
             v3d.Vector3D(B_T1_cyl, core.cyl), 
             params=[cf_gamma]
         )
         self.params_ref = [
             [3*sqrt(pi),]
+        ]
+        
+
+class Background_T2(BackgroundFieldMHD):
+    """Toroidal l=2 (T2) expressed in normalised SH
+    """
+    
+    def __init__(self) -> None:
+        cf_gamma = Symbol(r'\gamma')
+        T2 = r**2*(1 - r**2)
+        T2 = (T2*r*SH.Ynm(2, 0, theta, p).expand(func=True), S.Zero, S.Zero)
+        B_sph = core.sph.curl(T2)
+        B_sph = tuple(comp.simplify() for comp in B_sph)
+        B_cyl = [
+            cf_gamma*(B_sph[0]*sin(theta) + B_sph[1]*cos(theta)).subs(core.coordmap_s2c).simplify(),
+            cf_gamma*B_sph[2].subs(core.coordmap_s2c).simplify(),
+            cf_gamma*(B_sph[0]*cos(theta) - B_sph[1]*sin(theta)).subs(core.coordmap_s2c).simplify()
+        ]
+        super().__init__(
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
+            v3d.Vector3D(B_cyl, core.cyl), 
+            params=[cf_gamma]
+        )
+        self.params_ref = [
+            [Rational(16, 3)*sqrt(pi/5),]
         ]
 
 
@@ -136,8 +172,8 @@ class BackgroundPoloidalDipole(BackgroundFieldMHD):
     
     def __init__(self) -> None:
         super().__init__(
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl), 
-            v3d.Vector3D((-6*s*z, S.Zero, -2*(5 - 6*s**2 - 3*z**2)), core.cyl)
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
+            v3d.Vector3D([-6*s*z, S.Zero, -2*(5 - 6*s**2 - 3*z**2)], core.cyl)
         )
 
 
@@ -154,8 +190,8 @@ class BackgroundPoloidalDipoleTunable(BackgroundFieldMHD):
     def __init__(self) -> None:
         cf_gamma = Symbol(r'\gamma')
         super().__init__(
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl), 
-            v3d.Vector3D((-cf_gamma*3*s*z/5, S.Zero, cf_gamma*((6*s**2 + 3*z**2)/5 - 1)), core.cyl),
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
+            v3d.Vector3D([-cf_gamma*3*s*z/5, S.Zero, cf_gamma*((6*s**2 + 3*z**2)/5 - 1)], core.cyl),
             params=[cf_gamma,]
         )
         self.params_ref = [[S.One],]
@@ -170,13 +206,13 @@ class Background_S1(BackgroundFieldMHD):
         S1 = (S1*r*SH.Ynm(1, 0, theta, p).expand(func=True), S.Zero, S.Zero)
         B_S1_sph = core.sph.curl(core.sph.curl(S1))
         B_S1_sph = tuple(comp.simplify() for comp in B_S1_sph)
-        B_S1_cyl = (
+        B_S1_cyl = [
             cf_gamma*(B_S1_sph[0]*sin(theta) + B_S1_sph[1]*cos(theta)).subs(core.coordmap_s2c).simplify(),
             cf_gamma*B_S1_sph[2].subs(core.coordmap_s2c).simplify(),
             cf_gamma*(B_S1_sph[0]*cos(theta) - B_S1_sph[1]*sin(theta)).subs(core.coordmap_s2c).simplify()
-        )
+        ]
         super().__init__(
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl), 
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
             v3d.Vector3D(B_S1_cyl, core.cyl), 
             params=[cf_gamma]
         )
@@ -201,13 +237,13 @@ class Background_S2(BackgroundFieldMHD):
         S2 = (S2*r*SH.Ynm(2, 0, theta, p).expand(func=True), S.Zero, S.Zero)
         B_S2_sph = core.sph.curl(core.sph.curl(S2))
         B_S2_sph = tuple(comp.simplify() for comp in B_S2_sph)
-        B_S2_cyl = (
+        B_S2_cyl = [
             cf_gamma*(B_S2_sph[0]*sin(theta) + B_S2_sph[1]*cos(theta)).subs(core.coordmap_s2c).simplify(),
             cf_gamma*B_S2_sph[2].subs(core.coordmap_s2c).simplify(),
             cf_gamma*(B_S2_sph[0]*cos(theta) - B_S2_sph[1]*sin(theta)).subs(core.coordmap_s2c).simplify()
-        )
+        ]
         super().__init__(
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl), 
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
             v3d.Vector3D(B_S2_cyl, core.cyl), 
             params=[cf_gamma]
         )
@@ -225,13 +261,13 @@ class Background_S_l2_n2(BackgroundFieldMHD):
         S2 = (S2*r*SH.Ynm(2, 0, theta, p).expand(func=True), S.Zero, S.Zero)
         B_S2_sph = core.sph.curl(core.sph.curl(S2))
         B_S2_sph = tuple(comp.simplify() for comp in B_S2_sph)
-        B_S2_cyl = (
+        B_S2_cyl = [
             cf_gamma*(B_S2_sph[0]*sin(theta) + B_S2_sph[1]*cos(theta)).subs(core.coordmap_s2c).simplify(),
             cf_gamma*B_S2_sph[2].subs(core.coordmap_s2c).simplify(),
             cf_gamma*(B_S2_sph[0]*cos(theta) - B_S2_sph[1]*sin(theta)).subs(core.coordmap_s2c).simplify()
-        )
+        ]
         super().__init__(
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl), 
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
             v3d.Vector3D(B_S2_cyl, core.cyl), 
             params=[cf_gamma]
         )
@@ -247,13 +283,13 @@ class Background_T1S1(BackgroundFieldMHD):
         c_T1, c_S1 = symbols('C_{T1}, C_{S1}')
         B_T1 = Background_T1()
         B_S1 = Background_S1()
-        B_T1S1 = (
+        B_T1S1 = [
             B_T1.B0_val[0].subs({B_T1.params[0]: c_T1}) + B_S1.B0_val[0].subs({B_S1.params[0]: c_S1}),
             B_T1.B0_val[1].subs({B_T1.params[0]: c_T1}) + B_S1.B0_val[1].subs({B_S1.params[0]: c_S1}),
             B_T1.B0_val[2].subs({B_T1.params[0]: c_T1}) + B_S1.B0_val[2].subs({B_S1.params[0]: c_S1}),
-        )
+        ]
         super().__init__(
-            v3d.Vector3D((S.Zero, S.Zero, S.Zero), core.cyl), 
+            v3d.Vector3D([S.Zero, S.Zero, S.Zero], core.cyl), 
             v3d.Vector3D(B_T1S1, core.cyl), 
             params=[c_T1, c_S1]
         )

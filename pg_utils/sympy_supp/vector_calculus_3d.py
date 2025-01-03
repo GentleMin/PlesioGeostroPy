@@ -615,6 +615,12 @@ class Scalar3D(Tensor3D):
         """Scalar remains unchanged.
         """
         return self
+    
+    def subs(self, sub_params) -> 'Scalar3D':
+        """Substitute with params
+        """
+        o_subs = Scalar3D(self.tensor.subs(sub_params), self.coord_sys)
+        return o_subs
 
 
 class Vector3D(Tensor3D):
@@ -644,3 +650,11 @@ class Vector3D(Tensor3D):
     def laplacian(self, **kwargs):
         """Compute Laplacian, shortcut for calling the method in `coord_sys`"""
         return self.coord_sys.laplacian(self.tensor, rank=1, **kwargs)
+    
+    def subs(self, sub_params) -> 'Vector3D':
+        """Substitute with params
+        """
+        o_subs = Vector3D(self.tensor, self.coord_sys)
+        for i_dim in range(3):
+            o_subs[i_dim] = o_subs[i_dim].subs(sub_params)
+        return o_subs
