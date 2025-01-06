@@ -1,0 +1,70 @@
+\section{Background fields for the eigenvalue problems}
+
+
+\subsection{Recombined Galerkin basis for poloidal background magnetic field}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Galerkin bases for $Y_1^0$ ($l=1$, zonal/axisymmetric) poloidal scalars, recombined from Jones-Worland polynomials to satisfy the vacuum exterior boundary condition}
+    \vspace{.5em}
+    \begin{tabular}{llll}
+        \toprule
+        Bases & Poloidal scalar $S_1^0(r)$ & $\|\mathbf{B}\|_2$ & $\|\mathbf{B}\|_\infty = \max |\mathbf{B}|$ \\ 
+        \midrule 
+        $W_0^2, W_1^2$ & $r^2(3r^2 - 5)$ & $2\sqrt{\frac{46}{7}}\approx 5.13$ & $5\sqrt{\frac{3}{\pi}} \approx 4.89$ \\[.2em]
+        $W_0^2, W_2^2$ & $r^2(4r^4 - 5r^2 - 1)$ & $\frac{2}{3}\sqrt{\frac{3466}{77}}\approx 4.47$ & $\approx 3.01$ \\[.2em]
+        $W_0^2, W_3^2$ & $r^2(8r^6 - 14r^4 + 7r^2 - 3)$ & $\frac{2}{3}\sqrt{\frac{29318}{715}}\approx 4.27$ & $3\sqrt{\frac{3}{\pi}} \approx 2.93$ \\[.2em]
+        $W_0^2, W_4^2$ & $r^2(96r^8 - 216r^6 + 162r^4 - 45r^2 - 7)$ & $2\sqrt{\frac{176199902}{1616615}}\approx 20.9$ & $\approx 13.55$ \\[.2em]
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Galerkin bases for $Y_2^0$ ($l=2$, zonal/axisymmetric) poloidal scalars, recombined from Jones-Worland polynomials to satisfy the vacuum exterior boundary condition}
+    \vspace{.5em}
+    \begin{tabular}{llll}
+        \toprule
+        Bases & Poloidal scalar $S_2^0(r)$ & $\|\mathbf{B}\|_2$ & $\|\mathbf{B}\|_\infty = \max |\mathbf{B}|$ \\ 
+        \midrule 
+        $W_0^2, W_1^2$ & $r^2(5r^2 - 7)$ & $4\sqrt{\frac{26}{3}}\approx 11.8$ & \\[.2em]
+        $W_0^2, W_2^2$ & $r^2(25r^4 - 35r^2 + 4)$ & $4\sqrt{\frac{23962}{429}}\approx 29.9$ & \\[.2em]
+        $W_0^2, W_3^2$ & $r^2(56r^6 - 108r^4 + 63r^2 - 17)$ & $36\sqrt{\frac{7402}{12155}}\approx 28.1$ & \\[.2em]
+        $W_0^2, W_4^2$ & $r^2(144r^8 - 352r^6 + 297r^4 - 99r^2 + 4)$ & $36\sqrt{\frac{84106}{146965}}\approx 27.2$ & \\[.2em]
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Recombined Galerkin basis for toroidal background magnetic field}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Galerkin bases for $Y_1^0$ ($l=1$, zonal/axisymmetric) toloidal scalars, recombined from Jones-Worland polynomials to satisfy the vacuum exterior boundary condition}
+    \vspace{.5em}
+    \begin{tabular}{llll}
+        \toprule
+        Bases & Poloidal scalar $T_1^0(r)$ & $\|\mathbf{B}\|_2$ & $\|\mathbf{B}\|_1 = \max |\mathbf{B}|$ \\ 
+        \midrule
+        $W_0^1, W_1^1$ & $r(1 - r^2)$ & $\frac{4}{\sqrt{231}}\approx 0.225$ & $\frac{3}{16} \frac{1}{3\sqrt{\pi}}\approx 0.188$ \\[.2em] 
+        $W_0^1, W_2^1$ & $r(1 - r^2)(4r^2 - 1)$ & $4\sqrt{\frac{61}{15015}}\approx 0.255$ & $\frac{\sqrt{\sqrt{145} + 15}(-\sqrt{30} + 5\sqrt{174})}{800\sqrt{\pi}} \approx 0.222$ \\[.2em] 
+        $W_0^1, W_3^1$ & $r(1 - r^2)(8r^4 - 6r^2 + 1)$ & $4\sqrt{\frac{89}{109395}} \approx 0.114$ & $\approx 0.116$ \\[.2em] 
+        $W_0^1, W_4^1$ & $r(1 - r^2)(32r^6 - 40r^4 + 14r^2 - 1)$ & $4\sqrt{\frac{3727}{4849845}}\approx 0.111$ & $\approx 0.118$ \\[.2em] 
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Galerkin bases for $Y_2^0$ ($l=1$, zonal/axisymmetric) toloidal scalars, recombined from Jones-Worland polynomials to satisfy the vacuum exterior boundary condition}
+    \vspace{.5em}
+    \begin{tabular}{llll}
+        \toprule
+        Bases & Poloidal scalar $T_2^0(r)$ & $\|\mathbf{B}\|_2$ & $\|\mathbf{B}\|_1 = \max |\mathbf{B}|$ \\ 
+        \midrule
+        $W_0^2, W_1^2$ & $r^2(1 - r^2)$ & $\frac{4}{\sqrt{231}}\approx 0.263$ & $\frac{3}{16} \sqrt{\frac{5}{\pi}}\approx 0.237$ \\[.2em] 
+        $W_0^2, W_2^2$ & $r^2(1 - r^2)(5r^2 - 2)$ & $4\sqrt{{17}{3003}}\approx 0.301$ & $\frac{28\sqrt{5} + 19\sqrt{95}}{450\sqrt{\pi}} \approx 0.311$ \\[.2em] 
+        $W_0^2, W_3^2$ & $r^2(1 - r^2)(56r^4 - 52r^2 + 11)$ & $4\sqrt{\frac{10749}{323323}}\approx 0.729$ & $\approx 0.877$ \\[.2em] 
+        $W_0^2, W_4^2$ & $r^2(1 - r^2)(144r^6 - 208r^4 + 89r^2 - 10)$ & $4\sqrt{\frac{8301}{676039}}\approx 0.443$ & $\approx 0.563$ \\[.2em] 
+        \bottomrule
+    \end{tabular}
+\end{table}
