@@ -3,7 +3,7 @@
 The PG variables, canonical variables and $\psi$-$F$ variables are typically expanded in spectral basis that automatically satisfies (sometimes only part of) the regularity condition and has optionally some built-in boundary behaviours. In general, these basis takes the form
 %
 \begin{equation}
-    f_n^{(k_1, k_2, \alpha, \beta)}(s) = H^{k_1} s^{k_2} P_n^{(\alpha, \beta)}(2s^2 - 1) = (1 - s^2)^{k_1/2} s^{k_2} P_n^{(\alpha, \beta)}(2s^2 - 1)
+    Q_n^{(k_1, k_2, \alpha, \beta)}(s) = H^{k_1} s^{k_2} P_n^{(\alpha, \beta)}(2s^2 - 1) = (1 - s^2)^{k_1/2} s^{k_2} P_n^{(\alpha, \beta)}(2s^2 - 1)
 \end{equation}
 %
 This will be termed \textit{two-sided Jacobi polynomial}, after \textit{one-sided Jacobi polynomial} in \citet{boyd_comparing_2011}. One-sided Jacobi polynomials are a special case of two-sided Jacobi polynomial, with $k_1 = 0$ and $k_2$ set to $m$, the azimuthal wavenumber.
@@ -18,7 +18,7 @@ Note that quite often, we will consider this basis under the transformation of v
 In this case, the two-sided Jacobi polynomial reads
 %
 \begin{equation}
-    f_n^{(k_1, k_2, \alpha, \beta)}(s) = 2^{-\frac{1}{2}(k_1 + k_2)} (1 - \xi)^{\frac{k_1}{2}} (1 + \xi)^{\frac{k_2}{2}} P_n^{(\alpha, \beta)}(\xi)
+    Q_n^{(k_1, k_2, \alpha, \beta)}(s) = 2^{-\frac{1}{2}(k_1 + k_2)} (1 - \xi)^{\frac{k_1}{2}} (1 + \xi)^{\frac{k_2}{2}} P_n^{(\alpha, \beta)}(\xi)
 \end{equation}
 %
 Additionally we have the Jacobian between the two coordinates
@@ -34,7 +34,7 @@ Boundary behaviours and regularity conditions determine the values of $k_1$ and 
 The first choice is based on orthogonality of the basis functions with respect to volume weight, $sH$. The inner product takes the form
 %
 \[\begin{aligned}
-    \langle f_n, f_{n'} \rangle &= \int_{0}^1 f_n f_{n'} \, sH \, ds = \int_{-1}^1 f_n f_{n'} \, sH \frac{ds}{d\xi} d\xi \\ 
+    \langle Q_n, Q_{n'} \rangle &= \int_{0}^1 Q_n Q_{n'} \, sH \, ds = \int_{-1}^1 Q_n Q_{n'} \, sH \frac{ds}{d\xi} d\xi \\ 
     &= 2^{-\left(k_1 + k_2 + \frac{5}{2}\right)} \int_{-1}^{1} (1 - \xi)^{k_1 + \frac{1}{2}} (1 + \xi)^{k_2} \, P_n^{(\alpha, \beta)}(\xi) P_{n'}^{(\alpha, \beta)}(\xi) \, d\xi
 \end{aligned}\]
 %
@@ -42,7 +42,7 @@ The choices of $\alpha$ and $\beta$ that orthogonalizes the inner product is $\a
 %
 \begin{equation}
 \begin{aligned}
-    f_n^{(k_1, k_2)} = H^{k_1} s^{k_2} P_n^{(k_1 + \frac{1}{2}, k_2)}(2s^2 - 1) = 2^{-\frac{1}{2}(k_1 + k_2)} (1 - \xi)^{\frac{k_1}{2}} (1 + \xi)^{\frac{k_2}{2}} P_n^{(k_1 + \frac{1}{2}, k_2)}(\xi).
+    Q_n^{(k_1, k_2)} = H^{k_1} s^{k_2} P_n^{(k_1 + \frac{1}{2}, k_2)}(2s^2 - 1) = 2^{-\frac{1}{2}(k_1 + k_2)} (1 - \xi)^{\frac{k_1}{2}} (1 + \xi)^{\frac{k_2}{2}} P_n^{(k_1 + \frac{1}{2}, k_2)}(\xi).
 \end{aligned}
 \end{equation}
 %
@@ -50,7 +50,7 @@ The choices of $\alpha$ and $\beta$ that orthogonalizes the inner product is $\a
 The second choice is based on orthogonality of the basis functions with respect to surface weight, $s$. The inner product takes the form
 %
 \[\begin{aligned}
-    \langle f_n, f_{n'} \rangle &= \int_{0}^1 f_n f_{n'} \, s \, ds = \int_{-1}^1 f_n f_{n'} \, s \frac{ds}{d\xi} d\xi \\ 
+    \langle Q_n, Q_{n'} \rangle &= \int_{0}^1 Q_n Q_{n'} \, s \, ds = \int_{-1}^1 Q_n Q_{n'} \, s \frac{ds}{d\xi} d\xi \\ 
     &= 2^{-\left(k_1 + k_2 + 2\right)} \int_{-1}^{1} (1 - \xi)^{k_1} (1 + \xi)^{k_2} \, P_n^{(\alpha, \beta)}(\xi) P_{n'}^{(\alpha, \beta)}(\xi) \, d\xi.
 \end{aligned}\]
 %
@@ -58,7 +58,7 @@ The choices of $\alpha$ and $\beta$ that orthogonalizes the inner product is $\a
 %
 \begin{equation}
 \begin{aligned}
-    f_n^{(k_1, k_2)} = H^{k_1} s^{k_2} P_n^{(k_1, k_2)}(2s^2 - 1) = 2^{-\frac{1}{2}(k_1 + k_2)} (1 - \xi)^{\frac{k_1}{2}} (1 + \xi)^{\frac{k_2}{2}} P_n^{(k_1, k_2)}(\xi).
+    Q_n^{(k_1, k_2)} = H^{k_1} s^{k_2} P_n^{(k_1, k_2)}(2s^2 - 1) = 2^{-\frac{1}{2}(k_1 + k_2)} (1 - \xi)^{\frac{k_1}{2}} (1 + \xi)^{\frac{k_2}{2}} P_n^{(k_1, k_2)}(\xi).
 \end{aligned}
 \end{equation}
 %
@@ -66,7 +66,7 @@ The choices of $\alpha$ and $\beta$ that orthogonalizes the inner product is $\a
 The 3rd choice is based on orthogonality with unity weight, $s$. The inner product takes the form
 %
 \[\begin{aligned}
-    \langle f_n, f_{n'} \rangle &= \int_{0}^1 f_n f_{n'}\, ds = \int_{-1}^1 f_n f_{n'} \, \frac{ds}{d\xi} d\xi \\ 
+    \langle Q_n, Q_{n'} \rangle &= \int_{0}^1 Q_n Q_{n'}\, ds = \int_{-1}^1 Q_n Q_{n'} \, \frac{ds}{d\xi} d\xi \\ 
     &= 2^{-\left(k_1 + k_2 + \frac{3}{2}\right)} \int_{-1}^{1} (1 - \xi)^{k_1} (1 + \xi)^{k_2 - \frac{1}{2}} \, P_n^{(\alpha, \beta)}(\xi) P_{n'}^{(\alpha, \beta)}(\xi) \, d\xi.
 \end{aligned}\]
 %
@@ -74,7 +74,7 @@ The choices of $\alpha$ and $\beta$ that orthogonalizes the inner product is $\a
 %
 \begin{equation}
 \begin{aligned}
-    f_n^{(k_1, k_2)} = H^{k_1} s^{k_2} P_n^{(k_1, k_2 - \frac{1}{2})}(2s^2 - 1) = 2^{-\frac{1}{2}(k_1 + k_2)} (1 - \xi)^{\frac{k_1}{2}} (1 + \xi)^{\frac{k_2}{2}} P_n^{(k_1, k_2 - \frac{1}{2})}(\xi).
+    Q_n^{(k_1, k_2)} = H^{k_1} s^{k_2} P_n^{(k_1, k_2 - \frac{1}{2})}(2s^2 - 1) = 2^{-\frac{1}{2}(k_1 + k_2)} (1 - \xi)^{\frac{k_1}{2}} (1 + \xi)^{\frac{k_2}{2}} P_n^{(k_1, k_2 - \frac{1}{2})}(\xi).
 \end{aligned}
 \end{equation}
 %
@@ -83,17 +83,17 @@ The final choice is use a Worland-like index for the equiripple property. Mirror
 %
 \begin{equation}\label{eqn:Jacobi-2-sided-Worland}
 \begin{aligned}
-    f_n^{(k_1, k_2)} = H^{k_1} s^{k_2} P_n^{(k_1 - \frac{1}{2}, k_2 - \frac{1}{2})}(2s^2 - 1) = 2^{-\frac{1}{2}(k_1 + k_2)} (1 - \xi)^{\frac{k_1}{2}} (1 + \xi)^{\frac{k_2}{2}} P_n^{(k_1 - \frac{1}{2}, k_2 - \frac{1}{2})}(\xi).
+    Q_n^{(k_1, k_2)} = H^{k_1} s^{k_2} P_n^{(k_1 - \frac{1}{2}, k_2 - \frac{1}{2})}(2s^2 - 1) = 2^{-\frac{1}{2}(k_1 + k_2)} (1 - \xi)^{\frac{k_1}{2}} (1 + \xi)^{\frac{k_2}{2}} P_n^{(k_1 - \frac{1}{2}, k_2 - \frac{1}{2})}(\xi).
 \end{aligned}
 \end{equation}
 %
 The corresponding orthogonality uses the exotic weight $1/H$,
 %
 \[\begin{aligned}
-    \langle f_n, f_{n'} \rangle &= \int_{0}^1 f_n f_{n'}\, H^{-1} ds = \delta_{nn'} \| f_n, f_n \|^2.
+    \langle Q_n, Q_{n'} \rangle &= \int_{0}^1 Q_n Q_{n'}\, H^{-1} ds = \delta_{nn'} \| Q_n, Q_n \|^2.
 \end{aligned}\]
 %
-This weight may be interpreted as integral of the "average" - that is, if $f_n f_n'$ represents some quantities integrated in the $z$ direction, then the inner product $\langle f_n, f_{n'} \rangle$ defined as above represents integral of the axially averaged quantity on the unit disk.
+This weight may be interpreted as integral of the "average" - that is, if $Q_n Q_n'$ represents some quantities integrated in the $z$ direction, then the inner product $\langle Q_n, Q_{n'} \rangle$ defined as above represents integral of the axially averaged quantity on the unit disk.
 
 The resulting basis functions from the four choices of Jacobi indices are visualised in Fig. \ref{fig:Jacobi-2-sided} for $k_1=1$, $k_2=5$ and different $n$. Different basis functions are normalized using coefficient $\sqrt{n\pi} \sqrt{2}^{k_1 + k_2 - \alpha - \beta - 1}$, which approximately normalizes the respective basis functions to $\sim$ unity at $s=H=1/\sqrt{2}$, a property to be detailed in the next section.
 It can be observed that the fourth choice, inspired by the Worland polynomials (denoted "Worland weight" in the plots) indeed exhibits the equiripple property, with the ripples closest to $s=0$ slightly greater in amplitude than the rest.
@@ -102,7 +102,7 @@ On the other hand, all three of the other choices result in basis functions that
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{../../out/imgs/Jacobi_2sided_k1_1_k2_5.pdf}
-    \caption{Two-sided Jacobi polynomials $f_n^{(k_1, k_2, \alpha, \beta)}$ for $k_1 = 1$ and $k_2 = 5$ at different degrees $n$. The four curves in each plot visualises the basis functions with four different choices of $\alpha, \beta$.}
+    \caption{Two-sided Jacobi polynomials $Q_n^{(k_1, k_2, \alpha, \beta)}$ for $k_1 = 1$ and $k_2 = 5$ at different degrees $n$. The four curves in each plot visualises the basis functions with four different choices of $\alpha, \beta$.}
     \label{fig:Jacobi-2-sided}
 \end{figure}
 
@@ -134,16 +134,16 @@ Complicated as it seems, note that $\sin\frac{\theta}{2}$ and $\cos\frac{\theta}
 and so we readily obtain the asymptotic behaviour of the two-sided Jacobi polynomial in the interior
 %
 \begin{equation}
-    f_n^{(k_1, k_2, \alpha, \beta)}(\cos\theta) \sim (n\pi)^{-\frac{1}{2}} (\sin \frac{\theta}{2})^{k_1 -\alpha - \frac{1}{2}} (\cos \frac{\theta}{2})^{k_2 -\beta - \frac{1}{2}} \cos\left(N\theta + \gamma\right) + O\left(n^{-\frac{3}{2}}\right)
+    Q_n^{(k_1, k_2, \alpha, \beta)}(\cos\theta) \sim (n\pi)^{-\frac{1}{2}} (\sin \frac{\theta}{2})^{k_1 -\alpha - \frac{1}{2}} (\cos \frac{\theta}{2})^{k_2 -\beta - \frac{1}{2}} \cos\left(N\theta + \gamma\right) + O\left(n^{-\frac{3}{2}}\right)
 \end{equation}
 %
 We are interested in the amplitude of the extrema in the interior. To this end, we use the first order optimality condition, and take the derivative to zero:
 %
 \[
-    \frac{d}{d\theta} f_n \sim f_n \left[\frac{1}{2} \left(k_1 - \alpha - \frac{1}{2}\right) \cot\frac{\theta}{2} - \frac{1}{2} \left(k_2 - \beta - \frac{1}{2}\right) \tan \frac{\theta}{2} - N \tan \left(N\theta + \gamma\right)\right] = 0
+    \frac{d}{d\theta} Q_n \sim Q_n \left[\frac{1}{2} \left(k_1 - \alpha - \frac{1}{2}\right) \cot\frac{\theta}{2} - \frac{1}{2} \left(k_2 - \beta - \frac{1}{2}\right) \tan \frac{\theta}{2} - N \tan \left(N\theta + \gamma\right)\right] = 0
 \]
 %
-Note here the $f_n$ prefactor does not mean that the zeros of $f_n$ are also roots of $df_n$; these zeros are poles of $\tan(N\theta + \gamma)$ and therefore absorbed in the multiplication. The resulting equation is
+Note here the $Q_n$ prefactor does not mean that the zeros of $Q_n$ are also roots of $dQ_n$; these zeros are poles of $\tan(N\theta + \gamma)$ and therefore absorbed in the multiplication. The resulting equation is
 %
 \[
     \frac{1}{2} \left(k_1 - \alpha - \frac{1}{2}\right) \cot\frac{\theta}{2} - \frac{1}{2} \left(k_2 - \beta - \frac{1}{2}\right) \tan \frac{\theta}{2} - N \tan \left(N\theta + \gamma\right) = 0
@@ -156,7 +156,7 @@ The end result is that at the extrema, $N\theta + \gamma \approx \ell \pi + O(\e
 Understanding that at these extreme points, the trailing cosine term is approximately one, we now have a simple formula for the amplitude of these extrema, which reads
 %
 \begin{equation}
-    f_{n,\mathrm{extrema}}^{(k_1, k_2, \alpha, \beta)} \sim (n\pi)^{-\frac{1}{2}} (\sin \frac{\theta}{2})^{k_1 -\alpha - \frac{1}{2}} (\cos \frac{\theta}{2})^{k_2 -\beta - \frac{1}{2}} = (n\pi)^{-\frac{1}{2}} H^{k_1 -\alpha - \frac{1}{2}} s^{k_2 -\beta - \frac{1}{2}}
+    Q_{n,\mathrm{extrema}}^{(k_1, k_2, \alpha, \beta)} \sim (n\pi)^{-\frac{1}{2}} (\sin \frac{\theta}{2})^{k_1 -\alpha - \frac{1}{2}} (\cos \frac{\theta}{2})^{k_2 -\beta - \frac{1}{2}} = (n\pi)^{-\frac{1}{2}} H^{k_1 -\alpha - \frac{1}{2}} s^{k_2 -\beta - \frac{1}{2}}
 \end{equation}
 %
 This envelope modulates how the amplitude of the oscillation changes at different $s$ in the interior of the domain. For the volume weight, $\alpha = k_1 + 1/2$, $\beta = k_2$; the modulation factor is hence $H^{-1} s^{-1/2}$. The oscillation hence increases at both ends, especially towards $s=1$. For the surface weight, $\alpha = k_1$, $\beta = k_2$; the modulation factor is hence $H^{-1/2} s^{-1/2}$, yielding mild increases in amplitudes at both ends. For unit weight, $\alpha = k_1$, $\beta = k_2 - 1/2$; the modulation factor is hence $H^{-1/2}$. The oscillation hence increases only towards $s=1$.
@@ -164,7 +164,7 @@ This envelope modulates how the amplitude of the oscillation changes at differen
 The asymptotic equiripple is achieved when $\alpha = k_1 - 1/2$ and $\beta = k_2 - 1/2$, which is the Worland-type two-sided Jacobi polynomial. In this case, there is no $s$ or $H$ factors in the envelope, and hence the basis function is asymptotically equiripple at large $n$ in the interior. The asymptotic simply reads
 %
 \begin{equation}
-    f_n^{(k_1, k_2, k_1 - \frac{1}{2}, k_2 - \frac{1}{2})} \sim (n\pi)^{-\frac{1}{2}} \cos(N\theta + \gamma) + O\left(n^{-\frac{3}{2}}\right).
+    Q_n^{(k_1, k_2, k_1 - \frac{1}{2}, k_2 - \frac{1}{2})} \sim (n\pi)^{-\frac{1}{2}} \cos(N\theta + \gamma) + O\left(n^{-\frac{3}{2}}\right).
 \end{equation}
 %
 
@@ -212,7 +212,85 @@ whose solution can be obtained by directly integrating the first-order different
 \end{equation}
 %
 Except for the absence of the fast-changing $\cos(N\theta + \gamma)$ factor, this expression is very similar to the asymptotic of Jacobi polynomial in the interior (Eq. \ref{eqn:asymp-Jacobi-int}). The remaining argument is thus virtually the same as in the last section. 
-$A(\xi)$, which serves as the slow-varying envelope of the Jacobi polynomial therefore has an amplitude of $(1 - \xi)^{-\frac{1}{2}(\alpha + \frac{1}{2})} (1 + \xi)^{-\frac{1}{2}(\beta + \frac{1}{2})}$, leaving an amplitude of $(1 - \xi)^{\frac{1}{2}(k_1 - \alpha - \frac{1}{2})} (1 + \xi)^{\frac{1}{2}(k_2 - \beta - \frac{1}{2})}$ (up to a scalar coefficient) for two-sided Jacobi polynomials $f_n^{(k_1, k_2, \alpha, \beta)}$. It is hence straightforward to show that at $\alpha = k_1 - 1/2$ and $\beta = k_2 - 1/2$, the envelope $A$ is equiripple.
+$A(\xi)$, which serves as the slow-varying envelope of the Jacobi polynomial therefore has an amplitude of $(1 - \xi)^{-\frac{1}{2}(\alpha + \frac{1}{2})} (1 + \xi)^{-\frac{1}{2}(\beta + \frac{1}{2})}$, leaving an amplitude of $(1 - \xi)^{\frac{1}{2}(k_1 - \alpha - \frac{1}{2})} (1 + \xi)^{\frac{1}{2}(k_2 - \beta - \frac{1}{2})}$ (up to a scalar coefficient) for two-sided Jacobi polynomials $Q_n^{(k_1, k_2, \alpha, \beta)}$. It is hence straightforward to show that at $\alpha = k_1 - 1/2$ and $\beta = k_2 - 1/2$, the envelope $A$ is equiripple.
 
 I have shown that a two-sided Jacobi polynomial can be made equiripple by choosing $\alpha = k_1 - 1/2$ and $\beta = k_2 - 1/2$, where $k_1$ and $k_2$ are the powers of $H = \sqrt{1 - s^2}$ (proportional to $\sqrt{1 - \xi}$) and $s$ (proportional to $\sqrt{1 + \xi}$), respectively, either by using the asymptotic formula (previous section) or the WKBJ approximation (current section). 
 This type of two-sided Jacobi polynomial is a direct extension of the Worland polynomials \citep{livermore_spectral_2007} and even the second WKBJ approach is hardly modified from their motivation. If the arguments in their paper hold, then this choice might be more optimal and provide better numerical stability than other choices. Whether we can use the corresponding weight for inner product is uncertain; the $H^{-1}$ factor adds yet another singularity to the inner product, and if there is already an integrable singularity in the integrand, the full integral might no longer be integrable. In this case we will have to choose another weight, and the resulting mass matrix will no longer be diagonal or sparse.
+
+
+\subsection{Projection onto two-sided Jacobi polynomials}
+
+Consider the expansion of field $\varphi$ in two-sided Jacobi polynomials $Q_n^{(k_1, k_2, \alpha, \beta)}$,
+%
+\begin{equation}
+    \varphi(s) = \sum_n \varphi_n Q_n^{(k_1, k_2, \alpha, \beta)}(s)
+\end{equation}
+%
+assuming $\varphi(s)$ is in the span of this family of basis functions and thus inherits the same behaviour at the boundaries as $H^{k_1} s^{k_2}$. Denoting $\langle \cdot, \cdot \rangle$ as the inner product with weight that orthogonalizes the basis functions, i.e. $\langle Q_n, Q_{n'}\rangle = \|Q_n\|^2 \delta_{nn'}$, we have the formula for the expansion coefficients
+%
+\begin{equation}
+    \varphi_n = \frac{1}{\|Q_n\|^2} \left\langle Q_n^{(k_1. k_2, \alpha, \beta)}(s), \varphi(s) \right\rangle.
+\end{equation}
+%
+For arbitrary $\alpha$, $\beta$, the two-sided Jacobi polynomials are orthogonal under the inner product
+%
+\[
+    \langle f, g \rangle = \int_0^1 f(s) g(s) \, H^{2(\alpha - k_1)} s^{2(\beta - k_2) + 1} \, ds
+\]
+%
+and the squared norm of the basis function reads
+%
+\begin{equation}
+\begin{aligned}
+    \|Q_n\|^2 &= \langle Q_n, Q_n \rangle = 2^{-(\alpha + \beta + 2)} \int_{-1}^1 (1 - \xi)^\alpha (1 + \xi)^\beta P_n^{(\alpha, \beta)}(\xi) P_{n'}^{(\alpha, \beta)}(\xi) \, d\xi \\ 
+    &= 2^{-(\alpha + \beta + 2)} \frac{2^{\alpha + \beta + 1}}{2n + \alpha + \beta + 1} \frac{\Gamma(n + \alpha + 1) \Gamma(n + \beta + 1)}{\Gamma(n + \alpha + \beta + 1) \Gamma(n + 1)} \\ 
+    &= \frac{1}{2(2n + \alpha + \beta + 1)} \frac{\Gamma(n + \alpha + 1) \Gamma(n + \beta + 1)}{\Gamma(n + \alpha + \beta + 1) \Gamma(n + 1)} \\ 
+    &= \frac{1}{2(2n + \alpha + \beta + 1)} \frac{(n + 1)^{(\alpha)}}{(n + \beta + 1)^{(\alpha)}} = \frac{1}{2(2n + \alpha + \beta + 1)} \frac{(n + \alpha)_{(\alpha)}}{(n + \alpha + \beta)_{(\alpha)}}
+\end{aligned}
+\end{equation}
+%
+where $(z)^{(\alpha)}$ and $(z)_{(\alpha)}$ are Pochhammer's symbols. Note that due to the symmetry of $\alpha$ and $\beta$, the two indices are interchangeable in the final result. The coefficient can therefore be explicitly written as
+%
+\begin{equation}
+    \varphi_n = 2(2n + \alpha + \beta + 1) \frac{(n + \beta + 1)^{(\alpha)}}{(n + 1)^{(\alpha)}} \left\langle Q_n^{(k_1. k_2, \alpha, \beta)}(s), \varphi(s) \right\rangle.
+\end{equation}
+%
+The inner product of $Q_n$ with $\varphi$ takes the form
+%
+\[
+    \langle Q_n, \varphi \rangle = 2^{-(\alpha + \beta + 2)} \int_{-1}^{1} (1 - \xi)^\alpha (1 + \xi)^\beta P_n^{(\alpha, \beta)}(\xi) \frac{\varphi(s(\xi))}{H(\xi)^{k_1} s(\xi)^{k_2}}\, d\xi
+\]
+%
+For numerical evaluation, assuming $\varphi$ does have the leading order behaviour of $H^{k_1} s^{k_2}$, it is perhaps best to use the Gauss-Jacobi nodes $\xi_i$ and weights $w_i$ and approximate the integral with quadrature
+%
+\begin{equation}
+\begin{aligned}
+    \langle Q_n, \varphi \rangle &= 2^{-(\alpha + \beta + 2)} \sum_i w_i P_n^{(\alpha, \beta)}(\xi_i) \frac{\varphi(s(\xi_i))}{H(\xi_i)^{k_1} s(\xi_i)^{k_2}} \\ 
+    \varphi_n &= \frac{2n + \alpha + \beta + 1}{2^{\alpha + \beta + 1}} \frac{(n + \beta + 1)^{(\alpha)}}{(n + 1)^{(\alpha)}} \sum_i w_i P_n^{(\alpha, \beta)}(\xi_i) \frac{\varphi(s(\xi_i))}{H(\xi_i)^{k_1} s(\xi_i)^{k_2}}
+\end{aligned}
+\end{equation}
+%
+
+The formula can be specialised to specific choices of $\alpha$ and $\beta$. For instance, for Worland-type basis, 
+%
+\[\begin{aligned}
+    \varphi_n &= 2(2n + k_1 + k_2) \frac{(n + k_2 + \frac{1}{2})^{(k_1 - \frac{1}{2})}}{(n + 1)^{(k_1 - \frac{1}{2})}} \left\langle Q_n^{(k_1. k_2, k_1 - \frac{1}{2}, k_2 - \frac{1}{2})}(s), \varphi(s) \right\rangle \\ 
+    &= \frac{2n + k_1 + k_2}{2^{k_1 + k_2}} \frac{(n + k_2 + \frac{1}{2})^{(k_1 - \frac{1}{2})}}{(n + 1)^{(k_1 - \frac{1}{2})}} \sum_i w_i P_n^{(k_1 - \frac{1}{2}, k_2 - \frac{1}{2})}(\xi_i) \frac{\varphi(s_i)}{H_i^{k_1} s_i^{k_2}}
+\end{aligned}\]
+%
+
+
+\subsection{Additional properties}
+
+\noindent \textbf{Derivative.} The derivative of the two-sided Jacobi polynomial reads
+%
+\begin{equation}
+\begin{aligned}
+    &\frac{d}{ds}Q_n^{(k_1, k_2, \alpha, \beta)} = \frac{d\xi}{ds} \frac{d}{d\xi} Q_n^{(k_1, k_2, \alpha, \beta)}(s(\xi)) = 4s \frac{d}{d\xi} Q_n^{(k_1, k_2, \alpha, \beta)}(s(\xi)) \\
+    &= 4s \bigg[- \frac{k_1}{4} \left(\frac{1 - \xi}{2}\right)^{\frac{k_1}{2} - 1} \left(\frac{1 + \xi}{2}\right)^{\frac{k_2}{2}} P_n^{(\alpha, \beta)}(\xi) + \frac{k_2}{4} \left(\frac{1 - \xi}{2}\right)^{\frac{k_1}{2}} \left(\frac{1 + \xi}{2}\right)^{\frac{k_2}{2} - 1} P_n^{(\alpha, \beta)}(\xi) \\
+    &\qquad + \left(\frac{1 - \xi}{2}\right)^{\frac{k_1}{2}} \left(\frac{1 + \xi}{2}\right)^{\frac{k_2}{2} } \frac{\Gamma(n + \alpha + \beta + 2)}{2 \Gamma(n + \alpha + \beta + 1)} P_{n-1}^{(\alpha+1, \beta+1)}(\xi)\bigg] \\[5pt] 
+    &= -k_1 Q_n^{(k_1 - 2, k_2 + 1, \alpha, \beta)} + k_2 Q_n^{(k_1, k_2 - 1, \alpha, \beta)} + 2(n + \alpha + \beta + 1) Q_{n-1}^{k_1, k_2 + 1, \alpha + 1, \beta + 1} \\ 
+    &= \left[-k_1 \frac{s}{H^2} + k_2\frac{1}{s}\right] Q_n^{(k_1, k_2, \alpha, \beta)} + 2(n + \alpha + \beta + 1) Q_{n-1}^{k_1, k_2 + 1, \alpha + 1, \beta + 1}.
+\end{aligned}
+\end{equation}
+%
