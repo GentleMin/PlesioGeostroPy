@@ -1,0 +1,136 @@
+\section{Kinematics and kinetic energy in a rotating frame}
+
+The first step in understanding the energies in the PG system is to understand the relation between the (kinetic) energy in a rotating frame and that in a non-rotating, inertial frame.
+For this we recap some results from the mechanics or classical mechanics class that is usually taken in the first or second year in undergraduate schools.
+Let us take an inertial frame, where the kinematic quantities are denoted as $\mathbf{r}$ (position), $\mathbf{u}$ (velocity) and $\mathbf{a}$ (acceleration). Let us take another reference frame, which is rotating with angular velocity $\boldsymbol{\Omega}$ with respect to the inertial frame. The kinematic quantities observed in the rotating frame are denoted as $\mathbf{r}'$, $\mathbf{u}'$ and $\mathbf{a}'$. From the perspective of the inertial frame, the infinitesimal change in any vector whose base point is the position vector $\mathbf{r}'$ in the rotating frames is given by
+%
+\begin{equation}
+    d\mathbf{f}' = d'\mathbf{f}' + \mathbf{d}\boldsymbol{\theta} \times \mathbf{f}'
+\end{equation}
+%
+where $\mathbf{d}\boldsymbol{\theta} = \boldsymbol{\Omega} dt$ is the infinitesimal rotation between the two frames, and $d'$ denotes an infinitesimal change viewed in the rotating frame. Identifying the position vector in two frames, we have the velocity
+%
+\begin{equation}
+    \mathbf{u} = \frac{d\mathbf{r}}{dt} = \frac{d \mathbf{r}'}{dt} = \frac{d' \mathbf{r}'}{dt} + \frac{\mathbf{d}\boldsymbol{\theta}}{dt}\times \mathbf{r}' = \mathbf{u}' + \boldsymbol{\Omega}\times \mathbf{r}'
+\end{equation}
+%
+and the acceleration
+%
+\begin{equation}
+\begin{aligned}
+    \mathbf{a} &= \frac{d\mathbf{u}}{dt} = \frac{d}{dt} (\mathbf{u}' + \boldsymbol{\Omega}\times \mathbf{r}') = \frac{d'\mathbf{u'}}{dt} + \boldsymbol{\Omega} \times \mathbf{u}' + \dot{\boldsymbol{\Omega}}\times \mathbf{r}' + \boldsymbol{\Omega}\times (\mathbf{u}' + \boldsymbol{\Omega}\times \mathbf{r}') \\ 
+    &= \mathbf{a}' + 2 \boldsymbol{\Omega} \times \mathbf{u}' + \boldsymbol{\Omega}\times (\boldsymbol{\Omega}\times \mathbf{r}') + \dot{\boldsymbol{\Omega}}\times \mathbf{r}'
+\end{aligned}
+\end{equation}
+%
+which yields the inertial accelerations (Coriolis acceleration, $-2\boldsymbol{\Omega}\times \mathbf{u}$, centrifugal acceleration, $-\boldsymbol{\Omega}\times (\boldsymbol{\Omega}\times \mathbf{r}')$ and Poincare acceleration, $-\dot{\boldsymbol{\Omega}}\times \mathbf{r}$) present in the rotating frame.
+
+Next, let us construct the kinetic energy in the inertial frame. Neglecting the mass or density prefactor, 
+%
+\begin{equation}
+\begin{aligned}
+    \frac{\mathbf{u}^2}{2} &= \frac{(\mathbf{u}' + \boldsymbol{\Omega}\times \mathbf{r}')^2}{2} = \frac{\mathbf{u}'^2}{2} + \frac{1}{2}(\boldsymbol{\Omega}\times \mathbf{r}')^2 + \mathbf{u'}\cdot (\boldsymbol{\Omega}\times \mathbf{r}') \\ 
+    \varepsilon_k &= \frac{\mathbf{u}'^2}{2} + \frac{1}{2}(\boldsymbol{\Omega}\times \mathbf{r}')^2 + \boldsymbol{\Omega} \cdot (\mathbf{r}'\times \mathbf{u'}) = \varepsilon_k' - \varphi_\mathrm{centrifugal} + \boldsymbol{\Omega}\cdot \boldsymbol{\ell}'
+\end{aligned}
+\end{equation}
+%
+where $\varepsilon_k' = \mathbf{u}'^2/2$ the kinetic energy observed in the rotating frame, $\varphi_\mathrm{centrifugal} = - (\boldsymbol{\Omega}\times \mathbf{r}')^2/2$ the centrifugal potential, and $\boldsymbol{\ell}'$ the angular momentum (without mass prefactor) observed in the rotating frame. We see that the kinetic energy in the inertial frame is different from that in the rotating frame by two parts. 
+First, the angular momentum in the rotating frame interferes with the existing rotation, and contributes a cross term to the total kinetic energy in the inertial frame.
+Second, a particle / continuum parcel at rest in the rotating frame has energy in the inertial frame simply because it is rotating with the rotating frame. This is the negative centrifugal potential, and is a state function of the position coordinates only. 
+Alternatively, it can be interpreted as the rotational energy of the base point in the inertial frame. Using vector identities, we have
+%
+\[
+    \frac{1}{2}(\boldsymbol{\Omega}\times \mathbf{r}')^2 = \frac{1}{2} \left(\boldsymbol{\Omega}^2 r'^2 - (\boldsymbol{\Omega}\cdot \mathbf{r}')^2\right) = \frac{1}{2} \boldsymbol{\Omega} \cdot \left(r'^2 \mathbf{I} - \mathbf{r}'\mathbf{r}'\right) \cdot \boldsymbol{\Omega}
+\]
+%
+and hence the energy relation reads
+%
+\begin{equation}\label{eqn:energy-rotating-frame}
+    \varepsilon_k = \frac{\mathbf{u}^2}{2} = \frac{\mathbf{u}'^2}{2} + \frac{1}{2} \boldsymbol{\Omega} \cdot \left(r'^2 \mathbf{I} - \mathbf{r}'\mathbf{r}'\right) \cdot \boldsymbol{\Omega} + \boldsymbol{\Omega} \cdot (\mathbf{r}'\times \mathbf{u'}).
+\end{equation}
+%
+
+
+\subsection{Energy change and work-energy theorem in the rotating frame}
+
+Work-energy theorem states that the change of energy in a system is caused by the work done to the system. The theorem is a natural corollary once energy and work are properly defined.
+The change of energy in the inertial frame is related to the change of energy in the rotating frame via
+%
+\[
+    d\varepsilon_k = d\varepsilon_k' + \frac{1}{2} d\left[\boldsymbol{\Omega} \cdot \left(r'^2 \mathbf{I} - \mathbf{r}'\mathbf{r}'\right) \cdot \boldsymbol{\Omega}\right] + d\left[\boldsymbol{\Omega} \cdot (\mathbf{r}'\times \mathbf{u'})\right]
+\]
+%
+Note that for scalars, their infinitesimal change is reference-frame-independent. For instance, for any scalar in the form $\varphi = \mathbf{a}'\cdot \mathbf{b}'$, we have
+%
+\[\begin{aligned}
+    d \varphi = d (\mathbf{a}' \cdot \mathbf{b}') &= d\mathbf{a}'\cdot \mathbf{b}' + \mathbf{a}'\cdot d \mathbf{b}' \\
+    &= \left(d'\mathbf{a}' + \mathbf{d}\boldsymbol{\theta}\times \mathbf{a}'\right)\cdot \mathbf{b}' + \mathbf{a}'\cdot \left(d'\mathbf{b}' + \mathbf{d}\boldsymbol{\theta}\times \mathbf{b}'\right) \\ 
+    &= d' \mathbf{a}' \cdot \mathbf{b}' + \mathbf{a}' \cdot d \mathbf{b}' + \mathbf{b}'\cdot (\mathbf{d}\boldsymbol{\theta}\times \mathbf{a}') + \mathbf{a}'\cdot (\mathbf{d}\boldsymbol{\theta}\times \mathbf{b}') \\
+    &= d' \mathbf{a}' \cdot \mathbf{b}' + \mathbf{a}' \cdot d \mathbf{b}' = d' (\mathbf{a}'\cdot \mathbf{b}').
+\end{aligned}\]
+%
+Therefore, the energy change can be written as
+%
+\begin{equation}
+\begin{aligned}
+    d\varepsilon_k &= d'\varepsilon_k' + \frac{1}{2} \boldsymbol{\Omega} \cdot d'\left(r'^2 \mathbf{I} - \mathbf{r}'\mathbf{r}'\right) \cdot \boldsymbol{\Omega} + \boldsymbol{\Omega} \cdot \left(r'^2 \mathbf{I} - \mathbf{r}'\mathbf{r}'\right) \cdot d\boldsymbol{\Omega} + d \boldsymbol{\Omega} \cdot (\mathbf{r}'\times \mathbf{u'}) + \boldsymbol{\Omega}\cdot d'(\mathbf{r}'\times \mathbf{u'}) \\ 
+    &= d'\varepsilon_k' + \boldsymbol{\Omega} \cdot \left((\mathbf{r}'\cdot d'\mathbf{r}') \mathbf{I} - \mathbf{r}'d'\mathbf{r}'\right) \cdot \boldsymbol{\Omega} + \boldsymbol{\Omega} \cdot \left(r'^2 \mathbf{I} - \mathbf{r}'\mathbf{r}'\right) \cdot d\boldsymbol{\Omega} + d \boldsymbol{\Omega} \cdot (\mathbf{r}'\times \mathbf{u'}) + \boldsymbol{\Omega}\cdot (\mathbf{r}'\times d\mathbf{u'}) \\ 
+    &= d'\varepsilon_k' + (\boldsymbol{\Omega}\times \mathbf{r}')\cdot (\boldsymbol{\Omega}\times d'\mathbf{r}') + (\boldsymbol{\Omega} \times \mathbf{r}') \cdot (d\boldsymbol{\Omega} \times \mathbf{r}') + d \boldsymbol{\Omega} \cdot (\mathbf{r}'\times \mathbf{u'}) + \mathbf{d}\boldsymbol{\theta}\cdot (\mathbf{r}'\times \mathbf{a'}) \\ 
+    &= d'\varepsilon_k' + (\boldsymbol{\Omega}\times \mathbf{r}')\cdot (\boldsymbol{\Omega}\times d'\mathbf{r}') + \mathbf{d}\boldsymbol{\theta}\cdot (\mathbf{r}'\times \mathbf{a'}) + d\boldsymbol{\Omega} \cdot \left(\mathbf{r}'\times (\mathbf{u}' + \boldsymbol{\Omega}\times \mathbf{r}')\right) \\ 
+    &= d'\varepsilon_k' - d'\mathbf{r}' \cdot (\boldsymbol{\Omega}\times (\boldsymbol{\Omega}\times \mathbf{r}')) + \mathbf{d}\boldsymbol{\theta}\cdot (\mathbf{r}'\times \mathbf{a'}) + d\boldsymbol{\Omega} \cdot \left(\mathbf{r}'\times (\mathbf{u}' + \boldsymbol{\Omega}\times \mathbf{r}')\right)
+\end{aligned}
+\end{equation}
+%
+which can also be readily verified by equating $d\varepsilon_k$ and $\mathbf{a}\cdot d\mathbf{r}$. 
+Therefore, apart from the change of kinetic energy viewed within the rotating frame, the total kinetic energy in the inertial frame also contains the work of centrifugal force, work of the torque, and work done by the Poincare force.
+Alternatively, we can write the extra terms on the right hand side in inertial frame quantities, 
+%
+\begin{equation}
+    d\varepsilon_k = d'\varepsilon_k' + d\mathbf{r} \cdot (\boldsymbol{\Omega}\times (\boldsymbol{\Omega}\times \mathbf{r})) + \mathbf{d}\boldsymbol{\theta}\cdot (\mathbf{r}\times \mathbf{a}) + d\boldsymbol{\Omega} \cdot \left(\mathbf{r}\times (\mathbf{u} - \boldsymbol{\Omega}\times \mathbf{r})\right).
+\end{equation}
+%
+Finally, the work-energy theorem in the rotating frame simply reads
+%
+\begin{equation}\label{eqn:WET-rotate}
+    d' \varepsilon_k' = \frac{\mathbf{F}}{m} \cdot d' \mathbf{r}' - d'\mathbf{r}' \cdot (\boldsymbol{\Omega}\times \boldsymbol{\Omega}\times \mathbf{r}' + \dot{\boldsymbol{\Omega}}\times \mathbf{r}').
+\end{equation}
+%
+merely a corollary of the acceleration relation. The kinetic energy viewed in the rotating frame is changed by work done by the true force in the rotating frame, as well as the work by centrifugal force and Poincare force, whereas Coriolis acceleration has no contributions.
+
+
+\subsection{Generalisation to multiple point masses and continuum}
+
+Eq. (\ref{eqn:energy-rotating-frame}) is now ready for application to a distribution of materials. Let us devise a distribution of mass, denoted as $\rho$ at location $\mathbf{r}'$, with velocity $\mathbf{u}'$. Hence the velocity $\mathbf{u}'$ is now a function of position (Eulerian representation).
+The total energy is then the integral
+%
+\begin{equation}
+\begin{aligned}
+    E_k &= \int_V \frac{1}{2}\rho\mathbf{u}^2 \, dV = \int_{V'} \frac{1}{2} \rho \mathbf{u}'^2 \, dV + \frac{1}{2} \boldsymbol{\Omega} \cdot \int_{V'} \rho\left(r'^2 \mathbf{I} - \mathbf{r}'\mathbf{r}'\right)\, dV \cdot \boldsymbol{\Omega} + \boldsymbol{\Omega} \cdot \int_{V'} \mathbf{r}'\times \rho\mathbf{u'} \, dV \\ 
+    E_k &= E_k' + \frac{1}{2} \boldsymbol{\Omega} \cdot \mathcal{I} \cdot \boldsymbol{\Omega} + \boldsymbol{\Omega}\cdot \mathbf{L}' = E_k' - \frac{1}{2} \boldsymbol{\Omega} \cdot \mathcal{I} \cdot \boldsymbol{\Omega} + \boldsymbol{\Omega}\cdot \mathbf{L}
+\end{aligned}
+\end{equation}
+%
+where $\mathcal{I} = \int \rho (r'^2 \mathbf{I} - \mathbf{r}'\mathbf{r}') dV = \int \rho (r^2 \mathbf{I} - \mathbf{r}\mathbf{r}) dV$ is the moment of inertia tensor (note its calculation is not dependent on the frame of reference), $\mathbf{L}' = \int \mathbf{r}' \times \rho \mathbf{u}' dV = \int \mathbf{r}' \times \mathbf{p}' dV$ and $\mathbf{L} = \int \mathbf{r} \times \rho \mathbf{u} dV = \int \mathbf{r} \times \mathbf{p} dV$ are the angular momenta measured in the rotating frame and in the inertial frame, respectively. The last equation uses the angular momentum relation $\mathbf{L} = \mathbf{L}' + \mathcal{I}\cdot \boldsymbol{\Omega}$.
+
+If we do not have a continuum but instead have multiple point masses, the same equation holds, with integrals replaced by a summation (or equiv. integral over multiple delta functions). Hence the moment of inertia tensor is calculated as $\mathcal{I} = \sum_i m_i (r_i'^2 \mathbf{I} - \mathbf{r}_i'\mathbf{r}_i')$, and the angular momentum measured as $\mathbf{L}' = \sum_i \mathbf{r}'_i \times m_i \mathbf{u}'_i = \sum_i \mathbf{r}'_i \times \mathbf{p}'_i$.
+In this notation, the change in the energy in the two systems can be very simply expressed as
+%
+\begin{equation}\label{eqn:dE-general}
+\begin{aligned}
+    dE_k &= d'E_k' + \frac{1}{2} \boldsymbol{\Omega} \cdot d' \mathcal{I} \cdot \boldsymbol{\Omega} + \boldsymbol{\Omega} \cdot d'\mathbf{L}' + d\boldsymbol{\Omega} \cdot (\mathbf{L}' + \mathcal{I}\cdot \boldsymbol{\Omega}) \\ 
+    &= d'E_k' - \frac{1}{2} \boldsymbol{\Omega} \cdot d \mathcal{I} \cdot \boldsymbol{\Omega} + \boldsymbol{\Omega} \cdot d\mathbf{L} + d\boldsymbol{\Omega} \cdot (\mathbf{L} - \mathcal{I}\cdot \boldsymbol{\Omega}).
+\end{aligned}
+\end{equation}
+%
+From eqn.(\ref{eqn:dE-general}), we can deduce some special cases where $dE_k = d'E_k'$; that is, the change of kinetic energy viewed within the rotating frame can be directly equated with the change of kinetic energy in the non-rotating frame. The special cases can be summarised as 
+%
+\[
+\begin{aligned}
+    &d\boldsymbol{\Omega} = \mathbf{0},\quad d\mathcal{I} = \mathbf{0},\quad d\mathbf{L} = \mathbf{0} \\ 
+    \text{or}\quad &d\boldsymbol{\Omega} = \mathbf{0},\quad d'\mathcal{I} = \mathbf{0},\quad d'\mathbf{L}' = \mathbf{0}
+\end{aligned}
+\]
+%
+The first premise is $d\boldsymbol{\Omega} = \mathbf{0}$, i.e. constant angular velocity of rotation between the two frames. The next two conditions can be formulated in two ways. The two energies can be equated provided that in any of the two reference frames, (i) the angular momentum is converged, or the net torque is zero, and (ii) the moment of inertia is unchanged under the mass redistribution. Note that $d\mathbf{L} = \mathbf{0}, d\mathcal{I} = \mathbf{0}$ is not equivalent to $d'\mathbf{L}' = \mathbf{0}, d'\mathcal{I} = \mathbf{0}$; thus the two conditions represent two scenarios rather than one.
+
+For geophysical or even planetary fluid dynamics, these conditions are often satisfied. In geodynamo, oceanographic or planetary fluid simulations, constant rotation is usually assumed and is usually very good approximation of the reality, hence $d\boldsymbol{\Omega} = \mathbf{0}$. If the domain of interest has rotational symmetry, then $d\mathcal{I} = d'\mathcal{I}'$ for incompressible fluids or fluids with density gradient but does not redistribute mass considerably between different layers. The final condition is zero net torque, which is sometimes automatically satisified by the nature of the model. Our PG model is no exception and automatically satisfies the first two conditions by construction. Deviations from this scenario will occur, e.g. when (a) considerable mass redistribution happens, such as during a true polar wander, (b) rotation has non-negligible time-dependence, such as when the body is librating or precessing, and (c) the net torque is non-zero (due to orbital forcing, collisions, etc.).
