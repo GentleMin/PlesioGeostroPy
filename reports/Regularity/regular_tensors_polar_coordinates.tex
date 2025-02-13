@@ -37,21 +37,25 @@
     For a (contravariant) tensor field, regularity of its components in polar coordinates is not sufficient for the tensor field to be regular. The Fourier coefficients of these polar components must fulfill certain additional requirements to resolve the coordinate singularity at the origin/pole. Following the footsteps of \textcite{lewis_physical_1990}, we derive the necessary and sufficient conditions on the Fourier coefficients of tensors in polar coordinates for the entire field to be regular. A general set of linear equations is formally set up, which can be evaluated and reduced for arbitrary tensor rank. These requirements are further explicitly written out for tensor ranks 0 (scalar), 1 (vector) and 2, where the linear systems are comparatively easy to decipher. These constraints will become useful in numerical experiments, where a tensor field is parameterized in polar/cylindrical coordinates.
 \end{abstract}
 
+\section{Introduction, and a historical restropective}
+
 \section{Tensors, transformation between different basis}
 
-Let $\mathbf{T}$ be a rank-$k$ (contravariant) tensor in $N$-dimensional space. Consider two sets of basis, whose transformation relation is given by
+Let $\mathbf{T}$ be a rank-$k$ (contravariant) tensor in $N$-dimensional Euclidean space. In its component form, tensor $\mathbf{T}$ is denoted by $T_\mathbf{p} = T_{p_1\cdots p_k}$, where $\mathbf{p}$ is a $k$-index array, whose each element can take values within $\{1, 2, \cdots N\}$. Consider two sets of basis, $\hat{\mathbf{e}}_i$ and $\hat{\mathbf{e}}_i'$ ($i\in\{1,2,\cdots N\}$), which can be transformed into one another via rotation. This means the two sets of basis vectors are linked via an orthogonal matrix $\mathbf{R}$ (i.e. $\mathbf{R}^\top \mathbf{R} = \mathbf{R}\mathbf{R}^\top = \mathbf{I}, \mathbf{R}^{-1} = \mathbf{R}^\top$) with determinant 1 ($|\mathbf{R}| = 1$) via
 \begin{equation}
     \hat{\mathbf{e}}_i = \sum_{j=1}^N R_{ij} \hat{\mathbf{e}}'_j,\quad 
     \hat{\mathbf{e}}_i' = \sum_{j=1}^N R_{ji} \hat{\mathbf{e}}_j.
 \end{equation}
-In its component form, tensor $\mathbf{T}$ is denoted by $T_\mathbf{p} = T_{p_1\cdots p_k}$, where $\mathbf{p}$ is a $k$-index array. The components of the tensor take different values under different basis, which are related via 
+The components of the tensor take different values under different basis, which are related via 
 \begin{equation}
     \begin{aligned}
         T_\mathbf{p} = T_{p_1,p_2\cdots p_k} &= \sum_{q_1\cdots q_k=1}^N R_{p_1,q_1} R_{p_2,q_2}\cdots R_{p_k,q_k} T_{q_1,q_2\cdots q_k}' = \sum_{\mathbf{q}} R_{p_1,q_1} R_{p_2,q_2}\cdots R_{p_k,q_k} T_{\mathbf{q}}' \\
-        T_\mathbf{p} = T_{p_1,p_2\cdots p_k}' &= \sum_{q_1\cdots q_k=1}^N R_{q_1,p_1} R_{q_2,p_2}\cdots R_{q_k, p_k} T_{q_1,q_2\cdots q_k} = \sum_{\mathbf{q}} R_{q_1,p_1} R_{q_2,p_2}\cdots R_{q_k, p_k} T_{\mathbf{q}}'
+        T_\mathbf{p}' = T_{p_1,p_2\cdots p_k}' &= \sum_{q_1\cdots q_k=1}^N R_{q_1,p_1} R_{q_2,p_2}\cdots R_{q_k, p_k} T_{q_1,q_2\cdots q_k} = \sum_{\mathbf{q}} R_{q_1,p_1} R_{q_2,p_2}\cdots R_{q_k, p_k} T_{\mathbf{q}}
     \end{aligned}
 \end{equation}
-Note here $\sum_{q_1\cdots q_k=1}^N = \sum_\mathbf{q}$ is a $k$-fold summation. Here we only consider the contravariant tensors, representing quantities that are objective / invariant with respect to rotation of the reference frame. Under generic basis, a tensor field whose components are regular may not necessarily be regular. However, there is a special set of basis, namely Cartesian basis, under which the regularity of the components guarantees the regularity of the tensor field. It follows naturally, that the constraints on the field components in other coordinate system can be derived by converting the field into Cartesian coordinates.
+Note here $\sum_{q_1\cdots q_k=1}^N = \sum_\mathbf{q}$ is a $k$-fold summation. Here we only consider the contravariant tensors, representing quantities that are objective / invariant with respect to rotation of the reference frame. 
+
+Under generic basis, a tensor field whose components are regular may not necessarily be regular. However, there is a special set of basis, namely the Cartesian basis, under which the regularity of the components guarantees the regularity of the tensor field. It follows naturally, that the constraints on the field components in other coordinate system can be derived by converting the field into Cartesian coordinates.
 
 
 \section{Polar coordinates}
@@ -59,24 +63,24 @@ Note here $\sum_{q_1\cdots q_k=1}^N = \sum_\mathbf{q}$ is a $k$-fold summation. 
 Let us restrict ourselves to polar coordinates, in $N=2$ dimensional space. The polar coordinates are related to Cartesian coordinates via
 \begin{equation}\label{eqn:polar-convert}
     \left\{\begin{aligned}
-        x &= \rho \cos\phi \\ 
-        y &= \rho \sin\phi
+        x &= r \cos\phi \\ 
+        y &= r \sin\phi
     \end{aligned}\right.\qquad 
     \left\{\begin{aligned}
-        \rho &= \sqrt{x^2 + y^2} \\ 
+        r &= \sqrt{x^2 + y^2} \\ 
         \phi &= \arctan \left(x, y\right)
     \end{aligned}\right.
 \end{equation}
-We shall use prime to mark variables in the polar coordinates, and the unprimed variables are used for their counterparts in Cartesian coordinates. For the Cartesian coordinates, $\hat{\mathbf{e}}_1 = \hat{\mathbf{x}}$ and $\hat{\mathbf{e}}_2 = \hat{\mathbf{y}}$; for the polar coordinates, we use the convention $\hat{\mathbf{e}}'_1 = \hat{\bm{\rho}}$ and $\hat{\mathbf{e}}'_2 = \hat{\bm{\phi}}$. The two local basis can be transformed to one another via
+We shall use prime to mark variables in the polar coordinates, and the unprimed variables are used for their counterparts in Cartesian coordinates. For the Cartesian coordinates, $\hat{\mathbf{e}}_1 = \hat{\mathbf{x}}$ and $\hat{\mathbf{e}}_2 = \hat{\mathbf{y}}$; for the polar coordinates, we use the convention $\hat{\mathbf{e}}'_1 = \hat{\bm{r}}$ and $\hat{\mathbf{e}}'_2 = \hat{\bm{\phi}}$. The two local basis can be transformed to one another via
 \begin{equation}
     \begin{pmatrix}
         \hat{\mathbf{x}} \\ \hat{\mathbf{y}}
     \end{pmatrix} = \mathbf{R}
     \begin{pmatrix}
-        \hat{\bm{\rho}} \\ \hat{\bm{\phi}}
+        \hat{\bm{r}} \\ \hat{\bm{\phi}}
     \end{pmatrix},\quad 
     \begin{pmatrix}
-        \hat{\bm{\rho}} \\ \hat{\bm{\phi}}
+        \hat{\bm{r}} \\ \hat{\bm{\phi}}
     \end{pmatrix} = \mathbf{R}^{\mathsf{T}}
     \begin{pmatrix}
         \hat{\mathbf{x}} \\ \hat{\mathbf{y}}
@@ -128,22 +132,22 @@ and write the Cartesian components as
 \end{equation}
 Each modified azimuthal wavenumber term has a coefficient that is a linear combination of the Fourier coefficients of the tensor components in polar coordinates at the unmodified wavenumber. Note that the exponential functions can be expressed in Cartesian coordinates as
 \begin{equation}
-    e^{i\phi} = \frac{x + iy}{\rho} = \frac{x + iy}{\sqrt{x^2 + y^2}},\quad 
-    e^{-i\phi} = \frac{x - iy}{\rho} = \frac{x - iy}{\sqrt{x^2 + y^2}}
+    e^{i\phi} = \frac{x + iy}{r} = \frac{x + iy}{\sqrt{x^2 + y^2}},\quad 
+    e^{-i\phi} = \frac{x - iy}{r} = \frac{x - iy}{\sqrt{x^2 + y^2}}
 \end{equation}
-It follows that for a term $A e^{ik\phi}$ to be regular at the origin, the necessary and sufficient condition is $A$ has the expansion $\rho^k C(\rho)$ in some vicinity of the origin. Here $C(\rho)$ denotes a regular function in $\rho$, which of course has Taylor series at the origin. In fact, if $A e^{ik\phi}$ is part of a scalar field, we can further conclude from symmetric constraints (see \cite{lewis_physical_1990}) that $A(\rho) = \rho^k C(\rho^2)$. The Cartesian components of the tensor can, in fact, be treated as scalars, since
+It follows that for a term $A e^{ik\phi}$ to be regular at the origin, the necessary and sufficient condition is $A$ has the expansion $r^k C(r)$ in some vicinity of the origin. Here $C(r)$ denotes a regular function in $r$, which of course has Taylor series at the origin. In fact, if $A e^{ik\phi}$ is part of a scalar field, we can further conclude from symmetric constraints (see \cite{lewis_physical_1990}) that $A(r) = r^k C(r^2)$. The Cartesian components of the tensor can, in fact, be treated as scalars, since
 \[
     T_{p_1\cdots p_k} = \mathbf{T} \overset{k}{\cdots} \left(\hat{\mathbf{e}}_{p_1} \hat{\mathbf{e}}_{p_2} \cdots \hat{\mathbf{e}}_{p_k}\right)
 \]
 is a $k$-fold contraction between tensor $\mathbf{T}$ and a rank-$k$ constant dyadic, which is also a tensor. The result of the contraction is then a scalar. Based on eqn. (\ref{eqn:tensor-cartesian}), we can immediately write a set of \textit{sufficient} conditions for the field to be regular. At each $m$, we have
 \begin{equation}\label{eqn:cond-suff}
-    \sum_{\mathbf{q}} \left(\sum_{S_l \in (S, k')} \prod_{j\in S_l} Q_{q_j,p_j} \prod_{j\notin S_l} Q_{p_{j},q_{j}}\right) T'^m_\mathbf{q} = \rho^{|m + k - 2k'|} C(\rho^2),\quad k' = 0, 1, \cdots k, \forall \mathbf{p}
+    \sum_{\mathbf{q}} \left(\sum_{S_l \in (S, k')} \prod_{j\in S_l} Q_{q_j,p_j} \prod_{j\notin S_l} Q_{p_{j},q_{j}}\right) T'^m_\mathbf{q} = r^{|m + k - 2k'|} C(r^2),\quad k' = 0, 1, \cdots k, \forall \mathbf{p}
 \end{equation}
 Now $\mathbf{p}$ has $2^k$ different configurations, these equations will form a system of $2^k(k+1)$ regularity constraints. However, $T'^m_\mathbf{q}$ contains only $2^k$ available coefficients at given azimuthal wavenumber $m$. This means that the $2^k(k+1)$ relations derived this way would contain many redundant, linearly dependent relations, that ultimately do not add new constraints. (Note that for the regularity conditions, they cannot actually be over-determined. Two linearly dependent constraints with different right-hand-side can always be merged into one strict constraint.) Indeed, we see that the coefficient matrix has the property $Q_{2,q} = -i Q_{1,q}$, and $Q_{q,2} = iQ_{q,1}$. Hence, for the leading $k'=0$ term, we have
 \[\begin{aligned}
-    \mathbf{p} = \left(p_1, \cdots p_{k_1-1}, p_{k_1}=1, p_{k_1+1}\cdots p_k\right):& \quad \sum_{\mathbf{q}} Q_{1,q_{k_1}} \prod_{j\neq k_1} Q_{p_j,q_j} T'^m_\mathbf{q} = \rho^{|m+k|} C(\rho^2) \\ 
-    \mathbf{p} = \left(p_1, \cdots p_{k_1-1}, p_{k_1}=2, p_{k_1+1}\cdots p_k\right):& \quad \sum_{\mathbf{q}} Q_{2,q_{k_1}} \prod_{j\neq k_1} Q_{p_j,q_j} T'^m_\mathbf{q} = \rho^{|m+k|} C(\rho^2) \\ 
-    \Longleftrightarrow \quad & -i \sum_{\mathbf{q}} Q_{1,q_{k_1}} \prod_{j\neq k_1} Q_{p_j,q_j} T'^m_\mathbf{q} = \rho^{|m+k|} C(\rho^2)
+    \mathbf{p} = \left(p_1, \cdots p_{k_1-1}, p_{k_1}=1, p_{k_1+1}\cdots p_k\right):& \quad \sum_{\mathbf{q}} Q_{1,q_{k_1}} \prod_{j\neq k_1} Q_{p_j,q_j} T'^m_\mathbf{q} = r^{|m+k|} C(r^2) \\ 
+    \mathbf{p} = \left(p_1, \cdots p_{k_1-1}, p_{k_1}=2, p_{k_1+1}\cdots p_k\right):& \quad \sum_{\mathbf{q}} Q_{2,q_{k_1}} \prod_{j\neq k_1} Q_{p_j,q_j} T'^m_\mathbf{q} = r^{|m+k|} C(r^2) \\ 
+    \Longleftrightarrow \quad & -i \sum_{\mathbf{q}} Q_{1,q_{k_1}} \prod_{j\neq k_1} Q_{p_j,q_j} T'^m_\mathbf{q} = r^{|m+k|} C(r^2)
 \end{aligned}\]
 and changing one index in $\mathbf{p}$ gives the exact same condition. It follows that for $k'=0$, all $2^k$ conditions with different $\mathbf{p}$ are actually equivalent. The same equivalence holds for $k'=k$.
 For $k=0$ (scalar), $k=1$ (vector) and $k=2$ (rank-$2$ tensor, e.g. second moments formed by vectors), one can show that except for $2^k$ linearly independent constraints, the left-hand-sides of all the rest of the constraints are either exactly the same or differ by a mere constant factor (e.g. $-1$, $i$), which give no new constraints. For higher ranks, linear dependency appears in more complex and generic forms that do not seem to permit such simplification.
@@ -154,7 +158,7 @@ An alternative approach, which results in $2^k$ independent constraints, is to c
 \]
 and for a certain azimuthal wavenumber $m$, we have $2^k$ necessary and sufficient regularity conditions
 \begin{equation}\label{eqn:cond-suff-necs}
-    \sum_{k'=0}^k \sum_{\mathbf{q}} \left(\sum_{S_l \in (S, k')} \prod_{j\in S_l} Q_{q_j,p_j} \prod_{j\notin S_l} Q_{p_{j},q_{j}}\right) T'^{m-k+2k'}_\mathbf{q} = \rho^{|m|} C(\rho^2),\quad \forall \mathbf{p}.
+    \sum_{k'=0}^k \sum_{\mathbf{q}} \left(\sum_{S_l \in (S, k')} \prod_{j\in S_l} Q_{q_j,p_j} \prod_{j\notin S_l} Q_{p_{j},q_{j}}\right) T'^{m-k+2k'}_\mathbf{q} = r^{|m|} C(r^2),\quad \forall \mathbf{p}.
 \end{equation}
 These $2^k$ conditions should be considered both \textit{necessary} and \textit{sufficient}, as each term comes from one individual azimuthal wavenumber. In some cases, e.g. for rank-$0$ to rank-$2$ tensors, it is straightforward to show the equivalence between conditions (\ref{eqn:cond-suff}) and (\ref{eqn:cond-suff-necs}). In general, however, the equivalence does not seem easy to establish.
 
@@ -163,7 +167,7 @@ These $2^k$ conditions should be considered both \textit{necessary} and \textit{
 
 Let us consider a rank-$0$ tensor $\mathbf{T}$, which is really just a scalar $T$. In this case, $k=0$ and the summation over $k'$ degenerates into one single term. In addition, with a length of $0$, $\mathbf{p}$ and $\mathbf{q}$ can only take null arrays, and the summation over $\mathbf{q}$ also vanishes into one single term of $1$. The conditions (\ref{eqn:cond-suff-necs}) then simplify into
 \begin{equation}
-    T'^m = \rho^{|m|} C(\rho^2)
+    T'^m = r^{|m|} C(r^2)
 \end{equation}
 which is the same as given in \textcite{lewis_physical_1990}.
 
@@ -173,15 +177,15 @@ which is the same as given in \textcite{lewis_physical_1990}.
 Let us now turn to a rank-$1$ tensor $\mathbf{T}$, which is a vector. Summation of $k$ runs from $0$ to $1$. $\mathbf{p}$ and $\mathbf{q}$ take $1$-indices $1$ and $2$. The conditions (\ref{eqn:cond-suff-necs}) involve $2^1$ constraints, which are
 \begin{equation}
 \begin{aligned}
-    \left(T_1'^{m-1} + i T_2'^{m-1}\right) + \left(T_1'^{m+1} - i T_2^{m+1}\right) &= \rho^{|m|}C(\rho^2) \\ 
-    \left(-iT_1'^{m-1} + T_2'^{m-1}\right) + \left(iT_1'^{m+1} + T_2^{m+1}\right) &= \rho^{|m|}C(\rho^2).
+    \left(T_1'^{m-1} + i T_2'^{m-1}\right) + \left(T_1'^{m+1} - i T_2^{m+1}\right) &= r^{|m|}C(r^2) \\ 
+    \left(-iT_1'^{m-1} + T_2'^{m-1}\right) + \left(iT_1'^{m+1} + T_2^{m+1}\right) &= r^{|m|}C(r^2).
 \end{aligned}
 \end{equation}
 These two equations can be equivalently transformed into
 \[
 \begin{aligned}
-    T_1'^m + i T_2'^m &= \rho^{|m + 1|} C(\rho^2) \\ 
-    T_1'^m - i T_2'^m &= \rho^{|m - 1|} C(\rho^2)
+    T_1'^m + i T_2'^m &= r^{|m + 1|} C(r^2) \\ 
+    T_1'^m - i T_2'^m &= r^{|m - 1|} C(r^2)
 \end{aligned}
 \]
 Separating the azimuthal wavenumber into $m=0$, and $m\neq 0$ cases, we have their respective constraints
@@ -189,14 +193,14 @@ Separating the azimuthal wavenumber into $m=0$, and $m\neq 0$ cases, we have the
 \begin{aligned}
     m=0:& \quad 
     \left\{\begin{aligned}
-        T'^0_1 &= T^0_s = \rho C(\rho^2),\\
-        T'^0_2 &= T^0_\phi = \rho C(\rho^2),
+        T'^0_1 &= T^0_s = r C(r^2),\\
+        T'^0_2 &= T^0_\phi = r C(r^2),
     \end{aligned}\right. \\
     m\neq 0:& \quad 
     \left\{\begin{aligned}
-        T'^m_1 &= T^m_\rho = \rho^{|m|-1} T^{m0}_\rho + \rho^{|m|+1} C(\rho^2), \\ 
-        T'^m_2 &= T^m_\phi = \rho^{|m|-1} T^{m0}_\phi + \rho^{|m|+1} C(\rho^2),
-    \end{aligned}\right. \qquad \left\{T^{m0}_\phi = i\sgn(m) T^{m0}_\rho. \right.
+        T'^m_1 &= T^m_r = r^{|m|-1} T^{m0}_r + r^{|m|+1} C(r^2), \\ 
+        T'^m_2 &= T^m_\phi = r^{|m|-1} T^{m0}_\phi + r^{|m|+1} C(r^2),
+    \end{aligned}\right. \qquad \left\{T^{m0}_\phi = i\sgn(m) T^{m0}_r. \right.
 \end{aligned}
 \end{equation}
 Once again this is consistent with \textcite{lewis_physical_1990}.
@@ -212,51 +216,51 @@ The conditions (\ref{eqn:cond-suff-necs}) involves $2^2=4$ constraints, which ar
 \begin{equation}
 \begin{aligned}
     \left(T'^{m-2}_{11} - T'^{m-2}_{22} + i T'^{m-2}_{12} + i T'^{m-2}_{21}\right) + 2\left(T'^m_{11} + T'^m_{22} \right)
-    + \left(T'^{m+2}_{11} - T'^{m+2}_{22} - i T'^{m+2}_{12} - i T'^{m+2}_{21}\right) &\sim \rho^{|m|} \\ 
+    + \left(T'^{m+2}_{11} - T'^{m+2}_{22} - i T'^{m+2}_{12} - i T'^{m+2}_{21}\right) &\sim r^{|m|} \\ 
     \left(-iT'^{m-2}_{11} + iT'^{m-2}_{22} + T'^{m-2}_{12} + T'^{m-2}_{21}\right) + 2\left(T'^m_{12} - T'^m_{21} \right)
-    + \left(iT'^{m+2}_{11} - iT'^{m+2}_{22} + T'^{m+2}_{12} + T'^{m+2}_{21}\right) &\sim \rho^{|m|} \\ 
+    + \left(iT'^{m+2}_{11} - iT'^{m+2}_{22} + T'^{m+2}_{12} + T'^{m+2}_{21}\right) &\sim r^{|m|} \\ 
     \left(-iT'^{m-2}_{11} + iT'^{m-2}_{22} + T'^{m-2}_{12} + T'^{m-2}_{21}\right) - 2\left(T'^m_{12} - T'^m_{21} \right)
-    + \left(iT'^{m+2}_{11} - iT'^{m+2}_{22} + T'^{m+2}_{12} + T'^{m+2}_{21}\right) &\sim \rho^{|m|} \\ 
+    + \left(iT'^{m+2}_{11} - iT'^{m+2}_{22} + T'^{m+2}_{12} + T'^{m+2}_{21}\right) &\sim r^{|m|} \\ 
     \left(-T'^{m-2}_{11} + T'^{m-2}_{22} - i T'^{m-2}_{12} - i T'^{m-2}_{21}\right) + 2\left(T'^m_{11} + T'^m_{22} \right)
-    + \left(- T'^{m+2}_{11} + T'^{m+2}_{22} + i T'^{m+2}_{12} + i T'^{m+2}_{21}\right) &\sim \rho^{|m|}
+    + \left(- T'^{m+2}_{11} + T'^{m+2}_{22} + i T'^{m+2}_{12} + i T'^{m+2}_{21}\right) &\sim r^{|m|}
 \end{aligned} 
 \end{equation}
 We note immediately that the terms coming from different azimuthal wavenumbers generally differ by only a prefactor. After algebraic manipulations (adding and substracting the relations) we come up with four alternative conditions, which prove to be \textit{equivalent} to the original system,
 \begin{equation}\label{eqn:rank-2-conditions}
 \begin{aligned}
-    T'^m_{11} + T'^m_{22} &= T^m_{\rho\rho} + T^m_{\phi\phi} = \rho^{|m|} C(\rho^2),\\
-    T'^m_{12} - T'^m_{21} &= T^m_{\rho\phi} - T^m_{\phi\rho} = \rho^{|m|} C(\rho^2),\\
-    T'^m_{11} - T'^m_{22} + i \left(T'^m_{12} + T'^m_{21}\right) &= T^m_{\rho\rho} - T^m_{\phi\phi} + i \left(T^m_{\rho\phi} + T^m_{\phi\phi}\right) = \rho^{|m+2|} C(\rho^2), \\ 
-    T'^m_{11} - T'^m_{22} - i \left(T'^m_{12} + T'^m_{21}\right) &= T^m_{\rho\rho} - T^m_{\phi\phi} - i \left(T^m_{\rho\phi} + T^m_{\phi\rho}\right) = \rho^{|m-2|} C(\rho^2).
+    T'^m_{11} + T'^m_{22} &= T^m_{rr} + T^m_{\phi\phi} = r^{|m|} C(r^2),\\
+    T'^m_{12} - T'^m_{21} &= T^m_{r\phi} - T^m_{\phi r} = r^{|m|} C(r^2),\\
+    T'^m_{11} - T'^m_{22} + i \left(T'^m_{12} + T'^m_{21}\right) &= T^m_{rr} - T^m_{\phi\phi} + i \left(T^m_{r\phi} + T^m_{\phi\phi}\right) = r^{|m+2|} C(r^2), \\ 
+    T'^m_{11} - T'^m_{22} - i \left(T'^m_{12} + T'^m_{21}\right) &= T^m_{rr} - T^m_{\phi\phi} - i \left(T^m_{r\phi} + T^m_{\phi r}\right) = r^{|m-2|} C(r^2).
 \end{aligned}
 \end{equation}
-Now it is time to split the domain of $m$, $\mathbb{Z}$, into intervals, so as to simplify the relations. We see that the absolute value functions can be completely removed in each scenario if we split the domain into $m \leq -2$, $m=-1$, $m=0$, $m=1$ and $m\geq 2$. The treaments of negative and positive $m$ are highly similar, and \textbf{I shall only write out the positive branch in detail}. For $m\geq 2$, we can substract the two latter equations in eq.(\ref{eqn:rank-2-conditions}) and obtain $T_{\rho\phi}^m + T_{\phi\rho}^m \sim \rho^{m-2}$; combining this with the second equation,
+Now it is time to split the domain of $m$, $\mathbb{Z}$, into intervals, so as to simplify the relations. We see that the absolute value functions can be completely removed in each scenario if we split the domain into $m \leq -2$, $m=-1$, $m=0$, $m=1$ and $m\geq 2$. The treaments of negative and positive $m$ are highly similar, and \textbf{I shall only write out the positive branch in detail}. For $m\geq 2$, we can substract the two latter equations in eq.(\ref{eqn:rank-2-conditions}) and obtain $T_{r\phi}^m + T_{\phi r}^m \sim r^{m-2}$; combining this with the second equation,
 \[
 \left\{\begin{aligned}
-    T_{\rho\phi}^m + T_{\phi\rho}^m &= \rho^{m-2} C(\rho^2) \\ 
-    T_{\rho\phi}^m - T_{\phi\rho}^m &= \rho^m C(\rho^2)
+    T_{r\phi}^m + T_{\phi r}^m &= r^{m-2} C(r^2) \\ 
+    T_{r\phi}^m - T_{\phi r}^m &= r^m C(r^2)
 \end{aligned}\right. \quad \Longrightarrow\quad 
 \left\{\begin{aligned}
-    T_{\rho\phi}^m &= T_{\rho\phi}^{m0} \rho^{m-2} + T_{\rho\phi}^{m1} \rho^{m} + \rho^{m+2} C(\rho^2) \\ 
-    T_{\phi\rho}^m &= T_{\phi\rho}^{m0} \rho^{m-2} + T_{\phi\rho}^{m1} \rho^{m} + \rho^{m+2} C(\rho^2) 
-\end{aligned}\right. \quad \mathrm{and} \quad T_{\rho\phi}^{m0} = T_{\phi\rho}^{m0}.
+    T_{r\phi}^m &= T_{r\phi}^{m0} r^{m-2} + T_{r\phi}^{m1} r^{m} + r^{m+2} C(r^2) \\ 
+    T_{\phi r}^m &= T_{\phi r}^{m0} r^{m-2} + T_{\phi r}^{m1} r^{m} + r^{m+2} C(r^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad T_{r\phi}^{m0} = T_{\phi r}^{m0}.
 \]
-Thus simultaneously we obtain the ansätze (this is in fact the required form for regularity) for $T_{\rho\phi}$ and $T_{\phi\rho}$, as well as a coupling condition. The second superscript on $T_{ij}^{mn}$ gives the index for power series expansion in $s$. On the other hand, we can add the latter two equations of eq.(\ref{eqn:rank-2-conditions}) and combine with the first equation to similarly come up with 
+Thus simultaneously we obtain the ansätze (this is in fact the required form for regularity) for $T_{r\phi}$ and $T_{\phi r}$, as well as a coupling condition. The second superscript on $T_{ij}^{mn}$ gives the index for power series expansion in $s$. On the other hand, we can add the latter two equations of eq.(\ref{eqn:rank-2-conditions}) and combine with the first equation to similarly come up with 
 \[
 \left\{\begin{aligned}
-    T_{\rho\rho}^m + T_{\phi \phi}^m &= \rho^{m} C(\rho^2) \\ 
-    T_{\rho\rho}^m - T_{\phi \phi}^m &= \rho^{m-2} C(\rho^2)
+    T_{rr}^m + T_{\phi \phi}^m &= r^{m} C(r^2) \\ 
+    T_{rr}^m - T_{\phi \phi}^m &= r^{m-2} C(r^2)
 \end{aligned}\right. \quad \Longrightarrow\quad 
 \left\{\begin{aligned}
-    T_{\rho\rho}^m &= T_{\rho\rho}^{m0} \rho^{m-2} + T_{\rho\rho}^{m1} \rho^{m} + \rho^{m+2} C(\rho^2) \\ 
-    T_{\phi \phi}^m &= T_{\phi\phi}^{m0} \rho^{m-2} + T_{\phi\phi}^{m1} \rho^{m} + \rho^{m+2} C(\rho^2) 
-\end{aligned}\right. \quad \mathrm{and} \quad T_{\rho\rho}^{m0} = - T_{\phi\phi}^{m0}.
+    T_{rr}^m &= T_{rr}^{m0} r^{m-2} + T_{rr}^{m1} r^{m} + r^{m+2} C(r^2) \\ 
+    T_{\phi \phi}^m &= T_{\phi\phi}^{m0} r^{m-2} + T_{\phi\phi}^{m1} r^{m} + r^{m+2} C(r^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad T_{rr}^{m0} = - T_{\phi\phi}^{m0}.
 \]
-Finally, we reuse the third equation in eq.(\ref{eqn:rank-2-conditions}) to establish the relation between the coefficients for the diagonal and the off-diagonal elements. To make sure both $\rho^{m-2}$ and $\rho^m$ vanishes on the LHS,
+Finally, we reuse the third equation in eq.(\ref{eqn:rank-2-conditions}) to establish the relation between the coefficients for the diagonal and the off-diagonal elements. To make sure both $r^{m-2}$ and $r^m$ vanishes on the LHS,
 \[
 \begin{aligned}
-    T_{\rho\rho}^{m0} - T_{\phi\phi}^{m0} + i \left(T_{\rho\phi}^{m0} + T_{\phi\rho}^{m0}\right) = 0, \quad \Longrightarrow\quad T_{\rho\phi}^{m0} = i T_{\rho\rho}^{m0} \\
-    T_{\rho\rho}^{m1} - T_{\phi\phi}^{m1} + i \left(T_{\rho\phi}^{m1} + T_{\phi\rho}^{m1}\right) = 0
+    T_{rr}^{m0} - T_{\phi\phi}^{m0} + i \left(T_{r\phi}^{m0} + T_{\phi r}^{m0}\right) = 0, \quad \Longrightarrow\quad T_{r\phi}^{m0} = i T_{rr}^{m0} \\
+    T_{rr}^{m1} - T_{\phi\phi}^{m1} + i \left(T_{r\phi}^{m1} + T_{\phi r}^{m1}\right) = 0
 \end{aligned}
 \]
 These are the four regularity constraints for $m\geq 2$. With all the ansätze, it can be easily verified that as long as the coefficients fulfill these constraints, the target terms indeed satisfy eq.(\ref{eqn:rank-2-conditions}), and thus these ansätze and constraints are also sufficient conditions.
@@ -264,104 +268,104 @@ These are the four regularity constraints for $m\geq 2$. With all the ansätze, 
 Next, we take a look at the situation where $m=1$. The latter two equations now yield
 \[
 \left\{\begin{aligned}
-    T_{\rho\phi}^1 + T_{\phi\rho}^1 &= s C(\rho^2) \\ 
-    T_{\rho\phi}^1 - T_{\phi\rho}^1 &= s C(\rho^2)
+    T_{r\phi}^1 + T_{\phi r}^1 &= s C(r^2) \\ 
+    T_{r\phi}^1 - T_{\phi r}^1 &= s C(r^2)
 \end{aligned}\right. \quad \Longrightarrow\quad 
 \left\{\begin{aligned}
-    T_{\rho\phi}^1 &= T_{\rho\phi}^{10} s + \rho^{3} C(\rho^2) \\ 
-    T_{\phi\rho}^1 &= T_{\phi\rho}^{10} s + \rho^{3} C(\rho^2). 
+    T_{r\phi}^1 &= T_{r\phi}^{10} s + r^{3} C(r^2) \\ 
+    T_{\phi r}^1 &= T_{\phi r}^{10} s + r^{3} C(r^2). 
 \end{aligned}\right.
 \]
-Apparently, no constraints are required; the ansatz alone suffices to enforce the correct leading power of $s$. This is equally true for $T_{\rho\rho}$ and $T_{\phi\phi}$,
+Apparently, no constraints are required; the ansatz alone suffices to enforce the correct leading power of $s$. This is equally true for $T_{rr}$ and $T_{\phi\phi}$,
 \[
 \left\{\begin{aligned}
-    T_{\rho\rho}^1 + T_{\phi \phi}^1 &= \rho^{1} C(\rho^2) \\ 
-    T_{\rho\rho}^1 - T_{\phi \phi}^1 &= \rho^{1} C(\rho^2)
+    T_{rr}^1 + T_{\phi \phi}^1 &= r^{1} C(r^2) \\ 
+    T_{rr}^1 - T_{\phi \phi}^1 &= r^{1} C(r^2)
 \end{aligned}\right. \quad \Longrightarrow\quad 
 \left\{\begin{aligned}
-    T_{\rho\rho}^1 &= T_{\rho\rho}^{10} s + \rho^{3} C(\rho^2) \\ 
-    T_{\phi \phi}^1 &= T_{\phi\phi}^{10} s + \rho^{3} C(\rho^2) .
+    T_{rr}^1 &= T_{rr}^{10} s + r^{3} C(r^2) \\ 
+    T_{\phi \phi}^1 &= T_{\phi\phi}^{10} s + r^{3} C(r^2) .
 \end{aligned}\right.
 \]
-However, the last constraint still holds, that is we still need that the first-order term in $s$ of $T_{\rho\rho}^1 - T_{\phi\phi}^1$ and $i \left(T_{\rho\phi}^1 + T_{\phi\rho}^1\right)$ cancel each other out,
+However, the last constraint still holds, that is we still need that the first-order term in $s$ of $T_{rr}^1 - T_{\phi\phi}^1$ and $i \left(T_{r\phi}^1 + T_{\phi r}^1\right)$ cancel each other out,
 \[
-    T_{\rho\rho}^{10} - T_{\phi\phi}^{10} + i \left(T_{\rho\phi}^{10} + T_{\phi\rho}^{10}\right) = 0.
+    T_{rr}^{10} - T_{\phi\phi}^{10} + i \left(T_{r\phi}^{10} + T_{\phi r}^{10}\right) = 0.
 \]
 Finally, we arrive at the $m=0$ case.
 \[
 \left\{\begin{aligned}
-    T_{\rho\phi}^0 + T_{\phi\rho}^0 &= \rho^2 C(\rho^2) \\ 
-    T_{\rho\phi}^0 - T_{\phi\rho}^0 &= C(\rho^2)
+    T_{r\phi}^0 + T_{\phi r}^0 &= r^2 C(r^2) \\ 
+    T_{r\phi}^0 - T_{\phi r}^0 &= C(r^2)
 \end{aligned}\right. \quad \Longrightarrow\quad 
 \left\{\begin{aligned}
-    T_{\rho\phi}^0 &= T_{\rho\phi}^{00} + \rho^2 C(\rho^2) \\ 
-    T_{\phi\rho}^0 &= T_{\phi\rho}^{00} + \rho^2 C(\rho^2) 
-\end{aligned}\right. \quad \mathrm{and} \quad T_{\rho\phi}^{00} = -T_{\phi\rho}^{00}.
+    T_{r\phi}^0 &= T_{r\phi}^{00} + r^2 C(r^2) \\ 
+    T_{\phi r}^0 &= T_{\phi r}^{00} + r^2 C(r^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad T_{r\phi}^{00} = -T_{\phi r}^{00}.
 \]
 \[
 \left\{\begin{aligned}
-    T_{\rho\rho}^0 + T_{\phi \phi}^0 &= C(\rho^2) \\ 
-    T_{\rho\rho}^0 - T_{\phi \phi}^0 &= \rho^2 C(\rho^2)
+    T_{rr}^0 + T_{\phi \phi}^0 &= C(r^2) \\ 
+    T_{rr}^0 - T_{\phi \phi}^0 &= r^2 C(r^2)
 \end{aligned}\right. \quad \Longrightarrow\quad 
 \left\{\begin{aligned}
-    T_{\rho\rho}^0 &= T_{\rho\rho}^{00} + \rho^2 C(\rho^2) \\ 
-    T_{\phi \phi}^0 &= T_{\phi\phi}^{00} + \rho^{2} C(\rho^2) 
-\end{aligned}\right. \quad \mathrm{and} \quad T_{\rho\rho}^{00} = T_{\phi\phi}^{00}.
+    T_{rr}^0 &= T_{rr}^{00} + r^2 C(r^2) \\ 
+    T_{\phi \phi}^0 &= T_{\phi\phi}^{00} + r^{2} C(r^2) 
+\end{aligned}\right. \quad \mathrm{and} \quad T_{rr}^{00} = T_{\phi\phi}^{00}.
 \]
 The third and the fourth equation in eq.(\ref{eqn:rank-2-conditions}) give the relations
 \[
 \left\{\begin{aligned}
-    &T_{\rho\rho}^{00} - T_{\phi\phi}^{00} + i \left(T_{\rho\phi}^{00} + T_{\phi\rho}^{00}\right) = 0 \\ 
-    &T_{\rho\rho}^{00} - T_{\phi\phi}^{00} - i \left(T_{\rho\phi}^{00} + T_{\phi\rho}^{00}\right) = 0
+    &T_{rr}^{00} - T_{\phi\phi}^{00} + i \left(T_{r\phi}^{00} + T_{\phi r}^{00}\right) = 0 \\ 
+    &T_{rr}^{00} - T_{\phi\phi}^{00} - i \left(T_{r\phi}^{00} + T_{\phi r}^{00}\right) = 0
 \end{aligned}\right.
 \]
 which are automatically satisfied given the previous ansätze. The negative $m$ scenarios are also similarly derived. In the end, the required leading order and the constraints are summarized as follows
 \begin{equation}
 \begin{aligned}
     m = 0 :& \quad \left\{\begin{aligned}
-        T_{\rho\rho}^0 &= T_{\rho\rho}^{00} + \rho^2 C(\rho^2) \\ 
-        T_{\phi\phi}^0 &= T_{\phi\phi}^{00} + \rho^2 C(\rho^2) \\ 
-        T_{\rho\phi}^0 &= T_{\rho\phi}^{00} + \rho^2 C(\rho^2) \\ 
-        T_{\phi\rho}^0 &= T_{\phi\rho}^{00} + \rho^2 C(\rho^2) \\ 
+        T_{rr}^0 &= T_{rr}^{00} + r^2 C(r^2) \\ 
+        T_{\phi\phi}^0 &= T_{\phi\phi}^{00} + r^2 C(r^2) \\ 
+        T_{r\phi}^0 &= T_{r\phi}^{00} + r^2 C(r^2) \\ 
+        T_{\phi r}^0 &= T_{\phi r}^{00} + r^2 C(r^2) \\ 
     \end{aligned}\right.,\quad 
     \left\{\begin{aligned}
-        T_{\rho\rho}^{00} = T_{\phi\phi}^{00} \\ 
-        T_{\rho\phi}^{00} = -T_{\phi\rho}^{00}
+        T_{rr}^{00} = T_{\phi\phi}^{00} \\ 
+        T_{r\phi}^{00} = -T_{\phi r}^{00}
     \end{aligned}\right. \\ 
     |m| = 1 :& \quad \left\{\begin{aligned}
-        T_{\rho\rho}^m &= T_{\rho\rho}^{m0} s + \rho^3 C(\rho^2) \\
-        T_{\phi\phi}^m &= T_{\phi\phi}^{m0} s + \rho^{3} C(\rho^2) \\
-        T_{\rho\phi}^m &= T_{\rho\phi}^{m0} s + \rho^{3} C(\rho^2) \\
-        T_{\phi\rho}^m &= T_{\phi\rho}^{m0} s + \rho^{3} C(\rho^2) \\
+        T_{rr}^m &= T_{rr}^{m0} s + r^3 C(r^2) \\
+        T_{\phi\phi}^m &= T_{\phi\phi}^{m0} s + r^{3} C(r^2) \\
+        T_{r\phi}^m &= T_{r\phi}^{m0} s + r^{3} C(r^2) \\
+        T_{\phi r}^m &= T_{\phi r}^{m0} s + r^{3} C(r^2) \\
     \end{aligned}\right.,\quad \left\{\begin{aligned}
-        &T_{\rho\phi}^{m0} + T_{\phi\rho}^{m0} = i\sgn(m) \left(T_{\rho\rho}^{m0} - T_{\phi\phi}^{m0}\right)
+        &T_{r\phi}^{m0} + T_{\phi r}^{m0} = i\sgn(m) \left(T_{rr}^{m0} - T_{\phi\phi}^{m0}\right)
     \end{aligned}\right. \\
     |m| \geq 2 :& \quad \left\{\begin{aligned}
-        T_{\rho\rho}^m &= T_{\rho\rho}^{m0} \rho^{|m|-2} + T_{\rho\rho}^{m1} \rho^{|m|} + \rho^{|m|+2} C(\rho^2) \\
-        T_{\phi\phi}^m &= T_{\phi\phi}^{m0} \rho^{|m|-2} + T_{\phi \phi}^{m1} \rho^{|m|} + \rho^{|m|+2} C(\rho^2) \\
-        T_{\rho\phi}^m &= T_{\rho\phi}^{m0} \rho^{|m|-2} + T_{\rho\phi}^{m1} \rho^{|m|} + \rho^{|m|+2} C(\rho^2) \\
-        T_{\phi\rho}^m &= T_{\phi\rho}^{m0} \rho^{|m|-2} + T_{\phi\rho}^{m1} \rho^{|m|} + \rho^{|m|+2} C(\rho^2) \\
+        T_{rr}^m &= T_{rr}^{m0} r^{|m|-2} + T_{rr}^{m1} r^{|m|} + r^{|m|+2} C(r^2) \\
+        T_{\phi\phi}^m &= T_{\phi\phi}^{m0} r^{|m|-2} + T_{\phi \phi}^{m1} r^{|m|} + r^{|m|+2} C(r^2) \\
+        T_{r\phi}^m &= T_{r\phi}^{m0} r^{|m|-2} + T_{r\phi}^{m1} r^{|m|} + r^{|m|+2} C(r^2) \\
+        T_{\phi r}^m &= T_{\phi r}^{m0} r^{|m|-2} + T_{\phi r}^{m1} r^{|m|} + r^{|m|+2} C(r^2) \\
     \end{aligned}\right.,\quad \left\{\begin{aligned}
-        &T_{\rho\rho}^{m0} = - T_{\phi\phi}^{m0}\\
-        &T_{\rho\phi}^{m0} = T_{\phi\rho}^{m0} \\ 
-        &T_{\rho\phi}^{m0} = i \sgn(m) T_{\rho\rho}^{m0} \\ 
-        &T_{\rho\phi}^{m1} + T_{\phi\rho}^{m1} = i\sgn(m)\left(T_{\rho\rho}^{m1} - T_{\phi\phi}^{m1}\right).
+        &T_{rr}^{m0} = - T_{\phi\phi}^{m0}\\
+        &T_{r\phi}^{m0} = T_{\phi r}^{m0} \\ 
+        &T_{r\phi}^{m0} = i \sgn(m) T_{rr}^{m0} \\ 
+        &T_{r\phi}^{m1} + T_{\phi r}^{m1} = i\sgn(m)\left(T_{rr}^{m1} - T_{\phi\phi}^{m1}\right).
     \end{aligned}\right.
 \end{aligned}
 \end{equation}
-Similar constraints have been derived in \textcite{holdenried-chernoff_long_2021} by comparing visually the form of the components of dyadic $\mathbf{B}\mathbf{B}$ in polar coordinates. The ansätze are exactly the same, but two of the relations, namely the constraint involving $T_{\rho\phi}^{m0}$, $T_{\phi\rho}^{m0}$, $T_{\rho\rho}^{m0}$ and $T_{\phi\phi}^{m0}$ at $|m|=1$, and the constraint involving $T_{\rho\phi}^{m1}$, $T_{\phi\rho}^{m1}$, $T_{\rho\rho}^{m1}$ and $T_{\phi\phi}^{m1}$ at $|m|>1$, are previously missing in \textcite{holdenried-chernoff_long_2021}.
+Similar constraints have been derived in \textcite{holdenried-chernoff_long_2021} by comparing visually the form of the components of dyadic $\mathbf{B}\mathbf{B}$ in polar coordinates. The ansätze are exactly the same, but two of the relations, namely the constraint involving $T_{r\phi}^{m0}$, $T_{\phi r}^{m0}$, $T_{rr}^{m0}$ and $T_{\phi\phi}^{m0}$ at $|m|=1$, and the constraint involving $T_{r\phi}^{m1}$, $T_{\phi r}^{m1}$, $T_{rr}^{m1}$ and $T_{\phi\phi}^{m1}$ at $|m|>1$, are previously missing in \textcite{holdenried-chernoff_long_2021}.
 
 
 \section{Remarks on higher rank tensors}
 
-In the case of rank-$0$, rank-$1$ and rank-$2$ tensors, we see that apart from a leading prefactor ($\rho^{|m|}$, $\rho^{|m|-1}$ and $\rho^{|m|-2}$ except for special treatment of low azimuthal wavenumbers), the Fourier coefficients are coupled in the lowest orders of $\rho$ up to the $0$-th, $1$-st and $2$-nd order. Intuitively, we can reasonably presume that for rank-$k$ tensors, the Fourier coefficients of the tensor components in polar coordinates are generally coupled up to the $k$-th order.
+In the case of rank-$0$, rank-$1$ and rank-$2$ tensors, we see that apart from a leading prefactor ($r^{|m|}$, $r^{|m|-1}$ and $r^{|m|-2}$ except for special treatment of low azimuthal wavenumbers), the Fourier coefficients are coupled in the lowest orders of $r$ up to the $0$-th, $1$-st and $2$-nd order. Intuitively, we can reasonably presume that for rank-$k$ tensors, the Fourier coefficients of the tensor components in polar coordinates are generally coupled up to the $k$-th order.
 
 While the previous derivations on low-rank tensors are relatively straightforward, because the original conditions can be easily transformed into such an equivalent form that the terms coming from different azimuthal wavenumbers are decoupled, the same is trickier for higher ranks. We only need to write out the first of the $2^3 = 8$ conditions for rank-$3$ tensor to illustrate the challenge:
 \[\begin{aligned}
     &\left(T'^{m-3}_{111} + iT'^{m-3}_{112} + iT'^{m-3}_{121} - T'^{m-3}_{122} + i T'^{m-3}_{211} - T'^{m-3}_{212} - T'^{m-3}_{221} - i T'^{m-3}_{222}\right) \\ 
     +& \left(3T'^{m-1}_{111} + iT'^{m-1}_{112} + iT'^{m-1}_{121} + T'^{m-1}_{122} + i T'^{m-1}_{211} + T'^{m-1}_{212} + T'^{m-1}_{221} + i3 T'^{m-1}_{222}\right) \\ 
     +& \left(3T'^{m+1}_{111} - iT'^{m+1}_{112} - iT'^{m+1}_{121} + T'^{m+1}_{122} - i T'^{m+1}_{211} + T'^{m+1}_{212} + T'^{m+1}_{221} - i3 T'^{m+1}_{222}\right) \\ 
-    +&\left(T'^{m+3}_{111} - iT'^{m+3}_{112} - iT'^{m+3}_{121} - T'^{m+3}_{122} + i T'^{m+3}_{211} - T'^{m+3}_{212} - T'^{m+3}_{221} + i T'^{m+3}_{222}\right) = \rho^{|m|} C(\rho^2)
+    +&\left(T'^{m+3}_{111} - iT'^{m+3}_{112} - iT'^{m+3}_{121} - T'^{m+3}_{122} + i T'^{m+3}_{211} - T'^{m+3}_{212} - T'^{m+3}_{221} + i T'^{m+3}_{222}\right) = r^{|m|} C(r^2)
 \end{aligned}\]
 We have already shown that the $m-3$ terms in all $8$ conditions differ only by a prefactor; the same holds for all $m+3$ terms. However, no such relations are available for the middle terms ($m-1$, $m+1$). It is therefore not apparent whether it is possible to transform the system into a form without inter-azimuthal-wavenumber coupling (e.g. there might be coupling between $m-1$ and $m+1$). Even if it is possible, nontrivial linear combination of multiple equations is needed, instead of simple one-on-one addition and substraction.
 
@@ -389,9 +393,9 @@ Since the spherical harmonics $Y_l^m(\theta, \phi)$ form an orthogonal basis on 
 \]
 Due to the Helmholtz decomposition, these are indeed a complete basis. Furthermore, quite fortunately, these basis functions are also mutually orthogonal with respect to the inner product on the sphere, and hence form an orthogonal basis without further manipulations. The same thing is tricky for the unit disk / unit circle, as the scalar basis does not seem to have such desirable property. Indeed, a similar procedure has been carried out by \textcite{zhao_orthonormal_2007, zhao_orthonormal_2008}. They show that one can indeed find a vector basis for the unit circle using the Helmholtz decomposition and Zernike polynomials as the basis for the scalar potentials. The basis are then formed by
 \[
-    \nabla_e Z_n^m (\rho, \phi),\quad \nabla_e \times Z_n^m(\rho, \phi) \hat{\mathbf{z}}.
+    \nabla_e Z_n^m (r, \phi),\quad \nabla_e \times Z_n^m(r, \phi) \hat{\mathbf{z}}.
 \]
-However, these vectors are not orthogonal. The authors then applied Gram-Schmidt orthogonalization to obtain an orthogonal set of basis formed by $\nabla_e Z_n^m$. The same coefficients also orthogonalizes $\nabla_e \times Z_n^m(\rho,\phi) \hat{\mathbf{z}}$. The silver lining in all these efforts is that at least the coefficients are sparse, i.e. one only needs two Zernike polynomials to combine into polynomials whose gradients are orthogonal in the unit circle. But even then, the two sets are not mutually orthogonal. There are some selected basis that are shared between the two families.
+However, these vectors are not orthogonal. The authors then applied Gram-Schmidt orthogonalization to obtain an orthogonal set of basis formed by $\nabla_e Z_n^m$. The same coefficients also orthogonalizes $\nabla_e \times Z_n^m(r,\phi) \hat{\mathbf{z}}$. The silver lining in all these efforts is that at least the coefficients are sparse, i.e. one only needs two Zernike polynomials to combine into polynomials whose gradients are orthogonal in the unit circle. But even then, the two sets are not mutually orthogonal. There are some selected basis that are shared between the two families.
 
 \todoitem{Two obstacles stand in the way for deriving a basis for e.g. rank-$2$ tensors}. First, we need an equivalence to Helmholtz decomposition, but for rank-$2$ tensors, instead of vectors. The natural candidate is the so-called \textit{Hodge decomposition} (see e.g. \cite{bhatia_helmholtz-hodge_2013}). This involves some exterior algebra, and I don't know what a $3$-form could be in 2-D space. Second, it remains to be seen what basis to use for the scalar or vector fields, and whether it is possible to perform Gram-Schmidt orthogonalization on the tensor basis with finite terms.
 

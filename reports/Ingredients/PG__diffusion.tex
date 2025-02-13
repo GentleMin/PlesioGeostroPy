@@ -215,7 +215,7 @@ gives the variation of total internal energy when integrated over the entire dom
 \[
     \frac{dU}{dt} = a \int_S \frac{\partial \overline{T}}{\partial t} \, dS = a \int_S \hat{\mathcal{D}}_{\overline{T}} \, dS.
 \]
-The task now is to show whether this term is negative semi-definite for some boundary conditions (ideally, insulating BC). Unfortunately, this is not possible for the diffusion devised by Maffei, Jackson and Livermore (2004). The integral reads
+The task now is to show whether this term is negative semi-definite for some boundary conditions (ideally, insulating BC). Unfortunately, this is not possible for the diffusion devised by Maffei, Jackson and Livermore (2024). The integral reads
 \[\begin{aligned}
     \int_S \hat{\mathcal{D}_{\overline{T}}} \, dS &= \int_S H \nabla_e^2 \frac{\overline{T}}{H} \, dS = \int_S \nabla_e \cdot \left(H \nabla_e \frac{\overline{T}}{H}\right) \, dS - \int_S \nabla_e H \cdot \nabla_e \frac{\overline{T}}{H} \, dS \\ 
     &= \oint_{\partial S} H \frac{\partial}{\partial s} \frac{\overline{T}}{H} \, dl - \int_{S} \frac{dH}{ds} \frac{\partial}{\partial s} \frac{\overline{T}}{H} \, dS 
