@@ -14,6 +14,7 @@ from .pg_model import base, core, params, forcing, bg_fields
 from .pg_model import base_utils as pgutils
 from .pg_model import expansion as xpd
 from .pg_model.expansion import omega, xi, m
+from .sympy_supp import simplify as simp_supp
 
 from .numerics import matrices as nmatrix
 from .numerics import io as num_io
@@ -110,7 +111,7 @@ def assemble_forcing(eqs: base.LabeledCollection, *args: str,
 
 
 def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
-    verbose: int = 0) -> Eq:
+    verbose: int = 0, sub_H: bool = True) -> Eq:
     """Apply background field equation-wise
     
     :param str fname: name of the field / equation
@@ -127,16 +128,32 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
         print("Applying background field to %s equation..." % (fname,))
     # Treatment of vorticity equation: do not try to "simplify" the RHS of vorticity
     # equation; it often leads to unnecessary rationalization
-    if fname == "Psi":
-        new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}).expand()
-        new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}).expand()
-    # For other equations: try to simplify for visual simplicity
-    # !!!!! ==================================================== Note ===========
-    # If the code is not used interactively, perhaps all simplify can be skipped?
+    if sub_H:
+        if fname == "Psi":
+            # new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}).expand()
+            # new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}).expand()
+            new_lhs = pgutils.slope_subs(eq.lhs.subs(bg_map)).simplify()
+            new_rhs = pgutils.slope_subs(eq.rhs.subs(bg_map)).simplify()
+        # For other equations: try to simplify for visual simplicity
+        # !!!!! ==================================================== Note ===========
+        # If the code is not used interactively, perhaps all simplify can be skipped?
+        else:
+            # new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().simplify()
+            # new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().simplify()
+            new_lhs = pgutils.slope_subs(eq.lhs.subs(bg_map)).simplify()
+            new_rhs = pgutils.slope_subs(eq.rhs.subs(bg_map)).simplify()
+            # Take z to +H or -H at the boundaries or to 0 at the equatorial plane
+            if fname in fnames[-6:-3]:
+                new_rhs = new_rhs.subs({z: +H}).doit().simplify()
+            elif fname in fnames[-3:]:
+                new_rhs = new_rhs.subs({z: -H}).doit().simplify()
+            elif fname in fnames[-11:-6]:
+                new_rhs = new_rhs.subs({z: S.Zero}).doit().simplify()
+            new_lhs = new_lhs.subs({H_s: H, H_s**2: H**2}).expand()
+            new_rhs = new_rhs.subs({H_s: H, H_s**2: H**2}).expand()
     else:
-        new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().simplify()
-        new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().simplify()
-        # Take z to +H or -H at the boundaries or to 0 at the equatorial plane
+        new_lhs = eq.lhs.subs(bg_map)
+        new_rhs = eq.rhs.subs(bg_map)
         if fname in fnames[-6:-3]:
             new_rhs = new_rhs.subs({z: +H}).doit().simplify()
         elif fname in fnames[-3:]:
@@ -145,11 +162,12 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
             new_rhs = new_rhs.subs({z: S.Zero}).doit().simplify()
         new_lhs = new_lhs.subs({H_s: H, H_s**2: H**2}).expand()
         new_rhs = new_rhs.subs({H_s: H, H_s**2: H**2}).expand()
+        
     return Eq(new_lhs, new_rhs)
 
 
 def apply_bg_to_set(eqs: base.LabeledCollection, bg: bg_fields.BackgroundFieldMHD, 
-    mode: str="PG", verbose: int = 0) -> Tuple[base.LabeledCollection, List]:
+    sub_H=True, mode: str="PG", verbose: int = 0) -> Tuple[base.LabeledCollection, List]:
     """Apply background field to a set of equations
     
     :param base.LabeledCollection eqs: original set of equations
@@ -167,7 +185,7 @@ def apply_bg_to_set(eqs: base.LabeledCollection, bg: bg_fields.BackgroundFieldMH
     elif mode.lower() == "cg":
         bg_sub.update({comp: f0_val[i_c] for i_c, comp in enumerate(core.cgvar_bg)})
     eqs_new = eqs.apply(
-        lambda fname, eq: apply_bg_to_eq(fname, eq, bg_sub, mode=mode, verbose=verbose-1), 
+        lambda fname, eq: apply_bg_to_eq(fname, eq, bg_sub, sub_H=sub_H, mode=mode, verbose=verbose-1), 
         inplace=False, metadata=True)
     return eqs_new, bg.params
 
@@ -296,11 +314,16 @@ def process_matrix_element(element: Any, map_trial: dict, map_test: dict) -> Any
     """
     if element is None or element == S.Zero or element == 0:
         return S.Zero
+    # elif isinstance(element, xpd.InnerProduct1D):
+    #     element = element.subs(map_trial).subs(map_test)
+    #     element = element.subs({H_s: H, H_s**2: H**2}).expand().subs({H: H_s})
+    #     return element.change_variable(xi, xpd.s_xi, xpd.xi_s, 
+    #         jac_positive=True, merge=True, simplify=False)
     elif isinstance(element, xpd.InnerProduct1D):
         element = element.subs(map_trial).subs(map_test)
-        element = element.subs({H_s: H, H_s**2: H**2}).expand().subs({H: H_s})
-        return element.change_variable(xi, xpd.s_xi, xpd.xi_s, 
-            jac_positive=True, merge=True, simplify=False)
+        element = pgutils.slope_subs(element).xreplace({xpd.xi_s: xpd.xi})
+        element._opd_B = simp_supp.collect_jacobi(element._opd_B.expand().powsimp())
+        return element
     else:
         raise TypeError
 
@@ -330,6 +353,7 @@ def equations_to_matrices(eqs: base.LabeledCollection,
         print("Converting equations to inner products...")
     eqs_sys = eqs_sys.to_inner_product(factor_lhs=I*omega, inplace=inplace)
     M_expr, K_expr = eqs_sys.collect_matrices(factor_lhs=I*omega)
+    # print(K_expr['Psi', 'M_p'])
     # Convert matrix elements to desired form
     if verbose > 1:
         print("Collecting and converting mass matrix M elements...")
@@ -360,8 +384,10 @@ INPUT_MODES = {
     "reduced": "pg"
 }
 EQS_FILES = {
-    "pg": "./out/symbolic/eqs_pg_lin.json",
-    "cg": "./out/symbolic/eqs_cg_lin.json",
+    # "pg": "./out/symbolic/eqs_pg_lin.json",
+    'pg': './out/symbolic/eqs-pg__boundIE-Bcyl__lin.json',
+    # "cg": "./out/symbolic/eqs_cg_lin.json",
+    'cg': './out/symbolic/eqs-cg__boundIE-Bcyl__lin.json'
 }
 FORCING_TERMS = {
     "pg": forcing.force_explicit_lin,
@@ -379,6 +405,7 @@ def form_equations(
     diff_M: Literal["None", "Linear drag"] = "None",
     timescale: str = "Alfven", 
     bg: bg_fields.BackgroundFieldMHD = bg_fields.BackgroundHydro(),
+    bg_sub_H: bool = True,
     deactivate: List[int] = list(),
     save_to: Optional[str] = None, 
     overwrite: bool = False,
@@ -412,16 +439,21 @@ def form_equations(
     eqs, par_list_nd = assemble_forcing(eqs, 
         *components, timescale=timescale, verbose=verbose-1)
     eqs.Psi = Eq(eqs.Psi.lhs, eqs.Psi.rhs.subs(FORCING_TERMS[i_mode]))
-    eqs, par_list_bg = apply_bg_to_set(eqs, bg, mode=i_mode, verbose=verbose-1)
+    eqs, par_list_bg = apply_bg_to_set(eqs, bg, sub_H=bg_sub_H, mode=i_mode, verbose=verbose-1)
     par_list = par_list_nd + par_list_bg
     
     # Assemble magnetic diffusion
     diff_M = diff_M.lower()
     if diff_M != "none":
+        prefactor = S.One
+        if timescale.lower() == "alfven":
+            prefactor *= 1/params.Lu
+        if timescale.lower() == "spin":
+            prefactor *= params.Em
         Dm = DIFFUSION_TERMS[i_mode][diff_M]
         for field in eqs._field_names:
             if eqs[field] is not None and Dm[field] is not None:
-                eqs[field] = Eq(eqs[field].lhs, eqs[field].rhs + 1/params.Lu*Dm[field])
+                eqs[field] = Eq(eqs[field].lhs, eqs[field].rhs + prefactor*Dm[field])
         par_list.append(params.Lu)
     
     # reduce dimensions if applies
@@ -584,6 +616,7 @@ def compute_matrix_numerics(
     xpd_recipe: xpd.ExpansionRecipe,
     Ntrunc: int, 
     par_val: dict,
+    require_all_pars: bool = True,
     quadratic_trunc: bool = False,
     jacobi_rule_opt: dict = {"automatic": True, "quadN": None},
     quadrature_opt: dict = {"backend": "scipy", "output": "numpy", "outer": True},
@@ -634,7 +667,8 @@ def compute_matrix_numerics(
         par_list = read_from[2]
     
     # Safeguard: values for all unknown variables should be correctly provided
-    assert set(par_list) == set(par_val.keys())
+    if require_all_pars:
+        assert set(par_list) == set(par_val.keys())
     
     if verbose > 0:
         print("========== Expanding matrices... ==========")
@@ -656,8 +690,10 @@ def compute_matrix_numerics(
         ranges_test = [np.arange(2*Ntrunc + 1) 
             if 'M' in fname else np.arange(Ntrunc + 1) for fname in fnames]
     else:
-        ranges_trial = [np.arange(Ntrunc + 1) for cname in cnames]
-        ranges_test = [np.arange(Ntrunc + 1) for fname in fnames]
+        ranges_trial = [np.arange(Ntrunc + 5) 
+            if 'M' in cname else np.arange(Ntrunc + 1) for cname in cnames]
+        ranges_test = [np.arange(Ntrunc + 5) 
+            if 'M' in fname else np.arange(Ntrunc + 1) for fname in fnames]
     
     # Configure quadrature
     quad_recipe_list = np.array([
@@ -791,6 +827,9 @@ def compute_eigen(
             if chop is not None:
                 M_val[np.abs(M_val) < chop] = 0.
                 K_val[np.abs(K_val) < chop] = 0.
+            if prec is not None:
+                M_val = num_utils.to_gpmy2_c(M_val, prec=prec)
+                K_val = num_utils.to_gpmy2_c(K_val, prec=prec)
         if read_fmt == "pickle":
             with open(read_from, 'rb') as fread:
                 serialized_obj = pickle.load(fread)

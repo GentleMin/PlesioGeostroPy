@@ -100,23 +100,35 @@ def plot_ball_disc():
 def polar_mesh(shape="Cartesian", num=100):
     """Generate mesh in polar coordinates
     """
-    x = np.linspace(-1, 1, num=num)
-    y = np.linspace(-1, 1, num=num)
-    X_mesh, Y_mesh = np.meshgrid(x, y)
-    S_mesh = np.sqrt(X_mesh**2 + Y_mesh**2)
-    P_mesh = np.arctan2(Y_mesh, X_mesh)
+    if shape == 'Cartesian':
+        x = np.linspace(-1, 1, num=num)
+        y = np.linspace(-1, 1, num=num)
+        X_mesh, Y_mesh = np.meshgrid(x, y)
+        S_mesh = np.sqrt(X_mesh**2 + Y_mesh**2)
+        P_mesh = np.arctan2(Y_mesh, X_mesh)
+    elif shape == 'Polar':
+        s = np.linspace(0., 1., num=num)
+        p = np.linspace(0., 2*np.pi, num=num)
+        P_mesh, S_mesh = np.meshgrid(p, s)
+        X_mesh = S_mesh*np.cos(P_mesh)
+        Y_mesh = S_mesh*np.sin(P_mesh)
+    else:
+        raise ValueError('Invalid shape argument! Mesh shape can only be Cartesian or polar.')
     return X_mesh, Y_mesh, S_mesh, P_mesh
 
 
-def polar_singularity_scalar(sfunc=lambda s, p: np.cos(p)):
+def polar_singularity_scalar(sfunc=lambda s, p: np.cos(p), shape='Cartesian'):
     """Visualize scalar
     """
-    X_mesh, Y_mesh, S_mesh, P_mesh = polar_mesh()
+    X_mesh, Y_mesh, S_mesh, P_mesh = polar_mesh(shape=shape)
     A_val = sfunc(S_mesh, P_mesh)
-    fig, ax = plt.subplots(figsize=(6.2, 5))
-    im = ax.pcolormesh(X_mesh, Y_mesh, np.real(A_val), shading="gouraud")
+    if shape == 'Cartesian':
+        fig, ax = plt.subplots(figsize=(6.2, 5))
+        im = ax.pcolormesh(X_mesh, Y_mesh, np.real(A_val), shading="gouraud")
+    elif shape == 'polar':
+        fig, ax = plt.subplots(figsize=(15., 5))
     ax.axis("equal")
-    plt.colorbar(im, ax=ax)
+    plt.colorbar(im, ax=ax, orientation='horizontal')
     return fig, ax
 
 
@@ -150,6 +162,56 @@ def polar_singularity_vector(
     cbar_ax = fig.add_axes([0.89, 0.15, 0.03, 0.7])
     fig.colorbar(im, cax=cbar_ax)
     return fig, ax
+
+def polar_singularity_rank2tensor(
+    tfunc_ss=lambda s, p: s*np.cos(p), 
+    tfunc_pp=lambda s, p: s*np.sin(p), 
+    tfunc_sp=lambda s, p: s*np.cos(p),
+    tfunc_ps=lambda s, p: s*np.sin(p)):
+    """Visualize vector
+    """
+    # Evaluate
+    X_mesh, Y_mesh, S_mesh, P_mesh = polar_mesh()
+    A_ss = tfunc_ss(S_mesh, P_mesh)
+    A_pp = tfunc_pp(S_mesh, P_mesh)
+    A_sp = tfunc_sp(S_mesh, P_mesh)
+    A_ps = tfunc_ps(S_mesh, P_mesh)
+    # Rotate
+    sin_P = np.sin(P_mesh)
+    cos_P = np.cos(P_mesh)
+    A_xx = cos_P**2*A_ss + sin_P**2*A_pp - sin_P*cos_P*(A_sp + A_ps)
+    A_yy = sin_P**2*A_ss + cos_P**2*A_pp + sin_P*cos_P*(A_sp + A_ps)
+    A_xy = sin_P*cos_P*(A_ss - A_pp) + cos_P**2*A_sp - sin_P**2*A_ps
+    A_yx = sin_P*cos_P*(A_ss - A_pp) + cos_P**2*A_ps - sin_P**2*A_sp
+    vmin = min([np.real(A_xx).min(), np.real(A_yy).min(), 
+                np.real(A_xy).min(), np.real(A_yx).min()])
+    vmax = max([np.real(A_xx).max(), np.real(A_yy).max(), 
+                np.real(A_xy).max(), np.real(A_yx).max()])
+    # Plot
+    plot_kw = {"shading": "gouraud", "vmin": vmin, "vmax": vmax}
+    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(11, 10))
+    ax = axes[0,0]
+    ax.pcolormesh(X_mesh, Y_mesh, np.real(A_xx), **plot_kw)
+    ax.axis("equal")
+    ax.set_title(r"$A_{xx}$")
+    ax = axes[0,1]
+    ax.pcolormesh(X_mesh, Y_mesh, np.real(A_xy), **plot_kw)
+    ax.set_title(r"$A_{xy}$")
+    ax.axis("equal")
+    ax = axes[1,0]
+    ax.pcolormesh(X_mesh, Y_mesh, np.real(A_yx), **plot_kw)
+    ax.axis("equal")
+    ax.set_title(r"$A_{yx}$")
+    ax = axes[1,1]
+    im = ax.pcolormesh(X_mesh, Y_mesh, np.real(A_yy), **plot_kw)
+    ax.set_title(r"$A_{yy}$")
+    ax.axis("equal")
+    # Add colorbar
+    fig.subplots_adjust(right=0.83)
+    cbar_ax = fig.add_axes([0.88, 0.15, 0.03, 0.7])
+    fig.colorbar(im, cax=cbar_ax)
+    return fig, ax
+
 
 def polar_singularity_rank2tensor(
     tfunc_ss=lambda s, p: s*np.cos(p), 

@@ -14,15 +14,22 @@ reports/**/*.out
 reports/**/*.xml
 reports/Presentation/
 reports/Materials/
+reports/Paper_regularity/
+reports/Regularity/*manuscript*pdf
 /materials/
-out/**/*.png
-out/**/*.pdf
-out/archived/
-out/tmp/
+
+# Disable all output files from git
+out/
+# out/**/*.png
+# out/**/*.pdf
+# out/archived/
+# out/tmp/
+
 # unwanted local test scripts
 test.py
 
 # VSCode utilities
+.vscode
 .VSCodeCounter
 
 # Currently, ignore wolfram mathematica notebooks

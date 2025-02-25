@@ -1,0 +1,24 @@
+\section{Treatment of Poynting flux with insulating exterior}
+
+We have seen in the nonlinear case as well as the linear case, the Poynting flux at the boundary always exists, and is always responsible for an inflow or an outflow of energy.
+However, in the linearised case, we have only discussed the problems of the hanging terms that represent an inconsistent energy flow, or terms that concern zeroth-order equations and/or second-order quantities, which have nothing to do with our linearised system \textit{per se}.
+
+There is nothing unphysical about a Poynting flux. Of course it is there, and it should be there. Hence the Poynting flux is not as much a problem as the other problems. But if we want our system to be closed, energy-conservative, and hence the solutions to the full or linearised system obtains such properties, then we still need to treat it.
+
+Since the Poynting flux physically exists, the only possible way to achieve this is to expand the domain of the magnetic field energy, and at the same time also expanding the domain where the magnetic field is solved.
+\citet{gerick_interannual_2024} provides an example of such treatment. In their work, instead of having a spectral basis that only represents fields inside the sphere, their spectral representation spans the whole domain, containing a harmonic vector field in the exterior, consistent with the insulating exterior boundary condition, also simply referred to as the dynamo condition \citep{roberts_803_2015}.
+Their Appendix 2(b), painstakingly derived algebraically to calculate the induction term contribution from the exterior (using an approach with which I do not fully agree, because there is no induction nor diffusion in the exterior in their model) can be summarised physically as 
+%
+\begin{equation}
+\begin{aligned}
+    \frac{d}{dt}\int_{\hat{V}} \frac{\mathbf{B}^2}{2\mu_0} \, dV &= \int_{\hat{V}} \frac{\mathbf{B}}{\mu_0}\cdot \frac{\partial \mathbf{B}}{\partial t} \, dV = - \int_{\hat{V}} \frac{1}{\mu_0} \mathbf{B} \cdot \nabla\times \mathbf{E} \, dV \\ 
+    &= - \int_{\hat{V}} \frac{1}{\mu_0} \nabla\cdot (\mathbf{E} \times \mathbf{B}) \, dV - \int_{\hat{V}} \frac{1}{\mu_0} \mathbf{E} \cdot \nabla\times \mathbf{B} \, dV \\ 
+    &= -\oint_{\partial \hat{V}} \frac{1}{\mu_0} \mathbf{E} \times \mathbf{B} \cdot d\boldsymbol{\Sigma} = - \oint_{\partial \hat{V}} \mathbf{S}\cdot d\boldsymbol{\Sigma} = + \oint_{\partial V} \mathbf{S}\cdot d\boldsymbol{\Sigma}
+\end{aligned}
+\end{equation}
+%
+where $\hat{V} = \mathbb{R}^3 \backslash V$ is the exterior volume, and $\partial \hat{V}$ and $\partial V$ has opposite outer normal vectors (hence the last step). We see that any change in the exterior magnetic energy is injected by the outflowing Poynting flux across the boundary, i.e. the sphere. The result is no wonder here, and is plain energy conservation. If this part of energy is added to the system, then the Poynting flux on the RHS of the equations will naturally cancel out. Indeed, the results (A12) and (A16) nicely cancel out the latter parts in (A2c) and (A2a), respectively, in Appendix B of \citet{gerick_interannual_2024}. Had they used the energy conservation and converted part to Poynting flux, this might have saved them some time from explicitly calculating the spectral form of these to-be-cancelled-out terms.
+
+The approach of \citet{gerick_interannual_2024} of taking into account the magnetic energy outside the sphere might conceptually be extended to other boundary conditions, such as an insulating shell, where the solution is a free-decay mode. However, as the authors correctly put it, it is likely mostly for "numerical expediency", and I see no reason why an eigenmode resolved in this approach cannot be resolved using a magnetic field spectral representation that is confined to within the sphere.
+For instance, if we have a mode that is energy-conserving, with purely imaginary eigenvalue, this would represent a purely rotating mode. Such modes should not have a net Poynting flux to begin with, rendering the energy conserved in either method.
+

@@ -1,0 +1,393 @@
+\section{Energetics of the rotating MHD system}
+
+Let us now consider the energetics of the 3-D MHD equations, which are the original model equations of the PG model. For this we build on the more general but less detailed discussion of \citet{braginsky_equations_1995}. Unlike the last subsection, but consistent with rest of the document, we will drop all the prime notations in the kinematic quantities in the rotating frame because it is the default frame. The dimensional form of the momentum equation and relevant Maxwell equations reads
+%
+\[
+\begin{aligned}
+    \rho \left(\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + 2\boldsymbol{\Omega}\times \mathbf{u}\right) &=  - \nabla P + \mathbf{j}\times \mathbf{B} + \nabla\cdot \boldsymbol{\sigma} \\ 
+    \nabla\times \mathbf{E} &= - \frac{\partial \mathbf{B}}{\partial t} \\ 
+    \nabla\times \mathbf{B} &= \mu \mathbf{j}.
+\end{aligned}
+\]
+%
+The system is further closed by constitutive relations and the equation of state
+\[
+    \boldsymbol{\sigma} = \rho \nu \left(\nabla\mathbf{u} + \nabla \mathbf{u}^\intercal\right),\quad 
+    \mathbf{j} = \sigma (\mathbf{E} + \mathbf{u}\times \mathbf{B}),\quad 
+    \nabla\cdot \mathbf{u} = 0
+\]
+Assuming uniform density, viscosity, and magnetic permeability, we can write
+%
+\begin{equation}
+\begin{aligned}
+    \rho \left(\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla \mathbf{u} + 2\boldsymbol{\Omega}\times \mathbf{u}\right) &=  - \nabla P + \frac{1}{\mu_0} (\nabla\times \mathbf{B})\times \mathbf{B} + \rho \nu \nabla^2 \mathbf{u} \\ 
+    \frac{\partial \mathbf{B}}{\partial t} &= \nabla\times (\mathbf{u}\times \mathbf{B}) + \eta \nabla^2 \mathbf{B}
+\end{aligned}
+\end{equation}
+%
+where $\eta = 1/\sigma\mu_0$ is the uniform magnetic diffusivity. The kinetic energy density equation can be obtained by multiplying the first equation by $\mathbf{u}$, which gives
+%
+\begin{equation}
+\begin{aligned}
+    \frac{\partial}{\partial t} \left(\frac{\rho \mathbf{u}^2}{2}\right) + \mathbf{u}\cdot \nabla \left(\frac{\rho \mathbf{u}^2}{2}\right) &= - \mathbf{u}\cdot \nabla P + \mathbf{u}\cdot (\mathbf{j}\times \mathbf{B}) + \rho \nu \mathbf{u}\cdot \nabla^2 \mathbf{u} \\ 
+    \frac{\partial}{\partial t} \left(\frac{\rho \mathbf{u}^2}{2}\right) + \nabla \cdot \left(\frac{\rho \mathbf{u}^2}{2} \mathbf{u}\right) &= - \nabla\cdot (P \mathbf{u}) + \mathbf{j}\cdot (\mathbf{E} - \mathbf{j}/\sigma) + \rho \nu \left(\nabla^2 \frac{\mathbf{u}^2}{2} - \nabla \mathbf{u} : \nabla\mathbf{u}\right) \\ 
+    \frac{\partial}{\partial t} \left(\frac{\rho \mathbf{u}^2}{2}\right) + \nabla \cdot \left(\frac{\rho \mathbf{u}^2}{2} \mathbf{u}\right) &= - \nabla\cdot (P \mathbf{u}) + \mathbf{E}\cdot \mathbf{j} - \frac{1}{\sigma} \mathbf{j}^2 + \nabla\cdot \nu \nabla \frac{\rho\mathbf{u}^2}{2} - \rho \nu \|\nabla \mathbf{u}\|_F^2
+\end{aligned}
+\end{equation}
+%
+\begin{equation}\label{eqn:kinetic-energy-density}
+    \frac{\partial \varepsilon_k}{\partial t} + \nabla\cdot (\varepsilon_k \mathbf{u}) = - \nabla\cdot (P \mathbf{u}) + \mathbf{E}\cdot \mathbf{j} + \nabla\cdot \nu \nabla \varepsilon_k - q_j - q_\nu
+\end{equation}
+%
+where $\varepsilon_k = \rho \mathbf{u}^2 /2$ is the kinetic energy density, $q_j = \sigma^{-1} \mathbf{j}^2$ is the Joule heating density, and $q_\nu = \rho \nu \|\nabla\mathbf{u}\|_F^2$ the frictional heating density, and $\|\mathbf{F}\|_F^2$ is the squared Frobenius norm of the rank-2 tensor, equivalently the double contraction $\mathbf{F}:\mathbf{F}$. The change in local kinetic energy is, understandably, caused by work done by pressure gradient, electric force, and the diffusion of the kinetic energy itself, minus the part of work that gets dissipated in the form of Joule and frictional heating. Similarly, we can obtain the equation for magnetic energy density by multiplying the magnetic induction equation by $\mathbf{B}$,
+%
+\begin{equation}\label{eqn:magnetic-energy-density}
+\begin{aligned}
+    \frac{\partial}{\partial t} \left(\frac{\mathbf{B}^2}{2\mu_0}\right) &= - \frac{\mathbf{B}}{\mu_0}\cdot (\nabla\times \mathbf{E}) = - \frac{1}{\mu_0} \nabla\cdot (\mathbf{E}\times \mathbf{B}) - \frac{1}{\mu_0} \mathbf{E}\cdot (\nabla\times \mathbf{B}) \\ 
+    \frac{\partial \varepsilon_B}{\partial t} &= - \nabla\cdot \mathbf{S} - \mathbf{E}\cdot \mathbf{j}
+\end{aligned}
+\end{equation}
+%
+where $\varepsilon_B = \mathbf{B}^2 / 2\mu_0$ is the magnetic energy density and $\mathbf{S}$ the Poynting vector. We therefore see that the local change of magnetic energy is caused either by an inflow of eletromagnetic energy or converted to electric field work. Neglecting the internal energy, gravitational potentials, etc., we have the local budget of kinetic and magnetic energies
+%
+\begin{equation}
+    \frac{\partial}{\partial t}\left(\varepsilon_k + \varepsilon_B\right) = - \nabla\cdot \left(\varepsilon_k \mathbf{u} + \mathbf{S} + P \mathbf{u} - \nu \nabla \varepsilon_k\right) - q_j - q_\nu
+\end{equation}
+%
+In a bounded domain $V$, where $\mathbf{u}\cdot \hat{\mathbf{n}}_{\partial V} = 0$, we can integrate the local kinetic energy density equation to form the total kinetic energy equation,
+%
+\begin{equation}
+\begin{aligned}
+    \frac{d E_k}{d t} &= \int_V \frac{\partial \varepsilon_k}{\partial t} \, dV = - \oint_{\partial V} (\varepsilon_k + P) \mathbf{u} \cdot d\boldsymbol{\Sigma} + \int_V \mathbf{E}\cdot \mathbf{j} dV + \oint_{\partial V} \nu \nabla \varepsilon_k \cdot d\boldsymbol{\Sigma} - \int_V (q_j + q_\nu) dV \\ 
+    \frac{dE_k}{dt} &= \int_V \mathbf{E}\cdot \mathbf{j} dV + \oint_{\partial V} \nu \frac{\partial\varepsilon_k}{\partial n} d\Sigma - \int_V (q_j + q_\nu) dV = W_E + \Phi_{\nu} - Q_j - Q_\nu
+\end{aligned}
+\end{equation}
+%
+where the change of total kinetic energy in the MHD system is attributed to electric field work ($W_E$), energy flux from viscous work at the boundary ($\Phi_\nu$), minus the dissipation in the form of Joule and frictional heating. For the magnetic energy, the situation is more simply written as 
+%
+\begin{equation}
+    \frac{d E_B}{dt} = \int_V \frac{\partial \varepsilon_B}{\partial t} \, dV = - \oint_{\partial V} \mathbf{S}\cdot d\boldsymbol{\Sigma} - \int_V \mathbf{E}\cdot \mathbf{j}\, dV = \Phi_\mathrm{EM} - W_E
+\end{equation}
+%
+where the rate of change of magnetic energy is attributed to boundary Poynting flux and conversion to electric field work. The total energy budget changes via
+%
+\begin{equation}
+    \frac{d}{dt}(E_k + E_B) = - \oint_{\partial V} \mathbf{S}\cdot d\boldsymbol{\Sigma} + \oint_{\partial V} \nu \frac{\partial\varepsilon_k}{\partial n} d\Sigma - \int_V (q_j + q_\nu) dV = \Phi_\mathrm{EM} + \Phi_{\nu} - Q_j - Q_\nu.
+\end{equation}
+%
+
+The derivations and all the quantities mentioned within are measured in a rotating frame; in the non-rotating frame, using eqn. (\ref{eqn:dE-general}), we have 
+%
+\begin{equation}
+\begin{aligned}
+    \frac{d}{dt} (E_k^\mathrm{inert} + E_B^\mathrm{inert}) &= \frac{d}{dt}(E_k + E_B) + \boldsymbol{\Omega}\cdot \frac{d \mathbf{L}}{dt} = \frac{d}{dt}(E_k + E_B) + \boldsymbol{\Omega}\cdot \frac{d \mathbf{L}^\mathrm{inert}}{dt} \\ 
+    &= \Phi_\mathrm{EM} + \Phi_\nu - Q_j - Q_\nu + \boldsymbol{\Omega}\cdot \frac{d \mathbf{L}}{dt} = \Phi_\mathrm{EM} + \Phi_\nu - Q_j - Q_\nu  + \boldsymbol{\Omega}\cdot \frac{d \mathbf{L}^\mathrm{inert}}{dt} \\ 
+    &= \Phi_\mathrm{EM} + \Phi_\nu - Q_j - Q_\nu + \boldsymbol{\Omega}\cdot \boldsymbol{\Gamma}
+\end{aligned}
+\end{equation}
+%
+where $\boldsymbol{\Gamma}$ is the torque. In the process we used the fact that $\dot{\boldsymbol{\Omega}} = \mathbf{0}$ and $\dot{\mathcal{I}} = \mathbf{0}$, which are automatically satisfied in the setup. The magnetic energy has negligible change from one reference frame to another in the non-relativistic case, and hence requires no extra terms. We note, however, that the angular momentum here only refers to that of the fluid, but does not include that of the electromagnetic field. 
+
+In our case, the torque $\boldsymbol{\Gamma}$ can be measured as $\int_V \mathbf{r}\times \mathbf{F} \, dV$ either in the rotating frame or in the non-rotating frame; the reason is that centrifugal force provides no torque at any point, and the Coriolis force provides a total torque that is proportional to the change in the moment of inertia, which in this case is zero. In addition, in an axisymmetric domain as is the case here, the pressure torque $\int_V \mathbf{r}\times \nabla P dV = - \int_V \nabla\times (P \mathbf{r}) dV = \mathbf{0}$ vanishes; due to the symmetry of the Cauchy stress tensor, the torque by viscous force sums to
+%
+\[
+    \int_V \mathbf{r}\times \nabla\cdot \boldsymbol{\sigma} dV = \int_V \partial_l (\epsilon_{ijk} x_j \sigma_{lk}) dV = \oint_{\partial V} \mathbf{r} \times \boldsymbol{\tau} \, d\Sigma
+\]
+%
+where $\boldsymbol{\tau}$ is the traction at the boundary. In free-slip boundary condition where $\boldsymbol{\tau} = \mathbf{0}$, we will have the viscous torque also vanishes.
+The torque in the MHD system then boils down to only the magnetic torque, and the energy is given by
+%
+\begin{equation}
+    \frac{d}{dt} (E_k^\mathrm{inert} + E_B^\mathrm{inert}) = \frac{d}{dt}(E_k + E_B) + \boldsymbol{\Omega}\cdot \boldsymbol{\Gamma}_B = \Phi_\mathrm{EM} + \Phi_\nu - Q_j - Q_\nu + \boldsymbol{\Omega}\cdot \boldsymbol{\Gamma}_B.
+\end{equation}
+%
+If the system has a net magnetic torque in the direction of the rotation, then the kinetic-magnetic energy in the inertial frame will has an excess increase relative to that in the rotating frame, and vice versa.
+
+
+\subsection{Application to the ideal system}
+
+To apply this result more specifically to our PG model, note that the PG system is built on an inviscid, "superconducting" 3-D system (an "ideal" system), which translates to $\nu = \eta = 0$. The $\nu=0$ limit can be easily achieved by directly setting the value, and it is easy to verify that nothing changes in the derivation (note that we are always assuming sufficiently smooth solutions, and not considering anything related to Onsager's conjecture). The end result is $Q_\nu = 0$ and $\Phi_\nu = 0$ (the latter will also vanish when a no-slip boundary condition is used). For the $\eta = 0$ limit, it induces a problem interpreting the constitutive relation $\mathbf{j} = \sigma (\mathbf{E} + \mathbf{u}\times \mathbf{B})$. At this limit, even though $\sigma \rightarrow +\infty$, we will still have finite electric current $\mathbf{j}$, provided that $\mathbf{E} + \mathbf{u}\times \mathbf{B}$ is an infinitesimal quantity. Therefore, we take $\mathbf{j}= \nabla\times \mathbf{B}/\mu_0$ and $\mathbf{E} = -\mathbf{u}\times \mathbf{B}$, while at the same time simply drop the constitutive relation. In this way all the derivation holds, and the end result is $Q_j = 0$. For this ideal 3-D system, we have an extremely simple equation for the total energy
+%
+\begin{equation}
+    \frac{d}{dt}(E_k + E_B) = \Phi_\mathrm{EM}
+\end{equation}
+%
+relating the change of energy only to the Poynting flux at the boundary. In the inertial frame,
+%
+\begin{equation}
+    \frac{d}{dt} (E_k^\mathrm{inert} + E_B^\mathrm{inert}) = \frac{d}{dt}(E_k + E_B) + \boldsymbol{\Omega}\cdot \boldsymbol{\Gamma}_B = \Phi_\mathrm{EM} + \boldsymbol{\Omega}\cdot \boldsymbol{\Gamma}_B.
+\end{equation}
+%
+
+
+\section{Energetics for the linearised system}
+
+The derivation of the change of energy in the rotating MHD system in the previous section is both mathematically and physically reasonable.
+The next question is, does it also apply to linearised versions?
+In particular, let us consider a background field with zero velocity. The perturbed fields are
+%
+\begin{equation}
+    \mathbf{u} = \mathbf{u}_0 + \epsilon \mathbf{u}_1 + \epsilon^2 \mathbf{u}_2 + \cdots, \quad 
+    \mathbf{B} = \mathbf{B}_0 + \epsilon \mathbf{b}_1 + \epsilon^2 \mathbf{b}_2 + \cdots, \quad 
+    P = P_0 + \epsilon p_1 + \epsilon^2 p_2 + \cdots
+\end{equation}
+%
+we take $\mathbf{u}_0 = \mathbf{0}$, at least instantaneously.
+The original equations can then be expanded in powers of the small quantity $\epsilon$, explicit up to $\epsilon^3$:
+%
+\begin{equation}\label{eqn:eqn-epsilon-expand}
+\begin{aligned}    
+    &\epsilon^0 \left[\rho \frac{\partial \mathbf{u}_0}{\partial t}\right] + \epsilon^1 \left[\rho \frac{\partial \mathbf{u}_1}{\partial t}\right] + \epsilon^2 \left[\rho \frac{\partial \mathbf{u}_2}{\partial t}\right] + O\left(\epsilon^3\right)
+    = \epsilon^0 \left[- \nabla P_0 + \frac{1}{\mu_0} (\nabla\times \mathbf{B}_0)\times \mathbf{B}_0\right] + O\left(\epsilon^3\right)  \\
+    &\quad + \epsilon^1 \left[ - 2 \rho \boldsymbol{\Omega}\times \mathbf{u}_1 - \nabla p_1 + \frac{1}{\mu_0} \left((\nabla\times \mathbf{B}_0)\times \mathbf{b}_1 + (\nabla\times \mathbf{b}_1)\times \mathbf{B}_0\right) + \rho \nu \nabla^2 \mathbf{u}_1\right] \\
+    &\quad + \epsilon^2 \left[ - \rho(2 \boldsymbol{\Omega}\times \mathbf{u}_2 + \mathbf{u}_1\cdot \nabla\mathbf{u}_1) - \nabla p_2 + \frac{1}{\mu_0} \left((\nabla\times \mathbf{B}_0)\times \mathbf{b}_2 + (\nabla\times \mathbf{b}_2)\times \mathbf{B}_0 + (\nabla\times \mathbf{b}_1)\times \mathbf{b}_1\right) + \rho \nu \nabla^2 \mathbf{u}_2\right] \\ 
+    & \epsilon^0 \frac{\partial \mathbf{B}_0}{\partial t} + \epsilon^1 \frac{\partial \mathbf{b}_1}{\partial t} + \epsilon^2 \frac{\partial \mathbf{b}_2}{\partial t} + O\left(\epsilon^3\right) =
+    \epsilon^0 \left[\eta \nabla^2 \mathbf{B}_0\right] \\
+    &\quad + \epsilon^1 \left[\nabla\times (\mathbf{u}_1 \times \mathbf{B}_0) + \eta \nabla^2 \mathbf{b}_1\right] + \epsilon^2 \left[\nabla\times (\mathbf{u}_1\times \mathbf{b}_1 + \mathbf{u}_2\times \mathbf{B}_0) + \eta \nabla^2 \mathbf{b}_2\right] + O\left(\epsilon^3\right)
+\end{aligned}
+\end{equation}
+%
+The linearised MHD system, which is essentially the system used for solving the hydromagnetic eigenmodes in e.g. \citet{luo_waves_2022,luo_waves2_2022,gerick_interannual_2024}, is the system comprising of the $\epsilon^1$ terms, which reads
+%
+\begin{equation}\label{eqn:mhd-lin}
+\begin{aligned}
+    \rho \frac{\partial \mathbf{u}}{\partial t} &= - 2 \rho \boldsymbol{\Omega}\times \mathbf{u} - \nabla p + \frac{1}{\mu_0} \left((\nabla\times \mathbf{B})\times \mathbf{b} + (\nabla\times \mathbf{b})\times \mathbf{B}\right) + \rho \nu \nabla^2 \mathbf{u}, \\ 
+    \frac{\partial \mathbf{b}}{\partial t} &= \nabla\times (\mathbf{u}\times \mathbf{B}) + \eta \nabla^2 \mathbf{b}.
+\end{aligned}
+\end{equation}
+%
+where I dropped the $1$ subscript for the linearised term of velocity and magnetic field without ambiguity.
+Now that we have the linearised equations, what is the energy equation for this system? Naively, one might think that the kinetic energy is given by $\rho \mathbf{u}^2/2$, and the linearised magnetic energy is given by $\mathbf{B}\cdot \mathbf{b}/\mu_0$. Since the background field should be static, one might further naively take $\mathbf{B}\cdot \partial_t \mathbf{b} = \partial_t (\mathbf{B}\cdot \mathbf{b})$.
+This series of wishful thinking then leads to
+%
+\[
+\begin{aligned}
+    \frac{\partial}{\partial t} \left(\frac{\rho \mathbf{u}^2}{2}\right) &= - \nabla \cdot (p\mathbf{u}) + \frac{1}{\mu_0}\left[-(\nabla\times \mathbf{B})\cdot (\mathbf{u}\times \mathbf{b}) + (\nabla\times \mathbf{b})\cdot (\mathbf{u}\times \mathbf{B})\right] + \nu \nabla^2 \frac{\rho\mathbf{u}^2}{2} - \rho \nu \|\nabla\mathbf{u}\|_F^2 \\ 
+    \frac{\partial}{\partial t} \left(\frac{\mathbf{B}\cdot \mathbf{b}}{\mu_0}\right) &= \frac{1}{\mu_0}\nabla\cdot \left[(\mathbf{u}\times \mathbf{B} - \eta \nabla\times \mathbf{b})\times \mathbf{B}\right] + \frac{1}{\mu_0}(\nabla\times \mathbf{B})\cdot (\mathbf{u}\times \mathbf{B}) - \frac{\eta}{\mu_0} (\nabla\times \mathbf{b})\cdot (\nabla\times \mathbf{B}).
+\end{aligned}
+\]
+%
+While there are terms in the "kinetic energy equation" that represent magnetic force work / electric field work, and there are also terms in the "magnetic energy equation" that represent the electric field work, the two sets of terms do not match, and hence do not cancel out - there is no consistency in describing the energy flow between the two energy reservoirs. In fact, these terms differ on the number of small quantities! This is one of those situations that once you realise something, you cannot go back to un-realise it. You realise you made the absurd mistake that you are combining two energies from different orders of $\epsilon$.
+
+\subsection{Energy equations from a perturbative perspective}
+
+What, then, is the consistent way of deriving the energy perturbation? To answer this question we simply go back to the system expanded in different orders of $\epsilon$, and form our energy equation on this basis.
+Multiplying the momentum equation with $\mathbf{u}$, and the induction equation with $\mathbf{B}$, we arrive at
+%
+\begin{equation}\label{eqn:energy-epsilon-expand}
+\begin{aligned}    
+    &\epsilon^0 \frac{\partial}{\partial t} \left(\frac{\rho \mathbf{u}_0^2}{2}\right) + \epsilon^1 \frac{\partial}{\partial t} \left(\rho \mathbf{u}_0\cdot \mathbf{u}_1\right) + \epsilon^2 \frac{\partial}{\partial t}\left(\frac{\rho (\mathbf{u}_1^2 + 2\mathbf{u}_0\cdot \mathbf{u}_2)}{2}\right) + O\left(\epsilon^3\right) \\
+    &= \epsilon^1 \left[- \nabla\cdot(P_0\mathbf{u}_1) - \frac{1}{\mu_0} (\nabla\times \mathbf{B}_0)\cdot (\mathbf{u}_1\times \mathbf{B}_0)\right] \\
+    &\quad + \epsilon^2 \bigg\{- \nabla \cdot (p_1\mathbf{u}_1 + P_0 \mathbf{u}_2) + \nu \nabla^2 \frac{\rho \mathbf{u}_1^2}{2} - \rho \nu \|\nabla \mathbf{u}_1\|_F^2 \\
+    &\qquad - \frac{1}{\mu_0} \left((\nabla\times \mathbf{B}_0)\cdot (\mathbf{u}_1\times \mathbf{b}_1) + (\nabla\times \mathbf{b}_1)\cdot (\mathbf{u}_1\times \mathbf{B}_0) + (\nabla\times \mathbf{B}_0)\cdot (\mathbf{u}_2\times \mathbf{B}_0)\right) \bigg\} + O\left(\epsilon^3\right) \\ 
+    &\epsilon^0 \frac{\partial}{\partial t} \left(\frac{\mathbf{B}_0^2}{2\mu_0}\right) + \epsilon^1 \frac{\partial}{\partial t}\left(\frac{\mathbf{B}_0\cdot \mathbf{b}_1}{\mu_0}\right) + \epsilon^2 \frac{\partial}{\partial t} \left(\frac{\mathbf{b}_1^2}{2\mu_0} + \frac{\mathbf{B}_0\cdot \mathbf{b}_2}{\mu_0}\right) + O\left(\epsilon^3\right) \\
+    &\quad = \epsilon^0 \left[-\frac{\eta}{\mu_0} \nabla\cdot \left((\nabla\times \mathbf{B}_0) \times \mathbf{B}_0\right) - \frac{\eta}{\mu_0} (\nabla\times \mathbf{B}_0)^2\right] \\
+    &\quad + \epsilon^1 \bigg\{\frac{1}{\mu_0}\nabla\cdot \left[(\mathbf{u}_1\times \mathbf{B}_0 - \eta \nabla\times \mathbf{b}_1)\times \mathbf{B}_0 - \eta (\nabla\times \mathbf{B}_0)\times \mathbf{b}_1\right] \\
+    &\quad \mkern 25mu + \frac{1}{\mu_0}(\nabla\times \mathbf{B}_0)\cdot \left(\mathbf{u}_1\times \mathbf{B}_0 - 2\eta \nabla\times \mathbf{b}_1\right)\bigg\} \\
+    &\quad + \epsilon^2 \bigg\{ \frac{1}{\mu_0}\nabla\cdot \left[(\mathbf{u}_1\times \mathbf{b}_1 + \mathbf{u}_2\times \mathbf{B}_0 - \eta \nabla\times \mathbf{b}_2)\times \mathbf{B}_0 - \eta (\nabla\times \mathbf{B}_0)\times \mathbf{b}_2 \right] \\
+    &\quad\mkern 25mu + \frac{1}{\mu_0}(\nabla\times \mathbf{B}_0)\cdot \left(\mathbf{u}_1\times \mathbf{b}_1 + \mathbf{u}_2\times \mathbf{B}_0 - 2\eta \nabla\times \mathbf{b}_2\right) \\
+    &\quad\mkern 25mu + \frac{1}{\mu_0}\nabla\cdot \left[(\mathbf{u}_1\times \mathbf{B}_0 - \eta \nabla\times \mathbf{b}_1)\times \mathbf{b}_1\right] + \frac{1}{\mu_0}(\nabla\times \mathbf{b}_1)\cdot \left(\mathbf{u}_1\times \mathbf{B}_0 - \eta \nabla\times \mathbf{b}_1\right)\bigg\} + O\left(\epsilon^3\right).
+\end{aligned}
+\end{equation}
+%
+This allows us to expand the energy also in powers of $\epsilon$. Using $\nabla\times \mathbf{B}/\mu_0 = \mathbf{j} = \sigma (\mathbf{E} + \mathbf{u}\times \mathbf{B})$, and introducing the expansions
+%
+\[\begin{aligned}
+    \varepsilon_k &= \varepsilon_{k0} + \epsilon \varepsilon_{k1} + \epsilon^2 \varepsilon_{k2} + \cdots 
+    &&= \frac{\rho \mathbf{u}_0^2}{2} + \epsilon \rho \mathbf{u}_0\cdot \mathbf{u}_1 + \epsilon^2 \frac{\rho (\mathbf{u}_1^2 + 2 \mathbf{u}_0\cdot \mathbf{u}_1)}{2} + \cdots \\
+    \varepsilon_B &= \varepsilon_{B0} + \epsilon \varepsilon_{B1} + \epsilon^2 \varepsilon_{B2} + \cdots
+    &&= \frac{\mathbf{B}_0^2}{2\mu_0} + \epsilon \frac{\mathbf{B}_0\cdot \mathbf{b}_1}{\mu_0} + \epsilon^2 \frac{\mathbf{b}_1^2 + 2\mathbf{B}_0\cdot \mathbf{b}_2}{2\mu_0} + \cdots \\
+    \mathbf{j} &= \mathbf{j}_0 + \epsilon\mathbf{j}_1 + \epsilon^2 \mathbf{j}_2 + \cdots 
+    &&= \frac{1}{\mu_0}\nabla\times \mathbf{B}_0 + \frac{\epsilon}{\mu_0}\nabla\times \mathbf{b}_1 + \frac{\epsilon^2}{\mu_0}\nabla\times \mathbf{b}_2 + \cdots \\
+    \mathbf{E} &= \mathbf{E}_0 + \epsilon \mathbf{e}_1 + \epsilon^2 \mathbf{e}_2 + \cdots 
+    &&= \frac{\mathbf{j}_0}{\sigma} + \epsilon \left(\frac{\mathbf{j}_1}{\sigma} - \mathbf{u}_1\times \mathbf{B}_0\right) + \epsilon^2 \left(\frac{\mathbf{j}_2}{\sigma} - \mathbf{u}_1\times \mathbf{b}_1  - \mathbf{u}_2\times \mathbf{B}_0\right) + \cdots \\ 
+    && &\mkern-215mu = \eta \nabla\times \mathbf{B}_0 + \epsilon \left(\eta \nabla\times \mathbf{b}_1 - \mathbf{u}_1\times \mathbf{B}_0\right) + \epsilon^2 \left(\eta \nabla\times \mathbf{b}_2 - \mathbf{u}_1\times \mathbf{b}_1  - \mathbf{u}_2\times \mathbf{B}_0\right) + \cdots \\ 
+\end{aligned}\]
+%
+we can express the energy equations alternatively as 
+%
+\begin{equation}\label{eqn:energy-epsilon-expand-alt}
+    \begin{aligned}    
+        &\epsilon^0 \frac{\partial \varepsilon_{k0}}{\partial t} + \epsilon^1 \frac{\partial \varepsilon_{k1}}{\partial t} + \epsilon^2 \frac{\partial \varepsilon_{k2}}{\partial t} + O\left(\epsilon^3\right)
+        = \epsilon^1 \left[- \nabla\cdot(P_0\mathbf{u}_1) + \mathbf{e}_1 \cdot \mathbf{j}_0 - \frac{\mathbf{j}_0\cdot \mathbf{j}_1}{\sigma}\right] \\
+        &\quad + \epsilon^2 \left[- \nabla \cdot (p_1\mathbf{u}_1 + P_0\mathbf{u}_2) + \mathbf{e}_2 \cdot \mathbf{j}_0 + \mathbf{e}_1\cdot \mathbf{j}_1 - \frac{\mathbf{j}_2\cdot \mathbf{j}_0 + \mathbf{j}_1^2}{\sigma} + \nu \nabla^2 \varepsilon_{k2} - \rho \nu \|\nabla \mathbf{u}_1\|_F^2\right] + O\left(\epsilon^3\right) \\ 
+        &\epsilon^0 \frac{\partial \varepsilon_{B0}}{\partial t} + \epsilon^1 \frac{\partial \varepsilon_{B1}}{\partial t} + \epsilon^2 \frac{\partial \varepsilon_{B2}}{\partial t} + O\left(\epsilon^3\right) = \epsilon^0 \left[- \nabla\cdot \left(\frac{1}{\mu_0} \mathbf{E}_0 \times \mathbf{B}_0\right) - \mathbf{E}_0\cdot \mathbf{j}_0\right] \\
+        &\quad + \epsilon^1 \left\{- \nabla\cdot \left[\frac{1}{\mu_0} \left(\mathbf{e}_1\times \mathbf{B}_0 + \mathbf{E}_0\times \mathbf{b}_1\right)\right] - \mathbf{e}_1\cdot \mathbf{j}_0 - \mathbf{e}_0\cdot \mathbf{j}_1 \right\} \\
+        &\quad + \epsilon^2 \bigg\{-\nabla\cdot \left[\frac{1}{\mu_0} (\mathbf{e}_1 \times \mathbf{b}_1 + \mathbf{e}_2\times \mathbf{B}_0 + \mathbf{E}_0\times \mathbf{b}_2)\right] - \mathbf{e}_1\cdot \mathbf{j}_1 - \mathbf{e}_2\cdot \mathbf{j}_0 - \mathbf{E}_0\cdot \mathbf{j}_2 \bigg\} + O\left(\epsilon^3\right).
+    \end{aligned}
+\end{equation}
+%
+One can immediately see that the same form can be derived directly from expanding the energy equations (\ref{eqn:kinetic-energy-density}) and (\ref{eqn:magnetic-energy-density}) in terms of small quantities of $\epsilon$, and all terms are easily interpretable from a physical perspective. Now if we only take the linear term in the energies, we have
+%
+\begin{equation}\begin{aligned}\label{eqn:energy-eqn-order1}
+    \frac{\partial \varepsilon_{k1}}{\partial t} &= - \nabla\cdot(P_0\mathbf{u}_1) + \mathbf{e}_1 \cdot \mathbf{j}_0 - \frac{\mathbf{j}_0\cdot \mathbf{j}_1}{\sigma} \\ 
+    \frac{\partial \varepsilon_{B1}}{\partial t} &= - \nabla\cdot \left[\frac{1}{\mu_0} \left(\mathbf{e}_1\times \mathbf{B}_0 + \mathbf{E}_0\times \mathbf{b}_1\right)\right] - \mathbf{e}_1\cdot \mathbf{j}_0 - \mathbf{e}_0\cdot \mathbf{j}_1 = - \nabla\cdot \mathbf{s}_1 - \mathbf{e}_1 \cdot \mathbf{j}_0 - \mathbf{e}_0\cdot \mathbf{j}_1 \\ 
+    \frac{\partial (\varepsilon_{k1} + \varepsilon_{B1})}{\partial t} &= - \nabla\cdot \left[P_0 \mathbf{u} + \frac{1}{\mu_0} \left(\mathbf{e}_1\times \mathbf{B}_0 + \mathbf{E}_0\times \mathbf{b}_1\right)\right] - \frac{2}{\sigma} \mathbf{j}_0\cdot \mathbf{j}_1 = - \nabla\cdot (P_0 \mathbf{u}_1 + \mathbf{s}_1) - \frac{2\mathbf{j}_0\cdot \mathbf{j}_1}{\sigma}
+\end{aligned}\end{equation}
+%
+where $\mathbf{s}_1$ is the first-order perturbation (=linearisation) of the Poynting vector.
+Here we have several observations. First, the first-order kinetic energy equation does not concern the first-order momentum equation to begin with. This is perfectly reasonable, except it means that the linear kinetic energy, which is the same order term as the linear perturbation of magnetic energy, is not even solved in the linear system. In fact, it comes from the zeroth-order momentum equation.
+
+Second, in principle, there is no (nontrivial) first-order kinetic energy - any kinetic energy is of second order, due to $\mathbf{u}_0 = \mathbf{0}$ at the linearised time. In the first (and the zeroth) order, all the energy in the system would be stored as magnetic energy.
+It would hence be inaccurate to state e.g. that energy is equipartitioned between kinetic and magnetic energies for torsional modes, because with a non-trivial background magnetic field, the magnetic energy would always be two orders greater than the kinetic energy. 
+An immediate question is then, in the PG formulation, does the linearised moments really serve as good proxies of magnetic energy? If we use that, then we are essentially talking about the first-order energy, in which the fluid flow has no contributions.
+Only at second order do we see both contributions from kinetic and magnetic energies,
+%
+\begin{equation}\begin{aligned}\label{eqn:energy-eqn-order2}
+    \frac{\partial \varepsilon_{k2}}{\partial t} &= - \nabla \cdot (p_1\mathbf{u}_1 + P_0\mathbf{u}_2) + \mathbf{e}_2 \cdot \mathbf{j}_0 + \mathbf{e}_1\cdot \mathbf{j}_1 - \frac{\mathbf{j}_2\cdot \mathbf{j}_0 + \mathbf{j}_1^2}{\sigma} + \nu \nabla^2 \varepsilon_{k2} - \rho \nu \|\nabla \mathbf{u}_1\|_F^2 \\ 
+    \frac{\partial \varepsilon_{B2}}{\partial t} &= -\nabla\cdot \left[\frac{1}{\mu_0} (\mathbf{e}_1 \times \mathbf{b}_1 + \mathbf{e}_2\times \mathbf{B}_0 + \mathbf{E}_0\times \mathbf{e}_2)\right] - \mathbf{e}_1\cdot \mathbf{j}_1 - \mathbf{e}_2\cdot \mathbf{j}_0 - \mathbf{E}_0\cdot \mathbf{j}_2 \\ 
+    \frac{\partial (\varepsilon_{k2} + \varepsilon_{B2})}{\partial t} &= -\nabla\cdot \left[(p_1\mathbf{u}_1 + P_0\mathbf{u}_2) + \frac{1}{\mu_0} (\mathbf{e}_1 \times \mathbf{b}_1 + \mathbf{e}_2\times \mathbf{B}_0 + \mathbf{E}_0\times \mathbf{e}_2)\right] - \frac{\mathbf{j}_1^2 + 2\mathbf{j}_0\cdot \mathbf{j}_2}{\sigma} + \nu \nabla^2 \varepsilon_{k2} - \rho \nu \|\nabla \mathbf{u}_1\|_F^2 \\ 
+    &= -\nabla\cdot \left(p_1\mathbf{u}_1 + P_0\mathbf{u}_2 + \mathbf{s}_2\right) - \frac{\mathbf{j}_1^2 + 2\mathbf{j}_0\cdot \mathbf{j}_2}{\sigma} + \nu \nabla^2 \varepsilon_{k2} - q_\nu
+\end{aligned}\end{equation}
+%
+where $\mathbf{s}_2$ is the second-order perturbation of the Poynting vector. A problem here is that neither the quantity $\mathbf{b}_2$ (which determines $\mathbf{j}_2$, and hence enters $\mathbf{e}_2$ and $\mathbf{s}_2$) nor $\mathbf{u}_2$ (which is present in $\mathbf{s}_2$) exist in the first-order induction equation, and hence are not part of the solution in the linearised system / eigenvalue problem.
+To resolve $\mathbf{u}_2$ and $\mathbf{b}_2$, one has to additionally solve the 2nd-order system resulting from (\ref{eqn:eqn-epsilon-expand}).
+
+Finally, so far we have been turning a blind eye to the zeroth order equation, but it comes back to haunt us in the energy equation. In the first-order energy equation, we see that if we do NOT consider the background field is a steady state automatically satisfying the zeroth-order system, and do NOT take $\partial_t \varepsilon_{k1}$ to vanish identically, then
+%
+\[
+    \frac{\partial (\varepsilon_{k1} + \varepsilon_{B1})}{\partial t} = - \nabla\cdot (P_0 \mathbf{u}_1 + \mathbf{s}_1) - \frac{2\mathbf{j_0\cdot \mathbf{j}_1}}{\sigma}
+\]
+%
+where we have the change in combined kinetic-magnetic energy is either due to Poynting flux, pressure work, or Ohmic dissipation. At the idea limit, $\sigma\rightarrow + \infty$, the equation nicely simplies to only a divergence term, and hence the total energy would be attributed completely to the Poynting flux at the boundary. However, if we strongly believe that a static background field is possible, and take $\partial_t \varepsilon_{k1} \equiv 0$, then
+%
+\[
+    \frac{\partial (\varepsilon_{k1} + \varepsilon_{B1})}{\partial t} = \frac{\partial \varepsilon_{B1}}{\partial t} = - \nabla\cdot \mathbf{s}_1 - \mathbf{e}_1\cdot \mathbf{j}_0 - \mathbf{e}_0\cdot \mathbf{j}_1.
+\]
+%
+causes a mismatch with the previous energy equation as soon as $\mathbf{e}_1\neq \mathbf{j}_1/\sigma$, i.e. a nontrivial induction term $\mathbf{u}_1\times \mathbf{B}_0$ exists. In this case, the two energy description would be different. Note that this problem persists also at $\sigma \rightarrow +\infty$.
+
+What caused this mismatch? If we look at the discrepancy carefully we see that the difference between the two terms $\mathbf{e}_1\cdot \mathbf{j}_0 - \mathbf{j}_1 \cdot \mathbf{j}_0 / \sigma$ is in fact nothing but the "useful work", i.e. the work done by electric force that does not dissipate as Joule heat. This is the part of work that is done by the background Lorentz force on the perturbed flow, and puts kinetic energy in the first-order energy budget.
+
+If the zeroth order equation is indeed satisfied in a steady state, the background Lorentz force would be balanced by a pressure. In this case, this "useful work" would naturally be compensated by the pressure work, rendering the two energy equations above equivalent. This would unfortunately no longer be the case if the zeroth-order equation is not automatically satisfied. Some would argue that one can invoke some other forces to balance the background Lorentz force and hold the background flow zero. In this case, the second equation would remain valid, but the first would need an extra term representing the work done by the hypothetical force, yielding the system to have a non-trivial bulk term even at the ideal limit.
+
+As a final part in this sub-section, I write down the total kinetic-magnetic energy in the unit sphere, which is the integrated form of the local equations. At first order, depending on the interpretation of the zeroth-order momentum equation, we either have
+%
+\begin{equation}
+\begin{aligned}
+    \frac{\partial (E_{k1} + E_{B1})}{\partial t} &= \int_V \frac{\partial (\varepsilon_{k1} + \varepsilon_{B1})}{\partial t} \, dV = - \oint_{\partial V} \mathbf{s}_1\cdot d\boldsymbol{\Sigma} - \int_V 2 \frac{\mathbf{j}_1\cdot \mathbf{j}_0}{\sigma}\, dV \\ 
+    &= - \frac{1}{\mu_0} \oint_{\partial V} \left[(\eta \nabla\times \mathbf{b}_1 - \mathbf{u}_1\times\mathbf{B}_0)\times \mathbf{B}_0 + (\eta\nabla\times \mathbf{B}_0) \times \mathbf{b}_1\right]\cdot d\boldsymbol{\Sigma} \\
+    &\quad - \frac{2\eta}{\mu_0} \int_V (\nabla\times \mathbf{B}_0)\cdot (\nabla\times \mathbf{b}_1) \, dV
+\end{aligned}
+\end{equation}
+%
+or 
+%
+\begin{equation}\label{eqn:energy-order1-noflow}
+    \begin{aligned}
+        \frac{\partial (E_{k1} + E_{B1})}{\partial t} &= - \oint_{\partial V} \mathbf{s}_1\cdot d\boldsymbol{\Sigma} - \int_V (\mathbf{e}_1\cdot \mathbf{j}_0 + \mathbf{E}_0\cdot \mathbf{j}_1)\, dV \\ 
+        &= - \frac{1}{\mu_0} \oint_{\partial V} \left[(\eta \nabla\times \mathbf{b}_1 - \mathbf{u}_1\times\mathbf{B}_0)\times \mathbf{B}_0 + (\eta\nabla\times \mathbf{B}_0) \times \mathbf{b}_1\right]\cdot d\boldsymbol{\Sigma} \\
+        &\quad - \frac{1}{\mu_0} \int_V (\nabla\times \mathbf{B}_0)\cdot (2\eta\nabla\times \mathbf{b}_1 - \mathbf{u}_1\times \mathbf{B}_0)\, dV
+    \end{aligned}
+\end{equation}
+%
+Note that either way, the pressure has zero net total work, as $\mathbf{u}\cdot \hat{\mathbf{n}}\equiv 0$ at the boundary. For 2nd order,
+%
+\begin{equation}
+    \begin{aligned}
+        &\frac{\partial (E_{k2} + E_{B2})}{\partial t} = \int_V \frac{\partial (\varepsilon_{k2} + \varepsilon_{B2})}{\partial t} \, dV = - \oint_{\partial V} \mathbf{s}_2\cdot d\boldsymbol{\Sigma} - \int_V \frac{\mathbf{j}_1^2 + 2\mathbf{j}_0 \cdot \mathbf{j}_2}{\sigma}\, dV + \nu \oint_{\partial V} \frac{\partial \varepsilon_{k2}}{\partial n} d\Sigma - Q_\nu \\ 
+        &= - \frac{1}{\mu_0} \oint_{\partial V} \left[(\eta \nabla\times \mathbf{b}_1 - \mathbf{u}_1\times\mathbf{B}_0)\times \mathbf{b}_1 + \eta(\nabla\times \mathbf{B}_0) \times \mathbf{b}_2 + (\eta \nabla\times \mathbf{b}_2 - \mathbf{u}_1\times \mathbf{b}_1 - \mathbf{u}_2\times \mathbf{B}_0)\times \mathbf{B}_0\right]\cdot d\boldsymbol{\Sigma} \\
+        &\quad - \frac{\eta}{\mu_0} \int_V \left[(\nabla\times \mathbf{b}_1)^2 + 2(\nabla\times \mathbf{B}_0)\cdot (\nabla\times \mathbf{b}_2)\right] \, dV  + \nu \oint_{\partial V} \frac{\partial}{\partial n}\frac{\rho \mathbf{u}_1^2}{2} d\Sigma - \rho \nu \int_V \|\nabla\mathbf{u}_1\|_F^2 dV .
+    \end{aligned}
+\end{equation}
+%
+At the ideal, "superconducting" limit, $\nu \rightarrow 0$, $\sigma \rightarrow +\infty$, $\eta \rightarrow 0$, these energy equations simplify to 
+%
+\begin{equation}
+\begin{aligned}
+    \frac{\partial (E_{k1} + E_{B1})}{\partial t} &= -\oint_{\partial V} \mathbf{s}_1\cdot d\boldsymbol{\Sigma} = - \frac{1}{\mu_0} \oint_{\partial V} \left[- (\mathbf{u}_1\times\mathbf{B}_0)\times \mathbf{B}_0\right]\cdot d\boldsymbol{\Sigma}, \\
+    \frac{\partial (E_{k1} + E_{B1})}{\partial t} &= -\oint_{\partial V} \mathbf{s}_1\cdot d\boldsymbol{\Sigma} - \int_V \mathbf{e}_1 \cdot \mathbf{j}_0 dV \\
+    &= - \frac{1}{\mu_0} \oint_{\partial V} \left[- (\mathbf{u}_1\times\mathbf{B}_0)\times \mathbf{B}_0\right]\cdot d\boldsymbol{\Sigma} - \frac{1}{\mu_0}\int_V (\nabla\times \mathbf{B}_0)\cdot (-\mathbf{u}_1\times \mathbf{B}_0)\, dV, \\
+    \frac{\partial (E_{k2} + E_{B2})}{\partial t} &= -\oint_{\partial V} \mathbf{s}_2\cdot d\boldsymbol{\Sigma} \\
+    &= - \frac{1}{\mu_0} \oint_{\partial V} \left[- (\mathbf{u}_1\times\mathbf{B}_0)\times \mathbf{b}_1 - (\mathbf{u}_1\times \mathbf{b}_1 + \mathbf{u}_2\times \mathbf{B}_0)\times \mathbf{B}_0\right]\cdot d\boldsymbol{\Sigma}.
+\end{aligned}
+\end{equation}
+%
+In the end, the Poynting flux will always exist in the energy budget. Unless special conditions can be shown for the Poynting flux, the total kinetic-magnetic energy is not a Lyapunov function, and we cannot be sure whether the system contains energy-conserving modes, growing modes or decaying modes.
+In addition, the second-order energy also contains $\mathbf{u}_2$ and $\mathbf{b}_2$ terms, and even if there is a constraint, it cannot be readily transferred to the linearised fields $\mathbf{u}_1$ and $\mathbf{b}_1$ alone.
+
+\subsection{Alternative energies or scalar functions}
+
+The complete energy, as shown above, appears not useful when it comes to analyzing if the fields are bounded, amplitude-preserving, decaying or growing in the phase space. One can then argue that energy is overrated, or our definition of energy is flawed, leave it behind, and search for alternative scalar functions that serve as useful Lyapunov functions.
+
+\subsubsection{The quadratic form of linear field perturbations}
+
+One most commonly used approach is to simply introduce the "energies" evaluated as
+%
+\begin{equation}
+\begin{aligned}
+    E_k' &= \int_V \varepsilon_k' \, dV = \int_V \frac{\rho \mathbf{u}_1^2}{2} \, dV = \frac{\rho \|\mathbf{u}_1\|_2^2}{2} \\ 
+    E_B' &= \int_V \varepsilon_B' \, dV = \int_V \frac{\mathbf{b}_1^2}{2\mu_0} \, dV = \frac{\|\mathbf{b}_1\|_2^2}{2\mu_0}
+\end{aligned}
+\end{equation}
+%
+where the $L^2$-norm of a vector field is defined by $\|\mathbf{f}\|_2^2 = \int_V \mathbf{f}^2 dV$. This is certainly how energy is calculated in the eigenvalue problems in e.g. \citet{gerick_qg_2021}, and also implemented in \texttt{MCModes} by Jiawen, possibly also in \texttt{QuICC}.
+These are not the total second-order energies in the perturbative sense, but are parts of the kinetic and magnetic energies that are unaffected by the zeroth-order equation or second-order quantities. Stefano also points out that these can be obtained by setting a truncated expansion
+%
+\[
+    \mathbf{u} = \epsilon \mathbf{u}_1,\quad \mathbf{B} = \mathbf{B}_0 + \epsilon \mathbf{b}_1,
+\]
+%
+although this will create a mismatch in the momentum balance in higher-order terms, to which we again turn a blind eye here. The evolution equation of the modified kinetic can be directly obtained by multiplying the linear momentum equation with linear velocity,
+%
+\[
+\begin{aligned}
+    \frac{\partial}{\partial t} \frac{\rho \mathbf{u}_1^2}{2} &= - \nabla\cdot (p_1 \mathbf{u}_1) - \frac{1}{\mu_0} \left((\nabla\times \mathbf{B}_0)\cdot (\mathbf{u}_1\times \mathbf{b}_1) + (\nabla\times \mathbf{b}_1\cdot (\mathbf{u}_1\times \mathbf{B}_0))\right) + \nu \nabla^2 \frac{\rho \mathbf{u}_1^2}{2} - \rho \nu \|\nabla\mathbf{u}_1\|_F^2 \\ 
+    \frac{\partial \varepsilon_k'}{\partial t} &= - \nabla\cdot (p_1 \mathbf{u}_1) + \left(\mathbf{e}_2' - \frac{\mathbf{j}_2}{\sigma}\right)\cdot \mathbf{j}_0 + \left(\mathbf{e}_1 - \frac{\mathbf{j}_1}{\sigma}\right)\cdot \mathbf{j}_1 + \nu \nabla^2 \varepsilon_k' - q_{\nu 1}
+\end{aligned}
+\]
+%
+A careful reader may have already felt alarmed when partial second-order electric field and currents $\mathbf{e}_2'$ and $\mathbf{j}_2$ appear despite all our efforts to restrict to linearised terms.
+This fear solidifies when we derive the evolution equation for the modified magnetic energy, by multiplying the linear induction equation with linear magnetic field perturbation,
+%
+\[
+\begin{aligned}
+    \frac{\partial}{\partial t} \frac{\mathbf{b}_1^2}{2 \mu_0} &= \frac{1}{\mu_0}\nabla\cdot \left[(\mathbf{u}_1\times \mathbf{B}_0 - \eta \nabla\times \mathbf{b}_1)\times \mathbf{b}_1\right] + \frac{1}{\mu_0}(\nabla\times \mathbf{b}_1)\cdot \left(\mathbf{u}_1\times \mathbf{B}_0 - \eta \nabla\times \mathbf{b}_1\right) \\ 
+    \frac{\partial \varepsilon_B'}{\partial t} &= - \frac{1}{\mu_0}\nabla\cdot \left(\mathbf{e}_1\times \mathbf{b}_1 \right) - \mathbf{e}_1 \cdot \mathbf{j}_1 = - \nabla\cdot \mathbf{s}_2' - \mathbf{e}_1\cdot \mathbf{j}_1
+\end{aligned}
+\]
+%
+Now that it is clear that the part of the energy input in $\varepsilon_k'$ has no correspondence in the energy output of $\varepsilon_B'$. This "hanging term" is the useful work done by part of the second-order electric field force on the zeroth-order current, creating a source / sink in the total energy
+%
+\[\begin{aligned}
+    \frac{\partial (\varepsilon_k' + \varepsilon_B')}{\partial t} &= - \nabla\cdot \left(p_1 \mathbf{u}_1 + \mathbf{s}_2' \right) + \left(\mathbf{e}_2' - \frac{\mathbf{j}_2}{\sigma}\right)\cdot \mathbf{j}_0 - \frac{\mathbf{j}_1^2}{\sigma} + \nu \nabla^2 \varepsilon_k' - q_{\nu 1} \\ 
+    \frac{\partial (E_k' + E_B')}{\partial t} &= - \oint_{\partial V} \mathbf{s}_2' \cdot d\boldsymbol{\Sigma} + \oint_{\partial V} \mathbf{u}_1\cdot \boldsymbol{\tau}_1 d\Sigma + \int_V \left(\mathbf{e}_2' - \frac{\mathbf{j}_2}{\sigma}\right)\cdot \mathbf{j}_0 \, dV - Q_{j1}' - Q_{\nu 1}
+\end{aligned}\]
+%
+As usual, on the RHS, the first term is the Poynting flux, the second term is the boundary traction work, and will vanish with either free-slip or no-slip boundary conditions. The last two terms are the Joule heating and viscous heating terms. At the ideal limit (with free-slip BC), 
+%
+\[\begin{aligned}
+    \frac{\partial (E_k' + E_B')}{\partial t} &= - \oint_{\partial V} \mathbf{s}_2' \cdot d\boldsymbol{\Sigma} + \int_V \mathbf{e}_2'\cdot \mathbf{j}_0 \, dV \\
+    &= \frac{1}{\mu_0} \oint_{\partial V} (\mathbf{u}_1 \times \mathbf{B}_0) \times \mathbf{b}_1 \cdot d\boldsymbol{\Sigma} - \frac{1}{\mu_0}\int_V (\mathbf{u}_1 \times \mathbf{b}_1)\cdot (\nabla\times \mathbf{B}_0) \, dV.
+\end{aligned}\]
+%
+Therefore, although the definition of $E_k'$ and $E_B'$ attempts to avoid the second-order quantity and circumvent the zeroth-order equation problem, it creates an inconsistent energy flow, a ghost electric field work that does not come from the defined magnetic energy reservoir $E_B'$.
+Unless further conditions are satisfied, it is generally impossible for such a scalar function to be conservative (even excluding the Poynting flux), and hence $E_k' + E_B'$ is also NOT a Lyapunov function, giving NO information on the growing / decaying property of the eigenmodes in its current state.
+
+
+\subsubsection{Linear perturbation in energy}
+
+We have already discussed the problem with the linear term in energy perturbation: we always have to ask ourselves, whether we believe that the zeroth order equation is satisfied or not. In other words, how we interpret the zeroth order equation (or, how we interpret the background state, so to speak) will have a direct impact on how these energy terms look like. Nevertheless, it is free of second-order effects (and hence free of cross terms of perturbations), and Andy suggested that perhaps this could also be a useful quantity for concluding the stability of the system.
+
+When we take that the zeroth-order velocity field is automatically satisfied, for instance, which implies that the current force balance could sustain a stationary fluid (i.e. zero velocity), then we have already derived the expression for energy perturbation (\ref{eqn:energy-order1-noflow}), where all the first-order perturbations are contained in magnetic energy:
+\[
+    \begin{aligned}
+        &\frac{d (E_{k1} + E_{B1})}{d t} = \frac{d E_{B1}}{dt} = - \oint_{\partial V} \mathbf{s}_1\cdot d\boldsymbol{\Sigma} - \int_V (\mathbf{e}_1\cdot \mathbf{j}_0 + \mathbf{E}_0\cdot \mathbf{j}_1)\, dV \\ 
+        &= - \frac{1}{\mu_0} \oint_{\partial V} \left[(\eta \nabla\times \mathbf{b}_1 - \mathbf{u}_1\times\mathbf{B}_0)\times \mathbf{B}_0 + (\eta\nabla\times \mathbf{B}_0) \times \mathbf{b}_1\right]\cdot d\boldsymbol{\Sigma} - \frac{1}{\mu_0} \int_V (\nabla\times \mathbf{B}_0)\cdot (2\eta\nabla\times \mathbf{b}_1 - \mathbf{u}_1\times \mathbf{B}_0)\, dV
+    \end{aligned}
+\]
+Neglecting the surface term, this first-order energy is clearly not conserved. Note here we have a non-trivial diffusion equation for the zeroth order magnetic field, i.e. $\partial_t \mathbf{B}_0 = \eta \nabla^2 \mathbf{B}_0$. If, however, we believe that the background magnetic field is truly in steady state ($\partial_t \mathbf{B}_0 = \mathbf{0}$, invoking the free currents, etc.), then we can write
+%
+\[\begin{aligned}
+    \frac{\partial \varepsilon_{B1}'}{\partial t} &= \frac{\mathbf{B}_0}{\mu_0} \cdot \frac{\partial \mathbf{b}}{\partial t} = \frac{1}{\mu_0} \mathbf{B}_0 \cdot \nabla\times (\mathbf{u}\times \mathbf{B}_0) + \eta \mathbf{B}_0\cdot \nabla^2 \mathbf{b} \\ 
+    &= \frac{1}{\mu_0} \nabla\cdot \left[(\mathbf{u}\times \mathbf{B}_0 - \eta \nabla\times \mathbf{b})\times \mathbf{B}_0\right] - \frac{1}{\mu_0} \left(\eta \nabla\times \mathbf{b} - \mathbf{u}\times \mathbf{B}_0\right) \cdot (\nabla\times \mathbf{B}_0)
+\end{aligned}\]
+%
+and its integral
+%
+\begin{equation}\begin{aligned}
+    \frac{d E_{B1}'}{d t} &= \int_V \frac{\mathbf{B}_0}{\mu_0} \cdot \frac{\partial \mathbf{b}}{\partial t} \, dV = - \oint_{\partial V} \mathbf{s}_1' \cdot d\boldsymbol{\Sigma} - \int_V \mathbf{e}_1\cdot \mathbf{j}_0 \, dV \\
+    &= - \oint_{\partial V} \left[\frac{1}{\mu_0}(\eta \nabla\times \mathbf{b} - \mathbf{u}\times \mathbf{B}_0)\times \mathbf{B}_0\right] \cdot d\boldsymbol{\Sigma} - \int_V \frac{1}{\mu_0} \left(\eta \nabla\times \mathbf{b} - \mathbf{u}\times \mathbf{B}_0\right) \cdot (\nabla\times \mathbf{B}_0)\, dV
+\end{aligned}\end{equation}
+%
+Because of the bulk term, we can conclude that $E_{B1}'$ defined as such is also not conserved in the linearised system. As we will see in the next sections, there are some special cases where this bulk term vanish, but in that scenario the complete equation is unfortunately trivial, making it once again useless.

@@ -22,7 +22,7 @@ field_names = [
     fname for fname in base.CollectionConjugate.cg_field_names if fname != "Br_b"
 ]
 field_indexer = np.array([
-    True if fname != "Br_b" else False for fname in base.CollectionConjugate.cg_field_names
+    True if fname in field_names else False for fname in base.CollectionConjugate.cg_field_names
 ])
 subscript_str = [
     r"\Psi", "M1", "M+", "M-", "z+", "z-",
@@ -52,7 +52,7 @@ bases_s = base.LabeledCollection(field_names,
 
 bases_s_expression = base.LabeledCollection(
     field_names,
-    Psi = H_s**3*s**Abs(m)*jacobi(n, Rational(3, 2), Abs(m), xi_s),
+    Psi = H**3*s**Abs(m)*jacobi(n, Rational(3, 2), Abs(m), xi_s),
     # Coupling for magnetic moments
     M_1 = expansion.orth_pref_jacobi(1, Abs(m)),
     M_p = expansion.orth_pref_jacobi(1, Abs(m + 2)),

@@ -115,7 +115,7 @@ eqs_pg.dBp_dz_e = sympy.Eq(
 # must be written in Br to be closed
 eqs_pg.Br_b = sympy.Eq(
     diff(pgvar.Br_b, t),
-    -sph.surface_div((pgvar.Br_b*U_sph.t, pgvar.Br_b*U_sph.p), evaluate=False)
+    -sph.div_surface((pgvar.Br_b*U_sph.t, pgvar.Br_b*U_sph.p), evaluate=False)
 )
 
 # Boundary induction in cylindrical coordinates 

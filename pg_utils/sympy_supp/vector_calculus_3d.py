@@ -208,9 +208,27 @@ class CartesianCoordinates3D(OrthogonalCoordinates3D):
         )
         return vector_out
     
+    def grad_h(self, scalar_in, **kwargs):
+        """Horizontal gradient
+        """
+        vector_out = (
+            diff(scalar_in, self[0], **kwargs),
+            diff(scalar_in, self[1], **kwargs)
+        )
+        return vector_out
+    
     def div(self, vector_in, **kwargs):
         """Vector divergence, to be implemented"""
         return super().div(vector_in, **kwargs)
+    
+    def div_h(self, vector_in, **kwargs):
+        """Horizontal divergence
+        """
+        scalar_out = (
+            + diff(vector_in[0], self[0], **kwargs)
+            + diff(vector_in[1], self[1], **kwargs)
+        )
+        return scalar_out
         
     def curl(self, vector_in, **kwargs):
         """Compute the curl of a vector in 3-D Cartesian coords
@@ -231,6 +249,15 @@ class CartesianCoordinates3D(OrthogonalCoordinates3D):
                 - diff(vector_in[0], self[1], **kwargs)
         )
         return vector_out
+    
+    def curl_h(self, vector_in, **kwargs):
+        """Horizontal curl
+        """
+        scalar_out = (
+            + diff(vector_in[1], self[0], **kwargs)
+            - diff(vector_in[0], self[1], **kwargs)
+        )
+        return scalar_out
     
     def laplacian(self, tensor_in, rank=0, **kwargs):
         """Compute the Laplacian of a tensor
@@ -313,6 +340,15 @@ class CylindricalCoordinates(OrthogonalCoordinates3D):
         )
         return vector_out
     
+    def grad_h(self, scalar_in, **kwargs):
+        """Horizontal gradient
+        """
+        vector_out = (
+            diff(scalar_in, self[0], **kwargs),
+            diff(scalar_in, self[1], **kwargs)/self[0]
+        )
+        return vector_out
+    
     def div(self, vector_in, **kwargs):
         """Compute the divergence of a vector in cylindrical coordinates
         
@@ -325,6 +361,13 @@ class CylindricalCoordinates(OrthogonalCoordinates3D):
         scalar_out = 1/self[0]*diff(self[0]*vector_in[0], self[0], **kwargs) \
             + 1/self[0]*diff(vector_in[1], self[1], **kwargs)\
             + diff(vector_in[2], self[2], **kwargs)
+        return scalar_out
+    
+    def div_h(self, vector_in, **kwargs):
+        scalar_out = (
+            + 1/self[0]*diff(self[0]*vector_in[0], self[0], **kwargs)
+            + 1/self[0]*diff(vector_in[1], self[1], **kwargs)
+        )
         return scalar_out
     
     def curl(self, vector_in, **kwargs):
@@ -346,6 +389,15 @@ class CylindricalCoordinates(OrthogonalCoordinates3D):
                 - diff(vector_in[0], self[1], **kwargs)/self[0]
         )
         return vector_out
+    
+    def curl_h(self, vector_in, **kwargs):
+        """Horizontal curl
+        """
+        scalar_out = (
+            + diff(self[0]*vector_in[1], self[0], **kwargs)/self[0]
+            - diff(vector_in[0], self[1], **kwargs)/self[0]
+        )
+        return scalar_out
     
     def laplacian(self, tensor_in, rank=0, **kwargs):
         """Compute the Laplacian of a tensor in cylindrical coordinates
@@ -419,7 +471,12 @@ class SphericalCoordinates(OrthogonalCoordinates3D):
     def grad(self, scalar_in, **kwargs):
         """Scalar gradient, to be implemented
         """
-        return super().grad(scalar_in, **kwargs)
+        grad_out = (
+            sympy.diff(scalar_in, self[0]),
+            sympy.diff(scalar_in, self[1])/self[0],
+            sympy.diff(scalar_in, self[2])/(self[0]*sympy.sin(self[1]))
+        )
+        return grad_out
     
     def div(self, vector_in, **kwargs):
         """Compute the divergence of a vector in spherical coordinates
@@ -437,18 +494,26 @@ class SphericalCoordinates(OrthogonalCoordinates3D):
     
     def curl(self, vector_in, **kwargs):
         """Vector curl, to be implemented"""
-        return super().curl(vector_in, **kwargs)
+        curl_out = (
+            + sympy.diff(sympy.sin(self[1])*vector_in[2], self[1])/(self[0]*sympy.sin(self[1]))
+            - sympy.diff(vector_in[1], self[2])/(self[0]*sympy.sin(self[1])),
+            + sympy.diff(vector_in[0], self[2])/(self[0]*sympy.sin(self[1]))
+            - sympy.diff(self[0]*vector_in[2], self[0])/self[0],
+            + sympy.diff(self[0]*vector_in[1], self[0])/self[0]
+            - sympy.diff(vector_in[0], self[1])/self[0]
+        )
+        return curl_out
     
     def laplacian(self, tensor_in, rank=0, **kwargs):
         """Tensor Laplacian, to be implemented"""
         return super().laplacian(tensor_in, rank, **kwargs)
     
-    def surface_grad(self, scalar_in, **kwargs):
+    def grad_surface(self, scalar_in, **kwargs):
         """Surface gradient, to be implemented
         """
         raise NotImplementedError
     
-    def surface_div(self, vector_in, **kwargs):
+    def div_surface(self, vector_in, **kwargs):
         """Compute the surface divergence of a 2-D vector in spherical coordinates
         
         :param array-like vector_in: input vector, assumed to be 
@@ -463,6 +528,11 @@ class SphericalCoordinates(OrthogonalCoordinates3D):
         scalar_out = 1/(self[0]*sympy.sin(self[1]))*diff(sympy.sin(self[1])*vector_in[0], self[1], **kwargs) \
             + 1/(self[0]*sympy.sin(self[1]))*diff(vector_in[1], self[2], **kwargs)
         return scalar_out
+    
+    def curl_surface(self, vector_in, **kwargs):
+        """Surface curl
+        """
+        raise NotImplementedError
     
     def transform_to(self, v_in: "Vector3D", new_sys: OrthogonalCoordinates3D, 
             coeffs_new=False) -> "Vector3D":
@@ -545,6 +615,12 @@ class Scalar3D(Tensor3D):
         """Scalar remains unchanged.
         """
         return self
+    
+    def subs(self, sub_params) -> 'Scalar3D':
+        """Substitute with params
+        """
+        o_subs = Scalar3D(self.tensor.subs(sub_params), self.coord_sys)
+        return o_subs
 
 
 class Vector3D(Tensor3D):
@@ -574,3 +650,11 @@ class Vector3D(Tensor3D):
     def laplacian(self, **kwargs):
         """Compute Laplacian, shortcut for calling the method in `coord_sys`"""
         return self.coord_sys.laplacian(self.tensor, rank=1, **kwargs)
+    
+    def subs(self, sub_params) -> 'Vector3D':
+        """Substitute with params
+        """
+        o_subs = Vector3D(self.tensor, self.coord_sys)
+        for i_dim in range(3):
+            o_subs[i_dim] = o_subs[i_dim].subs(sub_params)
+        return o_subs

@@ -15,3 +15,10 @@ This module includes the following sub-modules:
 
 
 from .core import x, y, z, s, p, z, r, theta, t, H, H_s
+import sys, pkgutil, importlib
+
+xpd_options = dict()
+for mod in pkgutil.iter_modules(sys.modules[__name__].__path__):
+    if mod.name[:6] == 'expand':
+        cfg = importlib.import_module('.{}'.format(mod.name), 'pg_utils.pg_model')
+        xpd_options[cfg.identifier] = cfg

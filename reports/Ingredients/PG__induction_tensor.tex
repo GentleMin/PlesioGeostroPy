@@ -1,0 +1,391 @@
+\section{Tensor form of the induction equation}
+
+The PG system contains magnetic induction equations in two forms. 
+In the first form, the magnetic induction equation in its vector form is evaluated at the equator (or optionally at the boundary, see next sections). The vector form (without magnetic diffusion) reads
+\[\begin{aligned}
+    \frac{\partial \mathbf{B}}{\partial t} &= \nabla\times (\mathbf{u}\times \mathbf{B}) \\ 
+    \frac{\partial \mathbf{B}}{\partial t} &= \mathbf{B}\cdot \nabla \mathbf{u} - \mathbf{u}\cdot \nabla \mathbf{B}
+\end{aligned}
+\]
+where the second equality uses $\nabla\cdot \mathbf{B} = \mathbf{0}$ and $\nabla\cdot \mathbf{u} = \mathbf{0}$.
+In the second form, the magnetic induction equation is presented in its integrated quadratic moment form.
+The induction equations on the quadratic moments are originally derived component by component \citep{jackson_plesio-geostrophy_2020}.
+Here I present a concise tensor form of the latter. Starting from the vector form, the ideal induction equation on (unintegrated) quadratic moment is formed by
+\begin{equation}
+    \frac{\partial \mathbf{M}}{\partial t} = \frac{\partial \mathbf{B}\mathbf{B}}{\partial t} = \mathbf{B} \frac{\partial \mathbf{B}}{\partial t} + \frac{\partial \mathbf{B}}{\partial t} \mathbf{B} 
+    = \mathbf{B} (\mathbf{B}\cdot \nabla) \mathbf{u} + \left[(\mathbf{B}\cdot \nabla)\mathbf{u}\right] \mathbf{B} - \mathbf{B}(\mathbf{u}\cdot \nabla) \mathbf{B} - \left[(\mathbf{u}\cdot \nabla)\mathbf{B}\right]\mathbf{B}
+\end{equation}
+The first two terms can be written in a concise tensor form,
+\[
+    \mathbf{B} (\mathbf{B}\cdot \nabla) \mathbf{u} + \left[(\mathbf{B}\cdot \nabla)\mathbf{u}\right] \mathbf{B} = B_i B_k \partial_k u_j + B_j B_k \partial_k u_i = M_{ik} \partial_k u_j + M_{jk} \partial_k u_i = \mathbf{M}\cdot \nabla \mathbf{u} + (\mathbf{M}\cdot \nabla \mathbf{u})^\top.
+\]
+The latter two terms can be combined in the form
+\[
+    \mathbf{B}(\mathbf{u}\cdot \nabla) \mathbf{B} + \left[(\mathbf{u}\cdot \nabla)\mathbf{B}\right]\mathbf{B} = B_i u_k \partial_k B_j + B_j u_k \partial_k B_i = u_k \partial_k (B_i B_j) = u_k \partial_k M_{ij} = \mathbf{u}\cdot \nabla\mathbf{M}.
+\]
+The final ideal induction equation on the quadratic moment reads
+\begin{equation}\label{eqn:tensor-induction}
+    \frac{\partial \mathbf{M}}{\partial t} = \mathbf{M}\cdot \nabla \mathbf{u} + (\mathbf{M}\cdot \nabla \mathbf{u})^\top - \mathbf{u}\cdot \nabla\mathbf{M}.
+\end{equation}
+
+The next step for PG is to develop the induction equation for the integrated quadratic moments. For this purpose, we investigate the integrated form of the RHS of the equation above term by term. Since the first and the second term are simply transpositions of each other, their integrals will also be simple transpositions. Therefore, we need only consider the integral of one of them. The first term can be rewritten
+\begin{equation}\begin{aligned}
+    \mathbf{M}\cdot \nabla \mathbf{u} &= \mathbf{M}\cdot (\nabla_e + \hat{\mathbf{z}}\partial_z)(\mathbf{u}_e + u_z \hat{\mathbf{z}}) = \mathbf{M}\cdot (\nabla_e \mathbf{u}_e + \nabla_e u_z \hat{\mathbf{z}} + \partial_z u_z \hat{\mathbf{z}} \hat{\mathbf{z}}) \\ 
+    &= \mathbf{M}\cdot \nabla_e \mathbf{u}_e + \mathbf{M}\cdot \nabla_e u_z \hat{\mathbf{z}} - (\nabla_e \cdot \mathbf{u}_e) \mathbf{M}\cdot \hat{\mathbf{z}} \hat{\mathbf{z}} \\ 
+    &= \mathbf{M}\cdot \nabla_e \mathbf{u}_e + z\mathbf{M}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \hat{\mathbf{z}} + \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \mathbf{M}\cdot \hat{\mathbf{z}} \hat{\mathbf{z}}
+\end{aligned}\end{equation}
+where the fact that $u_z = \frac{z}{H}\frac{dH}{ds}u_s$ is used. Now we have successfully disentangled this term into three terms, in all of which the moment $\mathbf{M}$ or $z\mathbf{M}$ is multiplied to a $z$-independent field.
+Using the property that a $z$-independent field can be taken out of $z$-integral, we have
+\begin{equation}\label{eqn:induction-int-tensor-term1}
+\begin{aligned}
+    \overline{z^n \mathbf{M}\cdot \nabla\mathbf{u}} &= \overline{z^n \mathbf{M}}\cdot \nabla_e \mathbf{u}_e + \overline{z^{n+1} \mathbf{M}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \hat{\mathbf{z}} + \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \overline{z^n \mathbf{M}}\cdot \hat{\mathbf{z}} \hat{\mathbf{z}} \\ 
+    % \widetilde{\mathbf{M}\cdot \nabla\mathbf{u}} &= \widetilde{\mathbf{M}}\cdot \nabla_e \mathbf{u}_e + \widetilde{z\mathbf{M}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \hat{\mathbf{z}} + \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \widetilde{\mathbf{M}}\cdot \hat{\mathbf{z}} \hat{\mathbf{z}} \\ 
+    \widetilde{z^n \mathbf{M}\cdot \nabla\mathbf{u}} &= \widetilde{z^n \mathbf{M}}\cdot \nabla_e \mathbf{u}_e + \widetilde{z^{n+1}\mathbf{M}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \hat{\mathbf{z}} + \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \widetilde{z^n \mathbf{M}}\cdot \hat{\mathbf{z}} \hat{\mathbf{z}}
+\end{aligned}
+\end{equation}
+Next, we look at the last term on the RHS of Eq. (\ref{eqn:tensor-induction}). Since this term involves derivatives on $\mathbf{M}$, the differential operators cannot be commuted outside of the integrals, and the derivation would be more complicated.
+Note that for arbitrary field $f$, it can be shown that
+\[
+    \int_0^{\pm H} (\mathbf{u}\cdot \nabla) f\, dz = \int_0^{\pm H} (\mathbf{u}_e\cdot \nabla_e + u_z \partial_z) f\, dz = (\mathbf{u}_e\cdot \nabla_e - \partial_z u_z)\int_0^{\pm H} f\, dz
+\]
+Therefore we have
+\[\begin{aligned}
+    \overline{z^n (\mathbf{u}\cdot \nabla)f} &= (\mathbf{u}_e\cdot \nabla_e - \partial_z u_z) \overline{z^n f} - n \frac{u_z}{z} \overline{z^n f} \\ 
+    % \widetilde{(\mathbf{u}\cdot \nabla)f} &= (\mathbf{u}_e\cdot \nabla_e - \partial_z u_z) \widetilde{f} \\ 
+    \widetilde{z^n (\mathbf{u}\cdot \nabla)f} &= (\mathbf{u}_e\cdot \nabla_e - \partial_z u_z) \widetilde{z^n f} - n \frac{u_z}{z} \widetilde{z^n f}.
+\end{aligned}\]
+The integral of the last term on the RHS in Eq. (\ref{eqn:tensor-induction}) then reads
+\begin{equation}\label{eqn:induction-int-tensor-term2}
+\begin{aligned}
+    \overline{z^n (\mathbf{u}\cdot \nabla)\mathbf{M}} &= (\mathbf{u}_e\cdot \nabla_e) \overline{z^n \mathbf{M}} - \frac{n+1}{H}\frac{dH}{ds} u_s \overline{z^n \mathbf{M}} \\ 
+    % \widetilde{(\mathbf{u}\cdot \nabla)\mathbf{M}} &= (\mathbf{u}_e\cdot \nabla_e) \widetilde{\mathbf{M}} - \frac{1}{H}\frac{dH}{ds} u_s \widetilde{\mathbf{M}} \\ 
+    \widetilde{z^n (\mathbf{u}\cdot \nabla)\mathbf{M}} &= (\mathbf{u}_e\cdot \nabla_e) \widetilde{z^n \mathbf{M}} - \frac{n+1}{H}\frac{dH}{ds}u_s \widetilde{z^n\mathbf{M}}.
+\end{aligned}
+\end{equation}
+Combining with Eq. (\ref{eqn:induction-int-tensor-term1}), the full induction equation reads
+\begin{equation}\label{eqn:induction-int-tensor-full}
+\begin{aligned}
+    \frac{\partial \overline{z^n \mathbf{M}}}{\partial t} &= - (\mathbf{u}_e\cdot \nabla_e) \overline{z^n \mathbf{M}} + \frac{n+1}{H}\frac{dH}{ds} u_s \overline{z^n \mathbf{M}} + \overline{z^n \mathbf{M}}\cdot \nabla_e \mathbf{u}_e + \left(\overline{z^n \mathbf{M}}\cdot \nabla_e \mathbf{u}_e\right)^\top \\
+    &+ \overline{z^{n+1} \mathbf{M}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \hat{\mathbf{z}} + \hat{\mathbf{z}} \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \cdot \overline{z^{n+1} \mathbf{M}} + \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \left(\overline{z^n \mathbf{M}}\cdot \hat{\mathbf{z}} \hat{\mathbf{z}} + \hat{\mathbf{z}}\hat{\mathbf{z}}\cdot \overline{z^n \mathbf{M}}\right) \\ 
+    % \frac{\partial \widetilde{\mathbf{M}}}{\partial t} &= \widetilde{\mathbf{M}}\cdot \nabla_e \mathbf{u}_e + \widetilde{z\mathbf{M}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \hat{\mathbf{z}} + \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \widetilde{\mathbf{M}}\cdot \hat{\mathbf{z}} \hat{\mathbf{z}} - (\mathbf{u}_e\cdot \nabla_e) \widetilde{\mathbf{M}} + \frac{1}{H}\frac{dH}{ds} u_s \widetilde{\mathbf{M}} \\ 
+    \frac{\partial \widetilde{z^n \mathbf{M}}}{\partial t} &= - (\mathbf{u}_e\cdot \nabla_e) \widetilde{z^n \mathbf{M}} + \frac{n+1}{H}\frac{dH}{ds} u_s \widetilde{z^n \mathbf{M}} + \widetilde{z^n \mathbf{M}}\cdot \nabla_e \mathbf{u}_e + \left(\widetilde{z^n \mathbf{M}}\cdot \nabla_e \mathbf{u}_e\right)^\top \\
+    &+ \widetilde{z^{n+1} \mathbf{M}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \hat{\mathbf{z}} + \hat{\mathbf{z}} \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \cdot \widetilde{z^{n+1} \mathbf{M}} + \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \left(\widetilde{z^n \mathbf{M}}\cdot \hat{\mathbf{z}} \hat{\mathbf{z}} + \hat{\mathbf{z}}\hat{\mathbf{z}}\cdot \widetilde{z^n \mathbf{M}}\right).
+\end{aligned}
+\end{equation}
+We now have obtained the unified expression for the magnetic induction equation for the integrated quadratic moments. An interesting observation that previously went unnoticed is that there is no difference between the forms for symmetric integral and anti-symmetric integral. Now, taking the symmetric integral as an example, we see that in general, the integrated quadratic moments $\overline{z^n \mathbf{M}}$ involves itself ($\overline{z^n \mathbf{M}}$) as well as $\overline{z^{n+1} \mathbf{M}}$ in the induction term. The full equation of $\overline{z^n \mathbf{M}}$ will bring in $\overline{z^{n+1} \mathbf{M}}$, and the full equation of $\overline{z^{n+1} \mathbf{M}}$ will bring in $\overline{z^{n+2} \mathbf{M}}$, so on so forth. A full description of the dynamics of these quadratic moments will hence expand to a dynamical system of $\overline{z^n \mathbf{M}}$ with arbitrary $n\in\mathbb{N}$, or in other words, equivalent to knowing the entire behaviour of the unintegrated $\mathbf{M}$ in the $z$-direction, which of course renders the whole idea of using integrated quadratic moments moot (might as well use a 3-D magnetic field). The exact same line of arguments holds for the antisymmetric integrals $\widetilde{z^n \mathbf{M}}$ as well. 
+
+Fortunately, only two types of integrated components of the magnetic field dyadic enter the Lorentz force term. The first type concerns the purely equatorial components of the said tensor, 
+\[
+    z^n \mathbf{M}_{ee} = \mathbf{I}_e \cdot z^n \mathbf{M}\cdot \mathbf{I}_e
+\]
+where $\mathbf{I}_e$ is a projection operator to the equatorial components, and can take the form $\mathbf{I}_e = \hat{\mathbf{x}}\hat{\mathbf{x}} + \hat{\mathbf{y}}\hat{\mathbf{y}}$ or $\mathbf{I}_e = \hat{\mathbf{s}}\hat{\mathbf{s}} + \hat{\bm{\phi}}\hat{\bm{\phi}}$ depending on the basis vector of choice. Its effect is simply to select the equatorial components of the tensor, whilest discarding the $z$-component (if $\mathbf{M}$ is written in its matrix form under $(x,y,z)$ or $s,\phi,z$ coordinates, $\mathbf{I}_e$ takes the form $\mathrm{diag}(\mathbf{I}_2, 0)$). 
+It serves as identity for equatorial components, i.e. $\mathbf{I}_e\cdot \mathbf{a}_e = \mathbf{a}_e\cdot \mathbf{I}_e = \mathbf{a}_e$, but is orthogonal to the $z$-component ($\mathbf{I}_e\cdot \hat{\mathbf{z}} = \hat{\mathbf{z}}\cdot \mathbf{I}_e = \mathbf{0}$).
+The notation $\mathbf{M}_{ee}$ is introduced to denote the result of tensor $\mathbf{M}$ multiplied with $\mathbf{I}_e$ both to the left and to the right. 
+The second type of interest is the integrated form of the equatorial-vertical components, 
+\[
+    z^n \mathbf{M}_{ez} = \mathbf{I}_e \cdot z^n \mathbf{M} \cdot \hat{\mathbf{z}}
+\]
+%where $\mathbf{I}_z = \hat{\mathbf{z}}\hat{\mathbf{z}}$ is the projection operator onto the $z$-component, and takes the form $\mathrm{diag}(\mathbf{0}_2, 1)$ when the tensors are written in matrix forms under $(x,y,z)$ or $(s,\phi,z)$ coordinates. 
+The $z$-unit vector is orthogonal to equatorial components ($\hat{\mathbf{z}}\cdot \mathbf{a}_e = \mathbf{0}$), and orthogonal to the equatorial projection operator, hence $\mathbf{I}_e\cdot \hat{\mathbf{z}} = \hat{\mathbf{z}} \cdot \mathbf{I}_e = \mathbf{0}$. Note that unlike $\mathbf{M}_{ee}$ which is still a rank-2 tensor, here $\mathbf{M}_{ez}$ is a vector.
+
+A final ingredient before developing the magnetic induction terms for these components is the commutation relations of the projection operators. Tensor $\mathbf{I}_e$ commutes with all scalar fields as well as some scalar differential operators such as $\mathbf{u}_e \cdot \nabla_e$ (easily verified in Cartesian form), but not scalar differential operators such as $\partial_s$ or $\partial_\phi$. Vector $\hat{\mathbf{z}}$ commutes with all scalar fields and any scalar differential operators that does not involve $z$-derivatives. Inner products with both fields also commute with symmetric and antisymmetric integrals in the $z$ direction.
+
+With these properties in hand, let us first look at the more complicated $\mathbf{M}_{ez}$ components. Without loss of generality, I use the symmetric integral as an example. The derivation for the antisymmetric term is exactly the same. Taking the left and right product of the $\overline{z^n \mathbf{M}}$ equation with $\mathbf{I}_e$ and $\hat{\mathbf{z}}$, 
+\[\begin{aligned}
+    \frac{\partial \overline{z^n \mathbf{M}_{ez}}}{\partial t} &= \mathbf{I}_e\cdot \frac{\partial \overline{z^n \mathbf{M}}}{\partial t} \cdot \hat{\mathbf{z}} = - \mathbf{I}_e\cdot (\mathbf{u}_e\cdot \nabla_e) \overline{z^n \mathbf{M}}\cdot \hat{\mathbf{z}} + \frac{n+1}{H}\frac{dH}{ds} u_s \overline{z^n \mathbf{M}_{ez}} \\
+    &+ \mathbf{I}_e\cdot \overline{z^n \mathbf{M}}\cdot \nabla_e \mathbf{u}_e \cdot \hat{\mathbf{z}} + \left(\hat{\mathbf{z}}\cdot \overline{z^n \mathbf{M}}\cdot \nabla_e \mathbf{u}_e\cdot \mathbf{I}_e\right)^\top \\
+    &+ \mathbf{I}_e\cdot \overline{z^{n+1} \mathbf{M}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \hat{\mathbf{z}}\cdot \hat{\mathbf{z}} + \mathbf{I}_e\cdot \hat{\mathbf{z}} \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \cdot \overline{z^{n+1} \mathbf{M}}\cdot \hat{\mathbf{z}} \\
+    &+ \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \left(\mathbf{I}_e\cdot \overline{z^n \mathbf{M}}\cdot \hat{\mathbf{z}} \hat{\mathbf{z}}\cdot \hat{\mathbf{z}} + \mathbf{I}_e\cdot \hat{\mathbf{z}}\hat{\mathbf{z}}\cdot \overline{z^n \mathbf{M}}\cdot \hat{\mathbf{z}}\right) \\ 
+    %
+    &= - (\mathbf{u}_e\cdot \nabla_e) \left(\mathbf{I}_e\cdot \overline{z^n \mathbf{M}}\cdot \hat{\mathbf{z}}\right) + \frac{n+1}{H}\frac{dH}{ds} u_s \overline{z^n \mathbf{M}_{ez}} + \mathbf{0} + \left(\overline{z^n \mathbf{M}_{ze}}\cdot \nabla_e \mathbf{u}_e\right)^\top \\ 
+    &+ \overline{z^{n+1} \mathbf{M}_{ee}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) + \mathbf{0} + \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \left(\mathbf{I}_e\cdot \overline{z^n \mathbf{M}} \cdot \hat{\mathbf{z}} + \mathbf{0}\right)
+\end{aligned}\]
+where we used the orthogonality and commutation relations in the second equality. In the end, the induction equation for the equatorial-vertical components reads
+\begin{equation}\label{eqn:induction-int-tensor-e-z}
+    \begin{aligned}
+        \frac{\partial \overline{z^n \mathbf{M}_{ez}}}{\partial t} &= - (\mathbf{u}_e\cdot \nabla_e) \overline{z^n \mathbf{M}_{ez}} + \frac{n+2}{H}\frac{dH}{ds} u_s \overline{z^n \mathbf{M}_{ez}} + \left(\nabla_e \mathbf{u}_e\right)^\top\cdot \overline{z^n \mathbf{M}}_{ez} + \overline{z^{n+1} \mathbf{M}_{ee}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \\ 
+        %
+        \frac{\partial \widetilde{z^n \mathbf{M}_{ez}}}{\partial t} &= - (\mathbf{u}_e\cdot \nabla_e) \widetilde{z^n \mathbf{M}_{ez}} + \frac{n+2}{H}\frac{dH}{ds} u_s \widetilde{z^n \mathbf{M}_{ez}} + \left(\nabla_e \mathbf{u}_e\right)^\top\cdot \widetilde{z^n \mathbf{M}}_{ez} + \widetilde{z^{n+1} \mathbf{M}_{ee}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right).
+    \end{aligned}
+\end{equation}
+The integrated $z^n \mathbf{M}_{ez}$ components are induced by the interaction of the velocity field with itself, and also with higher order moments. However, instead of involving the complete set of $z^{n+1}\mathbf{M}$ integrals in the induction term, here only the equatorial components of the higher-order moments, i.e. $z^{n+1} \mathbf{M}_{ee}$ are relevant.
+The purely equatorial components of the integrated magnetic field dyadic, as it turns out, is closed in themselves. Since these components are obtained by taking left and right product of $z^n\mathbf{M}$ with $\mathbf{I}_e$, all terms that contains a $\hat{\mathbf{z}}$ vector vanish. These include all terms on the second line of equations in Eq. (\ref{eqn:induction-int-tensor-full}). The end result for the equatorial components reads
+\begin{equation}\label{eqn:induction-int-tensor-eq}
+    \begin{aligned}
+        \frac{\partial \overline{z^n \mathbf{M}_{ee}}}{\partial t} &= - (\mathbf{u}_e\cdot \nabla_e) \overline{z^n \mathbf{M}_{ee}} + \frac{n+1}{H}\frac{dH}{ds} u_s \overline{z^n \mathbf{M}_{ee}} + \overline{z^n \mathbf{M}_{ee}}\cdot \nabla_e \mathbf{u}_e + \left(\nabla_e \mathbf{u}_e\right)^\top\cdot \overline{z^n \mathbf{M}_{ee}} \\ 
+        %
+        \frac{\partial \widetilde{z^n \mathbf{M}_{ee}}}{\partial t} &= - (\mathbf{u}_e\cdot \nabla_e) \widetilde{z^n \mathbf{M}_{ee}} + \frac{n+1}{H}\frac{dH}{ds} u_s \widetilde{z^n \mathbf{M}_{ee}} + \widetilde{z^n \mathbf{M}_{ee}}\cdot \nabla_e \mathbf{u}_e + \left(\nabla_e \mathbf{u}_e\right)^\top\cdot \widetilde{z^n \mathbf{M}_{ee}}.
+    \end{aligned}
+\end{equation}
+This truncates the otherwise infinitely rising order ($n$) of moments involved. Actually, even when the integral of $z^nM_{zz}$ is included, the system is still truncated. This is because $z^n M_{zz}$ integrals are only induced by the interaction of the columnar flow with itself and $z^{n+1} \mathbf{M}_{ez}$,
+\begin{equation}\label{eqn:induction-int-tensor-z}
+\begin{aligned}
+    \frac{\partial \overline{z^n M_{zz}}}{\partial t} &= - (\mathbf{u}_e\cdot \nabla_e) \overline{z^n M_{zz}} + \frac{n+3}{H}\frac{dH}{ds} u_s \overline{z^n M_{zz}} + \overline{z^{n+1} \mathbf{M}_{ze}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) + \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \cdot \overline{z^{n+1} \mathbf{M}_{ez}} \\ 
+    %
+    \frac{\partial \widetilde{z^n M_{zz}}}{\partial t} &= - (\mathbf{u}_e\cdot \nabla_e) \widetilde{z^n M_{zz}} + \frac{n+3}{H}\frac{dH}{ds} u_s \widetilde{z^n M_{zz}} + \widetilde{z^{n+1} \mathbf{M}_{ze}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) + \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \cdot \widetilde{z^{n+1} \mathbf{M}_{ez}}
+\end{aligned}
+\end{equation}
+and the latter can still be described by a truncated dynamical system up to $z^{n+2}$. Therefore, the ideal magnetic induction equation using the columnar ansatz can be exactly formulated in a truncated dynamical system with limited orders of vertically integrated moments.
+
+
+\subsection{From the tensor form to component form}
+
+Equations (\ref{eqn:induction-int-tensor-e-z})-(\ref{eqn:induction-int-tensor-z}) provide a relatively concise form to write all ideal magnetic induction equations in the integrated form under the columnar ansatz. They contain the 8 induction equations in the PG system, 6 induction equations for the magnetic energy \citep{jackson_plesio-geostrophy_2020}, as well as all possible symmetric and antisymmetric $z$-integrals of the higher order moments that are not in the PG system.
+
+Although it may be argued that given the existing component form (14 equations in \citet{jackson_plesio-geostrophy_2020}) the tensor form seems redundant, the new form does have several unparalleled advantages.
+First, it is particularly convenient for analytical analysis.
+Second, since it is coordinate-independent, one can derive the component form under any coordinate system using these new equations, for instance, the Cartesian form or the canonical form.
+Last but not least, the forms of these equations reveal symmetry and similarity between different integrated quantities that went unnoticed previously. 
+
+Regarding symmetric and antisymmetric integrals, there are absolutely no difference in the tensor form except for changing the respective integrals. The induction equation for $\overline{M_{s\phi}}$ will be exactly the same as $\widetilde{M_{s\phi}}$ (not that this quantity matters in any way) apart from changing bars to tildes. 
+Regarding the moments with different $z^n$ prefactors, we see that they only differ in a term $\frac{n}{H}\frac{dH}{ds}u_s$ times itself. The induction equation for $\widetilde{z^2 M_{s\phi}}$ (one of the energy equations) looks almost exactly the same as that for $\overline{M_{s\phi}}$, apart from the additional $z^2$ prefactors in the relevant terms and an additional $\frac{2}{H}\frac{dH}{ds}u_s \overline{z^2 M_{s\phi}}$.
+These two observations make derivation of any component form much easier. In the end, only 6 equations need to be developed, and any of the remaining equations can be simply obtained by either changing the integral type or appending an additional term.
+
+Nevertheless, converting the tensor form to component form involves some complications. Most notably, the gradient or derivative of a tensor in curvilinear coordinates is sometimes needed. The simplest way to derive this, as I see it, is to use the formulation of the derivative of basis vectors. For cylindrical coordinates, these derivatives are
+\begin{equation}
+    \frac{\partial (\hat{\mathbf{s}}, \hat{\bm{\phi}}, \hat{\mathbf{z}})}{\partial (s, \phi, z)} = \begin{pmatrix}
+        0 & \hat{\bm{\phi}} & 0 \\ 
+        0 & -\hat{\mathbf{s}} & 0 \\
+        0 & 0 & 0
+    \end{pmatrix}
+\end{equation}
+For canonical components \citep{min_regularity_2024_submitted} under cylindrical coordinates, these are 
+\begin{equation}
+    \frac{\partial (\hat{\mathbf{e}}_+, \hat{\mathbf{e}}_-, \hat{\mathbf{z}})}{\partial (s, \phi, z)} = \begin{pmatrix}
+        0 & i\hat{\mathbf{e}}_+ & 0 \\ 
+        0 & -i\hat{\mathbf{e}}_- & 0 \\
+        0 & 0 & 0
+    \end{pmatrix}
+\end{equation}
+Let us derive some useful expressions for later use. 
+Under cylindrical coordinates, the inner product between an equatorial vector and a gradient of a rank-2 tensor reads
+\[\begin{aligned}
+    (\mathbf{u}_e\cdot \nabla_e) \mathbf{M} &= \left(u_s \partial_s + \frac{u_\phi}{s}\partial_\phi\right)
+    \left[
+        \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}^\top 
+        \begin{pmatrix}
+            M_{ss} & M_{s\phi} & M_{sz} \\ 
+            M_{\phi s} & M_{\phi\phi} & M_{\phi z} \\ 
+            M_{zs} & M_{z\phi} & M_{zz}
+        \end{pmatrix}
+        \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}
+    \right] \\
+    &= \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}^\top 
+    \left[\left(u_s \partial_s + \frac{u_\phi}{s}\partial_\phi\right) \begin{pmatrix}
+        M_{ss} & M_{s\phi} & M_{sz} \\ 
+        M_{\phi s} & M_{\phi\phi} & M_{\phi z} \\ 
+        M_{zs} & M_{z\phi} & M_{zz}
+    \end{pmatrix}\right]
+    \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix} \\ 
+    &\quad + \frac{u_\phi}{s} \left[\partial_\phi\begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}\right]^\top \begin{pmatrix}
+        M_{ss} & M_{s\phi} & M_{sz} \\ 
+        M_{\phi s} & M_{\phi\phi} & M_{\phi z} \\ 
+        M_{zs} & M_{z\phi} & M_{zz}
+    \end{pmatrix} \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix} 
+    + \frac{u_\phi}{s} \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}^\top \begin{pmatrix}
+        M_{ss} & M_{s\phi} & M_{sz} \\ 
+        M_{\phi s} & M_{\phi\phi} & M_{\phi z} \\ 
+        M_{zs} & M_{z\phi} & M_{zz}
+    \end{pmatrix} \left[\partial_\phi\begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}\right]
+\end{aligned}\]
+%
+Here we used the property that $\partial_s$ of all basis vectors in cylindrical coordinates are zero. Now, using the fact that $\partial_\phi \hat{\mathbf{s}} = \hat{\bm{\phi}}$ and $\partial_\phi \hat{\bm{\phi}} = - \hat{\mathbf{s}}$, we obtain
+%
+\begin{equation}\label{eqn:u-dot-grad-M-cyl}
+\begin{aligned}
+    (\mathbf{u}_e\cdot \nabla_e) \mathbf{M} &= \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}^\top 
+    \left[\left(\mathbf{u}_e\cdot \nabla_e\right) \begin{pmatrix}
+        M_{ss} & M_{s\phi} & M_{sz} \\ 
+        M_{\phi s} & M_{\phi\phi} & M_{\phi z} \\ 
+        M_{zs} & M_{z\phi} & M_{zz}
+    \end{pmatrix}\right]
+    \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix} \\ 
+    &\quad + \frac{u_\phi}{s} \begin{pmatrix} \hat{\bm{\phi}} \\ -\hat{\mathbf{s}} \\ \mathbf{0}\end{pmatrix}^\top \begin{pmatrix}
+        M_{ss} & M_{s\phi} & M_{sz} \\ 
+        M_{\phi s} & M_{\phi\phi} & M_{\phi z} \\ 
+        M_{zs} & M_{z\phi} & M_{zz}
+    \end{pmatrix} \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix} 
+    + \frac{u_\phi}{s} \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}^\top \begin{pmatrix}
+        M_{ss} & M_{s\phi} & M_{sz} \\ 
+        M_{\phi s} & M_{\phi\phi} & M_{\phi z} \\ 
+        M_{zs} & M_{z\phi} & M_{zz}
+    \end{pmatrix} \begin{pmatrix} \hat{\bm{\phi}} \\ -\hat{\mathbf{s}} \\ \mathbf{0}\end{pmatrix} \\ 
+    &\mkern -80mu = \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}^\top 
+    \begin{pmatrix}
+        \left(\mathbf{u}_e\cdot \nabla_e\right) M_{ss} - \frac{u_\phi}{s}(M_{\phi s} + M_{s\phi}) & \left(\mathbf{u}_e\cdot \nabla_e\right) M_{s\phi} + \frac{u_\phi}{s}(M_{ss} - M_{\phi\phi}) & \left(\mathbf{u}_e\cdot \nabla_e\right) M_{sz} - \frac{u_\phi}{s} M_{\phi z} \\[5pt] 
+        %
+        \left(\mathbf{u}_e\cdot \nabla_e\right) M_{\phi s} + \frac{u_\phi}{s}(M_{ss} - M_{\phi\phi}) & \left(\mathbf{u}_e\cdot \nabla_e\right) M_{\phi\phi} + \frac{u_\phi}{s}(M_{s\phi} + M_{\phi s}) & \left(\mathbf{u}_e\cdot \nabla_e\right) M_{\phi z} + \frac{u_\phi}{s} M_{sz} \\[5pt] 
+        %
+        \left(\mathbf{u}_e\cdot \nabla_e\right) M_{zs} - \frac{u_\phi}{s} M_{z\phi} & \left(\mathbf{u}_e\cdot \nabla_e\right) M_{z\phi} + \frac{u_\phi}{s} M_{zs} & \left(\mathbf{u}_e\cdot \nabla_e\right) M_{zz}
+    \end{pmatrix}
+    \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}
+\end{aligned}\end{equation}
+%
+The vector gradient in cylindrical coordinates is more well known, and can be found in various sources:
+\begin{equation}\label{eqn:grad-u-cyl}
+\begin{aligned}
+    \nabla \mathbf{u} &= \left(\hat{\mathbf{s}}\partial_s + \hat{\bm{\phi}}\frac{1}{s}\partial_\phi + \hat{\mathbf{z}}\partial_z\right) (u_s \hat{\mathbf{s}} + u_\phi \hat{\bm{\phi}} + u_z \hat{\mathbf{z}}) \\
+    &= \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}^\top 
+    \begin{pmatrix}
+        \partial_s u_s & \partial_s u_\phi & \partial_s u_z \\ 
+        \frac{1}{s}(\partial_\phi u_s - u_\phi) & \frac{1}{s}(\partial_\phi u_\phi + u_s) & \frac{1}{s} \partial_\phi u_z \\ 
+        \partial_z u_s & \partial_z u_\phi & \partial_z u_z
+    \end{pmatrix}
+    \begin{pmatrix}\hat{\mathbf{s}} \\ \hat{\bm{\phi}} \\ \hat{\mathbf{z}}\end{pmatrix}
+\end{aligned}\end{equation}
+
+We can similarly derive these expressions for the canonical components. Note, however, that I will not be using a set of coordinates consistent with the canonical components (NOT to be named canonical coordinates!). It seems that while it is not impossible to design a set of coordinates (say, for instance, $x_{\pm} = se^{\mp i\phi}$) that give some desired properties such as the canonical basis vectors, these coordinates will not be desired orthogonal curvilinear coordinates anyways, and are hence impratical to use. Therefore, I shall restrict myself to expressions where vector/tensor components are written in canonical components, whereas all these components are still functions of cylindrical coordinates, and their derivatives are taken in the same system. The gradient operator can be derived from the cylindrical coordinates as 
+%
+\[\begin{aligned}
+    \nabla &= \hat{\mathbf{s}} \partial_s + \hat{\bm{\phi}} \frac{1}{s} \partial_\phi + \hat{\mathbf{z}}\partial_z = \frac{1}{\sqrt{2}}(\hat{\mathbf{e}}_+ + \hat{\mathbf{e}}_-) \partial_s + \frac{i}{\sqrt{2}}(\hat{\mathbf{e}}_+ - \hat{\mathbf{e}}_-) \frac{1}{s} \partial_\phi + \hat{\mathbf{z}}\partial_z \\
+    &= \hat{\mathbf{e}}_+ \frac{1}{\sqrt{2}}\left(\partial_s + \frac{i}{s}\partial_\phi\right) + \hat{\mathbf{e}}_- \frac{1}{\sqrt{2}}\left(\partial_s - \frac{i}{s}\partial_\phi\right) + \hat{\mathbf{z}} \partial_z
+\end{aligned}\]
+%
+Using the derivative of the canonical basis vectors, we have the vector gradient
+%
+\begin{equation}\label{eqn:grad-u-canonical}
+\begin{aligned}
+    \nabla \mathbf{u} &= \left[\hat{\mathbf{e}}_+ \frac{1}{\sqrt{2}}\left(\partial_s + \frac{i}{s}\partial_\phi\right) + \hat{\mathbf{e}}_- \frac{1}{\sqrt{2}}\left(\partial_s - \frac{i}{s}\partial_\phi\right) + \hat{\mathbf{z}} \partial_z\right] \left(u_+ \hat{\mathbf{e}}_+ + u_- \hat{\mathbf{e}}_- + u_z \hat{\mathbf{z}}\right) \\ 
+    &= \begin{pmatrix} \hat{\mathbf{e}}_+ \\ \hat{\mathbf{e}}_- \\ \hat{\mathbf{z}} \end{pmatrix}^\top 
+    \begin{pmatrix}
+        \frac{1}{\sqrt{2}} \left(\partial_s + \frac{i}{s}\partial_\phi - \frac{1}{s}\right) u_+ & \frac{1}{\sqrt{2}} \left(\partial_s + \frac{i}{s}\partial_\phi + \frac{1}{s}\right) u_- & \frac{1}{\sqrt{2}} \left(\partial_s + \frac{i}{s}\partial_\phi\right) u_z \\ 
+        \frac{1}{\sqrt{2}} \left(\partial_s - \frac{i}{s}\partial_\phi + \frac{1}{s}\right) u_+ & \frac{1}{\sqrt{2}} \left(\partial_s - \frac{i}{s}\partial_\phi - \frac{1}{s}\right) u_- & \frac{1}{\sqrt{2}} \left(\partial_s - \frac{i}{s}\partial_\phi\right) u_z \\ 
+        \partial_z u_+ & \partial_z u_- & \partial_z u_z
+    \end{pmatrix}
+    \begin{pmatrix} \hat{\mathbf{e}}_+ \\ \hat{\mathbf{e}}_- \\ \hat{\mathbf{z}} \end{pmatrix}
+\end{aligned}
+\end{equation}
+%
+Hereinafter I shall denote $(\partial_s \pm \frac{i}{s}\partial_\phi)/\sqrt{2}$ as $\partial_{\pm}$ for brevity. Although without a proper coordinate system, $\partial_+ f$ and $\partial_- f$ describes the $\hat{\mathbf{e}}_+$ and $\hat{\mathbf{e}}_-$ components of the scalar gradient $\nabla f$ respectively.
+Now let us turn to the vector-tensor-gradient product. A first observation is that the canonical basis vectors satisfy
+%
+\[\begin{gathered}
+    \hat{\mathbf{e}}_\pm \cdot \hat{\mathbf{e}}_\pm = 0,\quad 
+    \hat{\mathbf{e}}_\pm \cdot \hat{\mathbf{e}}_\mp = 1 \\ 
+    \hat{\mathbf{e}}_\pm^* \cdot \hat{\mathbf{e}}_\pm = 1,\quad 
+    \hat{\mathbf{e}}_\pm^* \cdot \hat{\mathbf{e}}_\mp = 0
+\end{gathered}
+\]
+%
+and hence in order to compute the inner product between two vectors, $\mathbf{a}, \mathbf{b} \in \mathbb{R}^3$, one can either take their respective coordinates, but with complex conjugate, or take the product of their cross coordinates,
+%
+\[
+    \mathbf{a}\cdot \mathbf{b} = a_+^* b_+ + a_-^* b_- + a_z b_z = a_+ b_- + a_- b_+ + a_z b_z.
+\]
+%
+Similarly, to obtain the component of a vector/tensor, we have either take the inner product with the complex conjugate unit vector, or take the product with the cross unit vector:
+%
+\[
+\begin{gathered}
+    u_+ = \mathbf{u} \cdot \hat{\mathbf{e}}_+^* = \mathbf{u} \cdot \hat{\mathbf{e}}_-, \quad 
+    u_- = \mathbf{u} \cdot \hat{\mathbf{e}}_-^* = \mathbf{u} \cdot \hat{\mathbf{e}}_+ \\ 
+    M_{++} = \hat{\mathbf{e}}_+^* \cdot \mathbf{M} \cdot \hat{\mathbf{e}}_+^* = \hat{\mathbf{e}}_- \cdot \mathbf{M} \cdot \hat{\mathbf{e}}_-,\quad 
+    M_{--} = \hat{\mathbf{e}}_-^* \cdot \mathbf{M} \cdot \hat{\mathbf{e}}_-^* = \hat{\mathbf{e}}_+ \cdot \mathbf{M} \cdot \hat{\mathbf{e}}_+ \\ 
+    M_{+-} = \hat{\mathbf{e}}_+^* \cdot \mathbf{M} \cdot \hat{\mathbf{e}}_-^* = \hat{\mathbf{e}}_- \cdot \mathbf{M} \cdot \hat{\mathbf{e}}_+,\quad 
+    M_{-+} = \hat{\mathbf{e}}_-^* \cdot \mathbf{M} \cdot \hat{\mathbf{e}}_+^* = \hat{\mathbf{e}}_+ \cdot \mathbf{M} \cdot \hat{\mathbf{e}}_-
+\end{gathered}
+\]
+%
+I shall use the first convention, but for real fields it is always true that components such as $u_+$ and $u_-$ are complex conjugates. The operator $\mathbf{u}_e\cdot \nabla_e$ hence reads $u_+^* \partial_+ + u_-^* \partial_-$. The vector-tensor-gradient product takes the form
+\begin{equation}\label{eqn:u-dot-grad-M-canonical}
+\begin{aligned}
+    (\mathbf{u}_e\cdot \nabla_e) \mathbf{M} &= (u_+^* \partial_+ + u_-^* \partial_-) \mathbf{M} = \begin{pmatrix}\hat{\mathbf{e}}_+ \\ \hat{\mathbf{e}}_- \\ \hat{\mathbf{z}}\end{pmatrix}^\top 
+    \left[\left(\mathbf{u}_e\cdot \nabla_e\right) \begin{pmatrix}
+        M_{++} & M_{+-} & M_{+z} \\ 
+        M_{-+} & M_{--} & M_{-z} \\ 
+        M_{z+} & M_{z-} & M_{zz}
+    \end{pmatrix}\right]
+    \begin{pmatrix}\hat{\mathbf{e}}_+ \\ \hat{\mathbf{e}}_- \\ \hat{\mathbf{z}}\end{pmatrix} \\ 
+    &\quad + \frac{u_+ - u_-}{i\sqrt{2} s} \begin{pmatrix} i\hat{\mathbf{e}}_+ \\ -i\hat{\mathbf{e}}_- \\ \mathbf{0}\end{pmatrix}^\top \begin{pmatrix}
+        M_{++} & M_{+-} & M_{+z} \\ 
+        M_{-+} & M_{--} & M_{-z} \\ 
+        M_{z+} & M_{z-} & M_{zz}
+    \end{pmatrix} \begin{pmatrix}\hat{\mathbf{e}}_+ \\ \hat{\mathbf{e}}_- \\ \hat{\mathbf{z}}\end{pmatrix} 
+    + \frac{u_+ - u_-}{i\sqrt{2} s} \begin{pmatrix}\hat{\mathbf{e}}_+ \\ \hat{\mathbf{e}}_- \\ \hat{\mathbf{z}}\end{pmatrix}^\top \begin{pmatrix}
+        M_{++} & M_{+-} & M_{+z} \\ 
+        M_{-+} & M_{--} & M_{-z} \\ 
+        M_{z+} & M_{z-} & M_{zz}
+    \end{pmatrix} \begin{pmatrix} i\hat{\mathbf{e}}_+ \\ -i\hat{\mathbf{e}}_- \\ \mathbf{0}\end{pmatrix} \\ 
+    &\mkern -40mu = \begin{pmatrix}\hat{\mathbf{e}}_+ \\ \hat{\mathbf{e}}_- \\ \hat{\mathbf{z}}\end{pmatrix}^\top 
+    \begin{pmatrix}
+        \left(\mathbf{u}_e\cdot \nabla_e + \sqrt{2} \frac{u_+ - u_-}{s}\right) M_{++} & \left(\mathbf{u}_e\cdot \nabla_e\right) M_{+-} & \left(\mathbf{u}_e\cdot \nabla_e + \frac{\sqrt{2}}{2} \frac{u_+ - u_-}{s}\right) M_{+z} \\[5pt] 
+        %
+        \left(\mathbf{u}_e\cdot \nabla_e\right) M_{-+} & \left(\mathbf{u}_e\cdot \nabla_e - \sqrt{2} \frac{u_+ - u_-}{s}\right) M_{--} & \left(\mathbf{u}_e\cdot \nabla_e - \frac{\sqrt{2}}{2} \frac{u_+ - u_-}{s}\right) M_{-z} \\[5pt] 
+        %
+        \left(\mathbf{u}_e\cdot \nabla_e + \frac{\sqrt{2}}{2} \frac{u_+ - u_-}{s}\right) M_{z+} & \left(\mathbf{u}_e\cdot \nabla_e - \frac{\sqrt{2}}{2} \frac{u_+ - u_-}{s}\right) M_{z-} & \left(\mathbf{u}_e\cdot \nabla_e\right) M_{zz}
+    \end{pmatrix}
+    \begin{pmatrix}\hat{\mathbf{e}}_+ \\ \hat{\mathbf{e}}_- \\ \hat{\mathbf{z}}\end{pmatrix}
+\end{aligned}
+\end{equation}
+
+
+\subsection{Specialisation for cylindrical components}
+
+Now I will given an example of how the tensor form can be converted to cylindrical component form. Let us look at the most complicated, the $M_{\phi z}$ component. Using eqs. (\ref{eqn:u-dot-grad-M-cyl}) and (\ref{eqn:grad-u-cyl}) on eq. (\ref{eqn:induction-int-tensor-e-z}),
+%
+\[\begin{aligned}
+    \frac{\partial \widetilde{z^n M_{\phi z}}}{\partial t} &= \hat{\bm{\phi}}\cdot \frac{\partial \widetilde{z \mathbf{M}_{ez}}}{\partial t} = - \hat{\bm{\phi}}\cdot (\mathbf{u}_e\cdot \nabla_e) \widetilde{z^n \mathbf{M}} \cdot \hat{\mathbf{z}} + \frac{n+2}{H}\frac{dH}{ds} u_s \widetilde{z^n M_{\phi z}} \\
+    &\mkern 115mu + \hat{\bm{\phi}}\cdot \left(\nabla_e \mathbf{u}_e\right)^\top\cdot \widetilde{z^n \mathbf{M}}_{ez} + \widetilde{z^{n+1} \mathbf{M}_{\phi e}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \\ 
+    %
+    &= - \left(\mathbf{u}_e\cdot \nabla_e\right) \widetilde{z^n M_{\phi z}} - \frac{u_\phi}{s} \widetilde{z^n M_{sz}} + \frac{n+2}{H}\frac{dH}{ds} u_s \widetilde{z^n M_{\phi z}} \\ 
+    &\quad + \left(\partial_s u_\phi \hat{\mathbf{s}} + \frac{1}{s}(\partial_\phi u_\phi + u_s) \hat{\bm{\phi}}\right)\cdot \widetilde{z^n \mathbf{M}_{ez}} + \widetilde{z^{n+1} \mathbf{M}_{\phi e}}\cdot \left(\partial_s \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \hat{\mathbf{s}} + \frac{1}{sH}\frac{dH}{ds}\frac{\partial u_s}{\partial \phi}\hat{\bm{\phi}}\right) \\ 
+    %
+    &= - \left(\mathbf{u}_e\cdot \nabla_e\right) \widetilde{z^n M_{\phi z}} + \left(\frac{n+2}{H}\frac{dH}{ds} u_s + \frac{1}{s}(\partial_\phi u_\phi + u_s)\right) \widetilde{z^n M_{\phi z}} + \left(\partial_s u_\phi - \frac{u_\phi}{s}\right) \widetilde{z^n M_{sz}} \\ 
+    &\quad + \partial_s \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \widetilde{z^{n+1} M_{s\phi}} + \frac{1}{sH}\frac{dH}{ds}\frac{\partial u_s}{\partial \phi} \widetilde{z^{n+1} M_{\phi\phi}}
+\end{aligned}\]
+%
+Using the divergence-free property of the velocity field,
+%
+\[\begin{aligned}
+    \frac{\partial \widetilde{z^n M_{\phi z}}}{\partial t} &= - (\mathbf{u}_e\cdot \nabla_e) \widetilde{z^n M_{\phi z}} + \left((n+1)\frac{\partial u_z}{\partial z} - \frac{\partial u_s}{\partial s}\right) \widetilde{z^n M_{\phi z}} + s\partial_s\left(\frac{u_\phi}{s}\right) \widetilde{z^n M_{sz}} \\
+    &\quad + \partial_s \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \widetilde{z^{n+1} M_{s\phi}} + \frac{1}{sH}\frac{dH}{ds}\frac{\partial u_s}{\partial \phi} \widetilde{z^{n+1} M_{\phi\phi}}
+\end{aligned}\]
+%
+which, at $n=0$, gives precisely the $\widetilde{M_{\phi z}}$ induction equation in the PG model \citep[Eq. 4.26 in][]{jackson_plesio-geostrophy_2020}. If the antisymmetric integrals are all changed into symmetric integrals and $n=1$ is taken, we recover Eq. 4.37 in the energy equations (ditto.).
+
+
+\subsection{Specialisation for canonical components}
+
+Next I will given an example of how the induction equation on the tensor can be converted to the equations on canonical components (still under cylindrical coordinates). Similarly, let us look at the $M_{+ z}$ component. Using eqs. (\ref{eqn:grad-u-canonical})-(\ref{eqn:u-dot-grad-M-canonical}) on eq. (\ref{eqn:induction-int-tensor-e-z}),
+%
+\[\begin{aligned}
+    \frac{\partial \widetilde{z^n M_{+ z}}}{\partial t} &= \hat{\mathbf{e}}_+^* \cdot \frac{\partial \widetilde{z \mathbf{M}_{ez}}}{\partial t} = - \hat{\mathbf{e}}_+^* \cdot (\mathbf{u}_e\cdot \nabla_e) \widetilde{z^n \mathbf{M}} \cdot \hat{\mathbf{z}} + \frac{n+2}{H}\frac{dH}{ds} u_s \widetilde{z^n M_{+ z}} \\
+    &\mkern 115mu + \hat{\mathbf{e}}_+^* \cdot \left(\nabla_e \mathbf{u}_e\right)^\top\cdot \widetilde{z^n \mathbf{M}}_{ez} + \widetilde{z^{n+1} \mathbf{M}_{+ e}}\cdot \nabla_e \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \\ 
+    %
+    &= - \left(\mathbf{u}_e\cdot \nabla_e + \frac{u_+ - u_-}{\sqrt{2} s}\right) \widetilde{z^n M_{+ z}} + (n+2) (\partial_z u_z) \widetilde{z^n M_{+ z}} \\ 
+    &\quad + \left(\left(\partial_+ - \frac{1}{\sqrt{2}s}\right)u_+ \hat{\mathbf{e}}_+ + \left(\partial_- + \frac{1}{\sqrt{2}s}\right) u_+ \hat{\mathbf{e}}_-\right)\cdot \widetilde{z^n \mathbf{M}_{ez}} + \widetilde{z^{n+1} \mathbf{M}_{+ e}}\cdot \left(\hat{\mathbf{e}}_+ \partial_+ + \hat{\mathbf{e}}_- \partial_-\right) \left(\partial_z u_z\right) \\ 
+    %
+    &= - \left(\mathbf{u}_e\cdot \nabla_e\right) \widetilde{z^n M_{+z}} + \left((n+2) \partial_z u_z + \left(\partial_- + \frac{1}{\sqrt{2}s}\right) u_+ - \frac{u_+ - u_-}{\sqrt{2}s}\right) \widetilde{z^n M_{+z}} \\
+    &\quad + \left(\left(\partial_+ - \frac{1}{\sqrt{2}s}\right)u_+\right) \widetilde{z^n M_{-z}} + \left(\partial_- \partial_z u_z\right) \widetilde{z^{n+1} M_{++}} + (\partial_+ \partial_z u_z) \widetilde{z^{n+1} M_{+-}}
+\end{aligned}\]
+%
+If we keep $\mathbf{u}$ in cylindrical components and use the solenoidal property, we have
+\[
+\begin{aligned}
+    &(n+2) \partial_z u_z + \left(\partial_- + \frac{1}{\sqrt{2}s}\right) u_+ - \frac{u_+ - u_-}{\sqrt{2}s} = (n+2) \partial_z u_z + \frac{1}{2}\left(\partial_s - \frac{i}{s}\partial_\phi + \frac{1}{s}\right) \left(u_s + i u_\phi\right) - i \frac{u_\phi}{s} \\ 
+    &\qquad = \frac{1}{2} \left[(2n+4) \partial_z u_z + \left(\partial_s u_s + i\partial_s u_\phi - \frac{i}{s}\partial_\phi u_s + \frac{\partial_\phi u_\phi}{s} + \frac{u_s}{s} + i\frac{u_\phi}{s}\right) - i 2 \frac{u_\phi}{s}\right] \\ 
+    &\qquad = \frac{1}{2} \left[(2n+3) \partial_z u_z + \left(\partial_z u_z + \partial_s u_s + \frac{u_s}{s} + \frac{1}{s} \partial_\phi u_\phi \right) + i\partial_s u_\phi - \frac{i}{s}\partial_\phi u_s - i \frac{u_\phi}{s}\right] \\ 
+    &\qquad = \frac{1}{2} \left[(2n+3) \partial_z u_z + is \partial_s \left(\frac{u_\phi}{s}\right) - \frac{i}{s} \partial_\phi u_s\right] \\ 
+    &\left(\partial_+ - \frac{1}{\sqrt{2}s}\right) u_+ = \frac{1}{2}\left(\partial_s + \frac{i}{s}\partial_\phi - \frac{1}{s}\right) \left(u_s + iu_\phi\right) = \frac{1}{2} \left(\partial_s u_s - \frac{1}{s}\partial_\phi u_\phi - \frac{u_s}{s} + i \partial_s u_\phi - i \frac{u_\phi}{s} + \frac{i}{s} \partial_\phi u_s\right) \\ 
+    &\qquad = \frac{1}{2} \left[2\partial_s u_s + \partial_z u_z + is \partial_s \left(\frac{u_\phi}{s}\right) + \frac{i}{s} \partial_\phi u_s\right] \\ 
+    &\partial_- \partial_z u_z = \frac{1}{\sqrt{2}} \left(\partial_s - \frac{i}{s} \partial_\phi\right) \left(\frac{1}{H}\frac{dH}{ds}u_s\right) = \frac{1}{\sqrt{2}} \left[\partial_s \left(\frac{u_s}{H}\frac{dH}{ds}\right) - \frac{i}{sH}\frac{dH}{ds} \partial_\phi u_s\right] \\ 
+    &\partial_+ \partial_z u_z = \frac{1}{\sqrt{2}} \left(\partial_s + \frac{i}{s} \partial_\phi\right) \left(\frac{1}{H}\frac{dH}{ds}u_s\right) = \frac{1}{\sqrt{2}} \left[\partial_s \left(\frac{u_s}{H}\frac{dH}{ds}\right) + \frac{i}{sH}\frac{dH}{ds} \partial_\phi u_s\right] \\ 
+\end{aligned}
+\]
+%
+One can write the canonical form alternatively as
+%
+\[\begin{aligned}
+    &\frac{\partial \widetilde{z^n M_{+ z}}}{\partial t} = - \left(\mathbf{u}_e\cdot \nabla_e\right) \widetilde{z^n M_{+z}} \\
+    &\quad + \frac{1}{2} \left[(2n+3) \partial_z u_z + is \partial_s \left(\frac{u_\phi}{s}\right) - \frac{i}{s} \partial_\phi u_s\right] \widetilde{z^n M_{+z}} + \frac{1}{2} \left[2\partial_s u_s + \partial_z u_z + is \partial_s \left(\frac{u_\phi}{s}\right) + \frac{i}{s} \partial_\phi u_s\right] \widetilde{z^n M_{-z}} \\
+    &\quad + \frac{1}{\sqrt{2}} \left[\partial_s \left(\frac{u_s}{H}\frac{dH}{ds}\right) - \frac{i}{sH}\frac{dH}{ds} \partial_\phi u_s\right] \widetilde{z^{n+1} M_{++}} + \frac{1}{\sqrt{2}} \left[\partial_s \left(\frac{u_s}{H}\frac{dH}{ds}\right) + \frac{i}{sH}\frac{dH}{ds} \partial_\phi u_s\right] \widetilde{z^{n+1} M_{+-}}
+\end{aligned}\]
+%
+yielding exactly the induction equation for $\widetilde{M_{z+}}$ in Section \ref{sec:evo-canonical} at $n=0$.
+% Using the divergence-free property of the velocity field,
+% %
+% \[\begin{aligned}
+%     \frac{\partial \widetilde{z^n M_{\phi z}}}{\partial t} &= - (\mathbf{u}_e\cdot \nabla_e) \widetilde{z^n M_{\phi z}} + \left((n+1)\frac{\partial u_z}{\partial z} - \frac{\partial u_s}{\partial s}\right) \widetilde{z^n M_{\phi z}} + s\partial_s\left(\frac{u_\phi}{s}\right) \widetilde{z^n M_{sz}} \\
+%     &\quad + \partial_s \left(\frac{1}{H}\frac{dH}{ds}u_s\right) \widetilde{z^{n+1} M_{s\phi}} + \frac{1}{sH}\frac{dH}{ds}\frac{\partial u_s}{\partial \phi} \widetilde{z^{n+1} M_{\phi\phi}}
+% \end{aligned}\]
+

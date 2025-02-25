@@ -8,6 +8,7 @@ import sympy
 from ..sympy_supp import vector_calculus_3d as v3d
 from .core import *
 from . import base
+from typing import Optional
 
 
 def integrate_sym(field):
@@ -170,4 +171,19 @@ def forcing_term(psi_eqn: sympy.Eq, dyn_vars: base.LabeledCollection):
                 F_ext += term
                 break
     return F_ext
-                
+
+
+def slope_subs(expr: sympy.Expr, slope_val: sympy.Expr = -s/H, max_iter: Optional[int] = None):
+    """Substition of the slope factor dH/ds
+    """
+    slope = sympy.diff(H, s)
+    slope_dict = {slope: slope_val}
+    expr = expr.doit()
+    i_iter = 0
+    while expr.has(slope):
+        if max_iter is not None and i_iter >= max_iter:
+            break
+        expr = expr.subs(slope_dict).doit()
+        i_iter += 1
+    
+    return expr

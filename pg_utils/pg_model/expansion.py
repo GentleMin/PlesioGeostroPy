@@ -23,7 +23,7 @@ import sympy
 from sympy import Rational, jacobi
 
 from . import base
-from .core import s, H_s
+from .core import s, H, H_s
 import numpy as np
 
 import json
@@ -135,6 +135,7 @@ class FourierExpansions(SpectralExpansion):
         
         :returns: expression in the Fourier domain
         """
+        # print(expr, ansatz, basis, sep='\n')
         expr_fourier = expr.subs(ansatz).doit()/basis
         return expr_fourier
 
@@ -217,6 +218,11 @@ class InnerProduct1D(sympy.Expr):
         """
         if hints.get("integral", False):
             return self.integral_form()
+        else:
+            return InnerProduct1D(
+                self._opd_A.doit(), self._opd_B.doit(), self._wt.doit(), 
+                self._int_var, self._bound[0], self._bound[1]
+            )
     
     def integrand(self):
         """Get the explicit form of the integrand
@@ -744,6 +750,31 @@ def placeholder_collection(names, notation: str, *vars) -> base.LabeledCollectio
     return placeholder
 
 
+def jacobi_1_side(
+    k: Union[sympy.Integer, int], 
+    n: Union[sympy.Integer, int], 
+    alpha: sympy.Expr,
+    beta: sympy.Expr,
+    f_arg: sympy.Expr = s
+):
+    """One-sided Jacobi polynomial
+    """
+    return f_arg**k*jacobi(n, alpha, beta, xi_s.subs({s: f_arg}))
+
+
+def jacobi_2_side(
+    k1: Union[sympy.Integer, int],
+    k2: Union[sympy.Integer, int],
+    alpha: sympy.Expr,
+    beta: sympy.Expr,
+    f1_arg: sympy.Expr = H_s,
+    f2_arg: sympy.Expr = s
+):
+    """Two-sided Jacobi polynomial
+    """
+    return f1_arg**k1*f2_arg**k2*jacobi(n, alpha, beta, xi_s.subs({s: f2_arg}))
+
+
 def orth_pref_jacobi(pow_H: Union[sympy.Expr, int], 
     pow_s: Union[sympy.Expr, int]) -> sympy.Expr:
     """Form the basis given on the power of s and H
@@ -754,7 +785,7 @@ def orth_pref_jacobi(pow_H: Union[sympy.Expr, int],
     :param pow_s: power in s
     :returns: desired form of basis
     """
-    return (H_s**pow_H*s**pow_s)*jacobi(n, pow_H, pow_s - Rational(1, 2), xi_s)
+    return (H**pow_H*s**pow_s)*jacobi(n, pow_H, pow_s - Rational(1, 2), xi_s)
 
 
 pgvar_s = base.CollectionPG(
@@ -778,6 +809,7 @@ pgvar_s = base.CollectionPG(
     # Magnetic fields at the boundary
     # Note here Br_b is not in 2-D disk, hence there is no 
     # radial (in cylindrical coordinates) function for it
+    Br_b = sympy.Function(r"B_r^1")(s),
     Bs_p = sympy.Function(r"B_s^{+m}")(s),
     Bp_p = sympy.Function(r"B_\phi^{+m}")(s),
     Bz_p = sympy.Function(r"B_z^{+m}")(s),

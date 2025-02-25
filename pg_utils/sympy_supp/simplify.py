@@ -101,3 +101,32 @@ def process_leaf_node(collected_tree: dict,
             process_leaf_node(collected_tree[sym], leaf_op)
         else:
             raise TypeError
+
+
+C_tmp = sympy.Symbol(r'C')
+
+
+def summands_lindep(expr: sympy.Expr, term_expr: sympy.Expr):
+    """Collect the linear coefficient in an expression
+    """
+    collected = expr.subs({term_expr: C_tmp*term_expr}).doit()
+    return collected.coeff(C_tmp)
+
+
+def summands_dep(expr: sympy.Expr, term_expr: sympy.Expr):
+    """Collect all terms in a summation that are dependent on expression 
+    """
+    collected = expr.as_independent(term_expr, as_Add=True)[1]
+    return collected
+
+
+def collect_by_type(expr: sympy.Expr, base_type, **kwargs):
+    """Group all terms in a summation by types
+    """
+    return sympy.collect(expr, expr.atoms(base_type), **kwargs)
+
+
+def collect_jacobi(expr: sympy.Expr, **kwargs):
+    """Collect all terms by Jacobi polynomials
+    """
+    return collect_by_type(expr, sympy.jacobi, **kwargs)

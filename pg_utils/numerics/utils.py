@@ -6,7 +6,7 @@
 import numpy as np
 import gmpy2 as gp
 import mpmath as mp
-from typing import Union, List, Optional, Callable, Any, Literal
+from typing import Union, List, Optional, Callable, Any, Literal, Tuple
 from scipy.sparse import coo_array
 from dataclasses import dataclass
 
@@ -324,6 +324,217 @@ def to_mpmath_matrix(dense_array: np.ndarray, prec: int):
 
 """
 -----------------------------
+Coordinate transforms
+-----------------------------
+"""
+
+def is_shape_broadcastable(shape_1: tuple, shape_2: tuple) -> bool:
+    """Check if two shapes are compatible in broadcast
+    """
+    for dim1, dim2 in zip(shape_1[::-1], shape_2[::-1]):
+        if dim1 == 1 or dim2 == 1 or dim1 == dim2:
+            continue
+        else:
+            return False
+    return True
+
+
+def is_broadcastable(array_1: np.ndarray, array_2: np.ndarray) -> bool:
+    """Check if two arrays are compatible in broadcast
+    """
+    return is_shape_broadcastable(array_1.shape, array_2.shape)
+
+
+def coord_cart2cyl(
+    x: np.ndarray, y: np.ndarray, z: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Coordinate transform: Cartesian to cylindrical
+    """
+    assert is_broadcastable(x, y) and is_broadcastable(x, z), \
+        "Shapes {}, {}, {} incompatible".format(x.shape, y.shape, z.shape)
+    s = np.sqrt(x**2 + y**2)
+    p = np.arctan2(y, x)
+    return s, p, z
+
+
+def coord_cyl2cart(
+    s: np.ndarray, p: np.ndarray, z: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Coordinate transform: cylindrical to Cartesian
+    """
+    assert is_broadcastable(s, p) and is_broadcastable(s, z), \
+        "Shapes {}, {}, {} incompatible".format(s.shape, p.shape, z.shape)
+    x = s*np.cos(p)
+    y = s*np.sin(p)
+    return x, y, z
+
+
+def coord_cart2sph(
+    x: np.ndarray, y: np.ndarray, z: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Coordinate transform: Cartesian to spherical
+    """
+    assert is_broadcastable(x, y) and is_broadcastable(x, z), \
+        "Shapes {}, {}, {} incompatible".format(x.shape, y.shape, z.shape)
+    r = np.sqrt(x**2 + y**2 + z**2)
+    t = np.arccos(z/r)
+    p = np.arctan2(y, x)
+    return r, t, p
+
+
+def coord_sph2cart(
+    r: np.ndarray, t: np.ndarray, p: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Coordinate transform: Spherical to Cartesian
+    """
+    assert is_broadcastable(r, t) and is_broadcastable(r, p), \
+        "Shapes {}, {}, {} incompatible".format(r.shape, t.shape, p.shape)
+    z = r*np.cos(t)
+    s = r*np.sin(t)
+    x = s*np.cos(p)
+    y = s*np.sin(p)
+    return x, y, z
+
+
+def vector_cart2cyl(
+    vx: np.ndarray, vy: np.ndarray, vz: np.ndarray,
+    x: np.ndarray, y: np.ndarray, z: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Vector transform: Cartesian to cylindrical
+    """
+    assert is_broadcastable(vx, vy) and is_broadcastable(vx, vz), \
+        "Shapes {}, {}, {} incompatible".format(vx.shape, vy.shape, vz.shape)
+    s, p, _ = coord_cart2cyl(x, y, z)
+    c_p, s_p = np.cos(p), np.sin(p)
+    vs = vx*c_p + vy*s_p
+    vp = -vx*s_p + vy*c_p
+    return vs, vp, vz, s, p, z
+
+
+def vector_cyl2cart(
+    vs: np.ndarray, vp: np.ndarray, vz: np.ndarray,
+    s: np.ndarray, p: np.ndarray, z: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Vector transform: Cartesian to cylindrical
+    """
+    assert is_broadcastable(vs, vp) and is_broadcastable(vs, vz), \
+        "Shapes {}, {}, {} incompatible".format(vs.shape, vp.shape, vz.shape)
+    x, y, _ = coord_cyl2cart(s, p, z)
+    c_p, s_p = np.cos(p), np.sin(p)
+    vx = vs*c_p - vp*s_p
+    vy = vs*s_p + vp*c_p
+    return vx, vy, vz, x, y, z
+
+
+def vector_cart2sph(
+    vx: np.ndarray, vy: np.ndarray, vz: np.ndarray,
+    x: np.ndarray, y: np.ndarray, z: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Vector transform: Cartesian to spherical
+    """
+    assert is_broadcastable(vx, vy) and is_broadcastable(vx, vz), \
+        "Shapes {}, {}, {} incompatible".format(vx.shape, vy.shape, vz.shape)
+    vs, vp, _, s, p, _ = vector_cart2cyl(vx, vy, vz, x, y, z)
+    r = np.sqrt(s**2 + z**2)
+    t = np.arccos(z/r)
+    c_t, s_t = np.cos(t), np.sin(t)
+    vr = vz*c_t + vs*s_t
+    vt = -vz*s_t + vs*c_t
+    return vr, vt, vp, r, t, p
+
+
+def vector_sph2cart(
+    vr: np.ndarray, vt: np.ndarray, vp: np.ndarray,
+    r: np.ndarray, t: np.ndarray, p: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Vector transform: spherical to Cartesian
+    """
+    assert is_broadcastable(vr, vt) and is_broadcastable(vr, vp), \
+        "Shapes {}, {}, {} incompatible".format(vr.shape, vt.shape, vp.shape)
+    c_t, s_t = np.cos(t), np.sin(t)
+    s, z = r*s_t, r*c_t
+    vz = vr*c_t - vt*s_t
+    vs = -vr*s_t + vt*c_t
+    vx, vy, _, x, y, z = vector_cyl2cart(vs, vp, vz, s, p, z)
+    return vx, vy, vz, x, y, z
+
+
+"""
+----------------------------------
+Non-dimensionalisation transforms
+----------------------------------
+"""
+
+def tscale_convert(
+    in_tscale: Literal['rotation', 'Alfven', 'diffusion_mag', 'diffusion_mag_LJ2022'],
+    out_tscale: Literal['rotation', 'Alfven', 'diffusion_mag', 'diffusion_mag_LJ2022'],
+    **dimless_params
+):
+    """Conversion between dimensionless parameters with different time scales
+    """
+    if in_tscale == 'rotation':
+        Le = dimless_params.get('Lehnert')
+        Em = dimless_params.get('Ekman_mag')
+        Ek = dimless_params.get('Ekman', 0.)
+        if (Le is None) or (Em is None) or (Ek is None):
+            raise TypeError("Dimensionless params need to be specified.")
+        t_factor = 1.
+    
+    if in_tscale == 'Alfven':
+        Le = dimless_params.get('Lehnert')
+        Lu = dimless_params.get('Lundquist')
+        Pm = dimless_params.get('Prandtl_mag', 0.)
+        if (Le is None) or (Lu is None) or (Pm is None):
+            raise TypeError("Dimensionless params need to be specified.")
+        Em = Le/Lu
+        Ek = Pm*Em
+        t_factor = 1./Le
+    
+    if in_tscale == 'diffusion_mag':
+        Lambda = dimless_params.get('Elsasser')
+        Em = dimless_params.get('Ekman_mag')
+        Ek = dimless_params.get('Ekman', 0.)
+        if (Lambda is None) or (Em is None) or (Ek is None):
+            raise TypeError("Dimensionless params need to be specified.")
+        Le = np.sqrt(Em*Lambda)
+        t_factor = 1./Em
+    
+    if in_tscale == 'diffusion_mag_LJ2022':
+        Lambda = dimless_params.get('Elsasser')
+        Em = dimless_params.get('Ekman_mag')
+        Ek = dimless_params.get('Ekman', 0.)
+        if (Lambda is None) or (Em is None) or (Ek is None):
+            raise TypeError("Dimensionless params need to be specified.")
+        Le = 2*np.sqrt(Em*Lambda)
+        Em = 2*Em
+        Ek = 2*Ek
+        t_factor = 1./Em
+    
+    if out_tscale == 'rotation':
+        t_factor *= 1.
+        return t_factor, {'Lehnert': Le, 'Ekman_mag': Em, 'Ekman': Ek}
+    
+    if out_tscale == 'Alfven':
+        t_factor *= Le
+        Lu = Le/Em
+        Pm = Ek/Em
+        return t_factor, {'Lehnert': Le, 'Lundquist': Lu, 'Prandtl_mag': Pm}
+    
+    if out_tscale == 'diffusion_mag':
+        t_factor *= Em
+        Lambda = Em*Le**2
+        return t_factor, {'Elsasser': Lambda, 'Ekman_mag': Em, 'Ekman': Ek}
+    
+    if out_tscale == 'diffusion_mag_LJ2022':
+        t_factor *= Em
+        Lambda = Em*Le**2/2
+        Em /= 2
+        Ek /= 2
+        return t_factor, {'Elsasser': Lambda, 'Ekman_mag': Em, 'Ekman': Ek}
+
+
+"""
+-----------------------------
 Eigenvalue processing
 -----------------------------
 """
@@ -467,7 +678,8 @@ def _cluster_modes_sorted(eig_vals: np.ndarray, rtol: float,
 def intermodal_separation(
     eig_vals: np.ndarray, 
     mode: Literal["global", "sorted"] = "global", 
-    **opt_cluster) -> np.ndarray:
+    **opt_cluster
+) -> np.ndarray:
     """Calculate intermodal separation ([Boyd]_)
     
     :param np.ndarray eig_vals: array of eigenvalues
@@ -564,8 +776,20 @@ def eigenvalue_tracing(*eigenvalues: np.ndarray, init_threshold: float = 1e+4,
     traced_indices = np.full((np.sum(idx_bool_tmp), len(eigenvalues)))
     traced_indices[:, 0] = np.arange(len(eigenvalues[0]))[idx_bool_tmp]
     traced_indices[:, 1] = nearest_idx
-    
-    
+
+
+def val_tracing_nearest(seeds: np.ndarray, *values: np.ndarray, 
+    rtol: float = 1e-1, atol: float = 1e-7, fill_value = np.nan):
+    """Trace the values that are closest to the input seeds
+    """
+    assert len(values) > 0
+    traced_values = np.full((len(seeds), len(values)), fill_value=fill_value, dtype=values[0].dtype)
+    for i_set, val_array in enumerate(values):
+        nearest_idx = np.argmin(np.abs(np.subtract.outer(seeds, val_array)), axis=1)
+        nearest_val = val_array[nearest_idx]
+        i_accept = (np.abs(nearest_val - seeds) < rtol + atol*np.abs(seeds))
+        traced_values[i_accept, i_set] = nearest_val[i_accept]
+    return traced_values, nearest_idx
 
 
 def spec_tail_exp_rate(spectrum: np.ndarray):
@@ -624,3 +848,4 @@ def normalize(array: np.ndarray,
         max_idx = np.argmax(np.abs(array))
         normalizer = array.flatten()[max_idx] if zero_phase else np.abs(array.flatten()[max_idx])
     return array/normalizer
+
