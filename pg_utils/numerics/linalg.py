@@ -104,7 +104,8 @@ class StdLinSolver(LinSysSolver):
     def solve_explicit(self, A: np.ndarray, B: np.ndarray, **kwargs) -> np.ndarray:
         """Solve a linear system via explicit inversion
         """
-        return self.inv(A) @ B
+        # return self.inv(A) @ B
+        return linalg.solve(A, B)
 
 
 class MultiPrecLinSolver(LinSysSolver):

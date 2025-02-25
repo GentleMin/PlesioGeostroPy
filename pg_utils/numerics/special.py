@@ -242,6 +242,62 @@ def eval_jacobi_recur_Nmax(Nmax: int, alpha: float, beta: float,
     return Jacobi_vals
 
 
+def eval_chebyt_recur(Nmesh: np.ndarray, zmesh: np.ndarray) -> np.ndarray:
+    """Evaluate Chebyshev polynomial of the 1st kind using recurrence relations
+    
+    This function is intended to maintain the same signature 
+    as `scipy.special.eval_chebyt` and `sympy.chebyshevt`, 
+    albeit several restrictions regarding the input params (see note of Jacobi)
+    
+    :param np.ndarray Nmesh: mesh for degrees *(N,Nz)*
+    :param np.ndarray zmesh: mesh for evaluation grid *(N,Nz)*
+    """
+    assert Nmesh.shape == zmesh.shape
+    
+    n_array = Nmesh[:, 0]
+    z_array = zmesh[0, :]
+    Nmax = n_array.max()
+    idx_pos = n_array > 0
+    
+    T_vals = np.zeros_like(zmesh)
+    T_vals[n_array == 0, :] = 1.
+    if Nmax >= 1:
+        T_vals_Nmax = eval_chebyt_recur_Nmax(Nmax, z_array)
+        T_vals[idx_pos, :] = T_vals_Nmax[n_array[idx_pos], :]
+        
+    return T_vals
+
+
+def eval_chebyt_recur_Nmax(Nmax: int, z: np.ndarray) -> np.ndarray:
+    """Evaluate Chebyshev polynomials of 1st kind with recurrence relation up to a degree
+    
+    This functions generates values for Chebyshev T polynomials from degree 0
+    up to a specified degree, using recurrence relations.
+    
+    :param int Nmax: maximum degree, required to be >= 1
+    :param np.ndarray z: 1-D array of grid points where the Jacobi polynomials
+        are to be evaluated; assumed to be within interval [-1, +1]
+    :returns: Array with shape (Nmax + 1, z.size), values for Jacobi
+        polynomials at grid points specified in `z`.
+    """
+    assert Nmax >= 1
+    # Set computing degrees
+    n_array = np.arange(Nmax + 1)                                   # O(N)
+    # Initializing the matrix: N * M
+    T_vals_Nmax = np.zeros((n_array.size, z.size), dtype=z.dtype)   # O(MN)
+    # Start from non-negative degrees
+    T_vals_Nmax[0, :] = 1.
+    T_vals_Nmax[1, :] = z
+    if Nmax == 1:
+        return T_vals_Nmax
+    
+    # Use recurrence relations, computation O(kN) + extra Memory O(kN)
+    for i_n in range(n_array.size - 2):
+        T_vals_Nmax[i_n+2, :] = 2*z*T_vals_Nmax[i_n+1, :] - T_vals_Nmax[i_n, :]
+    
+    return T_vals_Nmax
+
+
 def eval_jacobi_recur_mp(Nmesh: np.ndarray, 
     alpha: Union[mp.mpf, gp.mpfr], beta: Union[mp.mpf, gp.mpfr], zmesh: np.ndarray, 
     dps: int = QUADPREC_DPS, backend: Literal["mpmath", "gmpy2"] = "gmpy2") -> np.ndarray:
@@ -424,3 +480,45 @@ def eval_jacobi_recur_gmpy2(Nmax: int, alpha: gp.mpfr, beta: gp.mpfr,
             )
     
     return Jacobi_vals
+
+
+def eval_chebyt_recur_gmpy2(Nmax: int, z: np.ndarray, prec: int = QUADPREC_PREC) -> np.ndarray:
+    """Evaluate Chebyshev polynomials with recurrence relation up to a degree, 
+    to (arbitrary) multi-precision, array operations using gmpy2.
+    
+    This functions generates values for Jacobi polynomials from degree 0
+    up to a specified degree, using recurrence relations.
+    
+    :param int Nmax: maximum degree, required to be >= 1
+    :param np.ndarray z: 1-D array of grid points where the Jacobi polynomials
+        are to be evaluated; assumed to be within interval [-1, +1]
+    :param int prec: precision (no. of binary digits) for calculation
+    :returns: Array with shape (Nmax + 1, z.size), values for Jacobi
+        polynomials at grid points specified in `z`.
+    
+    .. note::
+    
+        The input parameters `alpha` and `beta` as well as `z` 
+        need to at least match the precision of the desired output, 
+        otherwise the multi-precision evaluation is meaningless.
+    """
+    assert Nmax >= 1
+    # Set computing degrees
+    n_array = np.arange(Nmax + 1)
+        
+    T_vals_Nmax = np.zeros((n_array.size, z.size), dtype=object)
+    
+    # Arbitrary-precision calculations are best to be wrapped 
+    # in local environments whose precision is fixed.
+    with gp.local_context(gp.context(), precision=prec):
+        
+        T_vals_Nmax[0, :] = gp.mpfr("1.", prec)
+        T_vals_Nmax[1, :] = z
+        if Nmax == 1:
+            return T_vals_Nmax
+        
+        # Use recurrence relations, computation O(kN) + extra Memory O(kN)
+        for i_n in range(n_array.size - 2):
+            T_vals_Nmax[i_n+2, :] = 2*z*T_vals_Nmax[i_n+1] - T_vals_Nmax[i_n]
+    
+    return T_vals_Nmax

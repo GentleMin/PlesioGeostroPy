@@ -678,7 +678,8 @@ def _cluster_modes_sorted(eig_vals: np.ndarray, rtol: float,
 def intermodal_separation(
     eig_vals: np.ndarray, 
     mode: Literal["global", "sorted"] = "global", 
-    **opt_cluster) -> np.ndarray:
+    **opt_cluster
+) -> np.ndarray:
     """Calculate intermodal separation ([Boyd]_)
     
     :param np.ndarray eig_vals: array of eigenvalues
@@ -775,8 +776,20 @@ def eigenvalue_tracing(*eigenvalues: np.ndarray, init_threshold: float = 1e+4,
     traced_indices = np.full((np.sum(idx_bool_tmp), len(eigenvalues)))
     traced_indices[:, 0] = np.arange(len(eigenvalues[0]))[idx_bool_tmp]
     traced_indices[:, 1] = nearest_idx
-    
-    
+
+
+def val_tracing_nearest(seeds: np.ndarray, *values: np.ndarray, 
+    rtol: float = 1e-1, atol: float = 1e-7, fill_value = np.nan):
+    """Trace the values that are closest to the input seeds
+    """
+    assert len(values) > 0
+    traced_values = np.full((len(seeds), len(values)), fill_value=fill_value, dtype=values[0].dtype)
+    for i_set, val_array in enumerate(values):
+        nearest_idx = np.argmin(np.abs(np.subtract.outer(seeds, val_array)), axis=1)
+        nearest_val = val_array[nearest_idx]
+        i_accept = (np.abs(nearest_val - seeds) < rtol + atol*np.abs(seeds))
+        traced_values[i_accept, i_set] = nearest_val[i_accept]
+    return traced_values, nearest_idx
 
 
 def spec_tail_exp_rate(spectrum: np.ndarray):
@@ -835,55 +848,4 @@ def normalize(array: np.ndarray,
         max_idx = np.argmax(np.abs(array))
         normalizer = array.flatten()[max_idx] if zero_phase else np.abs(array.flatten()[max_idx])
     return array/normalizer
-
-
-
-"""
------------------------------
-Timing
------------------------------
-"""
-
-import time
-
-class ProcTimer:
-    
-    def __init__(self, start: bool = False) -> None:
-        self._starttime = None
-        self._logtimes = None
-        self._loginfos = None
-        if start:
-            self.start()
-        
-    def start(self, num: bool = True) -> None:
-        self._starttime = time.perf_counter()
-        self._logtimes = list((self._starttime,))
-        if num:
-            self._loginfos = list((0,))
-        else:
-            self._loginfos = list(('start',))
-            
-    def clear(self) -> None:
-        self._starttime = None
-        self._logtimes = None
-        self._loginfos = None
-    
-    def flag(self, loginfo=None, print_str: bool = False, **kwargs) -> None:
-        self._logtimes.append(time.perf_counter())
-        self._loginfos.append(loginfo)
-        if print_str:
-            self.print_elapse(**kwargs)
-        
-    def elapse_time(self, increment: bool = True) -> float:
-        if increment:
-            return self._logtimes[-1] - self._logtimes[-2]
-        else:
-            return self._logtimes[-1] - self._logtimes[0]
-    
-    def print_elapse(self, increment: bool = True, **kwargs) -> None:
-        t_elapse = self.elapse_time(increment=increment)
-        t_info = self._loginfos[-1]
-        print("Elapse time = {:8.2f} | Info: {}".format(t_elapse, t_info), **kwargs)
-
-
 
