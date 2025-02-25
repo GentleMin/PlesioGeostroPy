@@ -153,6 +153,24 @@ B0_sph = v3d.Vector3D(
     ], 
     coord_sys=sph
 )
+#: Axisymmetric background magnetic field (cylindrical)
+B0_vec_axisym = v3d.Vector3D(
+    [
+        sympy.Function(r"B_s^0")(s, z),
+        sympy.Function(r"B_\phi^0")(s, z),
+        sympy.Function(r"B_z^0")(s, z)
+    ], 
+    coord_sys=cyl
+)
+#: Axisymmetric background magnetic field (spherical)
+B0_sph_axisym = v3d.Vector3D(
+    [
+        sympy.Function(r"B_r^0")(r, theta),
+        sympy.Function(r"B_\theta^0")(r, theta),
+        sympy.Function(r"B_\phi^0")(r, theta)
+    ], 
+    coord_sys=sph
+)
 #: Background velocity field (cylindrical)
 U0_vec = v3d.Vector3D(
     [
@@ -199,6 +217,35 @@ pgvar_bg = base.CollectionPG(
     Bs_m = sympy.Function(r"B_s^{0-}")(s, p),
     Bp_m = sympy.Function(r"B_\phi^{0-}")(s, p),
     Bz_m = sympy.Function(r"B_z^{0-}")(s, p)
+)
+
+#: Special case: axisymmetric background PG fields
+pgvar_bg_axisym = base.CollectionPG(
+    # Stream function
+    Psi = sympy.Function(r"\Psi^0")(s),
+    # Magnetic moments
+    Mss = sympy.Function(r"\overline{M_{ss}}^0")(s),
+    Msp = sympy.Function(r"\overline{M_{s\phi}}^0")(s),
+    Mpp = sympy.Function(r"\overline{M_{\phi\phi}}^0")(s),
+    Msz = sympy.Function(r"\widetilde{M_{sz}}^0")(s),
+    Mpz = sympy.Function(r"\widetilde{M_{\phi z}}^0")(s),
+    zMss = sympy.Function(r"\widetilde{zM_{ss}}^0")(s),
+    zMpp = sympy.Function(r"\widetilde{zM_{\phi\phi}}^0")(s),
+    zMsp = sympy.Function(r"\widetilde{zM_{s\phi}}^0")(s),
+    # Equatorial magnetic field
+    Bs_e = sympy.Function(r"B_{s}^{0e}")(s),
+    Bp_e = sympy.Function(r"B_{\phi}^{0e}")(s),
+    Bz_e = sympy.Function(r"B_{z}^{0e}")(s),
+    dBs_dz_e = sympy.Function(r"B_{s, z}^{0e}")(s),
+    dBp_dz_e = sympy.Function(r"B_{\phi, z}^{0e}")(s),
+    # Boundary magnetic fields
+    Br_b = sympy.Function(r"B_{r1}^0")(theta),
+    Bs_p = sympy.Function(r"B_s^{0+}")(s),
+    Bp_p = sympy.Function(r"B_\phi^{0+}")(s),
+    Bz_p = sympy.Function(r"B_z^{0+}")(s),
+    Bs_m = sympy.Function(r"B_s^{0-}")(s),
+    Bp_m = sympy.Function(r"B_\phi^{0-}")(s),
+    Bz_m = sympy.Function(r"B_z^{0-}")(s)
 )
 
 
@@ -320,17 +367,50 @@ cgvar_bg = base.CollectionConjugate(
     # Conjugate variables for magnetic fields in equatorial plane
     B_ep = sympy.Function(r"B_{+}^{0e}")(s, p, t),
     B_em = sympy.Function(r"B_{-}^{0e}")(s, p, t),
-    Bz_e = pgvar.Bz_e,
+    Bz_e = pgvar_bg.Bz_e,
+    # Bz_e = pgvar.Bz_e,
     dB_dz_ep = sympy.Function(r"B_{+, z}^{0e}")(s, p, t),
     dB_dz_em = sympy.Function(r"B_{-, z}^{0e}")(s, p, t),
     # Magnetic field at the boundary
-    Br_b = pgvar.Br_b,
+    Br_b = pgvar_bg.Br_b,
+    # Br_b = pgvar.Br_b,
     B_pp = sympy.Function(r"B_+^{0+}")(s, p, t),
     B_pm = sympy.Function(r"B_-^{0+}")(s, p, t),
-    Bz_p = pgvar.Bz_p,
+    Bz_p = pgvar_bg.Bz_p,
+    # Bz_p = pgvar.Bz_p,
     B_mp = sympy.Function(r"B_+^{0-}")(s, p, t),
     B_mm = sympy.Function(r"B_-^{0-}")(s, p, t),
-    Bz_m = pgvar.Bz_m
+    Bz_m = pgvar_bg.Bz_m
+    # Bz_m = pgvar.Bz_m
+)
+
+#: Axisymmetric background conjugate quantities
+cgvar_bg_axisym = base.CollectionConjugate(
+    # Stream function, unchanged
+    Psi = pgvar.Psi,
+    # Conjugate variables for magnetic moments
+    M_1 = sympy.Function(r"\overline{M_1}^0")(s),
+    M_p = sympy.Function(r"\overline{M_+}^0")(s),
+    M_m = sympy.Function(r"\overline{M_-}^0")(s),
+    M_zp = sympy.Function(r"\widetilde{M_{z+}}^0")(s),
+    M_zm = sympy.Function(r"\widetilde{M_{z-}}^0")(s),
+    zM_1 = sympy.Function(r"\widetilde{zM_1}^0")(s),
+    zM_p = sympy.Function(r"\widetilde{zM_+}^0")(s),
+    zM_m = sympy.Function(r"\widetilde{zM_-}^0")(s),
+    # Conjugate variables for magnetic fields in equatorial plane
+    B_ep = sympy.Function(r"B_{+}^{0e}")(s),
+    B_em = sympy.Function(r"B_{-}^{0e}")(s),
+    Bz_e = pgvar_bg_axisym.Bz_e,
+    dB_dz_ep = sympy.Function(r"B_{+, z}^{0e}")(s),
+    dB_dz_em = sympy.Function(r"B_{-, z}^{0e}")(s),
+    # Magnetic field at the boundary
+    Br_b = pgvar_bg_axisym.Br_b,
+    B_pp = sympy.Function(r"B_+^{0+}")(s),
+    B_pm = sympy.Function(r"B_-^{0+}")(s),
+    Bz_p = pgvar_bg_axisym.Bz_p,
+    B_mp = sympy.Function(r"B_+^{0-}")(s),
+    B_mm = sympy.Function(r"B_-^{0-}")(s),
+    Bz_m = pgvar_bg_axisym.Bz_m
 )
 
 #: Perturbation in conjugate fields

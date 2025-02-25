@@ -252,8 +252,8 @@ class Background_S2(BackgroundFieldMHD):
         ]
 
 
-class Background_S_l2_n2(BackgroundFieldMHD):
-    """Poloidal field, L=2, N=2
+class Background_S_l2_n1(BackgroundFieldMHD):
+    """Poloidal field, L=2, N=1
     """
     def __init__(self) -> None:
         cf_gamma = Symbol(r'\gamma')
