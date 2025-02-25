@@ -1,0 +1,125 @@
+\section{Special discussion on eigenmodes}
+
+The 3-D MHD eigenmodes are solutions to the eigenvalue problems based on the system (\ref{eqn:mhd-lin}). The eigenvalue problem reads
+%
+\begin{equation}\label{eqn:mhd-eigen}
+\begin{aligned}
+    \lambda \mathbf{u} &= - 2 \boldsymbol{\Omega}\times \mathbf{u} - \nabla p + \frac{1}{\rho \mu_0} \left((\nabla\times \mathbf{B}_0)\times \mathbf{b} + (\nabla\times \mathbf{b})\times \mathbf{B}_0\right) + \nu \nabla^2 \mathbf{u}, \\ 
+    \lambda \mathbf{b} &= \nabla\times (\mathbf{u}\times \mathbf{B}_0) + \eta \nabla^2 \mathbf{b}.
+\end{aligned}
+\end{equation}
+%
+which comes from substituting ansaetze $\mathbf{u} := \tilde{\mathbf{u}}(\mathbf{r}) e^{\lambda t}$ and $\mathbf{b} := \tilde{\mathbf{b}}(\mathbf{r}) e^{\lambda t}$ into the original equations. This can also be rewritten in the operator form
+%
+\begin{equation}
+    \lambda \begin{pmatrix} \tilde{\mathbf{u}} \\ \tilde{\mathbf{b}} \end{pmatrix} = 
+    \begin{pmatrix}
+        \mathcal{K}_{uu} & \mathcal{K}_{ub} \\ 
+        \mathcal{K}_{bu} & \mathcal{K}_{bb}
+    \end{pmatrix}
+    \begin{pmatrix} \tilde{\mathbf{u}} \\ \tilde{\mathbf{b}} \end{pmatrix} = 
+    \begin{pmatrix}
+        \mathcal{K}_{Cor} + \mathcal{K}_\nu & \mathcal{K}_{L} \\ 
+        \mathcal{K}_{I} & \mathcal{K}_{\eta}
+    \end{pmatrix}
+    \begin{pmatrix} \tilde{\mathbf{u}} \\ \tilde{\mathbf{b}} \end{pmatrix}.
+\end{equation}
+%
+Here however, we must understand that we are expanding the domain of the solutions. In all previous discussions in this section, we have been implicitly assuming that $\mathbf{u}, \mathbf{B} \in \mathcal{F}(V, \mathbb{R})$, with $\mathcal{F}(V, \mathbb{R})$ being some function space of real-valued functions defined on the domain enclosed by (and including) the sphere. In this section, we instead consider $\tilde{\mathbf{u}}, \tilde{\mathbf{B}} \in \mathcal{F}(V, \mathbb{C})$, with $\mathcal{F}(V, \mathbb{C})$ a function space of complex-valued functions defined on the same domain.
+
+This is an expansion we have to make. If we keep restricting the function space to real-valued functions, then we can only have $\lambda \in \mathbb{R}$ (since all the operators are real, transforming any real-valued field to another real-valued field), meaning the "eigenmodes" can only decay, grow or stay stationary, which are of little practical use and most likely not even admitted in the system. However, our energy calculations earlier strictly apply to real-valued functions only. 
+One way to apply the energy equations to these eigenmodes is to extend the energy equations to complex-valued fields. For instance, instead of taking $\partial_t \mathbf{u}^2/2 = \mathbf{u}\cdot \partial_t \mathbf{u}$, we need to evaluate $\partial_t |\mathbf{u}|^2/2 = (\mathbf{u}^*\cdot \partial_t \mathbf{u} + \mathbf{u}\cdot \partial_t \mathbf{u}^*)/2$. This would complicate derivations and the final formula (which would be a sum of two halves which are complex conjugate of each other), but similar conclusions would hold. One other way is to convert a complex eigenmode into the real form, which I briefly explain here.
+
+Any eigenmode to this problem is a combination of (real-valued) growing or decaying longitudinal travelling harmonic waves. This can be illustrated as follows. For any complex eigenmode with eigenvalue $\lambda = \alpha + i\omega$, we can expand it in Fourier series in the longitude / azimuth,
+%
+\[
+    \mathbf{u} = e^{(\alpha + i\omega) t} \sum_m \tilde{\mathbf{u}}^m e^{im\phi},\quad 
+    \mathbf{b} = e^{(\alpha + i\omega) t} \sum_m \tilde{\mathbf{b}}^m e^{im\phi}
+\]
+%
+where $\tilde{\mathbf{u}}^m$ and $\tilde{\mathbf{b}}^m$ are 3-D vector fields defined on the meridional plane, hence functions of the position vector in the meridional plane $\mathbf{r}_m$ ($(r, \theta)$ or $(s, z)$ in specific coordinates). Let us focus on the velocity field first; the derivation for the magnetic field is identical. If the field above is the solution to the eigenvalue problem (\ref{eqn:mhd-eigen}), then the real part, expressed as
+%
+\begin{equation}\label{eqn:real-eigenmode-form}
+    \mathbf{u} = e^{\alpha t} \sum_m \mathbf{A}^m \cos(m\phi + \omega t + \varphi_m^u(\mathbf{r}_m))
+\end{equation}
+%
+is a legitimate solution to the linearised dynamical system (\ref{eqn:mhd-lin}), where the phase
+%
+\[
+    \varphi_m^u (\mathbf{r}_m) = \mathrm{angle} (\tilde{\mathbf{u}}^m) = \mathrm{atan2}\left(\mathrm{Im}\{\tilde{\mathbf{u}}^m\}, \mathrm{Re}\{\tilde{\mathbf{u}}^m\}\right)
+\]
+%
+is the angle of the complex velocity field, and is a function of the meridional position, and the amplitude
+%
+\[
+    \mathbf{A}^m = \left(|u_1^m|, |u_2^m|, |u_3^m|\right)
+\]
+%
+is a real vector field whose components are the moduli of the corresponding components in the complex field $\tilde{\mathbf{u}}$.
+Each of the summation component is a harmonic longitudinally travelling wave, scaled by an exponential growth / decay $e^{\alpha t}$. All the discussion on the energies in the perturbed system in the real domain can then be directly transferred to eq. (\ref{eqn:real-eigenmode-form}).
+
+Let us now use this ansatz and see how the energy equation derived in the previous section applies. The time derivative of $\mathbf{u}$ reads
+%
+\begin{equation}
+\begin{aligned}
+    \partial_t \mathbf{u} &= e^{\alpha t} \sum_m \mathbf{A}^m \left[\alpha \cos \left(m\phi + \omega t + \varphi_m^u\right) - \omega \sin \left(m\phi + \omega t + \varphi_m^u\right)\right] \\
+    &= e^{\alpha t} |\lambda| \sum_m \mathbf{A}^m \cos(m\phi + \omega t + \varphi_m^u + \varphi_\lambda)
+\end{aligned}
+\end{equation}
+%
+where $\varphi_\lambda = \mathrm{angle}(\lambda) = \mathrm{atan2}(\omega, \alpha)$ is a constant phase, a function of the eigenvalue $\lambda$. If we look at the modified secondary energy, $E_{k}' + E_B' = \rho \|\mathbf{u}\|_2^2/2 + \|\mathbf{b}\|_2^2/2\mu_0$, then we need the volume integral $\mathbf{u}\cdot \partial_t \mathbf{u}$,
+%
+\begin{equation}
+\begin{aligned}
+    &\frac{\partial}{\partial t} \frac{\|\mathbf{u}\|_2^2}{2} = \int_V \mathbf{u}\cdot \partial_t \mathbf{u} \, dV = e^{2\alpha t} \sum_{m,m'} \int_V \left(\mathbf{A}^m \cdot \mathbf{A}^{m'}\right)  \cos \left(m\phi + \omega t + \varphi_m^u\right) \\
+    &\mkern200mu \times \left[\alpha \cos \left(m'\phi + \omega t + \varphi_{m'}^u\right) - \omega \sin \left(m'\phi + \omega t + \varphi_{m'}^u\right)\right] dV \\ 
+    &= e^{2\alpha t} \left\{2\pi|\lambda| \int_{S_m} |\mathbf{A}^0|^2 \cos(\omega t + \varphi_m^u) \cos(\omega t + \varphi_m^u + \varphi_\lambda) r\sin\theta dS + \sum_{m,m' \geq 1} \alpha \pi \delta_{mm'} \int_{S_m} \mathbf{A}^m \cdot \mathbf{A}^{m'} r\sin\theta dS\right\} \\ 
+    &= \pi e^{2\alpha t} \left\{2|\lambda| \int_{S_m} |\mathbf{A}^0|^2 \cos(\omega t + \varphi_m^u) \cos(\omega t + \varphi_m^u + \varphi_\lambda) r\sin\theta dS + \alpha \sum_{m \geq 1} \int_{S_m} |\mathbf{A}^m|^2 r\sin\theta dS\right\}
+\end{aligned}
+\end{equation}
+%
+and the corresponding kinetic energy is proportional to 
+%
+\begin{equation}
+\begin{aligned}
+    \frac{\|\mathbf{u}\|_2^2}{2} = \frac{1}{2}\int_V \mathbf{u}^2 \, dV = e^{2\alpha t} = \pi e^{2\alpha t} \left\{\int_{S_m} |\mathbf{A}^0|^2 \cos^2(\omega t + \varphi_m^u) r\sin\theta dS + \frac{1}{2} \sum_{m\geq 1} \int_{S_m} |\mathbf{A}^m|^2 r\sin\theta dS \right\}.
+\end{aligned}
+\end{equation}
+%
+For an eigenmode of a single azimuthal wavenumber, i.e. composed of a single $m$-mode, we can immediately write
+%
+\[
+    \frac{\partial E_{k}'}{\partial t} = \frac{\partial}{\partial t} \frac{\rho \|\mathbf{u}^m\|_2^2}{2} = \left\{\begin{aligned}
+        &\rho e^{2\alpha t} \left[\alpha \|\mathbf{A}^0\|_2^2 + |\lambda| \int_V |\mathbf{A}^0|^2 \cos(2\omega t + 2 \varphi_m^u + \varphi_\lambda) \, dV \right],\quad m=0 \\ 
+        &\rho \frac{e^{2\alpha t}}{2} \alpha \|\mathbf{A}^m\|_2^2,\quad m \geq 1
+    \end{aligned}\right.
+\]
+%
+and same holds for $E_B'$. For all $m \geq 1$, we see that the temporal change of the energy is directly proportional to $\alpha$. Since eigenmodes are non-trivial solutions, $\|\mathbf{A}^m\|_2^2 
+> 0$, and $e^{2\alpha t} > 0$, the sign of energy change is directly related to the sign of $\alpha$. If $\alpha > 0$, the energy exponentially grows, which should also be reflected in the positive sign of the RHS of
+%
+\[\begin{aligned}
+    \frac{\partial (E_k' + E_B')}{\partial t} &= - \oint_{\partial V} \mathbf{s}_2' \cdot d\boldsymbol{\Sigma} + \int_V \mathbf{e}_2'\cdot \mathbf{j}_0 \, dV \\
+    &= \frac{1}{\mu_0} \oint_{\partial V} (\mathbf{u} \times \mathbf{B}_0) \times \mathbf{b} \cdot d\boldsymbol{\Sigma} - \frac{1}{\mu_0}\int_V (\mathbf{u} \times \mathbf{b})\cdot (\nabla\times \mathbf{B}_0) \, dV.
+\end{aligned}\]
+%
+at all time $t$ once the eigenfunction solutions $\mathbf{u}, \mathbf{b}$ are plugged in, and vice versa. In fact, the sign of $\alpha$ will be directly linked to the last term (the "bulk" term) only. For an explanation why the surface term does not really play a role here, see the next section.
+The existence of the bulk term however leaves the energy $E_k' + E_B'$ still useless - we cannot \textit{a priori} determine whether the bulk term $\int_V (\mathbf{u}\times \mathbf{b})\cdot (\nabla\times \mathbf{B}_0) dV$ is positive, negative, or zero, hence not possible to know whether we should expect a positive, negative or zero $\alpha = \mathrm{Re}[\lambda]$.
+
+The case where $m=0$ is left out from the discussion above due to the more complicated formula. If only the real part is taken from the complex solution, we can have $dE_k'/dt \neq 0$ even when $\alpha = 0$, a phenomenon that is different from other $m$'s.
+The prefactor $\alpha$ will however be restored once we (i) either take a temporal integration over the period $T$, or (ii) combine the energy equation of the real part with that of the imaginary part of the solution. The RHS would correspondingly be more complicated. I omit the derivation here for simplicity.
+
+As a final resort, we turn to the modified linear energy, whose evolution has been derived to be
+%
+\[\begin{aligned}
+    \frac{d E_{B1}'}{d t} &= \int_V \frac{\mathbf{B}_0}{\mu_0} \cdot \frac{\partial \mathbf{b}}{\partial t} \, dV = - \oint_{\partial V} \mathbf{s}_1' \cdot d\boldsymbol{\Sigma} - \int_V \mathbf{e}_1\cdot \mathbf{j}_0 \, dV \\
+    &= - \oint_{\partial V} \left[\frac{1}{\mu_0}(\eta \nabla\times \mathbf{b} - \mathbf{u}\times \mathbf{B}_0)\times \mathbf{B}_0\right] \cdot d\boldsymbol{\Sigma} - \int_V \frac{1}{\mu_0} \left(\eta \nabla\times \mathbf{b} - \mathbf{u}\times \mathbf{B}_0\right) \cdot (\nabla\times \mathbf{B}_0)\, dV
+\end{aligned}\]
+%
+This has the notable feature that for axisymmetric background fields $\mathbf{B}_0$ and an eigenvalue solution that does not contain $m=0$ term, the RHS will identically vanish, thus finally yielding $dE_{1}'/dt = 0$! However, we soon realise that for such solutions, not only the RHS vanishes, but the LHS
+%
+\[
+    \int_V \frac{\mathbf{B}_0}{\mu_0} \cdot \frac{\partial \mathbf{b}}{\partial t} \, dV \equiv 0
+\]
+%
+vanishes as well. The whole equation is hence trivial, and yields no information at all as to the property of the real exponent $\alpha$ in the eigenvalue.

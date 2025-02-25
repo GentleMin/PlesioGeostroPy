@@ -149,7 +149,7 @@ The original equations can then be expanded in powers of the small quantity $\ep
 %
 The linearised MHD system, which is essentially the system used for solving the hydromagnetic eigenmodes in e.g. \citet{luo_waves_2022,luo_waves2_2022,gerick_interannual_2024}, is the system comprising of the $\epsilon^1$ terms, which reads
 %
-\begin{equation}
+\begin{equation}\label{eqn:mhd-lin}
 \begin{aligned}
     \rho \frac{\partial \mathbf{u}}{\partial t} &= - 2 \rho \boldsymbol{\Omega}\times \mathbf{u} - \nabla p + \frac{1}{\mu_0} \left((\nabla\times \mathbf{B})\times \mathbf{b} + (\nabla\times \mathbf{b})\times \mathbf{B}\right) + \rho \nu \nabla^2 \mathbf{u}, \\ 
     \frac{\partial \mathbf{b}}{\partial t} &= \nabla\times (\mathbf{u}\times \mathbf{B}) + \eta \nabla^2 \mathbf{b}.
@@ -273,7 +273,7 @@ As a final part in this sub-section, I write down the total kinetic-magnetic ene
 %
 or 
 %
-\begin{equation}
+\begin{equation}\label{eqn:energy-order1-noflow}
     \begin{aligned}
         \frac{\partial (E_{k1} + E_{B1})}{\partial t} &= - \oint_{\partial V} \mathbf{s}_1\cdot d\boldsymbol{\Sigma} - \int_V (\mathbf{e}_1\cdot \mathbf{j}_0 + \mathbf{E}_0\cdot \mathbf{j}_1)\, dV \\ 
         &= - \frac{1}{\mu_0} \oint_{\partial V} \left[(\eta \nabla\times \mathbf{b}_1 - \mathbf{u}_1\times\mathbf{B}_0)\times \mathbf{B}_0 + (\eta\nabla\times \mathbf{B}_0) \times \mathbf{b}_1\right]\cdot d\boldsymbol{\Sigma} \\
@@ -310,6 +310,8 @@ In addition, the second-order energy also contains $\mathbf{u}_2$ and $\mathbf{b
 
 The complete energy, as shown above, appears not useful when it comes to analyzing if the fields are bounded, amplitude-preserving, decaying or growing in the phase space. One can then argue that energy is overrated, or our definition of energy is flawed, leave it behind, and search for alternative scalar functions that serve as useful Lyapunov functions.
 
+\subsubsection{The quadratic form of linear field perturbations}
+
 One most commonly used approach is to simply introduce the "energies" evaluated as
 %
 \begin{equation}
@@ -335,7 +337,7 @@ although this will create a mismatch in the momentum balance in higher-order ter
 \end{aligned}
 \]
 %
-A careful reader may have already feel alarmed when partial second-order electric field and currents $\mathbf{e}_2'$ and $\mathbf{j}_2$ appears despite all our efforts to restrict to linearised terms.
+A careful reader may have already felt alarmed when partial second-order electric field and currents $\mathbf{e}_2'$ and $\mathbf{j}_2$ appear despite all our efforts to restrict to linearised terms.
 This fear solidifies when we derive the evolution equation for the modified magnetic energy, by multiplying the linear induction equation with linear magnetic field perturbation,
 %
 \[
@@ -361,3 +363,31 @@ As usual, on the RHS, the first term is the Poynting flux, the second term is th
 %
 Therefore, although the definition of $E_k'$ and $E_B'$ attempts to avoid the second-order quantity and circumvent the zeroth-order equation problem, it creates an inconsistent energy flow, a ghost electric field work that does not come from the defined magnetic energy reservoir $E_B'$.
 Unless further conditions are satisfied, it is generally impossible for such a scalar function to be conservative (even excluding the Poynting flux), and hence $E_k' + E_B'$ is also NOT a Lyapunov function, giving NO information on the growing / decaying property of the eigenmodes in its current state.
+
+
+\subsubsection{Linear perturbation in energy}
+
+We have already discussed the problem with the linear term in energy perturbation: we always have to ask ourselves, whether we believe that the zeroth order equation is satisfied or not. In other words, how we interpret the zeroth order equation (or, how we interpret the background state, so to speak) will have a direct impact on how these energy terms look like. Nevertheless, it is free of second-order effects (and hence free of cross terms of perturbations), and Andy suggested that perhaps this could also be a useful quantity for concluding the stability of the system.
+
+When we take that the zeroth-order velocity field is automatically satisfied, for instance, which implies that the current force balance could sustain a stationary fluid (i.e. zero velocity), then we have already derived the expression for energy perturbation (\ref{eqn:energy-order1-noflow}), where all the first-order perturbations are contained in magnetic energy:
+\[
+    \begin{aligned}
+        &\frac{d (E_{k1} + E_{B1})}{d t} = \frac{d E_{B1}}{dt} = - \oint_{\partial V} \mathbf{s}_1\cdot d\boldsymbol{\Sigma} - \int_V (\mathbf{e}_1\cdot \mathbf{j}_0 + \mathbf{E}_0\cdot \mathbf{j}_1)\, dV \\ 
+        &= - \frac{1}{\mu_0} \oint_{\partial V} \left[(\eta \nabla\times \mathbf{b}_1 - \mathbf{u}_1\times\mathbf{B}_0)\times \mathbf{B}_0 + (\eta\nabla\times \mathbf{B}_0) \times \mathbf{b}_1\right]\cdot d\boldsymbol{\Sigma} - \frac{1}{\mu_0} \int_V (\nabla\times \mathbf{B}_0)\cdot (2\eta\nabla\times \mathbf{b}_1 - \mathbf{u}_1\times \mathbf{B}_0)\, dV
+    \end{aligned}
+\]
+Neglecting the surface term, this first-order energy is clearly not conserved. Note here we have a non-trivial diffusion equation for the zeroth order magnetic field, i.e. $\partial_t \mathbf{B}_0 = \eta \nabla^2 \mathbf{B}_0$. If, however, we believe that the background magnetic field is truly in steady state ($\partial_t \mathbf{B}_0 = \mathbf{0}$, invoking the free currents, etc.), then we can write
+%
+\[\begin{aligned}
+    \frac{\partial \varepsilon_{B1}'}{\partial t} &= \frac{\mathbf{B}_0}{\mu_0} \cdot \frac{\partial \mathbf{b}}{\partial t} = \frac{1}{\mu_0} \mathbf{B}_0 \cdot \nabla\times (\mathbf{u}\times \mathbf{B}_0) + \eta \mathbf{B}_0\cdot \nabla^2 \mathbf{b} \\ 
+    &= \frac{1}{\mu_0} \nabla\cdot \left[(\mathbf{u}\times \mathbf{B}_0 - \eta \nabla\times \mathbf{b})\times \mathbf{B}_0\right] - \frac{1}{\mu_0} \left(\eta \nabla\times \mathbf{b} - \mathbf{u}\times \mathbf{B}_0\right) \cdot (\nabla\times \mathbf{B}_0)
+\end{aligned}\]
+%
+and its integral
+%
+\begin{equation}\begin{aligned}
+    \frac{d E_{B1}'}{d t} &= \int_V \frac{\mathbf{B}_0}{\mu_0} \cdot \frac{\partial \mathbf{b}}{\partial t} \, dV = - \oint_{\partial V} \mathbf{s}_1' \cdot d\boldsymbol{\Sigma} - \int_V \mathbf{e}_1\cdot \mathbf{j}_0 \, dV \\
+    &= - \oint_{\partial V} \left[\frac{1}{\mu_0}(\eta \nabla\times \mathbf{b} - \mathbf{u}\times \mathbf{B}_0)\times \mathbf{B}_0\right] \cdot d\boldsymbol{\Sigma} - \int_V \frac{1}{\mu_0} \left(\eta \nabla\times \mathbf{b} - \mathbf{u}\times \mathbf{B}_0\right) \cdot (\nabla\times \mathbf{B}_0)\, dV
+\end{aligned}\end{equation}
+%
+Because of the bulk term, we can conclude that $E_{B1}'$ defined as such is also not conserved in the linearised system. As we will see in the next sections, there are some special cases where this bulk term vanish, but in that scenario the complete equation is unfortunately trivial, making it once again useless.
