@@ -21,6 +21,8 @@ from .numerics import io as num_io
 from .numerics import linalg as lin_alg
 from .numerics import utils as num_utils
 
+from . import tools
+
 import numpy as np
 import gmpy2
 from scipy.sparse import coo_array
@@ -322,7 +324,7 @@ def process_matrix_element(element: Any, map_trial: dict, map_test: dict) -> Any
     elif isinstance(element, xpd.InnerProduct1D):
         element = element.subs(map_trial).subs(map_test)
         element = pgutils.slope_subs(element).xreplace({xpd.xi_s: xpd.xi})
-        element._opd_B = simp_supp.collect_jacobi(element._opd_B.expand().powsimp())
+        arg_element = simp_supp.collect_jacobi(element._opd_B.expand().powsimp())
         return element
     else:
         raise TypeError
@@ -624,7 +626,9 @@ def compute_matrix_numerics(
     save_to: Optional[str] = None, 
     format: Literal["hdf5", "json", "pickle"] = "hdf5",
     overwrite: bool = False,
-    verbose: int = 0) -> Tuple[np.ndarray, np.ndarray]:
+    verbose: int = 0,
+    timer: Optional[tools.ProcTimer] = None
+) -> Tuple[np.ndarray, np.ndarray]:
     """Eigensolver step III: computation of matrix elements
     
     :param Union[str, Tuple[expansion.SystemMatrix, expansion.SystemMatrix, List]] read_from: 
@@ -669,18 +673,29 @@ def compute_matrix_numerics(
     # Safeguard: values for all unknown variables should be correctly provided
     if require_all_pars:
         assert set(par_list) == set(par_val.keys())
+    if timer is None:
+        timer = tools.ProcTimer(start=True)
     
+    info_str = "========== Expanding matrices... =========="
+    timer.flag(info_str)
     if verbose > 0:
-        print("========== Expanding matrices... ==========")
+        print(info_str)
     
+    info_str = "Start pre-processing elements..."
+    timer.flag(loginfo=info_str)
     if verbose > 1:
-        print("Pre-processing elements...")
+        print(info_str)
     # Pre-processing of elements
     M_expr.apply(lambda ele: ele.subs(par_val), inplace=True, metadata=False)
     K_expr.apply(lambda ele: ele.subs(par_val), inplace=True, metadata=False)
-    
+    timer.flag(loginfo="Parameter substitution in matrix elements finished.")
     if verbose > 1:
-        print("Configuring expansions and quadratures...")    
+        timer.print_elapse(mode='0+')
+    
+    info_str = "Configuring expansions and quadratures..."
+    timer.flag(loginfo=info_str)
+    if verbose > 1:
+        print(info_str)
     # Configure expansions
     fnames = xpd_recipe.rad_xpd.fields._field_names
     cnames = xpd_recipe.rad_xpd.bases._field_names
@@ -703,13 +718,17 @@ def compute_matrix_numerics(
         ) for ele in row] for row in M_expr._matrix
     ])
     
+    info_str = "Computing quadratures of elements..."
+    timer.flag(loginfo=info_str)
     if verbose > 1:
-        print("Computing quadratures of elements...")
+        print(info_str)
     # Computation
-    M_val = nmatrix.MatrixExpander(M_expr, 
-        quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1)
-    K_val = nmatrix.MatrixExpander(K_expr, 
-        quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1)
+    with warnings.catch_warnings():
+        warnings.simplefilter('always', UserWarning)
+        M_val = nmatrix.MatrixExpander(M_expr, 
+            quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1, timer=timer)
+        K_val = nmatrix.MatrixExpander(K_expr, 
+            quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1, timer=timer)
     
     if chop is not None:
         M_val[np.abs(M_val) < chop] = 0.
@@ -768,9 +787,11 @@ def compute_matrix_numerics(
         
         else:
             raise NotImplementedError("Unknown output format")
-                
+        
+        info_str = "Results saved to {:s}".format(save_to)
+        timer.flag(loginfo=info_str)
         if verbose > 0:
-            print("Results saved to {:s}".format(save_to))
+            timer.print_elapse(mode='0+')
     
     if verbose > 0:
         print()

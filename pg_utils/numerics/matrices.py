@@ -787,13 +787,13 @@ class MatrixExpander:
         self.n_trials = ranges_trial
         self.n_tests = ranges_test
     
-    def expand(self, sparse=False, verbose=False):
+    def expand(self, sparse=False, verbose=False, timer=None):
         """Expand the matrix according to the recipes
         """
         if sparse:
             return self._expand_sparse(verbose=verbose)
         else:
-            return self._expand_dense(verbose=verbose)
+            return self._expand_dense(verbose=verbose, timer=timer)
     
     def _expand_sparse(self, verbose=False) -> sparse.csr_array:
         """Form a sparse matrix during the expansion
@@ -803,7 +803,7 @@ class MatrixExpander:
         n_col = sum([len(nrange_trial) for nrange_trial in self.n_trials])
         return sparse.csr_array((n_row, n_col))
     
-    def _expand_dense(self, verbose=False) -> np.ndarray:
+    def _expand_dense(self, verbose=False, timer=None) -> np.ndarray:
         """Form a dense matrix during the expansion
         """
         M_list = list()
@@ -824,8 +824,16 @@ class MatrixExpander:
                     M_tmp = M_tmp.gramian(self.n_trials[i_col], self.n_tests[i_row], 
                             verbose=verbose, **recipe.gram_opt)
                     M_row.append(np.asarray(M_tmp))
+                    
+                    if timer is not None:
+                        info_str = "Quadrature for element (%s, %s) completed." % \
+                                (self.matrix._row_names[i_row], self.matrix._col_names[i_col])
+                        if verbose:
+                            timer.flag(loginfo=info_str)
+                            timer.print_elapse(mode='0+')
                 else:
                     raise NotImplementedError
+                
             M_list.append(M_row)
         return np.block(M_list)
 
