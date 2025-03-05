@@ -38,7 +38,7 @@ derive_eq = False
 fname_eq = os.path.join(output_dir, 'S_L2_N1', 'eqs_ideal_%s_vs.json' % recipe_name.lower())
 
 derive_sym_mat = True
-fname_mat = os.path.join(output_dir, 'S_L2_N1', recipe_name, 'matrix_expr_ideal_vsHj.json')
+fname_mat = os.path.join(output_dir, 'S_L2_N1', recipe_name, 'matrix_expr_ideal_vsHjx.json')
 
 if recipe_name == 'Original':
     from pg_utils.pg_model import expand_pg_partial_ext as xpd_cfg

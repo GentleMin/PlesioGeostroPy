@@ -370,7 +370,13 @@ def process_rational_jacobi(element: Any, map_trial: dict, map_test: dict) -> An
     elif isinstance(element, xpd.InnerProduct1D):
         element = element.subs(map_trial).subs(map_test)
         element = pgutils.slope_subs(element).xreplace({xpd.xi_s: xpd.xi})
-        arg_element = simp_supp.collect_jacobi(element._opd_B.expand().powsimp(), evaluate=False)
+        opd_A, opd_B, wt, int_var, b_low, b_up = element.args
+        
+        # Explicit variable transform
+        jac = 1/(4*core.s)
+        opd_B = jac*opd_B
+        
+        arg_element = simp_supp.collect_jacobi(opd_B.expand().powsimp(), evaluate=False)
         summands = list()
         for basis, coeff in arg_element.items():
             cf_factors = coeff.together().factor().args
@@ -387,7 +393,10 @@ def process_rational_jacobi(element: Any, map_trial: dict, map_test: dict) -> An
             cf_factors_sum = cf_factors_sum.subs({core.H: core.H_s}).expand().factor()
             cf_factors_new.append(cf_factors_sum)
             summands.append(Mul(*cf_factors_new)*basis)
-        element._opd_B = Add(*summands, evaluate=False)
+            
+        opd_B = Add(*summands, evaluate=False)
+        
+        element = xpd.InnerProduct1D(opd_A, opd_B, wt, xpd.xi, -S.One, +S.One)
         return element
     else:
         raise TypeError
