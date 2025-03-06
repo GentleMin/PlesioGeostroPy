@@ -8,7 +8,7 @@ import os, sys, sympy
 sys.path.append(os.getcwd())
 
 from pg_utils import eigen, tools
-from pg_utils.pg_model import params, expansion, bg_fields
+from pg_utils.pg_model import core, params, expansion, bg_fields
 import sympy
 output_dir = "./out/eigen/"
 
@@ -61,12 +61,12 @@ output_dir = "./out/eigen/"
 #     expansion.m: sympy.Integer(3)
 # }
 # # S L=2, N=1, Galerkin basis
-bg_active = bg_fields.Background_S_l2_n1()
-parameters = {
-    bg_active.params[0]: bg_active.params_ref[0][0],
-    params.Le: sympy.Rational(1, 10000),
-    expansion.m: sympy.Integer(3)
-}
+# bg_active = bg_fields.Background_S_l2_n1()
+# parameters = {
+#     bg_active.params[0]: bg_active.params_ref[0][0],
+#     params.Le: sympy.Rational(1, 10000),
+#     expansion.m: sympy.Integer(3)
+# }
 # # T2 background field
 # bg_active = bg_fields.Background_T2()
 # parameters = {
@@ -75,19 +75,20 @@ parameters = {
 #    expansion.m: sympy.Integer(3)
 # }
 # No further parameters in the background field, dimless params only
-# parameters = {
-#     params.Le: sympy.Rational(1, 10000),
-#     expansion.m: sympy.Integer(3)
-# }
+parameters = {
+    params.Le: sympy.Rational(1, 10000),
+    expansion.m: sympy.Integer(3)
+}
 
 
+bg_dir = 'S1_T2_std'
 recipe_name = 'Canonical'
 N_trunc = 100
-f_mat_expr = os.path.join(output_dir, 'S_L2_N1', recipe_name, 'matrix_expr_ideal.json')
-f_mat_eval = os.path.join(output_dir, 'S_L2_N1', recipe_name, 
-    f'matrix_ideal_m{int(parameters[expansion.m])}_Le{float(parameters[params.Le]):.1e}_N{N_trunc}.h5')
+f_mat_expr = os.path.join(output_dir, bg_dir, recipe_name, 'matrix_expr_ideal_vsHjx.json')
+f_mat_eval = os.path.join(output_dir, bg_dir, recipe_name, 
+    f'matrix_ideal_m{int(parameters[expansion.m])}_Le{float(parameters[params.Le]):.1e}_N{N_trunc}_vsHj_qp.h5')
 # f_mat_eval = None
-f_eigen = os.path.join(output_dir, 'S_L2_N1', recipe_name, 
+f_eigen = os.path.join(output_dir, bg_dir, recipe_name, 
     f'eigen_ideal_m{int(parameters[expansion.m])}_Le{float(parameters[params.Le]):.1e}_N{N_trunc}.h5')
 
 compute_matrix = True
@@ -114,7 +115,11 @@ if __name__ == '__main__':
             par_val=parameters,
             require_all_pars=False,
             quadratic_trunc=False,
-            jacobi_rule_opt={"automatic": True, "quadN": None},
+            jacobi_rule_opt={
+                "automatic": True, "quadN": None, 
+                'prefactors': [core.H, core.s],
+                'quadN_redundancy': 10
+            },
             quadrature_opt={
                 "backend": "gmpy2", 
                 "int_opt": {"n_dps": 33}, 
@@ -124,7 +129,7 @@ if __name__ == '__main__':
             chop=1e-22,
             save_to=f_mat_eval,
             format="hdf5",
-            overwrite=False,
+            overwrite=True,
             verbose=5,
             timer=timer
         )

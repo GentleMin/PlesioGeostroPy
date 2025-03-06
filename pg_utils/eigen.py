@@ -367,39 +367,44 @@ def process_rational_jacobi(element: Any, map_trial: dict, map_test: dict) -> An
     """
     if element is None or element == S.Zero or element == 0:
         return S.Zero
-    elif isinstance(element, xpd.InnerProduct1D):
-        element = element.subs(map_trial).subs(map_test)
-        element = pgutils.slope_subs(element).xreplace({xpd.xi_s: xpd.xi})
-        opd_A, opd_B, wt, int_var, b_low, b_up = element.args
-        
-        # Explicit variable transform
-        jac = 1/(4*core.s)
-        opd_B = jac*opd_B
-        
-        arg_element = simp_supp.collect_jacobi(opd_B.expand().powsimp(), evaluate=False)
-        summands = list()
-        for basis, coeff in arg_element.items():
-            cf_factors = coeff.together().factor().args
-            cf_factors_new = list()
-            cf_factors_sum = S.One
-            for factor in cf_factors:
-                if (isinstance(factor, Add) and 
-                    (core.s in factor.atoms(Symbol) or core.H in factor.atoms(Symbol))):
-                    # Then factor should be a polynomial of (s, H)
-                    cf_factors_sum *= factor
-                else:
-                    cf_factors_new.append(factor)
-            # Convert this factor to factorised polynomial of s
-            cf_factors_sum = cf_factors_sum.subs({core.H: core.H_s}).expand().factor()
-            cf_factors_new.append(cf_factors_sum)
-            summands.append(Mul(*cf_factors_new)*basis)
-            
-        opd_B = Add(*summands, evaluate=False)
-        
-        element = xpd.InnerProduct1D(opd_A, opd_B, wt, xpd.xi, -S.One, +S.One)
-        return element
-    else:
+    if not isinstance(element, xpd.InnerProduct1D):
         raise TypeError
+    
+    element = element.subs(map_trial).subs(map_test)
+    element = pgutils.slope_subs(element).xreplace({xpd.xi_s: xpd.xi})
+    opd_A, opd_B, wt, int_var, b_low, b_up = element.args
+    
+    # Explicit variable transform
+    jac = 1/(4*core.s)
+    opd_B = jac*opd_B
+    
+    arg_element = simp_supp.collect_jacobi(opd_B.expand().powsimp(), evaluate=False)
+    summands = list()
+    for basis, coeff in arg_element.items():
+        # cf_factors = coeff.together().factor().args
+        cf_factors = coeff.together().cancel().together()
+        if isinstance(cf_factors, Mul):
+            cf_factors = cf_factors.args
+        else:
+            cf_factors = (cf_factors,)
+        cf_factors_new = list()
+        cf_factors_sum = S.One
+        for factor in cf_factors:
+            if (isinstance(factor, Add) and 
+                (core.s in factor.atoms(Symbol) or core.H in factor.atoms(Symbol))):
+                # Then factor should be a polynomial of (s, H)
+                cf_factors_sum *= factor
+            else:
+                cf_factors_new.append(factor)
+        # Convert this factor to factorised polynomial of s
+        cf_factors_sum = cf_factors_sum.subs({core.H: core.H_s}).expand().factor(core.s)
+        cf_factors_new.append(cf_factors_sum)
+        summands.append(Mul(*cf_factors_new)*basis)
+        
+    opd_B = Add(*summands, evaluate=False)
+    
+    element = xpd.InnerProduct1D(opd_A, opd_B, wt, xpd.xi, -S.One, +S.One)
+    return element
 
 
 element_process_options = {

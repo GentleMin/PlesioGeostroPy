@@ -27,6 +27,8 @@ recipe_aliases = {
 # S L2-N1 poloidal field
 bg_active = bg_fields.Background_S_l2_n1()
 
+bg_dir = 'S_L2_N1'
+
 
 recipe_name = 'Canonical'
 recipe_symb = recipe_aliases[recipe_name]
@@ -34,11 +36,11 @@ forcings = ['Lorentz']
 diff_m_mod = 'None'
 time_scale = 'Alfven'
 
-derive_eq = False
-fname_eq = os.path.join(output_dir, 'S_L2_N1', 'eqs_ideal_%s_vs.json' % recipe_name.lower())
+derive_eq = True
+fname_eq = os.path.join(output_dir, bg_dir, 'eqs_ideal_%s_vs.json' % recipe_name.lower())
 
 derive_sym_mat = True
-fname_mat = os.path.join(output_dir, 'S_L2_N1', recipe_name, 'matrix_expr_ideal_vsHjx.json')
+fname_mat = os.path.join(output_dir, bg_dir, recipe_name, 'matrix_expr_ideal_vsHjx.json')
 
 if recipe_name == 'Original':
     from pg_utils.pg_model import expand_pg_partial_ext as xpd_cfg
