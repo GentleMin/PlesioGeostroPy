@@ -14,8 +14,10 @@ import functools
 from typing import List, Union, Optional
 
 import sympy
+import sympy.functions
+import sympy.functions.special
+import sympy.functions.special.polynomials
 from sympy.integrals import quadrature as qdsym
-from ..pg_model import expansion
 from ..pg_model import expansion as xpd
 from ..pg_model.expansion import xi, n_test, n_trial
 
@@ -74,9 +76,12 @@ def quad_matrix_sympy(operand_A: sympy.Expr, operand_B: sympy.Expr,
     Phi_trial = np.array(Phi_trial, dtype=object)
     return sympy.Matrix(list((Phi_test*wt_quad) @ Phi_trial.T))
 
+
 def quad_matrix_scipy(operand_A: sympy.Expr, operand_B: sympy.Expr, 
     nrange_A: List[int], nrange_B: List[int],
-    xi_quad: np.ndarray, wt_quad: np.ndarray) -> np.ndarray:
+    xi_quad: np.ndarray, wt_quad: np.ndarray,
+    wt_expr: Optional[sympy.Expr] = None,
+    pc_vars: List[sympy.Expr] = list(), pc_vals: List[np.ndarray] = list()) -> np.ndarray:
     """Compute quadrature matrix using scipy, 
     where :math:`w_k` is `wt_quad[k]`, :math:`\\xi_k` is `xi_quad[k]`,
     :math:`f_A` is `operand_A` and :math:`f_B` is `operand_B`.
@@ -91,18 +96,29 @@ def quad_matrix_scipy(operand_A: sympy.Expr, operand_B: sympy.Expr,
     
     :returns: output matrix in np.ndarray
     """
-    f_A = sympy.lambdify([n_test, xi], operand_A.doit(), modules=["scipy", "numpy"])
-    f_B = sympy.lambdify([n_trial, xi], operand_B.doit(), modules=["scipy", "numpy"])
+    f_A = sympy.lambdify([n_test, xi, *pc_vars], operand_A, modules=["scipy", "numpy"])
+    f_B = sympy.lambdify([n_trial, xi, *pc_vars], operand_B, modules=["scipy", "numpy"])
+    
     Ntest, Xi_test = np.meshgrid(nrange_A, xi_quad, indexing='ij')
-    Phi_A = f_A(Ntest, Xi_test)
+    pc_vals_test = [np.meshgrid(nrange_A, pc_arr, indexing='ij')[1] for pc_arr in pc_vals]
+    Phi_A = f_A(Ntest, Xi_test, *pc_vals_test)
+    
     Ntrial, Xi_trial = np.meshgrid(nrange_B, xi_quad, indexing='ij')
-    Phi_B = f_B(Ntrial, Xi_trial)
+    pc_vals_trial = [np.meshgrid(nrange_B, pc_arr, indexing='ij')[1] for pc_arr in pc_vals]
+    Phi_B = f_B(Ntrial, Xi_trial, *pc_vals_trial)
+    
+    if wt_expr is not None:
+        f_wt = sympy.lambdify([xi, *pc_vars], wt_expr, modules=['scipy', 'numpy'])
+        wt_quad = f_wt(xi_quad, *pc_vals)*wt_quad
+    
     return (Phi_A*wt_quad) @ Phi_B.T
 
 
 def quad_matrix_mpmath(operand_A: sympy.Expr, operand_B: sympy.Expr, 
     nrange_A: List[int], nrange_B: List[int],
     xi_quad: np.ndarray, wt_quad: np.ndarray, 
+    wt_expr: Optional[sympy.Expr] = None,
+    pc_vars: List[sympy.Expr] = list(), pc_vals: List[np.ndarray] = list(),
     n_dps: int = 33) -> np.ndarray:
     """Compute quadrature matrix using mpmath, 
     where :math:`w_k` is `wt_quad[k]`, :math:`\\xi_k` is `xi_quad[k]`,
@@ -131,14 +147,23 @@ def quad_matrix_mpmath(operand_A: sympy.Expr, operand_B: sympy.Expr,
         **symparser.v_functions_mpmath}, 
         "mpmath"
     ]
-    f_A = sympy.lambdify([n_test, xi], operand_A.doit(), modules=lambdify_modules)
-    f_B = sympy.lambdify([n_trial, xi], operand_B.doit(), modules=lambdify_modules)
+    f_A = sympy.lambdify([n_test, xi, *pc_vars], operand_A, modules=lambdify_modules)
+    f_B = sympy.lambdify([n_trial, xi, *pc_vars], operand_B, modules=lambdify_modules)
     
     with mp.workdps(n_dps):
+        
         Ntest, Xi_test = np.meshgrid(nrange_A, xi_quad, indexing='ij')
-        Phi_A = f_A(Ntest, Xi_test)
+        pc_test = [np.meshgrid(nrange_A, pc_arr, indexing='ij')[1] for pc_arr in pc_vals]
+        Phi_A = f_A(Ntest, Xi_test, *pc_test)
+        
         Ntrial, Xi_trial = np.meshgrid(nrange_B, xi_quad, indexing='ij')
-        Phi_B = f_B(Ntrial, Xi_trial)
+        pc_trial = [np.meshgrid(nrange_B, pc_arr, indexing='ij')[1] for pc_arr in pc_vals]
+        Phi_B = f_B(Ntrial, Xi_trial, *pc_trial)
+        
+        if wt_expr is not None:
+            f_wt = sympy.lambdify([xi, *pc_vars], wt_expr, modules=lambdify_modules)
+            wt_quad = f_wt(xi_quad, *pc_vals)*wt_quad
+        
         quad_matrix = (Phi_A*wt_quad) @ Phi_B.T
     
     return quad_matrix
@@ -147,6 +172,8 @@ def quad_matrix_mpmath(operand_A: sympy.Expr, operand_B: sympy.Expr,
 def quad_matrix_gmpy2(operand_A: sympy.Expr, operand_B: sympy.Expr, 
     nrange_A: List[int], nrange_B: List[int],
     xi_quad: np.ndarray, wt_quad: np.ndarray, 
+    wt_expr: Optional[sympy.Expr] = None,
+    pc_vars: List[sympy.Expr] = list(), pc_vals: List[np.ndarray] = list(),
     n_dps: int = 33) -> np.ndarray:
     """Compute quadrature matrix using gmpy2, 
     where :math:`w_k` is `wt_quad[k]`, :math:`\\xi_k` is `xi_quad[k]`,
@@ -172,7 +199,6 @@ def quad_matrix_gmpy2(operand_A: sympy.Expr, operand_B: sympy.Expr,
     """
     lambdify_funcs = [{
         "jacobi": functools.partial(special.eval_jacobi_recur_mp, dps=n_dps, backend="gmpy2"), 
-        # "jacobi": lambda Nmesh, a, b, zmesh: special.eval_jacobi_recur_mp(Nmesh, a, b, zmesh, dps=32, backend="gmpy2"),
         **symparser.v_functions_gmpy2
     }]
     gmpy2_printer=symparser.Gmpy2Printer(settings={
@@ -182,18 +208,27 @@ def quad_matrix_gmpy2(operand_A: sympy.Expr, operand_B: sympy.Expr,
         'user_functions': {"jacobi": "jacobi", "sqrt": "sqrt"}
         }, prec=112)
     
-    f_A = sympy.lambdify([n_test, xi], operand_A.doit(), 
+    f_A = sympy.lambdify([n_test, xi, *pc_vars], operand_A, 
         modules=lambdify_funcs, printer=gmpy2_printer)
-    f_B = sympy.lambdify([n_trial, xi], operand_B.doit(), 
+    f_B = sympy.lambdify([n_trial, xi, *pc_vars], operand_B, 
         modules=lambdify_funcs, printer=gmpy2_printer)
     
     _, target_prec = utils.transform_dps_prec(dps=n_dps)
     with gp.local_context(gp.context(), precision=target_prec) as ctx:
         
         Ntest, Xi_test = np.meshgrid(nrange_A, xi_quad, indexing='ij')
-        Phi_A = f_A(Ntest, Xi_test)
+        pc_test = [np.meshgrid(nrange_A, pc_arr, indexing='ij')[1] for pc_arr in pc_vals]
+        Phi_A = f_A(Ntest, Xi_test, *pc_test)
+        
         Ntrial, Xi_trial = np.meshgrid(nrange_B, xi_quad, indexing='ij')
-        Phi_B = f_B(Ntrial, Xi_trial)
+        pc_trial = [np.meshgrid(nrange_B, pc_arr, indexing='ij')[1] for pc_arr in pc_vals]
+        Phi_B = f_B(Ntrial, Xi_trial, *pc_trial)
+        
+        if wt_expr is not None:
+            f_wt = sympy.lambdify([xi, *pc_vars], wt_expr, 
+                modules=lambdify_funcs, printer=gmpy2_printer)
+            wt_quad = f_wt(xi_quad, *pc_vals)*wt_quad
+                
         quad_matrix = (Phi_A*wt_quad) @ Phi_B.T
     
     return quad_matrix
@@ -206,7 +241,7 @@ class InnerQuad_Rule:
     
     def __init__(self, inner_prod: xpd.InnerProduct1D) -> None:
         self.inner_prod = inner_prod
-        self.int_var = self.inner_prod._int_var
+        self.int_var = self.inner_prod.var
     
     def gramian(self, nrange_trial: List[int], nrange_test: List[int],
         *args, **kwargs) -> Union[np.ndarray, np.matrix, sympy.Matrix]:
@@ -239,10 +274,15 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
     :param sympy.Expr powerN: total degree to be integrated
     """
     
-    def __init__(self, inner_prod: xpd.InnerProduct1D, automatic: bool = False,
+    def __init__(self, 
+        inner_prod: xpd.InnerProduct1D, 
+        automatic: bool = False,
+        prefactors: List[sympy.Expr] = list(),
         alpha: sympy.Expr = -sympy.Rational(1, 2), 
         beta: sympy.Expr = -sympy.Rational(1, 2), 
-        quadN: Optional[sympy.Expr] = None) -> None:
+        quadN: Optional[sympy.Expr] = None, 
+        quadN_redundancy: int = 10
+    ) -> None:
         """Initialization
         
         :param expansion.InnerProduct1D inner_prod: inner prod to be evaluated
@@ -262,47 +302,60 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         """
         super().__init__(inner_prod)
         self.deduce = automatic
+        self.prefs = prefactors
         if self.deduce:
-            # powers_list = self.get_powers(self.int_var, 
-            #     self.inner_prod.integrand().doit())
-            powers_left = self.get_powers(self.int_var, 
-                self.inner_prod._opd_A.doit())
-            powers_right = self.get_powers(self.int_var, 
-                (self.inner_prod._wt*self.inner_prod._opd_B).doit())
-            if isinstance(powers_left[0], list):
-                self.alpha_left = [powers[0] for powers in powers_left]
-                self.beta_left = [powers[1] for powers in powers_left]
-                powerN_left = [powers[2] for powers in powers_left]
+            if self.prefs:
+                assert len(prefactors) == 2
+                self.translate_mode = ('auth', 'precomp')
+                sym_p, sym_q = prefactors[0], prefactors[1]
+                self.a_left, self.b_left, powerN_left = self.get_powers_pq(
+                    sym_p, sym_q, self.int_var, self.inner_prod.opd_A
+                )
+                self.a_right, self.b_right, powerN_right = self.get_powers_pq(
+                    sym_p, sym_q, self.int_var, self.inner_prod.opd_B
+                )
             else:
-                self.alpha_left = [powers_left[0]]
-                self.beta_left = [powers_left[1]]
-                powerN_left = [powers_left[2]]
-            if isinstance(powers_right[0], list):
-                self.alpha_right = [powers[0] for powers in powers_right]
-                self.beta_right = [powers[1] for powers in powers_right]
-                powerN_right = [powers[2] for powers in powers_right]
-            else:
-                self.alpha_right = [powers_right[0]]
-                self.beta_right = [powers_right[1]]
-                powerN_right = [powers_right[2]]
+                self.translate_mode = ('expand', 'univar')
+                powers_left = self.get_powers(self.int_var, 
+                    self.inner_prod.opd_A.doit())
+                powers_right = self.get_powers(self.int_var, 
+                    (self.inner_prod.wt*self.inner_prod.opd_B).doit())
+                if isinstance(powers_left[0], list):
+                    self.a_left = [powers[0] for powers in powers_left]
+                    self.b_left = [powers[1] for powers in powers_left]
+                    powerN_left = [powers[2] for powers in powers_left]
+                else:
+                    self.a_left = [powers_left[0]]
+                    self.b_left = [powers_left[1]]
+                    powerN_left = [powers_left[2]]
+                if isinstance(powers_right[0], list):
+                    self.a_right = [powers[0] for powers in powers_right]
+                    self.b_right = [powers[1] for powers in powers_right]
+                    powerN_right = [powers[2] for powers in powers_right]
+                else:
+                    self.a_right = [powers_right[0]]
+                    self.b_right = [powers_right[1]]
+                    powerN_right = [powers_right[2]]
+
             # Calculate total degree for all terms in the integrand
-            self.alpha = [a_left + a_right 
-                for a_left in self.alpha_left for a_right in self.alpha_right]
-            self.beta = [b_left + b_right 
-                for b_left in self.beta_left for b_right in self.beta_right]
+            self.a = [a_left + a_right 
+                for a_left in self.a_left for a_right in self.a_right]
+            self.b = [b_left + b_right 
+                for b_left in self.b_left for b_right in self.b_right]
             self.powerN = [N_left + N_right 
                 for N_left in powerN_left for N_right in powerN_right]
         else:
-            self.alpha, self.beta = [alpha], [beta]
-            self.alpha_left, self.alpha_right = [sympy.S.One], [alpha]
-            self.beta_left, self.beta_right = [sympy.S.One], [beta]
-            self.powerN = 2*quadN - 1
-        if quadN is not None:
+            self.a, self.b = [alpha], [beta]
+            self.a_left, self.a_right = [sympy.S.One], [alpha]
+            self.b_left, self.b_right = [sympy.S.One], [beta]
             self.powerN = 2*quadN - 1
         
+        if quadN is not None:
+            self.powerN = 2*quadN - 1
+        self.N_extra = quadN_redundancy
+        
     @classmethod
-    def get_powers(cls, int_var: sympy.Symbol, expr: sympy.Expr, 
-        **kwargs) -> np.ndarray:
+    def get_powers(cls, int_var: sympy.Symbol, expr: sympy.Expr, **kwargs):
         """Get the powers of p1=(1 - xi), p2=(1 + xi) and xi
         
         :param sympy.Symbol int_var: integration variable
@@ -320,6 +373,28 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         expr = expr.xreplace(replace_map).expand()
         return symparser.powers_of(expr, p1, p2, int_var, **kwargs)
     
+    @classmethod
+    def get_powers_pq(cls, p: sympy.Expr, q: sympy.Expr, int_var: sympy.Expr, 
+                      expr: sympy.Expr, **kwargs):
+        """Get the leading powers of p and q symbols
+        
+        :param sympy.Expr p: symbol for p factor (prop to sqrt(1 - `int_var`))
+        :param sympy.Expr q: symbol for q factor (prop to sqrt(1 + `int_var`))
+        :param sympy.Expr int_var: symbol for integration variable
+        :param sympy.Expr expr: the expression where the powers are retrieved
+        :param \**kwargs: whatever that needs to be passed to :func:`leading_powers_of`
+        """
+        pows = symparser.leading_powers_of(expr, p, q)
+        if isinstance(pows[0], list):
+            pows_p = [pows_term[0]/2 for pows_term in pows]
+            pows_q = [pows_term[1]/2 for pows_term in pows]
+        else:
+            pows_p = [pows[0]/2]
+            pows_q = [pows[1]/2]
+        polys = expr.atoms(sympy.functions.special.polynomials.OrthogonalPolynomial)
+        pows_x = [poly_term.args[0] for poly_term in polys if poly_term.args[-1] == int_var]
+        return pows_p, pows_q, pows_x
+    
     def deduce_params(self, Ntrial: int, Ntest: int):
         """Determine the parameters of the quadrature
         
@@ -335,8 +410,8 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         deduce_map = {n_trial: Ntrial, n_test: Ntest}
         # The integrand contains multiple terms, each term with some alpha, beta factors.
         # The final alpha and beta will be given by the minimum of each
-        alpha_list = np.array([tmp.subs(deduce_map) for tmp in self.alpha])
-        beta_list = np.array([tmp.subs(deduce_map) for tmp in self.beta])
+        alpha_list = np.array([tmp.subs(deduce_map) for tmp in self.a])
+        beta_list = np.array([tmp.subs(deduce_map) for tmp in self.b])
         alpha = alpha_list.min()
         beta = beta_list.min()
         # If alpha and beta of each term in the summation differ by a 
@@ -349,7 +424,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
                 "The quadrature cannot integrate exactly."
                 "Trying splitting the inner product instead.")
         if isinstance(self.powerN, list):
-            powerN = [tmp + self.alpha[idx] + self.beta[idx] - alpha - beta
+            powerN = [tmp + self.a[idx] + self.b[idx] - alpha - beta + self.N_extra
                 for idx, tmp in enumerate(self.powerN)]
             powerN = np.array([tmp.subs(deduce_map) for tmp in powerN]).max()
         else:
@@ -371,25 +446,25 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         """
         deduce_map = {n_trial: Ntrial, n_test: Ntest}
         # Determine the smallest value of alpha and beta in each operand
-        alpha_lmin = np.array([tmp.subs(deduce_map) for tmp in self.alpha_left]).min()
-        alpha_rmin = np.array([tmp.subs(deduce_map) for tmp in self.alpha_right]).min()
-        beta_lmin = np.array([tmp.subs(deduce_map) for tmp in self.beta_left]).min()
-        beta_rmin = np.array([tmp.subs(deduce_map) for tmp in self.beta_right]).min()
+        alpha_lmin = np.array([tmp.subs(deduce_map) for tmp in self.a_left]).min()
+        alpha_rmin = np.array([tmp.subs(deduce_map) for tmp in self.a_right]).min()
+        beta_lmin = np.array([tmp.subs(deduce_map) for tmp in self.b_left]).min()
+        beta_rmin = np.array([tmp.subs(deduce_map) for tmp in self.b_right]).min()
         alpha_min = alpha_lmin + alpha_rmin
         beta_min = beta_lmin + beta_rmin
         # If alpha and beta of each term in the summation differ by a 
         # non-integer number, this means there will be endpoint singularities
         # that cannot be simultaneously integrated using one G-J quadrature
-        for i_idx in range(len(self.alpha)):
-            alpha_diff = self.alpha[i_idx].subs(deduce_map) - alpha_min
-            beta_diff = self.beta[i_idx].subs(deduce_map) - beta_min
+        for i_idx in range(len(self.a)):
+            alpha_diff = self.a[i_idx].subs(deduce_map) - alpha_min
+            beta_diff = self.b[i_idx].subs(deduce_map) - beta_min
             if not alpha_diff.is_integer or not beta_diff.is_integer:
                 warnings.warn("Incompatible singularities!"
                     "The quadrature cannot integrate exactly."
                     "Trying splitting the inner product instead.")
                 break
-        # alpha_list = np.array([tmp.subs(deduce_map) for tmp in self.alpha])
-        # beta_list = np.array([tmp.subs(deduce_map) for tmp in self.beta])
+        # alpha_list = np.array([tmp.subs(deduce_map) for tmp in self.a])
+        # beta_list = np.array([tmp.subs(deduce_map) for tmp in self.b])
         # pow_diff = [not term.is_integer for term in alpha_list - alpha_min] \
         #     + [not term.is_integer for term in beta_list - beta_min]
         # if np.array(pow_diff).sum() > 0:
@@ -397,7 +472,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         #         "The quadrature cannot integrate exactly."
         #         "Trying splitting the inner product instead.")
         if isinstance(self.powerN, list):
-            powerN = [tmp + self.alpha[idx] + self.beta[idx] - alpha_min - beta_min
+            powerN = [tmp + self.a[idx] + self.b[idx] - alpha_min - beta_min + self.N_extra
                 for idx, tmp in enumerate(self.powerN)]
             powerN = np.array([tmp.subs(deduce_map) for tmp in powerN]).max()
         else:
@@ -405,7 +480,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         quadN = int(powerN) // 2 + 1
         return alpha_min, beta_min, quadN, alpha_lmin, beta_lmin
     
-    def gramian(self, nrange_trial: List[int], nrange_test: List[int], 
+    def gramian(self, nrange_trial: List[int], nrange_test: List[int], singularity_exd: bool = True,
         backend: str="sympy", int_opt: dict={}, output: str="sympy", out_opt: dict={}, 
         outer: bool=True, verbose: bool=True) -> Union[np.ndarray, np.matrix, sympy.Matrix]:
         """Compute Gram matrix, concrete realization for Gauss Jacobi quadrature
@@ -439,37 +514,54 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         # Throw warning of singularity if alpha or beta <= -1
         if alpha <= -1:
             warnings.warn("Endpoint singularity detected (alpha={:s})! Check for integrability!".format(str(alpha)))
-            alpha = sympy.S.Zero
-            quadN *= 2
+            # alpha = sympy.S.Zero
+            alpha = sympy.S.Zero if alpha.is_integer else -sympy.S.Half
+            quadN = 2*quadN if singularity_exd else quadN
         if beta <= -1:
             warnings.warn("Endpoint singularity detected (beta={:s})! Check for integrability!".format(str(beta)))
-            beta = sympy.S.Zero
-            quadN *= 2
+            beta = sympy.S.Zero if beta.is_integer else -sympy.S.Half
+            quadN = 2*quadN if singularity_exd else quadN
         
         if verbose:
             print("Integrating with alpha={}, beta={}, N={}".format(alpha, beta, quadN))
-        if backend == "sympy":
-            if outer:
-                M = self._quad_sympy_outer(nrange_trial, nrange_test, 
+            
+        if 'precomp' in self.translate_mode:
+            if not outer:
+                raise ValueError(f"Translation mode {self.translate_mode} must be used with outer=True!")
+            if backend == 'scipy':
+                M = self._quad_scipy_outer_pc(nrange_trial, nrange_test, 
+                    alpha, beta, quadN, alpha_l, beta_l, **int_opt)
+            elif backend == 'gmpy2':
+                M = self._quad_gmpy2_cp(nrange_trial, nrange_test, 
                     alpha, beta, quadN, alpha_l, beta_l, **int_opt)
             else:
-                M = self._quad_sympy_integrand(nrange_trial, nrange_test, 
-                    alpha, beta, quadN, **int_opt)
-        elif backend == "scipy":
-            if outer:
-                M = self._quad_scipy_outer(nrange_trial, nrange_test,
-                    alpha, beta, quadN, alpha_l, beta_l)
-            else:
-                M = self._quad_scipy_integrand(nrange_trial, nrange_test, 
-                    alpha, beta, quadN)
-        elif backend == "mpmath":
-            M = self._quad_mpmath(nrange_trial, nrange_test, 
-                alpha, beta, quadN, alpha_l, beta_l, **int_opt)
-        elif backend == "gmpy2":
-            M = self._quad_gmpy2(nrange_trial, nrange_test, 
-                alpha, beta, quadN, alpha_l, beta_l, **int_opt)
+                raise ValueError(f"{backend} unsupported for inner product matrix with {self.translate_mode}!")
         else:
-            raise AttributeError
+            if backend == "sympy":
+                if outer:
+                    M = self._quad_sympy_outer(nrange_trial, nrange_test, 
+                        alpha, beta, quadN, alpha_l, beta_l, **int_opt)
+                else:
+                    M = self._quad_sympy_integrand(nrange_trial, nrange_test, 
+                        alpha, beta, quadN, **int_opt)
+            elif backend == "scipy":
+                if outer:
+                    M = self._quad_scipy_outer(nrange_trial, nrange_test,
+                        alpha, beta, quadN, alpha_l, beta_l)
+                    # M = self._quad_scipy_outer_pc(nrange_trial, nrange_test,
+                    #     alpha, beta, quadN, alpha_l, beta_l)
+                else:
+                    M = self._quad_scipy_integrand(nrange_trial, nrange_test, 
+                        alpha, beta, quadN)
+            elif backend == "mpmath":
+                M = self._quad_mpmath(nrange_trial, nrange_test, 
+                    alpha, beta, quadN, alpha_l, beta_l, **int_opt)
+            elif backend == "gmpy2":
+                M = self._quad_gmpy2(nrange_trial, nrange_test, 
+                    alpha, beta, quadN, alpha_l, beta_l, **int_opt)
+            else:
+                raise ValueError(f"{backend} unsupported for inner product matrix with {self.translate_mode}!")
+        
         return self.output_form(M, output=output, **out_opt)
     
     def _quad_sympy_integrand(self, nrange_trial: List[int], nrange_test: List[int], 
@@ -502,29 +594,10 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         """Concrete Gauss-Jacobi quad: sympy evaluation of outer product
         """
         xi_quad, wt_quad = qdsym.gauss_jacobi(quad_N, alpha, beta, n_dps)
-        opd_A = self.inner_prod._opd_A/(1 - xi)**alpha_left/(1 + xi)**beta_left
-        opd_B = self.inner_prod._opd_B*self.inner_prod._wt/(1 - xi)**(alpha - alpha_left)/(1 + xi)**(beta - beta_left)
+        opd_A = self.inner_prod.opd_A/(1 - xi)**alpha_left/(1 + xi)**beta_left
+        opd_B = self.inner_prod.opd_B*self.inner_prod.wt/(1 - xi)**(alpha - alpha_left)/(1 + xi)**(beta - beta_left)
         return quad_matrix_sympy(opd_A, opd_B, nrange_test, nrange_trial, 
             xi_quad, wt_quad, n_dps=n_dps)
-        # Phi_test = list()
-        # for n_test_val in nrange_test:
-        #     opd_tmp = opd_A.subs({n_test: n_test_val}).doit()
-        #     Phi_test.append([
-        #         # opd_tmp.subs({xi: xi_quad[i]}, n=precision)
-        #         opd_tmp.evalf(n_dps, subs={xi: xi_quad[i]})
-        #         for i in range(quad_N)
-        #     ])
-        # Phi_test = np.array(Phi_test, dtype=object)
-        # Phi_trial = list()
-        # for n_trial_val in nrange_trial:
-        #     opd_tmp = opd_B.subs({n_trial: n_trial_val}).doit()
-        #     Phi_trial.append([
-        #         # opd_tmp.subs({xi: xi_quad[i]}, n=precision)
-        #         opd_tmp.evalf(n_dps, subs={xi: xi_quad[i]})
-        #         for i in range(quad_N)
-        #     ])
-        # Phi_trial = np.array(Phi_trial, dtype=object)
-        # return sympy.Matrix(list((Phi_test*wt_quad) @ Phi_trial.T))
     
     def _quad_scipy_integrand(self, nrange_trial: List[int], nrange_test: List[int], 
         alpha: Union[float, int, sympy.Expr], beta: Union[float, int, sympy.Expr], 
@@ -544,16 +617,37 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         """Concrete Gauss-Jacobi quad: scipy evaluation of outer product
         """
         xi_quad, wt_quad = specfun.roots_jacobi(int(quad_N), float(alpha), float(beta))
-        opd_A = self.inner_prod._opd_A/(1 - xi)**alpha_left/(1 + xi)**beta_left
-        opd_B = self.inner_prod._opd_B*self.inner_prod._wt/(1 - xi)**(alpha - alpha_left)/(1 + xi)**(beta - beta_left)
-        return quad_matrix_scipy(opd_A, opd_B, nrange_test, nrange_trial, xi_quad, wt_quad)
-        # opd_A = sympy.lambdify([n_test, xi], opd_A.doit(), modules=["scipy", "numpy"])
-        # opd_B = sympy.lambdify([n_trial, xi], opd_B.doit(), modules=["scipy", "numpy"])
-        # Ntest, Xi_test = np.meshgrid(nrange_test, xi_quad, indexing='ij')
-        # Phi_test = opd_A(Ntest, Xi_test)
-        # Ntrial, Xi_trial = np.meshgrid(nrange_trial, xi_quad, indexing='ij')
-        # Phi_trial = opd_B(Ntrial, Xi_trial)
-        # return (Phi_test*wt_quad) @ Phi_trial.T
+        opd_A = self.inner_prod.opd_A/(1 - xi)**alpha_left/(1 + xi)**beta_left
+        opd_B = self.inner_prod.opd_B*self.inner_prod.wt/(1 - xi)**(alpha - alpha_left)/(1 + xi)**(beta - beta_left)
+        return quad_matrix_scipy(opd_A.doit(), opd_B.doit(), nrange_test, nrange_trial, xi_quad, wt_quad)
+        # opd_A = self.inner_prod.opd_A
+        # opd_B = self.inner_prod.opd_B
+        # wt_expr = self.inner_prod.wt/(1 - xi)**alpha/(1 + xi)**beta
+        # return quad_matrix_scipy(
+        #     opd_A.doit(), opd_B.doit(), nrange_test, nrange_trial, 
+        #     xi_quad, wt_quad, wt_expr=wt_expr
+        # )
+    
+    def _quad_scipy_outer_pc(self, nrange_trial: List[int], nrange_test: List[int], 
+        alpha: Union[float, int, sympy.Expr], beta: Union[float, int, sympy.Expr], quad_N: int,
+        alpha_left: Union[float, int, sympy.Expr], beta_left: Union[float, int, sympy.Expr]) -> np.ndarray:
+        """Concrete Gauss-Jacobi quad: scipy evaluation of outer product, 
+        with pre-computed variables
+        """
+        xi_quad, wt_quad = specfun.roots_jacobi(int(quad_N), float(alpha), float(beta))
+        opd_A = self.inner_prod.opd_A
+        opd_B = self.inner_prod.opd_B
+        
+        # Pre-computation
+        p_arr = np.sqrt((1 - xi_quad)/2)
+        q_arr = np.sqrt((1 + xi_quad)/2)
+        
+        wt_expr = self.inner_prod.wt/(1 - xi)**alpha/(1 + xi)**beta
+        mat_quad = quad_matrix_scipy(
+            opd_A, opd_B, nrange_test, nrange_trial, xi_quad, wt_quad, wt_expr=wt_expr,
+            pc_vars=self.prefs, pc_vals=[p_arr, q_arr]
+        )
+        return mat_quad
     
     def _quad_mpmath(self, nrange_trial: List[int], nrange_test: List[int], 
         alpha: sympy.Expr, beta: sympy.Expr, quad_N: int, 
@@ -561,15 +655,15 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         n_dps: int = 33) -> np.ndarray:
         """Concrete Gauss-Jacobi quad: multi-prec evaluation with mpmath
         """
-        opd_A = self.inner_prod._opd_A/(1 - xi)**alpha_left/(1 + xi)**beta_left
-        opd_B = self.inner_prod._opd_B*self.inner_prod._wt/(1 - xi)**(alpha - alpha_left)/(1 + xi)**(beta - beta_left)
+        opd_A = self.inner_prod.opd_A/(1 - xi)**alpha_left/(1 + xi)**beta_left
+        opd_B = self.inner_prod.opd_B*self.inner_prod.wt/(1 - xi)**(alpha - alpha_left)/(1 + xi)**(beta - beta_left)
         with mp.workdps(n_dps):
             alpha_mp = mp.mpf(str(alpha.evalf(n_dps)))
             beta_mp = mp.mpf(str(beta.evalf(n_dps)))
         root_result = special.roots_jacobi_mp(int(quad_N), alpha_mp, beta_mp, n_dps=n_dps)
         xi_quad, wt_quad = root_result.xi, root_result.wt
         # mp.nprint(xi_quad[0], 32)
-        return quad_matrix_mpmath(opd_A, opd_B, nrange_test, nrange_trial, 
+        return quad_matrix_mpmath(opd_A.doit(), opd_B.doit(), nrange_test, nrange_trial, 
             xi_quad, wt_quad, n_dps=n_dps)
         
     def _quad_gmpy2(self, nrange_trial: List[int], nrange_test: List[int], 
@@ -578,17 +672,46 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         n_dps: int = 33) -> np.ndarray:
         """Concrete Gauss-Jacobi quad: multi-prec evaluation with gmpy2
         """
-        opd_A = self.inner_prod._opd_A/(1 - xi)**alpha_left/(1 + xi)**beta_left
-        opd_B = self.inner_prod._opd_B*self.inner_prod._wt/(1 - xi)**(alpha - alpha_left)/(1 + xi)**(beta - beta_left)
+        opd_A = self.inner_prod.opd_A/(1 - xi)**alpha_left/(1 + xi)**beta_left
+        opd_B = self.inner_prod.opd_B*self.inner_prod.wt/(1 - xi)**(alpha - alpha_left)/(1 + xi)**(beta - beta_left)
         with mp.workdps(n_dps):
             alpha_mp = mp.mpf(str(alpha.evalf(n_dps)))
             beta_mp = mp.mpf(str(beta.evalf(n_dps)))
         root_result = special.roots_jacobi_mp(int(quad_N), alpha_mp, beta_mp, n_dps=n_dps)
         xi_quad = utils.to_gpmy2_f(root_result.xi, dps=n_dps) 
         wt_quad = utils.to_gpmy2_f(root_result.wt, dps=n_dps)
-        return quad_matrix_gmpy2(opd_A, opd_B, nrange_test, nrange_trial, 
+        return quad_matrix_gmpy2(opd_A.doit(), opd_B.doit(), nrange_test, nrange_trial, 
             xi_quad, wt_quad, n_dps=n_dps)
     
+    def _quad_gmpy2_cp(self, nrange_trial: List[int], nrange_test: List[int], 
+        alpha: sympy.Expr, beta: sympy.Expr, quad_N: int, 
+        alpha_left: sympy.Expr, beta_left: sympy.Expr, 
+        n_dps: int = 33) -> np.ndarray:
+        """Concrete Gauss-Jacobi quad: multi-prec evaluation with gmpy2
+        with pre-computed variables
+        """
+        opd_A = self.inner_prod.opd_A
+        opd_B = self.inner_prod.opd_B
+        wt_expr = self.inner_prod.wt/(1 - xi)**alpha/(1 + xi)**beta
+        
+        with mp.workdps(n_dps):
+            alpha_mp = mp.mpf(str(alpha.evalf(n_dps)))
+            beta_mp = mp.mpf(str(beta.evalf(n_dps)))
+        root_result = special.roots_jacobi_mp(int(quad_N), alpha_mp, beta_mp, n_dps=n_dps)
+        xi_quad = utils.to_gpmy2_f(root_result.xi, dps=n_dps) 
+        wt_quad = utils.to_gpmy2_f(root_result.wt, dps=n_dps)
+        
+        # Pre-computation
+        _, target_prec = utils.transform_dps_prec(dps=n_dps)
+        with gp.local_context(gp.context(), precision=target_prec) as ctx:
+            p_arr = np.vectorize(gp.sqrt, otypes=(object,))((1 - xi_quad)/2)
+            q_arr = np.vectorize(gp.sqrt, otypes=(object,))((1 + xi_quad)/2)
+        
+        return quad_matrix_gmpy2(
+            opd_A, opd_B, nrange_test, nrange_trial, xi_quad, wt_quad, wt_expr=wt_expr,
+            pc_vars=self.prefs, pc_vals=[p_arr, q_arr], n_dps=n_dps
+        )
+        
     def output_form(self, M_in: Union[np.ndarray, sympy.Matrix], 
         output: str = "sympy", **kwargs) -> Union[np.ndarray, sympy.Matrix]:
         """Cast output matrix to desired form and data types
