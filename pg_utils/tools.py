@@ -98,8 +98,14 @@ class ProcTimer:
         else:
             return self._logtimes[-1] - self._logtimes[0]
     
-    def print_elapse(self, increment: bool = True, **kwargs) -> None:
-        t_elapse = self.elapse_time(increment=increment)
+    def print_elapse(self, mode: Literal['0', '+', '0+'] = '0', **kwargs) -> None:
+        t_inc = self.elapse_time(increment=True)
+        t_tot = self.elapse_time(increment=False)
         t_info = self._loginfos[-1]
-        print("Elapse time = {:8.2f} | Info: {}".format(t_elapse, t_info), **kwargs)
+        if mode == '+':
+            print("Elapse time (+) = {:8.2f} | Info: {}".format(t_inc, t_info), **kwargs)
+        elif mode == '0':
+            print("Elapse time (0) = {:8.2f} | Info: {}".format(t_tot, t_info), **kwargs)
+        elif mode == '0+':
+            print("Elapse time = {:8.2f} ({:+8.2f}) | Info: {}".format(t_tot, t_inc, t_info), **kwargs)
 

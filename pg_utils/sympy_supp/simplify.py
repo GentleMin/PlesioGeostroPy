@@ -130,3 +130,26 @@ def collect_jacobi(expr: sympy.Expr, **kwargs):
     """Collect all terms by Jacobi polynomials
     """
     return collect_by_type(expr, sympy.jacobi, **kwargs)
+
+
+from sympy.polys.polyoptions import allowed_flags
+from sympy.polys.polytools import poly_from_expr
+
+
+def horner_delayed(f, *gens, **args):
+    """Evaluation-delayed Horner transformation
+    """
+    allowed_flags(args, [])
+    F, _ = poly_from_expr(f, *gens, **args)
+    form, gen = sympy.S.Zero, F.gen
+    
+    if F.is_univariate:
+        for coeff in F.all_coeffs():
+            form = sympy.Add(form*gen, coeff, evaluate=False)
+    else:
+        F, gens = sympy.Poly(F, gen), gens[1:]
+        for coeff in F.all_coeffs():
+            form = sympy.Add(form*gen, horner_delayed(f, *gens, **args), evaluate=False)
+    
+    return form
+    

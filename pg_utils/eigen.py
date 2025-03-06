@@ -7,7 +7,7 @@ in the framework of PG model.
 
 import os, h5py, json, pickle, warnings
 from typing import List, Any, Optional, Union, Tuple, Literal
-from sympy import S, I, Function, Add, diff, Eq, Expr, srepr, parse_expr, Symbol
+from sympy import S, I, Function, Add, Mul, diff, Eq, Expr, srepr, parse_expr, Symbol
 
 from .pg_model import *
 from .pg_model import base, core, params, forcing, bg_fields
@@ -20,6 +20,8 @@ from .numerics import matrices as nmatrix
 from .numerics import io as num_io
 from .numerics import linalg as lin_alg
 from .numerics import utils as num_utils
+
+from . import tools
 
 import numpy as np
 import gmpy2
@@ -111,7 +113,7 @@ def assemble_forcing(eqs: base.LabeledCollection, *args: str,
 
 
 def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
-    verbose: int = 0, sub_H: bool = True) -> Eq:
+    verbose: int = 0, sub_H: bool = True, timer: Optional[tools.ProcTimer] = None) -> Eq:
     """Apply background field equation-wise
     
     :param str fname: name of the field / equation
@@ -124,8 +126,12 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
         fnames = base.CollectionConjugate.cg_field_names
     else:
         raise TypeError
+    
+    info_str = "Applying background field to %s equation..." % (fname,)
     if verbose > 0:
-        print("Applying background field to %s equation..." % (fname,))
+        print(info_str)
+    if timer is not None:
+        timer.flag(loginfo=info_str)
     # Treatment of vorticity equation: do not try to "simplify" the RHS of vorticity
     # equation; it often leads to unnecessary rationalization
     if sub_H:
@@ -163,11 +169,18 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
         new_lhs = new_lhs.subs({H_s: H, H_s**2: H**2}).expand()
         new_rhs = new_rhs.subs({H_s: H, H_s**2: H**2}).expand()
         
+    info_str = "Background field applied to %s equation." % (fname,)
+    if timer is not None:
+        timer.flag(loginfo=info_str)
+        if verbose > 0:
+            timer.print_elapse(mode='0+')
+    
     return Eq(new_lhs, new_rhs)
 
 
 def apply_bg_to_set(eqs: base.LabeledCollection, bg: bg_fields.BackgroundFieldMHD, 
-    sub_H=True, mode: str="PG", verbose: int = 0) -> Tuple[base.LabeledCollection, List]:
+    sub_H=True, mode: str="PG", verbose: int = 0, timer: Optional[tools.ProcTimer] = None
+) -> Tuple[base.LabeledCollection, List]:
     """Apply background field to a set of equations
     
     :param base.LabeledCollection eqs: original set of equations
@@ -185,8 +198,10 @@ def apply_bg_to_set(eqs: base.LabeledCollection, bg: bg_fields.BackgroundFieldMH
     elif mode.lower() == "cg":
         bg_sub.update({comp: f0_val[i_c] for i_c, comp in enumerate(core.cgvar_bg)})
     eqs_new = eqs.apply(
-        lambda fname, eq: apply_bg_to_eq(fname, eq, bg_sub, sub_H=sub_H, mode=mode, verbose=verbose-1), 
-        inplace=False, metadata=True)
+        lambda fname, eq: apply_bg_to_eq(
+            fname, eq, bg_sub, sub_H=sub_H, mode=mode, verbose=verbose-1, timer=timer
+        ), inplace=False, metadata=True
+    )
     return eqs_new, bg.params
 
 
@@ -314,23 +329,94 @@ def process_matrix_element(element: Any, map_trial: dict, map_test: dict) -> Any
     """
     if element is None or element == S.Zero or element == 0:
         return S.Zero
-    # elif isinstance(element, xpd.InnerProduct1D):
-    #     element = element.subs(map_trial).subs(map_test)
-    #     element = element.subs({H_s: H, H_s**2: H**2}).expand().subs({H: H_s})
-    #     return element.change_variable(xi, xpd.s_xi, xpd.xi_s, 
-    #         jac_positive=True, merge=True, simplify=False)
     elif isinstance(element, xpd.InnerProduct1D):
         element = element.subs(map_trial).subs(map_test)
         element = pgutils.slope_subs(element).xreplace({xpd.xi_s: xpd.xi})
-        element._opd_B = simp_supp.collect_jacobi(element._opd_B.expand().powsimp())
         return element
     else:
         raise TypeError
 
 
+def process_expand_univar(element: Any, map_trial: dict, map_test: dict) -> Any:
+    """Process matrix elements to desired form
+    
+    :param element: original element
+    :param dict map_trial: dictionary to substitute trial functions into the expr
+    :param dict map_test: dictionary to substitute test functions into the expr
+    :return element: new element
+    """
+    if element is None or element == S.Zero or element == 0:
+        return S.Zero
+    elif isinstance(element, xpd.InnerProduct1D):
+        element = element.subs(map_trial).subs(map_test)
+        element = element.subs({H_s: H, H_s**2: H**2}).expand().subs({H: H_s})
+        return element.change_variable(xi, xpd.s_xi, xpd.xi_s, 
+            jac_positive=True, merge=True, simplify=False)
+    else:
+        raise TypeError
+    
+
+def process_rational_jacobi(element: Any, map_trial: dict, map_test: dict) -> Any:
+    """Process matrix elements to desired form, assuming the matrix element
+    is a summation of rational forms and Jacobi polynomials
+    
+    :param element: original element
+    :param dict map_trial: dictionary to substitute trial functions into the expr
+    :param dict map_test: dictionary to substitute test functions into the expr
+    :return element: new element
+    """
+    if element is None or element == S.Zero or element == 0:
+        return S.Zero
+    if not isinstance(element, xpd.InnerProduct1D):
+        raise TypeError
+    
+    element = element.subs(map_trial).subs(map_test)
+    element = pgutils.slope_subs(element).xreplace({xpd.xi_s: xpd.xi})
+    opd_A, opd_B, wt, int_var, b_low, b_up = element.args
+    
+    # Explicit variable transform
+    jac = 1/(4*core.s)
+    opd_B = jac*opd_B
+    
+    arg_element = simp_supp.collect_jacobi(opd_B.expand().powsimp(), evaluate=False)
+    summands = list()
+    for basis, coeff in arg_element.items():
+        # cf_factors = coeff.together().factor().args
+        cf_factors = coeff.together().cancel().together()
+        if isinstance(cf_factors, Mul):
+            cf_factors = cf_factors.args
+        else:
+            cf_factors = (cf_factors,)
+        cf_factors_new = list()
+        cf_factors_sum = S.One
+        for factor in cf_factors:
+            if (isinstance(factor, Add) and 
+                (core.s in factor.atoms(Symbol) or core.H in factor.atoms(Symbol))):
+                # Then factor should be a polynomial of (s, H)
+                cf_factors_sum *= factor
+            else:
+                cf_factors_new.append(factor)
+        # Convert this factor to factorised polynomial of s
+        cf_factors_sum = cf_factors_sum.subs({core.H: core.H_s}).expand().factor(core.s)
+        cf_factors_new.append(cf_factors_sum)
+        summands.append(Mul(*cf_factors_new)*basis)
+        
+    opd_B = Add(*summands, evaluate=False)
+    
+    element = xpd.InnerProduct1D(opd_A, opd_B, wt, xpd.xi, -S.One, +S.One)
+    return element
+
+
+element_process_options = {
+    'none': process_matrix_element,
+    'expand-univar': process_expand_univar,
+    'rational-jacobi': process_rational_jacobi,
+}
+
+
 def equations_to_matrices(eqs: base.LabeledCollection, 
-    xpd_recipe: xpd.ExpansionRecipe, inplace: bool = False, 
-    verbose: int = 0) -> List[xpd.SystemMatrix]:
+    xpd_recipe: xpd.ExpansionRecipe, inplace: bool = False, process_hint: str = 'expand-univar',
+    verbose: int = 0, timer: Optional[tools.ProcTimer] = None) -> List[xpd.SystemMatrix]:
     """Collect matrix elements
     
     :param base.LabeledCollection eqs: collection of all equations
@@ -338,35 +424,71 @@ def equations_to_matrices(eqs: base.LabeledCollection,
     :param bool inplace: whether to modify the eqs inplace
     :returns: Mass matrix, stiffness matrix
     """
+    
+    info_str = "========== Converting eqn to matrices... =========="
+    if timer is not None:
+        timer.flag(loginfo=info_str)
     if verbose > 0:
-        print("========== Converting eqn to matrices... ==========")
+        print(info_str)
+    
     # Collect matrices
     eqs_sys = xpd.SystemEquations(eqs._field_names, xpd_recipe, 
         **{fname: eqs[fname] for fname in eqs._field_names})
-    if verbose > 2:
-        print("Converting equations to Fourier domain...")
+    
+    print("Converting equations to Fourier domain...")
     eqs_sys = eqs_sys.to_fourier_domain(inplace=inplace)
+    info_str = "Converted to Fourier domain."
+    if timer is not None:
+        timer.flag(loginfo=info_str)
+        if verbose > 2:
+            timer.print_elapse(mode='0+')
+    
     if verbose > 2:
         print("Converting equations to radial coordinates...")
     eqs_sys = eqs_sys.to_radial(inplace=inplace)
+    info_str = "Converted to ODE in polar radius."
+    if timer is not None:
+        timer.flag(loginfo=info_str)
+        if verbose > 2:
+            timer.print_elapse(mode='0+')
+    
     if verbose > 2:
         print("Converting equations to inner products...")
     eqs_sys = eqs_sys.to_inner_product(factor_lhs=I*omega, inplace=inplace)
     M_expr, K_expr = eqs_sys.collect_matrices(factor_lhs=I*omega)
-    # print(K_expr['Psi', 'M_p'])
+    info_str = "Converted to Inner products."
+    if timer is not None:
+        timer.flag(loginfo=info_str)
+        if verbose > 2:
+            timer.print_elapse(mode='0+')
+    
     # Convert matrix elements to desired form
+    ele_processor = element_process_options[process_hint]
+    
     if verbose > 1:
         print("Collecting and converting mass matrix M elements...")
     M_expr = M_expr.apply(
-        lambda x: process_matrix_element(x, xpd_recipe.base_expr, xpd_recipe.test_expr),
+        lambda x: ele_processor(x, xpd_recipe.base_expr, xpd_recipe.test_expr),
         inplace=True, metadata=False
     )
+    info_str = "M matrix elements collected & processed."
+    if timer is not None:
+        timer.flag(loginfo=info_str)
+        if verbose > 1:
+            timer.print_elapse(mode='0+')
+    
     if verbose > 1:
         print("Collecting and converting stiffness matrix K elements...")
     K_expr = K_expr.apply(
-        lambda x: process_matrix_element(x, xpd_recipe.base_expr, xpd_recipe.test_expr),
+        lambda x: ele_processor(x, xpd_recipe.base_expr, xpd_recipe.test_expr),
         inplace=True, metadata=False
     )
+    info_str = "K matrix elements collected & processed."
+    if timer is not None:
+        timer.flag(loginfo=info_str)
+        if verbose > 1:
+            timer.print_elapse(mode='0+')
+    
     return M_expr, K_expr
 
 
@@ -409,7 +531,9 @@ def form_equations(
     deactivate: List[int] = list(),
     save_to: Optional[str] = None, 
     overwrite: bool = False,
-    verbose: int = 0) -> Tuple[base.LabeledCollection, List]:
+    verbose: int = 0,
+    timer: Optional[tools.ProcTimer] = None
+) -> Tuple[base.LabeledCollection, List]:
     """Eigensolver step I: form set of equations
     
     :param str eq_mode: mode of equation, "pg", "cg" or "reduced"
@@ -427,6 +551,7 @@ def form_equations(
     :returns: set of equations and a list of unknown parameters.
     """
     i_mode = INPUT_MODES[eq_mode.lower()]
+    timer = tools.ProcTimer(start=True) if timer is None else timer
     
     # Input
     with open(EQS_FILES[i_mode], 'r') as fread:
@@ -439,8 +564,9 @@ def form_equations(
     eqs, par_list_nd = assemble_forcing(eqs, 
         *components, timescale=timescale, verbose=verbose-1)
     eqs.Psi = Eq(eqs.Psi.lhs, eqs.Psi.rhs.subs(FORCING_TERMS[i_mode]))
-    eqs, par_list_bg = apply_bg_to_set(eqs, bg, sub_H=bg_sub_H, mode=i_mode, verbose=verbose-1)
+    eqs, par_list_bg = apply_bg_to_set(eqs, bg, sub_H=bg_sub_H, mode=i_mode, verbose=verbose-1, timer=timer)
     par_list = par_list_nd + par_list_bg
+    timer.flag(loginfo="Forcing")
     
     # Assemble magnetic diffusion
     diff_M = diff_M.lower()
@@ -471,8 +597,10 @@ def form_equations(
                     "equations": eqs.serialize(serializer=srepr)
                 }, 
                 fwrite, indent=4)
+        info_str = "Results saved to {:s}".format(save_to)
+        timer.flag(loginfo=info_str)
         if verbose > 0:
-            print("Results saved to {:s}".format(save_to))
+            timer.print_elapse(mode='0+')
     
     if verbose > 0:
         print()
@@ -543,9 +671,12 @@ def collect_matrix_elements(
     read_from: Union[str, Tuple[base.LabeledCollection, List]], 
     manual_select: Optional[List],
     expansion_recipe: xpd.ExpansionRecipe,
+    process_hint: str = 'expand-univar',
     save_to: Optional[str] = None, 
     overwrite: bool = False,
-    verbose: int = 0) -> Tuple[xpd.SystemMatrix, xpd.SystemMatrix, List]:
+    verbose: int = 0,
+    timer: Optional[tools.ProcTimer] = None,
+) -> Tuple[xpd.SystemMatrix, xpd.SystemMatrix, List]:
     """Eigensolver step II: collect matrix elements in symbolic forms
     
     :param Union[str, Tuple[base.LabeledCollection, List]] read_from: 
@@ -567,6 +698,8 @@ def collect_matrix_elements(
     :returns: Mass matrix (expression), stiffness matrix (expression)
         and a list of required unknown parameters
     """
+    timer = tools.ProcTimer(start=True) if timer is None else timer
+    
     # Input
     if isinstance(read_from, str):
         with open(read_from, 'r') as fread:
@@ -588,7 +721,7 @@ def collect_matrix_elements(
     
     # Body
     M_expr, K_expr = equations_to_matrices(eqs, 
-        expansion_recipe, inplace=False, verbose=5)
+        expansion_recipe, inplace=False, process_hint=process_hint, verbose=5, timer=timer)
     
     # Output
     if save_to is not None:
@@ -602,8 +735,10 @@ def collect_matrix_elements(
         mode = 'w' if overwrite else 'x'
         with open(save_to, mode) as fwrite:
             json.dump(serialized_obj, fwrite, indent=4)
+        info_str = "Results saved to {:s}".format(save_to)
+        timer.flag(loginfo=info_str)
         if verbose > 0:
-            print("Results saved to {:s}".format(save_to))
+            timer.print_elapse(mode='0+')
     
     if verbose > 0:
         print()
@@ -624,7 +759,9 @@ def compute_matrix_numerics(
     save_to: Optional[str] = None, 
     format: Literal["hdf5", "json", "pickle"] = "hdf5",
     overwrite: bool = False,
-    verbose: int = 0) -> Tuple[np.ndarray, np.ndarray]:
+    verbose: int = 0,
+    timer: Optional[tools.ProcTimer] = None
+) -> Tuple[np.ndarray, np.ndarray]:
     """Eigensolver step III: computation of matrix elements
     
     :param Union[str, Tuple[expansion.SystemMatrix, expansion.SystemMatrix, List]] read_from: 
@@ -669,18 +806,29 @@ def compute_matrix_numerics(
     # Safeguard: values for all unknown variables should be correctly provided
     if require_all_pars:
         assert set(par_list) == set(par_val.keys())
+    if timer is None:
+        timer = tools.ProcTimer(start=True)
     
+    info_str = "========== Expanding matrices... =========="
+    timer.flag(info_str)
     if verbose > 0:
-        print("========== Expanding matrices... ==========")
+        print(info_str)
     
+    info_str = "Start pre-processing elements..."
+    timer.flag(loginfo=info_str)
     if verbose > 1:
-        print("Pre-processing elements...")
+        print(info_str)
     # Pre-processing of elements
     M_expr.apply(lambda ele: ele.subs(par_val), inplace=True, metadata=False)
     K_expr.apply(lambda ele: ele.subs(par_val), inplace=True, metadata=False)
-    
+    timer.flag(loginfo="Parameter substitution in matrix elements finished.")
     if verbose > 1:
-        print("Configuring expansions and quadratures...")    
+        timer.print_elapse(mode='0+')
+    
+    info_str = "Configuring expansions and quadratures..."
+    timer.flag(loginfo=info_str)
+    if verbose > 1:
+        print(info_str)
     # Configure expansions
     fnames = xpd_recipe.rad_xpd.fields._field_names
     cnames = xpd_recipe.rad_xpd.bases._field_names
@@ -703,13 +851,17 @@ def compute_matrix_numerics(
         ) for ele in row] for row in M_expr._matrix
     ])
     
+    info_str = "Computing quadratures of elements..."
+    timer.flag(loginfo=info_str)
     if verbose > 1:
-        print("Computing quadratures of elements...")
+        print(info_str)
     # Computation
-    M_val = nmatrix.MatrixExpander(M_expr, 
-        quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1)
-    K_val = nmatrix.MatrixExpander(K_expr, 
-        quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1)
+    with warnings.catch_warnings():
+        warnings.simplefilter('always', UserWarning)
+        M_val = nmatrix.MatrixExpander(M_expr, 
+            quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1, timer=timer)
+        K_val = nmatrix.MatrixExpander(K_expr, 
+            quad_recipe_list, ranges_trial, ranges_test).expand(verbose=verbose > 1, timer=timer)
     
     if chop is not None:
         M_val[np.abs(M_val) < chop] = 0.
@@ -768,9 +920,11 @@ def compute_matrix_numerics(
         
         else:
             raise NotImplementedError("Unknown output format")
-                
+        
+        info_str = "Results saved to {:s}".format(save_to)
+        timer.flag(loginfo=info_str)
         if verbose > 0:
-            print("Results saved to {:s}".format(save_to))
+            timer.print_elapse(mode='0+')
     
     if verbose > 0:
         print()

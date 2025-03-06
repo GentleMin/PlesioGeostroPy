@@ -57,7 +57,7 @@ def field_to_moment(B_field):
     return Mss, Mpp, Msp, Msz, Mpz, zMss, zMpp, zMsp
 
 
-def assemble_background(B0, Psi0=None, mode="PG"):
+def assemble_background(B0, Psi0=None, mode="PG", sub_H=False):
     """Assemble background fields
     
     :param array-like B0: indexable
@@ -90,14 +90,14 @@ def assemble_background(B0, Psi0=None, mode="PG"):
         # Vorticity
         Psi = Psi0 if Psi0 is not None else sympy.S.Zero,
         # Magnetic moments
-        Mss = moments_bg[0].subs({H: H_s}),
-        Mpp = moments_bg[1].subs({H: H_s}),
-        Msp = moments_bg[2].subs({H: H_s}),
-        Msz = moments_bg[3].subs({H: H_s}),
-        Mpz = moments_bg[4].subs({H: H_s}),
-        zMss = moments_bg[5].subs({H: H_s}),
-        zMpp = moments_bg[6].subs({H: H_s}),
-        zMsp = moments_bg[7].subs({H: H_s}),
+        Mss = moments_bg[0],
+        Mpp = moments_bg[1],
+        Msp = moments_bg[2],
+        Msz = moments_bg[3],
+        Mpz = moments_bg[4],
+        zMss = moments_bg[5],
+        zMpp = moments_bg[6],
+        zMsp = moments_bg[7],
         # Magnetic field in the equatorial plane
         Bs_e = B0[0].subs({z: 0}),
         Bp_e = B0[1].subs({z: 0}),
@@ -106,13 +106,18 @@ def assemble_background(B0, Psi0=None, mode="PG"):
         dBp_dz_e = diff(B0[1], z).doit().subs({z: 0}),
         # Magnetic field at the boundary
         Br_b = s*B0[0] + z*B0[2],
-        Bs_p = B0[0].subs({z: +H_s}),
-        Bp_p = B0[1].subs({z: +H_s}),
-        Bz_p = B0[2].subs({z: +H_s}),
-        Bs_m = B0[0].subs({z: -H_s}),
-        Bp_m = B0[1].subs({z: -H_s}),
-        Bz_m = B0[2].subs({z: -H_s})
+        Bs_p = B0[0].subs({z: +H}),
+        Bp_p = B0[1].subs({z: +H}),
+        Bz_p = B0[2].subs({z: +H}),
+        Bs_m = B0[0].subs({z: -H}),
+        Bp_m = B0[1].subs({z: -H}),
+        Bz_m = B0[2].subs({z: -H})
     )
+    if sub_H:
+        pg_background.apply(
+            lambda x: x.subs({H: H_s}) if isinstance(x, sympy.Expr) else x,
+            inplace=True
+        )
     if mode.lower() == "pg":
         return pg_background
     elif mode.lower() == "cg":

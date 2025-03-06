@@ -9,6 +9,9 @@ import numpy as np
 import sympy
 import mpmath
 import gmpy2
+import sympy.functions
+import sympy.functions.special
+import sympy.functions.special.polynomials
 
 from . import special
 from sympy.printing.pycode import PythonCodePrinter
@@ -93,6 +96,41 @@ def powers_of(expr: sympy.Expr, *args: sympy.Symbol, return_expr: bool = False):
             return powers, expr
         else:
             return powers
+
+
+def leading_powers_factor(expr: sympy.Expr, *args: sympy.Expr):
+    """Derive leading powers of a single factor
+    """
+    if isinstance(expr, sympy.Pow):
+        # For a power term, simply extract base and exponent
+        base, exp = expr.as_base_exp()
+        powers = [exp if base == arg else sympy.S.Zero for arg in args]
+        return powers
+    if isinstance(expr, sympy.Symbol) or isinstance(expr, sympy.Function):
+        # If just a symbol or function: compare if is arg
+        powers = [sympy.S.One if expr == arg else sympy.S.Zero for arg in args]
+        return powers
+    powers = [sympy.S.Zero for arg in args]
+    return powers
+
+
+def leading_powers_of(expr: sympy.Expr, *args: sympy.Expr):
+    """Derive leading powers of an expression
+    """
+    if isinstance(expr, sympy.Add):
+        # For a sum, collect all powers for each term separately
+        powers = [leading_powers_of(term, *args) for term in expr.args]
+        return powers
+    if isinstance(expr, sympy.Mul):
+        # For a product, add powers of each factor
+        powers = [sympy.S.Zero for arg in args]
+        for factor in expr.factor().args:
+            powers_factor = leading_powers_factor(factor, *args)
+            for i_sym in range(len(args)):
+                powers[i_sym] += powers_factor[i_sym]
+        return powers
+    # Otherwise: consider the expression as a single factor
+    return leading_powers_factor(expr, *args)
 
 
 def jacobi_idx_subs(expr: sympy.Expr, arg: sympy.Symbol, 

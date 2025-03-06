@@ -179,7 +179,7 @@ class RadialTestFunctions(base.LabeledCollection):
         
 
 
-class InnerProduct1D(sympy.Expr):
+class InnerProduct1D(sympy.Function):
     """1-D (integration) inner product :math:`\\langle a, b \\rangle`
     
     :ivar sympy.Expr _opd_A: left operand
@@ -189,27 +189,47 @@ class InnerProduct1D(sympy.Expr):
     :ivar List[sympy.Expr] _bound: integration bounds
     """
     
-    def __init__(self, opd_A: sympy.Expr, opd_B: sympy.Expr, wt: sympy.Expr, 
-        int_var: sympy.Symbol, lower: sympy.Expr, upper: sympy.Expr) -> None:
-        """Initialization
+    # def __init__(self, opd_A: sympy.Expr, opd_B: sympy.Expr, wt: sympy.Expr, 
+    #     int_var: sympy.Symbol, lower: sympy.Expr, upper: sympy.Expr) -> None:
+    #     """Initialization
         
-        :param sympy.Expr opd_A: left operand
-        :param sympy.Expr opd_B: right operand
-        :param sympy.Expr wt: weight
-        :param sympy.Symbol int_var: integration variable
-        :param sympy.Expr lower: lower bound of integration
-        :param sympy.Expr upper: upper bound of integration
-        """
-        self._opd_A = opd_A
-        self._opd_B = opd_B
-        self._wt = wt
-        self._int_var = int_var
-        self._bound = (lower, upper)
+    #     :param sympy.Expr opd_A: left operand
+    #     :param sympy.Expr opd_B: right operand
+    #     :param sympy.Expr wt: weight
+    #     :param sympy.Symbol int_var: integration variable
+    #     :param sympy.Expr lower: lower bound of integration
+    #     :param sympy.Expr upper: upper bound of integration
+    #     """
+    #     pass
+    @classmethod
+    def eval(cls, opd_A: sympy.Expr, opd_B: sympy.Expr, wt: sympy.Expr, 
+        int_var: sympy.Symbol, lower: sympy.Expr, upper: sympy.Expr):
+        pass
+    
+    @property
+    def opd_A(self):
+        return self.args[0]
+    
+    @property
+    def opd_B(self):
+        return self.args[1]
+    
+    @property
+    def wt(self):
+        return self.args[2]
+    
+    @property
+    def var(self):
+        return self.args[3]
+    
+    @property
+    def bound(self):
+        return (self.args[4], self.args[5])
     
     def _latex(self, printer, *args):
-        str_A = printer._print(self._opd_A, *args)
-        str_B = printer._print(self._wt*self._opd_B, *args)
-        str_var = printer._print(self._int_var, *args)
+        str_A = printer._print(self.opd_A, *args)
+        str_B = printer._print(self.wt*self.opd_B, *args)
+        str_var = printer._print(self.var, *args)
         return r"\left\langle %s \, , \, %s \right\rangle_{%s}" % (
             str_A, str_B, str_var)
     
@@ -220,21 +240,21 @@ class InnerProduct1D(sympy.Expr):
             return self.integral_form()
         else:
             return InnerProduct1D(
-                self._opd_A.doit(), self._opd_B.doit(), self._wt.doit(), 
-                self._int_var, self._bound[0], self._bound[1]
+                self.opd_A.doit(), self.opd_B.doit(), self.wt.doit(), 
+                self.var, self.bound[0], self.bound[1]
             )
     
     def integrand(self):
         """Get the explicit form of the integrand
         """
-        return self._opd_A*self._opd_B*self._wt
+        return self.opd_A*self.opd_B*self.wt
     
     def integral_form(self):
         """Get the explicit integral form
         """
         return sympy.Integral(
-            self._opd_A*self._opd_B*self._wt, 
-            (self._int_var, self._bound[0], self._bound[1]))
+            self.opd_A*self.opd_B*self.wt, 
+            (self.var, self.bound[0], self.bound[1]))
     
     def change_variable(self, new_var: sympy.Symbol, 
         int_var_expr: sympy.Expr, inv_expr: sympy.Expr, 
@@ -260,9 +280,9 @@ class InnerProduct1D(sympy.Expr):
             jac = sympy.diff(int_var_expr, new_var).doit()
         else:
             jac = sympy.Abs(sympy.diff(int_var_expr, new_var).doit())
-        opd_A = self._opd_A.subs({self._int_var: int_var_expr})
-        opd_B = self._opd_B.subs({self._int_var: int_var_expr})
-        wt = jac*self._wt.subs({self._int_var: int_var_expr})
+        opd_A = self.opd_A.subs({self.var: int_var_expr})
+        opd_B = self.opd_B.subs({self.var: int_var_expr})
+        wt = jac*self.wt.subs({self.var: int_var_expr})
         if merge:
             opd_B = wt*opd_B
             wt = sympy.S.One
@@ -272,8 +292,8 @@ class InnerProduct1D(sympy.Expr):
             wt = wt.simplify()
         new_inner_prod = InnerProduct1D(
             opd_A, opd_B, wt, new_var, 
-            inv_expr.subs({self._int_var: self._bound[0]}).doit(),
-            inv_expr.subs({self._int_var: self._bound[1]}).doit())
+            inv_expr.subs({self.var: self.bound[0]}).doit(),
+            inv_expr.subs({self.var: self.bound[1]}).doit())
         return new_inner_prod
     
     def commute_factor_out(self, term: sympy.Expr, opd: int = 1) -> sympy.Expr:
@@ -288,11 +308,11 @@ class InnerProduct1D(sympy.Expr):
             if `opd` = 1, the factor will be moved out of the second operand
         """
         if opd == 0:
-            return term*InnerProduct1D(self._opd_A/term, self._opd_B, self._wt, 
-                self._int_var, self._bound[0], self._bound[1])
+            return term*InnerProduct1D(self.opd_A/term, self.opd_B, self.wt, 
+                self.var, *self.bound)
         elif opd == 1:
-            return term*InnerProduct1D(self._opd_A, self._opd_B/term, self._wt, 
-                self._int_var, self._bound[0], self._bound[1])
+            return term*InnerProduct1D(self.opd_A, self.opd_B/term, self.wt, 
+                self.var, *self.bound)
         else:
             raise AttributeError
     
@@ -308,11 +328,11 @@ class InnerProduct1D(sympy.Expr):
             if `opd` = 1, the factor will be moved to the second operand
         """
         if opd == 0:
-            return InnerProduct1D(term*self._opd_A, self._opd_B, self._wt, 
-                self._int_var, self._bound[0], self._bound[1])
+            return InnerProduct1D(term*self.opd_A, self.opd_B, self.wt, 
+                self.var, *self.bound)
         elif opd == 1:
-            return InnerProduct1D(self._opd_A, term*self._opd_B, self._wt, 
-                self._int_var, self._bound[0], self._bound[1])
+            return InnerProduct1D(self.opd_A, term*self.opd_B, self.wt, 
+                self.var, *self.bound)
         else:
             raise AttributeError
     
@@ -323,25 +343,25 @@ class InnerProduct1D(sympy.Expr):
         split the inner product whose argument is a sum of several terms
         into the sum of several inner products.
         """
-        if opd == 0 and isinstance(self._opd_A, sympy.Add):
+        if opd == 0 and isinstance(self.opd_A, sympy.Add):
             return sympy.Add(**[InnerProduct1D(
-                arg, self._opd_B, self._wt, self._int_var, self._bound[0], self._bound[1])
-                for arg in self._opd_A.args])
-        elif opd == 1 and isinstance(self._opd_B, sympy.Add):
+                arg, self.opd_B, self.wt, self.var, *self.bound)
+                for arg in self.opd_A.args])
+        elif opd == 1 and isinstance(self.opd_B, sympy.Add):
             return sympy.Add(**[InnerProduct1D(
-                self._opd_A, arg, self._wt, self._int_var, self._bound[0], self._bound[1])
-                for arg in self._opd_B.args])
+                self.opd_A, arg, self.wt, self.var, *self.bound)
+                for arg in self.opd_B.args])
         else:
             return self
     
     def serialize(self) -> dict:
         """Serialize inner product to a dictionary
         """
-        return {"opd_A": sympy.srepr(self._opd_A), 
-                "opd_B": sympy.srepr(self._opd_B), "wt": sympy.srepr(self._wt), 
-                "int_var": sympy.srepr(self._int_var), 
-                "lower": sympy.srepr(self._bound[0]), 
-                "upper": sympy.srepr(self._bound[1])}
+        return {"opd_A": sympy.srepr(self.opd_A), 
+                "opd_B": sympy.srepr(self.opd_B), "wt": sympy.srepr(self.wt), 
+                "int_var": sympy.srepr(self.var), 
+                "lower": sympy.srepr(self.bound[0]), 
+                "upper": sympy.srepr(self.bound[1])}
 
 
 
@@ -713,7 +733,8 @@ class SystemMatrix:
                 sympy.parse_expr(element["wt"]), 
                 sympy.parse_expr(element["int_var"]), 
                 sympy.parse_expr(element["lower"]), 
-                sympy.parse_expr(element["upper"]))
+                sympy.parse_expr(element["upper"])
+            )
         elif isinstance(element, str):
             return sympy.parse_expr(element)
     

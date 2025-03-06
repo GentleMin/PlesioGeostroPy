@@ -1,0 +1,153 @@
+========== Expanding matrices... ==========
+Start pre-processing elements...
+Elapse time =     1.07 (   +0.39) | Info: Parameter substitution in matrix elements finished.
+Configuring expansions and quadratures...
+Computing quadratures of elements...
+Element (Psi, Psi)
+Integrating with alpha=3/2, beta=3, N=106
+Elapse time =     2.11 (   +1.04) | Info: Quadrature for element (Psi, Psi) completed.
+Element (M_1, M_1)
+Integrating with alpha=1, beta=5/2, N=110
+Elapse time =     3.01 (   +0.90) | Info: Quadrature for element (M_1, M_1) completed.
+Element (M_p, M_p)
+Integrating with alpha=1, beta=9/2, N=110
+Elapse time =     3.92 (   +0.91) | Info: Quadrature for element (M_p, M_p) completed.
+Element (M_m, M_m)
+Integrating with alpha=1, beta=1/2, N=110
+Elapse time =     4.79 (   +0.88) | Info: Quadrature for element (M_m, M_m) completed.
+Element (M_zp, M_zp)
+Integrating with alpha=2, beta=7/2, N=110
+Elapse time =     5.71 (   +0.92) | Info: Quadrature for element (M_zp, M_zp) completed.
+Element (M_zm, M_zm)
+Integrating with alpha=2, beta=3/2, N=110
+Elapse time =     6.61 (   +0.90) | Info: Quadrature for element (M_zm, M_zm) completed.
+Element (zM_1, zM_1)
+Integrating with alpha=2, beta=5/2, N=110
+Elapse time =     7.53 (   +0.92) | Info: Quadrature for element (zM_1, zM_1) completed.
+Element (zM_p, zM_p)
+Integrating with alpha=2, beta=9/2, N=110
+Elapse time =     8.45 (   +0.92) | Info: Quadrature for element (zM_p, zM_p) completed.
+Element (zM_m, zM_m)
+Integrating with alpha=2, beta=1/2, N=110
+Elapse time =     9.34 (   +0.89) | Info: Quadrature for element (zM_m, zM_m) completed.
+Element (B_ep, B_ep)
+Integrating with alpha=0, beta=7/2, N=106
+Elapse time =    10.15 (   +0.81) | Info: Quadrature for element (B_ep, B_ep) completed.
+Element (B_em, B_em)
+Integrating with alpha=0, beta=3/2, N=106
+Elapse time =    10.95 (   +0.81) | Info: Quadrature for element (B_em, B_em) completed.
+Element (Bz_e, Bz_e)
+Integrating with alpha=0, beta=5/2, N=106
+Elapse time =    11.76 (   +0.81) | Info: Quadrature for element (Bz_e, Bz_e) completed.
+Element (dB_dz_ep, dB_dz_ep)
+Integrating with alpha=0, beta=7/2, N=106
+Elapse time =    12.57 (   +0.81) | Info: Quadrature for element (dB_dz_ep, dB_dz_ep) completed.
+Element (dB_dz_em, dB_dz_em)
+Integrating with alpha=0, beta=3/2, N=106
+Elapse time =    13.38 (   +0.81) | Info: Quadrature for element (dB_dz_em, dB_dz_em) completed.
+Element (B_pp, B_pp)
+Integrating with alpha=0, beta=7/2, N=106
+Elapse time =    14.20 (   +0.81) | Info: Quadrature for element (B_pp, B_pp) completed.
+Element (B_pm, B_pm)
+Integrating with alpha=0, beta=3/2, N=106
+Elapse time =    15.01 (   +0.81) | Info: Quadrature for element (B_pm, B_pm) completed.
+Element (Bz_p, Bz_p)
+Integrating with alpha=0, beta=5/2, N=106
+Elapse time =    15.81 (   +0.80) | Info: Quadrature for element (Bz_p, Bz_p) completed.
+Element (B_mp, B_mp)
+Integrating with alpha=0, beta=7/2, N=106
+Elapse time =    16.62 (   +0.81) | Info: Quadrature for element (B_mp, B_mp) completed.
+Element (B_mm, B_mm)
+Integrating with alpha=0, beta=3/2, N=106
+Elapse time =    17.45 (   +0.82) | Info: Quadrature for element (B_mm, B_mm) completed.
+Element (Bz_m, Bz_m)
+Integrating with alpha=0, beta=5/2, N=106
+Elapse time =    18.27 (   +0.82) | Info: Quadrature for element (Bz_m, Bz_m) completed.
+Element (Psi, Psi)
+Integrating with alpha=3/2, beta=3, N=106
+Elapse time =    18.96 (   +0.69) | Info: Quadrature for element (Psi, Psi) completed.
+Element (Psi, M_p)
+Integrating with alpha=-1/2, beta=3, N=109
+Elapse time =    19.93 (   +0.97) | Info: Quadrature for element (Psi, M_p) completed.
+Element (Psi, M_m)
+Integrating with alpha=-1/2, beta=3, N=109
+Elapse time =    20.80 (   +0.86) | Info: Quadrature for element (Psi, M_m) completed.
+Element (Psi, M_zp)
+Integrating with alpha=1/2, beta=3, N=109
+Elapse time =    21.60 (   +0.80) | Info: Quadrature for element (Psi, M_zp) completed.
+Element (Psi, M_zm)
+Integrating with alpha=1/2, beta=3, N=108
+Elapse time =    22.35 (   +0.76) | Info: Quadrature for element (Psi, M_zm) completed.
+Element (Psi, B_ep)
+Integrating with alpha=1/2, beta=4, N=106
+Elapse time =    23.15 (   +0.80) | Info: Quadrature for element (Psi, B_ep) completed.
+Element (Psi, B_em)
+Integrating with alpha=1/2, beta=3, N=106
+Elapse time =    23.95 (   +0.80) | Info: Quadrature for element (Psi, B_em) completed.
+Element (Psi, B_pp)
+Integrating with alpha=-1/2, beta=3, N=107
+Elapse time =    24.79 (   +0.83) | Info: Quadrature for element (Psi, B_pp) completed.
+Element (Psi, B_pm)
+Integrating with alpha=-1/2, beta=3, N=106
+Elapse time =    25.59 (   +0.80) | Info: Quadrature for element (Psi, B_pm) completed.
+Element (Psi, Bz_p)
+Integrating with alpha=0, beta=4, N=106
+Elapse time =    26.24 (   +0.65) | Info: Quadrature for element (Psi, Bz_p) completed.
+Element (Psi, B_mp)
+Integrating with alpha=-1/2, beta=3, N=107
+Elapse time =    27.07 (   +0.83) | Info: Quadrature for element (Psi, B_mp) completed.
+Element (Psi, B_mm)
+Integrating with alpha=-1/2, beta=3, N=106
+Elapse time =    27.89 (   +0.82) | Info: Quadrature for element (Psi, B_mm) completed.
+Element (Psi, Bz_m)
+Integrating with alpha=0, beta=4, N=106
+Elapse time =    28.52 (   +0.63) | Info: Quadrature for element (Psi, Bz_m) completed.
+Element (M_1, Psi)
+Integrating with alpha=0, beta=5/2, N=108
+Elapse time =    29.43 (   +0.90) | Info: Quadrature for element (M_1, Psi) completed.
+Element (M_p, Psi)
+Integrating with alpha=1, beta=9/2, N=108
+Elapse time =    30.48 (   +1.06) | Info: Quadrature for element (M_p, Psi) completed.
+Element (M_m, Psi)
+Integrating with alpha=1, beta=3/2, N=109
+Elapse time =    31.55 (   +1.06) | Info: Quadrature for element (M_m, Psi) completed.
+Element (M_zp, Psi)
+Integrating with alpha=1, beta=7/2, N=108
+Elapse time =    32.68 (   +1.13) | Info: Quadrature for element (M_zp, Psi) completed.
+Element (M_zm, Psi)
+Integrating with alpha=1, beta=3/2, N=109
+Elapse time =    33.84 (   +1.16) | Info: Quadrature for element (M_zm, Psi) completed.
+Element (zM_1, Psi)
+Integrating with alpha=1, beta=5/2, N=108
+Elapse time =    34.76 (   +0.92) | Info: Quadrature for element (zM_1, Psi) completed.
+Element (zM_p, Psi)
+Integrating with alpha=1, beta=9/2, N=108
+Elapse time =    35.86 (   +1.10) | Info: Quadrature for element (zM_p, Psi) completed.
+Element (zM_m, Psi)
+Integrating with alpha=1, beta=3/2, N=109
+Elapse time =    36.96 (   +1.11) | Info: Quadrature for element (zM_m, Psi) completed.
+Element (B_ep, Psi)
+Integrating with alpha=0, beta=7/2, N=106
+Elapse time =    37.87 (   +0.91) | Info: Quadrature for element (B_ep, Psi) completed.
+Element (B_em, Psi)
+Integrating with alpha=0, beta=3/2, N=107
+Elapse time =    38.80 (   +0.93) | Info: Quadrature for element (B_em, Psi) completed.
+Element (B_pp, Psi)
+Integrating with alpha=0, beta=7/2, N=106
+Elapse time =    39.72 (   +0.92) | Info: Quadrature for element (B_pp, Psi) completed.
+Element (B_pm, Psi)
+Integrating with alpha=0, beta=3/2, N=107
+Elapse time =    40.66 (   +0.93) | Info: Quadrature for element (B_pm, Psi) completed.
+Element (Bz_p, Psi)
+Integrating with alpha=-1/2, beta=5/2, N=107
+Elapse time =    41.45 (   +0.80) | Info: Quadrature for element (Bz_p, Psi) completed.
+Element (B_mp, Psi)
+Integrating with alpha=0, beta=7/2, N=106
+Elapse time =    42.37 (   +0.92) | Info: Quadrature for element (B_mp, Psi) completed.
+Element (B_mm, Psi)
+Integrating with alpha=0, beta=3/2, N=107
+Elapse time =    43.30 (   +0.93) | Info: Quadrature for element (B_mm, Psi) completed.
+Element (Bz_m, Psi)
+Integrating with alpha=-1/2, beta=5/2, N=107
+Elapse time =    44.10 (   +0.80) | Info: Quadrature for element (Bz_m, Psi) completed.
+Elapse time =    44.31 (   +0.21) | Info: Results saved to ./out/eigen/S_L2_N1\Canonical\matrix_ideal_m3_Le1.0e-04_N100_vsHj_qp.h5
