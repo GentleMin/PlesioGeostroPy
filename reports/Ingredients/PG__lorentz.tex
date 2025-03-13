@@ -1,0 +1,75 @@
+\section{Lorentz force}
+
+The external forcing term in the PG momentum equation takes the form
+%
+\begin{equation}\label{eqn:Fext-pg}
+\begin{aligned}
+    F &= -\frac{dH}{ds} \left(2f_\phi^e + \frac{1}{s} \frac{\partial \widetilde{f_z}}{\partial \phi}\right) + \hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e} \\
+    &= -\frac{dH}{ds} \left(2f_\phi^e + \frac{1}{s} \frac{\partial \widetilde{f_z}}{\partial \phi}\right) + \left(\frac{\partial}{\partial s} + \frac{1}{s}\right) \overline{f_\phi} - \frac{1}{s} \frac{\partial \overline{f_s}}{\partial \phi}
+\end{aligned}
+\end{equation}
+%
+In the MHD problem, the physical force is the Lorentz force. It has the symmetric and anti-symmetric integrated form \citep{jackson_plesio-geostrophy_2020}
+\begin{equation}\label{eqn:lorentz-int-pg}
+\begin{aligned}
+    \overline{\mathcal{L}_e}= & \left[\frac{1}{s} \frac{\partial}{\partial s} \left(s \overline{M_{s s}}\right) - \frac{1}{s} \overline{M_{\phi \phi}} + \frac{1}{s} \frac{\partial}{\partial \phi} \overline{M_{s \phi}} -\frac{d H}{d s}\left(M_{ss}^+ + M_{ss}^-\right) + \left(M_{sz}^+ - M_{sz}^-\right)\right] \hat{\mathbf{s}} \\
+    +&\left[\frac{1}{s} \frac{\partial}{\partial s} \left(s\overline{M_{s \phi}}\right)+\frac{1}{s} \frac{\partial}{\partial \phi} \overline{M_{\phi \phi}} + \frac{1}{s} \overline{M_{s \phi}} - \frac{d H}{d s}\left(M_{s \phi}^+ + M_{s \phi}^-\right) + \left(M_{\phi z}^+ - M_{\phi z}^-\right)\right] \hat{\boldsymbol{\phi}}
+\end{aligned}
+\end{equation}
+% and
+\begin{equation}
+    \widetilde{\mathcal{L}_z}= \frac{1}{s} \frac{\partial}{\partial s}\left(s\widetilde{M_{s z}}\right) + \frac{1}{s} \frac{\partial}{\partial \phi} \widetilde{M_{\phi z}}-\frac{d H}{d s}\left(M_{s z}^+ - M_{s z}^-\right) + \left(M_{zz}^+ + M_{zz}^- - 2 M_{zz}^e\right)
+\end{equation}
+where the $+$, $-$ and $e$ superscripts denote quantities that are evaluated at the upper boundary ($z=H$), lower boundary ($z=-H$) and the equatorial plane ($z=0$), respectively. These quantities are linked to the vector components via
+%
+\[
+    M_{ss}^\pm = (B_s^\pm)^2,\quad M_{s\phi}^\pm = B_s^\pm B_\phi^\pm,\quad M_{sz}^\pm = B_s^\pm B_z^\pm,\quad M_{\phi z}^\pm = B_\phi^\pm B_z^\pm,\quad M_{zz}^\pm = (B_z^\pm)^2,\quad M_{zz}^e = (B_z^e)^2
+\]
+%
+In addition, the azimuthal component of the Lorentz force in the equatorial plane takes the form \citep{holdenried-chernoff_long_2021}
+%
+\begin{equation}\label{eqn:lorentz-e-pg}
+    \mathcal{L}_\phi^e = B_s^e \frac{\partial B_\phi^e}{\partial s} + \frac{1}{s} B_\phi^e \frac{\partial B_\phi^e}{\partial \phi} + B_z^e B_{\phi,z}^e + \frac{1}{s} B_s^e B_\phi^e
+\end{equation}
+%
+where $B_{\phi,z}^e$ is $\partial_z B_\phi$ evaluated in the equatorial plane. These expressions complete the Lorentz force terms that contribute to the forcing term $F$ in the momentum equation, 
+
+The Lorentz force can also be expressed in terms of canonical components (see chapter \ref{chap:regularity} and related scripts). In purely canonical components, the forcing term reads
+%
+\begin{equation}\label{eqn:Fext-canonical}
+    \begin{aligned}
+        F &= -\frac{dH}{ds} \left(-\sqrt{2}i \left(f_+^e - f_-^e\right) + \frac{1}{s} \frac{\partial \widetilde{f_z}}{\partial \phi}\right) + \hat{\mathbf{z}}\cdot \nabla\times \overline{\mathbf{f}_e} \\
+        &= -\frac{dH}{ds} \left(-\sqrt{2}i(f_+^e - f_-^e) + \frac{1}{s} \frac{\partial \widetilde{f_z}}{\partial \phi}\right) + \frac{1}{\sqrt{2}i}\left(\frac{\partial}{\partial s} + \frac{1}{s}- \frac{i}{s}\frac{\partial}{\partial \phi}\right) \overline{f_+} - \frac{1}{\sqrt{2}i}\left(\frac{\partial}{\partial s} + \frac{1}{s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) \overline{f_-} \\
+        &= -\frac{dH}{ds} \left(-\sqrt{2}i \left(f_+^e - f_-^e\right) + \frac{1}{s} \frac{\partial \widetilde{f_z}}{\partial \phi}\right) - \frac{i}{\sqrt{2}s} \frac{\partial}{\partial s} \left(s \left(\overline{f_+} - \overline{f_-}\right)\right) - \frac{1}{\sqrt{2}s}\frac{\partial}{\partial \phi} \left(\overline{f_+} + \overline{f_-}\right).
+    \end{aligned}
+\end{equation}
+%
+The integrated Lorentz forces read
+%
+\begin{equation}\label{eqn:lorentz-int-canonical}
+\begin{aligned}
+    \overline{\mathcal{L}_+} &= \frac{1}{\sqrt{2}} \left(\frac{\partial}{\partial s} + \frac{2}{s} - \frac{i}{s} \frac{\partial}{\partial \phi}\right) \overline{M_{++}} - \frac{1}{\sqrt{2}} \frac{dH}{ds} \left[\left(M_{++}^+ + M_{++}^-\right) + \left(M_{1}^+ + M_{1}^-\right)\right] + \left(M_{z+}^+ - M_{z+}^-\right), \\
+    \overline{\mathcal{L}_-} &= \frac{1}{\sqrt{2}} \left(\frac{\partial}{\partial s} + \frac{2}{s} + \frac{i}{s} \frac{\partial}{\partial \phi}\right) \overline{M_{--}} - \frac{1}{\sqrt{2}} \frac{dH}{ds} \left[\left(M_{--}^+ + M_{--}^-\right) + \left(M_{1}^+ + M_{1}^-\right)\right] + \left(M_{z-}^+ - M_{z-}^-\right) \\
+    \widetilde{\mathcal{L}_z} &= \frac{1}{\sqrt{2}} \left(\frac{\partial}{\partial s} + \frac{1}{s} - \frac{i}{s} \frac{\partial}{\partial \phi}\right) \widetilde{M_{z+}} + \frac{1}{\sqrt{2}} \left(\frac{\partial}{\partial s} + \frac{1}{s} + \frac{i}{s} \frac{\partial}{\partial \phi}\right) \widetilde{M_{z-}} \\
+    &\quad - \frac{1}{\sqrt{2}} \frac{dH}{ds} \left[\left(M_{z+}^+ - M_{z+}^-\right) + \left(M_{z-}^+ - M_{z-}^-\right)\right] + \left(M_{zz}^+ + M_{zz}^- - M_{zz}^e\right)
+\end{aligned}
+\end{equation}
+%
+The Lorentz force in the equatorial plane reads
+%
+\begin{equation}\label{eqn:lorentz-e-canonical}
+\begin{aligned}
+    \mathcal{L}_+^e &= \frac{1}{\sqrt{2}} \left(\frac{\partial}{\partial s} + \frac{i}{s} \frac{\partial}{\partial \phi}\right) M_1^e + \frac{1}{\sqrt{2}} \left(\frac{\partial}{\partial s} + \frac{2}{s} - \frac{i}{s} \frac{\partial}{\partial \phi}\right) M_{++}^e + \frac{\partial M_{z+}^e}{\partial z} \\ 
+    \mathcal{L}_-^e &= \frac{1}{\sqrt{2}} \left(\frac{\partial}{\partial s} - \frac{i}{s} \frac{\partial}{\partial \phi}\right) M_1^e + \frac{1}{\sqrt{2}} \left(\frac{\partial}{\partial s} + \frac{2}{s} + \frac{i}{s} \frac{\partial}{\partial \phi}\right) M_{--}^e + \frac{\partial M_{z-}^e}{\partial z}
+\end{aligned}
+\end{equation}
+%
+where $M_1^e = B_+^e B_-^e$, $M_{++}^e = (B_+^e)^2$, $M_{--}^e = (B_-^e)^2$ and $M_{z\pm}^e = B_z^e B_{\pm}^e$, or in vector component form
+%
+\begin{equation}\label{eqn:lorentz-ev-canonical}
+\begin{aligned}
+    \mathcal{L}_+^e &= \left[\frac{B_+^e}{\sqrt{2}}\left(\frac{\partial}{\partial s} + \frac{1}{s} - \frac{i}{s}\frac{\partial}{\partial \phi}\right) + \frac{B_-^e}{\sqrt{2}}\left(\frac{\partial}{\partial s} - \frac{1}{s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) + B_z^e \frac{\partial}{\partial z}\right] B_+^e \\ 
+    \mathcal{L}_-^e &= \left[\frac{B_+^e}{\sqrt{2}}\left(\frac{\partial}{\partial s} - \frac{1}{s} - \frac{i}{s}\frac{\partial}{\partial \phi}\right) + \frac{B_-^e}{\sqrt{2}}\left(\frac{\partial}{\partial s} + \frac{1}{s} + \frac{i}{s}\frac{\partial}{\partial \phi}\right) + B_z^e \frac{\partial}{\partial z}\right] B_-^e.
+\end{aligned}
+\end{equation}
+%
