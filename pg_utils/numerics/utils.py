@@ -189,7 +189,7 @@ def transform_dps_prec(dps: Optional[int] = None, prec: Optional[int] = None,
         return dps_default, prec_default
 
 
-def to_gpmy2_f(x: np.ndarray, dps: Optional[int] = None, 
+def to_gmpy2_f(x: np.ndarray, dps: Optional[int] = None, 
     prec: Optional[int] = None) -> np.ndarray:
     """Convert float array to gmpy2 float array
     """
@@ -217,7 +217,7 @@ def to_numpy_f(x: np.ndarray) -> np.ndarray:
     return x.astype(np.float64)
 
 
-def to_gpmy2_c(x: np.ndarray, dps: Optional[int] = None, 
+def to_gmpy2_c(x: np.ndarray, dps: Optional[int] = None, 
     prec: Optional[int] = None) -> np.ndarray:
     """Convert float array to gmpy2 float array
     """

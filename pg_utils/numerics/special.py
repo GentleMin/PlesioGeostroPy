@@ -16,6 +16,7 @@ from .utils import transform_dps_prec
 
 QUADPREC_DPS = 33
 QUADPREC_PREC = 113
+MP_ZEROPREC = 1000
 
 class RootsJacobiResult:
     """Result object of root-finding routine for Jacobi polynomials
@@ -93,18 +94,19 @@ def roots_jacobi_mp(n: int, alpha: mp.mpf, beta: mp.mpf,
         )
         
         def f(n, xi):
-            return np.array(
-                [mp.jacobi(n, alpha, beta, xi_tmp, zeroprec=115) for xi_tmp in xi], dtype=object)
+            return np.vectorize(lambda xi: mp.jacobi(n, alpha, beta, xi, zeroprec=MP_ZEROPREC), otypes=(object,))(xi)
         def df(n, xi):
-            return (n + alpha + beta + 1)/2*np.array(
-                [mp.jacobi(n-1, alpha+1, beta+1, xi_tmp, zeroprec=115) for xi_tmp in xi], dtype=object)
+            return (
+                (n + alpha + beta + 1)/2*
+                np.vectorize(lambda xi: mp.jacobi(n-1, alpha+1, beta+1, xi, zeroprec=MP_ZEROPREC), otypes=(object,))(xi)
+            )
         
         xi_mp = np2mp(xi_dp)
         xi_prev = xi_mp
         xi_mp = xi_mp - f(n, xi_mp)/df(n, xi_mp)
         
         for i_iter in range(1, max_iter):
-            if max(abs(xi_prev - xi_mp)) <= threshold:
+            if np.max(np.vectorize(mp.fabs, otypes=(object,))(xi_prev - xi_mp)) <= threshold:
                 wt_mp = wt_cf/df(n, xi_mp)/f(n+1, xi_mp)
                 return RootsJacobiResult(xi_mp, wt_mp, True, 
                     "Convergence to {:d} digits after {:d} iters".format(n_dps, i_iter))

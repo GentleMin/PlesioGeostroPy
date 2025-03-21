@@ -982,8 +982,8 @@ def compute_eigen(
                 M_val[np.abs(M_val) < chop] = 0.
                 K_val[np.abs(K_val) < chop] = 0.
             if prec is not None:
-                M_val = num_utils.to_gpmy2_c(M_val, prec=prec)
-                K_val = num_utils.to_gpmy2_c(K_val, prec=prec)
+                M_val = num_utils.to_gmpy2_c(M_val, prec=prec)
+                K_val = num_utils.to_gmpy2_c(K_val, prec=prec)
         if read_fmt == "pickle":
             with open(read_from, 'rb') as fread:
                 serialized_obj = pickle.load(fread)

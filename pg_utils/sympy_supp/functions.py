@@ -72,9 +72,10 @@ class jacobi_polar(sym.Function):
             raise TypeError('n, k1, k2 should be integers')
         
     def _eval_rewrite(self, rule, args, **hints):
+        p = hints.get('p', None)
         n, k1, k2, a, b, r = args
         if rule == sym.jacobi:
-            p = sym.sqrt(1 - r**2)
+            p = sym.sqrt(1 - r**2) if p is None else p
             xi = 2*r**2 - 1
             expr_rewrite = (p**k1)*(r**k2)*sym.jacobi(n, a, b, xi)
             return expr_rewrite
