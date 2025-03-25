@@ -254,6 +254,25 @@ def to_numpy_c(x: np.ndarray) -> np.ndarray:
     return x.astype(np.complex128)
 
 
+def isclose_gp(a: np.ndarray, b: np.ndarray, rtol=1e-5, atol=1e-8, prec=None):
+    """isclose for multi-precision arrays with sanitized input values
+    Does not test for infinity and NaNs; only use for sanitized inputs (i.e. without NaNs, infs)
+    """
+    if prec is None:
+        is_close = np.abs(a - b) <= atol + rtol*np.abs(b)
+    else:
+        with gp.local_context(gp.context(), precision=prec):
+            is_close = np.abs(a - b) <= atol + rtol*np.abs(b)
+    return is_close
+
+
+def allclose_gp(a: np.ndarray, b: np.ndarray, rtol=1e-5, atol=1e-8, prec=None):
+    """Allclose for multi-precision arrays with sanitized input values
+    Does not test for infinity and NaNs; only use for sanitized inputs (i.e. without NaNs, infs)
+    """
+    return np.all(isclose_gp(a, b, rtol=rtol, atol=atol, prec=prec))
+
+
 def array_to_str(x: np.ndarray, str_fun: Callable[[Any], str] = str) -> np.ndarray:
     """Convert array to List of strings
     

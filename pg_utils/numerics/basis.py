@@ -10,9 +10,11 @@ Jingtao Min @ ETH Zurich 2025
 """
 
 import numpy as np
+import gmpy2 as gp
 from scipy import special as specfun
 from typing import Optional
 from . import special, utils
+from . import gmpy_ufunc as gp_f
 
 
 class Grid1D:
@@ -123,11 +125,11 @@ class JacobiPolar_2side(SpectralBasisSpace1D):
         
     def __init__(self, N, k1, k2, a, b, qmode='jacobi', dealias=1, prec=None):
         
-        int_prec = 85 if prec is None else prec
+        prec_roots = 85 if prec is None else prec + 30
 
         N_quad = int(np.round(dealias*N))
-        x_quad, wt_quad, a_quad, b_quad = self.quadrature_grid(N_quad, a, b, mode=qmode, prec=int_prec)
         if prec is None:
+            x_quad, wt_quad, a_quad, b_quad = self.quadrature_grid(N_quad, a, b, mode=qmode, prec=prec_roots)
             x_quad = utils.to_numpy_f(x_quad)
             wt_quad = utils.to_numpy_f(wt_quad)*(
                 np.power(2, k1 + k2 - a - b - 2)*
@@ -135,7 +137,16 @@ class JacobiPolar_2side(SpectralBasisSpace1D):
                 np.power(1 + x_quad, b - k2 - b_quad)
             )
         else:
-            raise NotImplementedError
+            x_quad, wt_quad, a_quad, b_quad = self.quadrature_grid(N_quad, *utils.to_mpmath_f(np.array([a, b]), prec=prec).tolist(), mode=qmode, prec=prec_roots)
+            k1, k2, a, b, a_quad, b_quad = utils.to_gmpy2_f(np.array([k1, k2, a, b, a_quad, b_quad]), prec=prec).tolist()
+            x_quad = utils.to_gmpy2_f(x_quad, prec=prec)
+            wt_quad = utils.to_gmpy2_f(wt_quad, prec=prec)
+            with gp.local_context(gp.context(), precision=prec):
+                wt_quad *= (
+                    2**(k1 + k2 - a - b - 2)*
+                    (1 - x_quad)**(a - k1 - a_quad)*
+                    (1 + x_quad)**(b - k2 - b_quad)
+                )
         
         super().__init__(N, np.array([-1., +1.]), x_quad)
         self.k1 = k1
@@ -147,84 +158,107 @@ class JacobiPolar_2side(SpectralBasisSpace1D):
         self.N_quad = N_quad
         self.wt_quad = wt_quad
         self.prec = prec
-        self.int_prec = int_prec
-        self.grd_Phi = None
-        self.Phi = None
+        self.prec_roots = prec_roots
+        self.grd_Jacobi = None
+        self.Jacobi = None
         
-    def jacobi_matrix(self, grid = None, prec = None):
+    def jacobi_matrix(self, grid = None):
         
         grid = self.grid if grid is None else grid
-        if prec is None:
+        if self.prec is None:
             Phi = special.eval_jacobi_recur_Nmax(self.N-1, self.a, self.b, grid)
         else:
             Phi = special.eval_jacobi_recur_gmpy2(self.N-1, 
-                *utils.to_gmpy2_f(np.array([self.a, self.b]), prec=prec).tolist(),
-                utils.to_gmpy2_f(grid, prec=prec)
+                *utils.to_gmpy2_f(np.array([self.a, self.b]), prec=self.prec).tolist(),
+                utils.to_gmpy2_f(grid, prec=self.prec)
             )
         return Phi
     
-    def cache_Phi(self, grid = None, prec = None):
+    def cache_Jacobi(self, grid = None):
         
         grid = self.grid if grid is None else grid
-        Phi = self.jacobi_matrix(grid=grid, prec=prec)
-        self.grd_Phi = grid
-        self.Phi = utils.to_numpy_f(Phi)
+        self.grd_Jacobi = grid
+        self.Jacobi = self.jacobi_matrix(grid=grid)
         
-    def matrix_gram(self, quad = False, prec = None, diag = True):
+    def load_Jacobi(self, grid = None):
         
-        if quad:
-            Phi = special.eval_jacobi_recur_Nmax(self.N-1, self.a, self.b, self.grid)
-            pref = np.power(np.sqrt((1 - self.grid)/2), self.k1)*np.power(np.sqrt((1 + self.grid)/2), self.k2)
-            D = (Phi*(pref**2*self.wt_quad)) @ Phi.T
-            if diag:
-                D = np.diag(D)
+        grid = self.grid if grid is None else grid
+        if self.grd_Jacobi is not None and utils.allclose_gp(grid, self.grd_Jacobi, rtol=1e-8, atol=0):
+            return self.Jacobi
         else:
-            D = np.zeros(self.N)
-            D[0] = specfun.gamma(self.a + 1)*specfun.gamma(self.b + 1)/(2*specfun.gamma(self.a + self.b + 2))
-            n_arr = np.arange(1, self.N)
-            D[1:] = specfun.poch(n_arr + 1, self.a)/(2*(2*n_arr + (self.a + self.b + 1))*specfun.poch(n_arr + self.b + 1, self.a))
-            if not diag:
-                D = np.diag(D)
-        return D
-    
-    def matrix_fwd(self, grid = None, prec = None):
+            return self.jacobi_matrix(grid=grid)
         
-        Phi = special.eval_jacobi_recur_Nmax(self.N-1, self.a, self.b, self.grid)
-        pref = np.power(np.sqrt((1 - self.grid)/2), self.k1)*np.power(np.sqrt((1 + self.grid)/2), self.k2)
-        d = self.matrix_gram(quad=False, prec=prec, diag=True)
-        Phi = ((Phi*(pref*self.wt_quad)).T/d).T
+    def inner(self):
+        
+        if self.prec is None:
+            n_arr = np.arange(1, self.N)
+            d = np.zeros(self.N)
+            d[0] = specfun.gamma(self.a + 1)*specfun.gamma(self.b + 1)/(2*specfun.gamma(self.a + self.b + 2))
+            d[1:] = specfun.poch(n_arr + 1, self.a)/(2*(2*n_arr + (self.a + self.b + 1))*specfun.poch(n_arr + self.b + 1, self.a))
+            return d
+        
+        with gp.local_context(gp.context(), precision=self.prec):
+            n_arr = np.arange(1, self.N, dtype=np.int32)
+            d = np.r_[
+                gp.gamma(self.a + 1)*gp.gamma(self.b + 1)/(2*gp.gamma(self.a + self.b + 2)),
+                gp_f.exp(gp_f.lngamma(n_arr + self.a + 1) + gp_f.lngamma(n_arr + self.b + 1) - gp_f.lngamma(n_arr + self.a + self.b + 1) - gp_f.lngamma(n_arr + 1))/(2*(2*n_arr + (self.a + self.b + 1)))
+            ]
+        return d
+    
+    def matrix_fwd(self, grid = None):
+        
+        Phi = self.load_Jacobi(grid=self.grid)
+        
+        if self.prec is None:
+            pref = np.power(np.sqrt((1 - self.grid)/2), self.k1)*np.power(np.sqrt((1 + self.grid)/2), self.k2)
+            d = self.inner()
+            Phi = ((Phi*(pref*self.wt_quad)).T/d).T
+        else:
+            with gp.local_context(gp.context(), precision=self.prec):
+                pref = gp_f.sqrt((1 - self.grid)/2)**self.k1*gp_f.sqrt((1 + self.grid)/2)**self.k2
+                d = self.inner()
+                Phi = ((Phi*(pref*self.wt_quad)).T/d).T
         return Phi
     
-    def transform_fwd(self, values, grid = None, prec = None):
+    def transform_fwd(self, values, grid = None):
         
-        if self.grd_Phi is not None and np.allclose(self.grid, self.grd_Phi):
-            Phi = self.Phi
+        Phi = self.load_Jacobi(grid=self.grid)
+        
+        if self.prec is None:
+            pref = np.power(np.sqrt((1 - self.grid)/2), self.k1)*np.power(np.sqrt((1 + self.grid)/2), self.k2)
+            d = self.inner()
+            coeffs = (Phi @ (pref*self.wt_quad*values))/d
         else:
-            Phi = utils.to_numpy_f(self.jacobi_matrix(grid=self.grid))
-        
-        pref = np.power(np.sqrt((1 - self.grid)/2), self.k1)*np.power(np.sqrt((1 + self.grid)/2), self.k2)
-        d = self.matrix_gram(quad=False, prec=prec, diag=True)
-        coeffs = (Phi @ (pref*self.wt_quad*values))/d
+            with gp.local_context(gp.context(), precision=self.prec):
+                pref = gp_f.sqrt((1 - self.grid)/2)**self.k1*gp_f.sqrt((1 + self.grid)/2)**self.k2
+                d = self.inner()
+                coeffs = (Phi @ (pref*self.wt_quad*values))/d
         return coeffs
     
-    def matrix_bwd(self, grid = None, prec = None):
-        
+    def matrix_bwd(self, grid = None):
+
         grid = self.grid if grid is None else grid
-        Phi = special.eval_jacobi_recur_Nmax(self.N-1, self.a, self.b, grid)
-        Phi = Phi*np.power(np.sqrt((1 - grid)/2), self.k1)*np.power(np.sqrt((1 + grid)/2), self.k2)
+        Phi = self.load_Jacobi(grid=grid)
+        
+        if self.prec is None:
+            Phi = Phi*(np.power(np.sqrt((1 - grid)/2), self.k1)*np.power(np.sqrt((1 + grid)/2), self.k2))
+        else:
+            with gp.local_context(gp.context(), precision=self.prec):
+                Phi = Phi*(gp_f.sqrt((1 - grid)/2)**self.k1*gp_f.sqrt((1 + grid)/2)**self.k2)
         return Phi.T
     
-    def transform_bwd(self, coeffs, grid = None, prec = None):
+    def transform_bwd(self, coeffs, grid = None):
         
         grid = self.grid if grid is None else grid
-        pref = np.power(np.sqrt((1 - grid)/2), self.k1)*np.power(np.sqrt((1 + grid)/2), self.k2)
+        Phi = self.load_Jacobi(grid=grid)
         
-        if self.grd_Phi is not None and np.allclose(grid, self.grd_Phi):
-            Phi = self.Phi
+        if self.prec is None:
+            pref = np.power(np.sqrt((1 - grid)/2), self.k1)*np.power(np.sqrt((1 + grid)/2), self.k2)
+            values = pref*(Phi.T @ coeffs)
         else:
-            Phi = utils.to_numpy_f(self.jacobi_matrix(grid=grid))
-        
-        values = pref*(Phi.T @ coeffs)
+            with gp.local_context(gp.context(), precision=self.prec):
+                pref = gp_f.sqrt((1 - grid)/2)**self.k1*gp_f.sqrt((1 + grid)/2)**self.k2
+                values = pref*(Phi.T @ coeffs)
         return values
 
 
