@@ -473,9 +473,24 @@ def vector_sph2cart(
     c_t, s_t = np.cos(t), np.sin(t)
     s, z = r*s_t, r*c_t
     vz = vr*c_t - vt*s_t
-    vs = -vr*s_t + vt*c_t
+    vs = vr*s_t + vt*c_t
     vx, vy, _, x, y, z = vector_cyl2cart(vs, vp, vz, s, p, z)
     return vx, vy, vz, x, y, z
+
+
+def vector_sph2cyl(
+    vr: np.ndarray, vt: np.ndarray, vp: np.ndarray,
+    r: np.ndarray, t: np.ndarray, p: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Vector transform: spherical to cylindrical
+    """
+    assert is_broadcastable(vr, vt) and is_broadcastable(vr, vp), \
+        "Shapes {}, {}, {} incompatible".format(vr.shape, vt.shape, vp.shape)
+    c_t, s_t = np.cos(t), np.sin(t)
+    s, z = r*s_t, r*c_t
+    vs = vr*s_t + vt*c_t
+    vz = vr*c_t - vt*s_t
+    return vs, vp, vz, s, p, z
 
 
 """

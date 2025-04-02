@@ -137,7 +137,9 @@ class JacobiPolar_2side(SpectralBasisSpace1D):
                 np.power(1 + x_quad, b - k2 - b_quad)
             )
         else:
-            x_quad, wt_quad, a_quad, b_quad = self.quadrature_grid(N_quad, *utils.to_mpmath_f(np.array([a, b]), prec=prec).tolist(), mode=qmode, prec=prec_roots)
+            x_quad, wt_quad, a_quad, b_quad = self.quadrature_grid(
+                N_quad, *utils.to_mpmath_f(np.array([a, b]), prec=prec).tolist(), mode=qmode, prec=prec_roots
+            )
             k1, k2, a, b, a_quad, b_quad = utils.to_gmpy2_f(np.array([k1, k2, a, b, a_quad, b_quad]), prec=prec).tolist()
             x_quad = utils.to_gmpy2_f(x_quad, prec=prec)
             wt_quad = utils.to_gmpy2_f(wt_quad, prec=prec)
@@ -201,7 +203,10 @@ class JacobiPolar_2side(SpectralBasisSpace1D):
             n_arr = np.arange(1, self.N, dtype=np.int32)
             d = np.r_[
                 gp.gamma(self.a + 1)*gp.gamma(self.b + 1)/(2*gp.gamma(self.a + self.b + 2)),
-                gp_f.exp(gp_f.lngamma(n_arr + self.a + 1) + gp_f.lngamma(n_arr + self.b + 1) - gp_f.lngamma(n_arr + self.a + self.b + 1) - gp_f.lngamma(n_arr + 1))/(2*(2*n_arr + (self.a + self.b + 1)))
+                gp_f.exp(
+                    + gp_f.lngamma(n_arr + self.a + 1) + gp_f.lngamma(n_arr + self.b + 1) 
+                    - gp_f.lngamma(n_arr + self.a + self.b + 1) - gp_f.lngamma(n_arr + 1)
+                )/(2*(2*n_arr + (self.a + self.b + 1)))
             ]
         return d
     
@@ -264,5 +269,5 @@ class JacobiPolar_2side(SpectralBasisSpace1D):
 
 class Worland(JacobiPolar_2side):
     
-    def __init__(self, N, l, qmode='jacobi', dealias=1):
-        super().__init__(N, 0, l, -1/2, l-1/2, qmode=qmode, dealias=dealias)
+    def __init__(self, N, l, qmode='jacobi', dealias=1, prec=None):
+        super().__init__(N, 0, l, -1/2, l-1/2, qmode=qmode, dealias=dealias, prec=prec)
