@@ -13,8 +13,17 @@ import sympy.functions
 import sympy.functions.special
 import sympy.functions.special.polynomials
 
-from . import special
+from . import special, basis
+from ..pg_model import core, expansion
+from ..sympy_supp import functions as supp_f
 from sympy.printing.pycode import PythonCodePrinter
+
+
+"""
+================================================================
+Parsing expressions, extracting powers
+================================================================
+"""
 
 
 def powers_of(expr: sympy.Expr, *args: sympy.Symbol, return_expr: bool = False):
@@ -133,6 +142,13 @@ def leading_powers_of(expr: sympy.Expr, *args: sympy.Expr):
     return leading_powers_factor(expr, *args)
 
 
+"""
+================================================================
+Parsing Jacobi polynomials
+================================================================
+"""
+
+
 def jacobi_idx_subs(expr: sympy.Expr, arg: sympy.Symbol, 
     arg_a: sympy.Symbol = sympy.Symbol("p"), 
     arg_b: sympy.Symbol = sympy.Symbol("q")) -> sympy.Expr:
@@ -170,6 +186,34 @@ def jacobi_idx_subs(expr: sympy.Expr, arg: sympy.Symbol,
         sympy.Rational(1, 2) + arg/2: arg_b/2
     }
     return expr.xreplace(replace_map)
+
+
+dummy_H = sympy.Symbol('H', nonnegative=True)
+dummy_mapping_fwd = {core.H_s: dummy_H, core.H_s**2: dummy_H**2, core.H: dummy_H, core.H**2: dummy_H**2}
+dummy_mapping_bwd = {dummy_H: core.H}
+
+def basis_2_jacobi_polar(expr: sympy.Expr, p: sympy.Expr = core.H, q: sympy.Expr = core.s):
+    """Parse expression of the spectral basis to two-sided polar Jacobi
+    """
+    # print(expr)
+    if expr is None:
+        return None
+    if isinstance(expr, supp_f.jacobi_polar):
+        return expr
+    else:
+        # expr = sympy.radsimp(expr.subs(dummy_mapping_fwd)).subs(dummy_mapping_bwd)
+        expr = expr.subs(dummy_mapping_fwd).doit().subs(dummy_mapping_bwd)
+        jacobi = list(expr.atoms(sympy.jacobi))[0]
+        n, a, b, _ = jacobi.args
+        k1, k2 = leading_powers_of(expr, p, q)
+        return supp_f.jacobi_polar(n, k1, k2, a, b, q)
+
+
+"""
+================================================================
+Translation of sympy Expr to gmpy2 functions
+================================================================
+"""
 
 
 v_functions_mpmath = {
@@ -226,4 +270,47 @@ class Gmpy2Printer(PythonCodePrinter):
             func=self._module_format('gmpy2.const_pi'),
             prec=self.prec
         )
+
+
+"""
+================================================================
+Translation of sympy basis Expr to customized evaluators
+================================================================
+"""
+
+basis_evaluator_map = {
+    supp_f.jacobi_polar: basis.JacobiPolar_2side
+}
+
+def basis_sym_to_evaluator(expr: sympy.Expr, Nmax, *args, **kwargs):
+    """Convert symbolic spectral basis to evaluator
+    
+    .. note:: This assumes that the first argument of the function is N (basis degree/order),
+    the last argument of the function is the true argument, and
+    the arguments in between are indices and parameters.
+    """
+    evaluator = basis_evaluator_map.get(type(expr), None)
+    if evaluator is None:
+        raise KeyError(f"Evaluator not found for class {type(expr)}")
+    sym_args = [int(arg) if isinstance(arg, sympy.Integer) else float(arg) for arg in expr.args[1:-1]]
+    return evaluator(Nmax, *sym_args, *args, **kwargs)
+
+
+def _to_jacobi_polar(eval_basis: basis.JacobiPolar_2side, var_arg: sympy.Expr = expansion.xi):
+    N, k1, k2, a, b = eval_basis.N, eval_basis.k1, eval_basis.k2, eval_basis.a, eval_basis.b
+    N, k1, k2, a, b = [sympy.nsimplify(arg, rational=True, tolerance=1e-7) for arg in (N, k1, k2, a, b)]
+    return supp_f.jacobi_polar(N, k1, k2, a, b, var_arg)
+
+evaluator_converter_map = {
+    basis.JacobiPolar_2side: _to_jacobi_polar
+}
+
+def basis_evaluator_to_sym(evaulator: basis.SpectralBasisSpace1D, *args, **kwargs):
+    """Convert numerical spectral basis evaluator to symbolic spectral basis expr
+    """
+    converter = evaluator_converter_map.get(type(evaulator), None)
+    if evaulator is None:
+        raise KeyError(f"Basis not found for class {type(evaulator)}")
+    base_expr = _to_jacobi_polar(evaulator, *args, **kwargs)
+    return base_expr
 
