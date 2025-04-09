@@ -1,0 +1,73 @@
+\section{Ideal eigenmodes under S1-T2, a mixed toroidal-poloidal equatorially anti-symmetric magnetic field}
+
+The background field, which we call S1-T2, is defined as
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/S1_T2_std/bg_B_S1_T2_uscale.png}
+    \caption{Background field T1-SL2N1}
+\end{figure}
+
+This is a background field with purely equatorially anti-symmetric property (i.e. has mirror anti-symmetry \wrt the equatorial plane, also sometimes referred to as "dipolar" parity). Background fields S1 and T2 have this symmetry individually, but instead of having either purely poloidal or purely toroidal component, the current background field is a mixture of both poloidal and toroidal fields.
+
+% Linearized equations omitted.
+
+\subsection{System spectrum}
+
+The ideal PG eigenmodes have been calculated under the S1-T2 background field. An example of the resulting unfiltered eigenvalue spectra for Lehnert number $\mathrm{Le}=10^{-4}$ and $m=3$ is shown in Fig. (\ref{fig:eigenspec-S1-T2-cstN}) for different formulations, and Fig. (\ref{fig:eigenspec-S1-T2-varN}) at different resolutions for each formulation. We see (i) the eigenvalues converge with increasing resolution for all three formulations (Fig. \ref{fig:eigenspec-S1-T2-varN}) as eigenvalues computed under higher resolutions begin to stack on one another, and (ii) such converged eigenvalue solutions are agreed upon by all three formulations (Fig. \ref{fig:eigenspec-S1-T2-varN}). These observations suggest that these converged eigenvalue solutions are a robust feature across all formulations, hence represent physical eigenmodes.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/S1_T2_std/Spectrum_m3_Le1e-4_ideal_cEW_raw_Original-Canonical-Reduced.pdf}
+    \caption{Eigenvalue spectra (unfiltered) of three different formulations at the same resolution for Lehnert number $\mathrm{Le}=10^{-4}$ and $m=3$.}
+    \label{fig:eigenspec-S1-T2-cstN}
+\end{figure}
+%
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/S1_T2_std/Original/Spectrum_m3_Le1e-4_ideal_cEW_raw.pdf}
+    \includegraphics[width=\linewidth]{../../out/eigen/S1_T2_std/Canonical/Spectrum_m3_Le1e-4_ideal_cEW_raw.pdf}
+    \includegraphics[width=\linewidth]{../../out/eigen/S1_T2_std/Reduced/Spectrum_m3_Le1e-4_ideal_cEW_raw.pdf}
+    % \begin{subfigure}{\linewidth}
+    %     \includegraphics[width=\linewidth]{../../out/eigen/S1_T2_std/Canonical/Spectrum_m3_Le1e-4_ideal_cEW_raw.pdf}
+    % \end{subfigure}
+    \caption{Eigenvalue spectra (unfiltered) at different resolutions for the original PG formulation (top), the canonical formulation (middle) and the stream function - forcing ($\psi$-$F$) formulation.}
+    \label{fig:eigenspec-S1-T2-varN}
+\end{figure}
+
+We then proceed with comparing the PG eigenvalues with those in the 3-D calculation. The 3-D calculations are conducted at the same Lehnert number $\mathrm{Le}=10^{-4}$, but with $\mathrm{Lu}=2\times 10^4$. The PG results shown hereafter are processed from the canonical formulation.
+The eigenvalue spectra of the PG eigenvalues are shown in Fig. (\ref{fig:eigenspec-S1-T2-dist}).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=.75\linewidth]{../../out/eigen/S1_T2_std/Canonical/SpecDist_ideal_Le1e-4_m3_all_PGC-3DLu2e+4.pdf}
+    \includegraphics[width=.75\linewidth]{../../out/eigen/S1_T2_std/Canonical/SpecList_ideal_Le1e-4_m3_i_PGC-3DLu2e+4.pdf}
+    \includegraphics[width=.75\linewidth]{../../out/eigen/S1_T2_std/Canonical/SpecList_ideal_Le1e-4_m3_mc_PGC-3DLu2e+4.pdf}
+    \caption{Distribution of the converged ideal PG eigenvalues under the S1-T2 background field and their diffusive 3-D counterparts. The figures show the converged eigenspectra on a complex plane (top), the eigenfrequencies as a function of estimated radial zeros for the prograde modes (middle), and for the retrograde modes (bottom).}
+    \label{fig:eigenspec-S1-T2-dist}
+\end{figure}
+
+
+\subsection{Selected eigenmodes}
+
+The 12th modified inertial mode and the 7th (mode with approx. 7 zeros in the cylindrical radius) Magneto-Coriolis mode are visualised in Fig. (\ref{fig:modePG3D-S1-T2-i12}) and (\ref{fig:modePG3D-S1-T2-mc7}), respectively.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/S1_T2_std/Canonical/Mode_ideal_merd_Le1e-4_m3-i12_PGC-3DLu2e+4.png}
+    \includegraphics[width=\linewidth]{../../out/eigen/S1_T2_std/Canonical/Mode_ideal_equa_Le1e-4_m3-i12_PGC-3DLu2e+4.png}
+    \caption{Meridional (top plot) and equatorial (lower plot) sections of the 12th modified inertial mode for PG (left columns) and 3-D (right columns) calculation.}
+    \label{fig:modePG3D-S1-T2-i12}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/S1_T2_std/Canonical/Mode_ideal_merd_Le1e-4_m3-mc7_PGC-3DLu2e+4.png}
+    \includegraphics[width=\linewidth]{../../out/eigen/S1_T2_std/Canonical/Mode_ideal_equa_Le1e-4_m3-mc7_PGC-3DLu2e+4.png}
+    \caption{Meridional (top) and equatorial (bottom) sections of the Magneto-Coriolis mode with approx. 7 radial zeros for PG (left columns) and 3-D (right columns) calculation.}
+    \label{fig:modePG3D-S1-T2-mc7}
+\end{figure}
+
+
+\clearpage
+

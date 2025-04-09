@@ -1,0 +1,133 @@
+\section{Ideal eigenmodes under SL2N1, a quadrupolar poloidal magnetic field}
+
+The background field, which we call SL2N1, is defined as
+\[
+    \mathbf{B}^0 = \nabla\times \nabla\times \left(a r^2 5(r^2 - 7) \mathbf{r}\right) = \gamma s \left(- 5 s^{2} - 15 z^{2} + 7\right) \hat{\mathbf{s}} + 2 \gamma z \left(10 s^{2} + 5 z^{2} - 7\right) \hat{\mathbf{z}}
+\]
+where $a$ and $\gamma = \frac{3}{2} \sqrt{\frac{5}{\pi}} a$ are normalisation factors. This is the lowest-degree axisymmetric poloidal mode for spherical harmonic $l=2$ that satisfies the vacuum exterior magnetic boundary condition (see the Ingredients document), and will hereinafter be referred to as S-L2N1 (poloidal, $l=2$, $n=1$). The field is visualised in Fig. \ref{fig:bg-S-L2N1}.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/S_L2_N1/bg_B_S_L2N2_uscale.png}
+    \caption{The spherical and cylindrical components of the axisymmetric S-L2N1 background field. The plot shows the field for $a=\frac{1}{4}\sqrt{\frac{3}{26}}$ or $\gamma = \frac{3}{8} \sqrt{\frac{15}{26\pi}}$.}
+    \label{fig:bg-S-L2N1}
+\end{figure}
+
+The S-L2N1 background field is a new design, and the ideal PG MHD eigenmodes under this background field have never been studied.
+
+\subsection{Linearised equation}
+
+The streamfunction equation under the S-L2N1 background field takes the form,
+\begin{equation}
+\begin{aligned}
+    &i\widetilde{\omega} \left[\frac{d}{d s}\left(\frac{s}{H}\frac{d}{d s}\right) - m^2 \left(\frac{1}{sH} + \frac{s}{2H^3}\right)\right] \psi =\frac{2 i m s}{\mathrm{Le} H^{3}} \psi + \frac{i m}{2 sH} \frac{d \left(s \overline{m_{ss}}\right)}{d s} - \frac{i m}{2 sH} \frac{d \left(s\overline{m_{\phi\phi}}\right)}{d s} \\
+    &\quad - \frac{s}{2 H} \frac{d^{2}\overline{m_{s\phi}}}{d s^{2}} - \frac{3}{2 H} \frac{d\overline{m_{s\phi}}}{d s} - \frac{m^{2}}{2sH} \overline{m_{s\phi}} - \frac{i m}{2 H^{2}} \frac{d \left(s \widetilde{m_{sz}}\right)}{d s} + \frac{m^{2}}{2 H^{2}}\widetilde{m_{\phi z}} \\
+    &\quad + \frac{s^{2} \left(5 s^{2} - 7\right)}{H^{2}} \frac{d (s b_{\phi}^e)}{d s} + \frac{i m \gamma \left(s^2 - 2\right)}{H^{2}} \left(b^{+}_{s} + b^{-}_{s}\right) - \frac{i m \gamma s^{3}}{H^{3}} \left(b^{+}_{z} - b^{-}_{z}\right) \\
+    &\quad + \gamma \frac{6 s^{4} - 9 s^{2} + 2}{H^{4}} \left(b^{+}_{\phi} + b^{-}_{\phi}\right) + \gamma \frac{s \left(2 - 3 s^{2}\right)}{H^{2}} \left(\frac{db^{+}_{\phi}}{d s} + \frac{db^{-}_{\phi}}{d s} \right).
+\end{aligned}
+\end{equation}
+The magnetic induction equations in the PG model are given by
+\begin{equation}
+\begin{aligned}
+    i \widetilde{\omega} \overline{m_{ss}} &= 16 i m \gamma^2 \left[s \left(5 s^{4} - 10s^2 + 6\right) \frac{d\psi}{d s} + \frac{\left(25 s^{6} - 60 s^{4} + 48 s^{2} - 12\right)}{H^{2}} \psi\right] \\
+    %
+    i \widetilde{\omega} \overline{m_{s\phi}} &= \gamma^2 \left[s^{2} \left(- 40 s^{4} + 80 s^{2} - 48\right) \frac{d^{2}\psi}{d s^{2}} + \frac{s(- 80 s^{6} + 200 s^{4} - 176 s^{2} + 48)}{H^{2}} \frac{d\psi}{d s}\right] \\
+    %
+    i \widetilde{\omega} \widetilde{m_{sz}} &= 2im\gamma^2 \left[- \frac{25 s^{6} - 35 s^{4} + 8 s^{2} + 4}{H} \frac{d \psi}{d s} + \frac{- 125 s^{8} + 235 s^{6} - 114 s^{4} - 10 s^{2} + 8}{sH^3} \psi \right] \\
+    %
+    i \widetilde{\omega} \widetilde{m_{\phi z}} &= \gamma^2 \left[sH \left(- 25 s^{4} + 5 s^{2} + 8\right) \frac{d^{2}\psi}{d s^{2}} + \frac{\left(- 50 s^{6} + 35 s^{4} + 11 s^{2} - 8\right)}{H} \frac{d \psi}{d s}\right] \\
+    %
+    % i \widetilde{\omega} \widetilde{zm_{ss}} &= \frac{2 i m s \left(- 25 s^{6} + 65 s^{4} - 59 s^{2} + 19\right)}{H} \frac{d\psi}{d s} + \frac{2 i m \left(125 s^{6} - 260 s^{4} + 177 s^{2} - 38\right)}{H} \psi 
+    i \widetilde{\omega} \widetilde{zm_{ss}} &= 2 i m \gamma^2 \left[s H \left(25 s^{4} - 40 s^{2} + 19\right) \frac{d\psi}{d s} + \frac{125 s^{6} - 260 s^{4} + 177 s^{2} - 38}{H} \psi \right] \\
+    %
+    i \widetilde{\omega} \widetilde{zm_{s\phi}} &= \gamma^2 \left[ s^2H \left(- 25 s^{4} + 40 s^{2} - 19\right) \frac{d^{2} \psi}{d s^{2}} + \frac{s \left(- 50 s^{6} + 105 s^{4} - 78 s^{2} + 19\right)}{H} \frac{d \psi}{d s}\right] \\
+    %
+    i \widetilde{\omega} b_{s}^e &= im \gamma \left[\frac{7 - 5 s^{2}}{H} \frac{d \psi}{d s} + \frac{- 25 s^{4} + 41 s^{2} - 14}{s H^{3}} \psi\right] \\
+    %
+    i \widetilde{\omega} b_{\phi}^e &= \gamma \left[\frac{s \left(5 s^{2} - 7\right)}{H} \frac{d^{2}\psi}{d s^{2}} + \frac{10 s^{4} - 19 s^{2} + 7}{H^{3}} \frac{d \psi}{d s}\right] \\
+    %
+    \overline{m_{\phi\phi}} &= \widetilde{zm_{\phi\phi}} = b_{z}^e = b_{s, z}^e = b_{\phi, z}^e = 0
+    \end{aligned}
+\end{equation}
+The boundary induction equations read
+\begin{equation}
+\begin{aligned}
+    i \widetilde{\omega} b^{+}_{s} = i \widetilde{\omega} b_s^- &= 2im \gamma \left[\frac{5 s^{2} - 4}{H} \frac{d\psi}{d s} + \frac{25 s^{4} - 32 s^{2} + 8}{sH^{3}} \psi\right], \\
+    %
+    i \widetilde{\omega} b^{+}_{\phi} = i\widetilde{\omega} b_\phi^- &= \gamma \left[\frac{- 10 s^{3} + 8 s}{H} \frac{d^{2}\psi}{d s^{2}} + \frac{- 20 s^{4} + 26 s^{2} - 8}{H^{3}} \frac{d\psi}{d s}\right], \\
+    %
+    i \widetilde{\omega} b^{+}_{z} = -i\widetilde{\omega} b_z^- &= 2im \gamma \left[\frac{s \left(4 - 5 s^{2}\right)}{H^{2}} \frac{d\psi}{d s} + \frac{- 25 s^{4} + 32 s^{2} - 10}{H^{4}} \psi\right].
+\end{aligned}
+\end{equation}
+
+
+\subsection{Eigenvalue spectrum}
+
+The system of PG equations is solved in its canonical form, with normalisation factor for the background field $a = \frac{1}{4} \sqrt{\frac{3}{26}}$ (or $\gamma = \frac{3}{8} \sqrt{\frac{15}{26\pi}}$). The value is chosen to normalise the $L^2$-norm (the energy norm) of the background field, and it also approximately normalises the max-norm to around unity (Fig. \ref{fig:bg-S-L2N1}). The full unfiltered eigenvalue spectrum is shown in Fig. \ref{fig:SL2N1-spectrum-m3}. 
+The eigenvalue spectrum under the S-L2N1 background field shows clear convergence at high eigenfrequency, as well as mild convergence at low eigenfrequency. The spectrum is then filtered using the reciprocal eigenvalue drift criterion, with the threshold for the fast modes being $10^4$ and the threshold for the slow modes being $30$. The eigenvalues classified as converged are shown in the complex plane in Fig. \ref{fig:SL2N1-spectrum-m3-PGv3D}. The 3-D eigenvalues, computed using the code \colorbox{backcolour}{\lstinline{MCModes}}, are also shown for comparison. 
+%
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../../out/eigen/S_L2_N1/Canonical/Spectrum_m3_Le1e-4_Lu2e+4_cEW_raw.pdf}
+    \caption{Unfiltered full eigenvalue spectrum for the $m=3$ eigenvalue problem under S-L2N1 background field. Colours encode the direction of the eigenmode. Different markers encode the eigenvalue solutions from different resolutions.}
+    \label{fig:SL2N1-spectrum-m3}
+\end{figure}
+%
+The eigenfrequencies of the modified inertial eigenmodes in the PG model follow closely those in 3D. The frequencies of the slow PG modes occupy the same orders of magnitude as the 3-D eigenfrequencies, and are typically within one octave of difference (Fig. \ref{fig:SL2N1-speclist-m3-PGv3D}), similar to the S1 case. However, a major difference is that all the "slow" modes are prograde modes, propagating in the same direction as the modified inertial modes (Fig. \ref{fig:SL2N1-spectrum-m3-PGv3D}). This is completely different from the S1 case, and different from all the 3-D computations I have seen. It is therefore questionable if these are actually the MC modes; even if they are, they would not serve as good approximations of the 3-D columnar MC modes.
+%
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../../out/eigen/S_L2_N1/Canonical/Spectrum_m3_Le1e-4_Lu2e+4_c3D_filtered.pdf}
+    \caption{Filtered eigenvalue spectra for the $m=3$ eigenvalue problem under S-L2N1 background field in the PG and 3D models, solved with $N=120$.}
+    \label{fig:SL2N1-spectrum-m3-PGv3D}
+\end{figure}
+%
+In addition, in both the 3-D and PG case, the eigenvalue solutions exhibit non-physical real parts. In the 3-D computation, the modified inertial modes occasionally show a considerable positive growth rate, a feature that should be impossible in a diffusive system. In the PG case, the low-frequency eigenvalues exhibit non-trivial (but still very small) real parts as well. It is possible that both phenomena are caused by precision loss during e.g. eigenvalue solver, and hence it might be useful to use higher precision and check if it resolves this issue.
+%
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../../out/eigen/S_L2_N1/Canonical/SpecList_ideal_Le1e-4_m3_mc_PGC-3DLu2e+4.pdf}
+    \caption{Filtered (absolute) eigenfrequencies of the slow modes for the $m=3$ eigenvalue problem under S-L2N1 background field in the PG and 3D models, solved with $N=120$.}
+    \label{fig:SL2N1-speclist-m3-PGv3D}
+\end{figure}
+
+In summary, under the S-L2N1 background field, the PG model yields modified inertial modes that are very good approximations of their 3-D counterpart in terms of eigenfrequencies. On the other hand, the PG system fails to yield MC modes that approximate well the frequencies and direction of the 3-D columnar MC modes. The slow modes that numerically converge in the PG system, while of the same order of magnitude of frequencies, all show prograde propagation, and likely have a different nature from the 3-D columnar MC modes. It remains to be further investigated whether the existence of such slow modes is purely a numerical error or discrepancy of the system.
+
+
+\subsection{Selected eigenmodes}
+
+Once again, the modified inertial modes not only show good convergence and matching eigenfrequencies in both 3-D and PG calculations, but show coherent eigenmode solutions as well (Fig. \ref{fig:SL2N1-eq-m3i3}). These eigenmodes in the PG system match well the 3-D counterparts in both spatial structure and amplitudes. The modified inertial modes also boast excellent convergence in the eigenmode spectrum. Even for the 15th modified inertial mode, a resolution of merely $N=50$ approximates the coefficients well in the spectral domain (Fig. \ref{fig:SL2N1-modespec-m3i15}).
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/S_L2_N1/Canonical/Mode_ideal_equa_Le1e-4_m3-i3_PGC-3DLu2e+4.png}
+    \caption{Equatorial section of the 3rd modified inertial mode resolved by PG (left) and 3-D (right) models. The integrated quadratic moments of the 3-D case are computed by integrating the vector magnetic field obtained in the 3-D model.}
+    \label{fig:SL2N1-eq-m3i3}
+\end{figure}
+%
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/S_L2_N1/Canonical/modespec_Le1e-4_m3i15.pdf}
+    \caption{Amplitude spectrum of the spectral coefficients for the streamfunction for the 15th PG modified inertial mode solved under different resolutions.}
+    \label{fig:SL2N1-modespec-m3i15}
+\end{figure}
+
+We have seen that the solved slow PG modes under the S-L2N1 background field are prograde, propagating in a different direction from the 3-D columnar MC modes, and hence have quite different eigenfrequencies. The comparison of the eigenmode structure confirms that the PG slow modes are of drastically different form (Fig. \ref{fig:SL2N1-eq-m3mc3}). The two visualised eigenmodes show almost no resemblance in their radial distribution. While the flow field in 3-D columnar MC modes is mildly concentrated towards the axis, it is completely concentrated near the boundary in the PG slow modes. Accordingly, the induced magnetic fields also show drastic discrepancies. 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/S_L2_N1/Canonical/Mode_ideal_equa_Le1e-4_m3-mc3_PGC-3DLu2e+4.png}
+    \caption{Equatorial section of the 3rd slow mode resolved by PG (left) and 3rd columnar MC mode in 3-D (right) models. }
+    \label{fig:SL2N1-eq-m3mc3}
+\end{figure}
+
+Curiously enough, the amplitude spectrum shows reasonable convergence for these slow PG modes (Fig. \ref{fig:SL2N1-modespec-m3mc3}), and hence the existence of such strange slow modes is not (at least not completely) a numerical problem.
+The drastic difference of these modes suggests essential difference in the generating mechanism or an essential error in the implementation. It is hence questionable whether such discrepancy can be reconciled by extension of the PG model alone, e.g. by adding magnetic diffusion. While additional components such as diffusion are being appended to the PG system (Part II), I recommend further investigation into the discrepancy of the S-L2N1 slow modes.
+%
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{../../out/eigen/S_L2_N1/Canonical/modespec_Le1e-4_m3mc3.pdf}
+    \caption{Amplitude spectrum of the spectral coefficients for the streamfunction for the 3rd PG slow mode solved under different resolutions.}
+    \label{fig:SL2N1-modespec-m3mc3}
+\end{figure}
+
+
+\clearpage
+

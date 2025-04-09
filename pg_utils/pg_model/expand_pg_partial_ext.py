@@ -66,6 +66,9 @@ coupling_sp = Piecewise(
     (S.Zero, m_abs <= S.One), 
     (S.One, m_abs > S.One)
 )
+# coupling_p = Abs(m_abs + Rational(1, 2)) - Abs(m_abs - Rational(1, 2))
+# coupling_pp = 1 - (Abs(m_abs + 2) - Abs(m_abs - 2))/2
+# coupling_sp = (1 + Abs(m_abs - 1) - Abs(m_abs - 2))/2
 
 
 bases_s_expression = base.LabeledCollection(field_names,

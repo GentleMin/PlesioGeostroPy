@@ -532,7 +532,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
                 M = self._quad_scipy_outer_pc(nrange_trial, nrange_test, 
                     alpha, beta, quadN, alpha_l, beta_l, **int_opt)
             elif backend == 'gmpy2':
-                M = self._quad_gmpy2_cp(nrange_trial, nrange_test, 
+                M = self._quad_gmpy2_pc(nrange_trial, nrange_test, 
                     alpha, beta, quadN, alpha_l, beta_l, **int_opt)
             else:
                 raise ValueError(f"{backend} unsupported for inner product matrix with {self.translate_mode}!")
@@ -683,7 +683,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
         return quad_matrix_gmpy2(opd_A.doit(), opd_B.doit(), nrange_test, nrange_trial, 
             xi_quad, wt_quad, n_dps=n_dps)
     
-    def _quad_gmpy2_cp(self, nrange_trial: List[int], nrange_test: List[int], 
+    def _quad_gmpy2_pc(self, nrange_trial: List[int], nrange_test: List[int], 
         alpha: sympy.Expr, beta: sympy.Expr, quad_N: int, 
         alpha_left: sympy.Expr, beta_left: sympy.Expr, 
         n_dps: int = 33) -> np.ndarray:
