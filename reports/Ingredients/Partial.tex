@@ -1,0 +1,71 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{doc_default}
+\allowdisplaybreaks[1]
+% \usepackage[outdir=./]{epstopdf}
+% \usepackage{newtxtext, newtxmath}
+\usepackage{tgtermes}
+\usepackage{mathtools}
+\usepackage[
+    backend=biber,
+    style=authoryear,
+    sorting=nyt,
+    natbib=true,
+    uniquename=false
+]{biblatex}
+\addbibresource{../references.bib}
+\usepackage{CJKutf8}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    filecolor=blue,
+}
+\lstset{style=stdcodestyle}
+
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\sgn}{sgn}
+
+\newcommand{\todoitem}[1]{\textcolor{purple}{[#1]}}
+\newcommand{\commentitem}[1]{\textcolor{gray}{[#1]}}
+\newenvironment{todoremark}{\color{purple}}{}
+\newenvironment{commentblock}{\color{gray}}{}
+% \newcommand{\todoproblem}[1]{\textcolor{purple}{#1}}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}[proposition]{Corollary}
+
+\usepackage[framemethod=TikZ]{mdframed}
+\mdfdefinestyle{HighlightBox}{%
+    innertopmargin=.6\baselineskip,
+    innerbottommargin=.8\baselineskip,
+    innerrightmargin=10pt,
+    innerleftmargin=10pt,
+    frametitlerule=true,
+    frametitlefont=\normalfont\normalsize\itshape,
+    % font=\footnotesize,
+    font=\normalfont,
+    everyline=true,
+}
+
+
+\title{A perturbative approach to the inertial modes \\ modified by Lorentz force under weak background fields}
+\author{Jingtao Min}
+\date{April 29, 2025, last update \today}
+
+
+\begin{document}
+
+\maketitle
+
+\input{perturbative_inertial_modes.tex}
+
+\clearpage
+
+\printbibliography
+
+\end{document}
+
