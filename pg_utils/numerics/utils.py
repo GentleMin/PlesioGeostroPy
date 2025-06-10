@@ -189,7 +189,7 @@ def transform_dps_prec(dps: Optional[int] = None, prec: Optional[int] = None,
         return dps_default, prec_default
 
 
-def to_gpmy2_f(x: np.ndarray, dps: Optional[int] = None, 
+def to_gmpy2_f(x: np.ndarray, dps: Optional[int] = None, 
     prec: Optional[int] = None) -> np.ndarray:
     """Convert float array to gmpy2 float array
     """
@@ -217,7 +217,7 @@ def to_numpy_f(x: np.ndarray) -> np.ndarray:
     return x.astype(np.float64)
 
 
-def to_gpmy2_c(x: np.ndarray, dps: Optional[int] = None, 
+def to_gmpy2_c(x: np.ndarray, dps: Optional[int] = None, 
     prec: Optional[int] = None) -> np.ndarray:
     """Convert float array to gmpy2 float array
     """
@@ -252,6 +252,25 @@ def to_numpy_c(x: np.ndarray) -> np.ndarray:
     """Convert complex array to numpy complex128 array
     """
     return x.astype(np.complex128)
+
+
+def isclose_gp(a: np.ndarray, b: np.ndarray, rtol=1e-5, atol=1e-8, prec=None):
+    """isclose for multi-precision arrays with sanitized input values
+    Does not test for infinity and NaNs; only use for sanitized inputs (i.e. without NaNs, infs)
+    """
+    if prec is None:
+        is_close = np.abs(a - b) <= atol + rtol*np.abs(b)
+    else:
+        with gp.local_context(gp.context(), precision=prec):
+            is_close = np.abs(a - b) <= atol + rtol*np.abs(b)
+    return is_close
+
+
+def allclose_gp(a: np.ndarray, b: np.ndarray, rtol=1e-5, atol=1e-8, prec=None):
+    """Allclose for multi-precision arrays with sanitized input values
+    Does not test for infinity and NaNs; only use for sanitized inputs (i.e. without NaNs, infs)
+    """
+    return np.all(isclose_gp(a, b, rtol=rtol, atol=atol, prec=prec))
 
 
 def array_to_str(x: np.ndarray, str_fun: Callable[[Any], str] = str) -> np.ndarray:
@@ -454,9 +473,24 @@ def vector_sph2cart(
     c_t, s_t = np.cos(t), np.sin(t)
     s, z = r*s_t, r*c_t
     vz = vr*c_t - vt*s_t
-    vs = -vr*s_t + vt*c_t
+    vs = vr*s_t + vt*c_t
     vx, vy, _, x, y, z = vector_cyl2cart(vs, vp, vz, s, p, z)
     return vx, vy, vz, x, y, z
+
+
+def vector_sph2cyl(
+    vr: np.ndarray, vt: np.ndarray, vp: np.ndarray,
+    r: np.ndarray, t: np.ndarray, p: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Vector transform: spherical to cylindrical
+    """
+    assert is_broadcastable(vr, vt) and is_broadcastable(vr, vp), \
+        "Shapes {}, {}, {} incompatible".format(vr.shape, vt.shape, vp.shape)
+    c_t, s_t = np.cos(t), np.sin(t)
+    s, z = r*s_t, r*c_t
+    vs = vr*s_t + vt*c_t
+    vz = vr*c_t - vt*s_t
+    return vs, vp, vz, s, p, z
 
 
 """

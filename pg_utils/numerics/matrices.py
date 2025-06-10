@@ -532,7 +532,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
                 M = self._quad_scipy_outer_pc(nrange_trial, nrange_test, 
                     alpha, beta, quadN, alpha_l, beta_l, **int_opt)
             elif backend == 'gmpy2':
-                M = self._quad_gmpy2_cp(nrange_trial, nrange_test, 
+                M = self._quad_gmpy2_pc(nrange_trial, nrange_test, 
                     alpha, beta, quadN, alpha_l, beta_l, **int_opt)
             else:
                 raise ValueError(f"{backend} unsupported for inner product matrix with {self.translate_mode}!")
@@ -678,12 +678,12 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             alpha_mp = mp.mpf(str(alpha.evalf(n_dps)))
             beta_mp = mp.mpf(str(beta.evalf(n_dps)))
         root_result = special.roots_jacobi_mp(int(quad_N), alpha_mp, beta_mp, n_dps=n_dps)
-        xi_quad = utils.to_gpmy2_f(root_result.xi, dps=n_dps) 
-        wt_quad = utils.to_gpmy2_f(root_result.wt, dps=n_dps)
+        xi_quad = utils.to_gmpy2_f(root_result.xi, dps=n_dps) 
+        wt_quad = utils.to_gmpy2_f(root_result.wt, dps=n_dps)
         return quad_matrix_gmpy2(opd_A.doit(), opd_B.doit(), nrange_test, nrange_trial, 
             xi_quad, wt_quad, n_dps=n_dps)
     
-    def _quad_gmpy2_cp(self, nrange_trial: List[int], nrange_test: List[int], 
+    def _quad_gmpy2_pc(self, nrange_trial: List[int], nrange_test: List[int], 
         alpha: sympy.Expr, beta: sympy.Expr, quad_N: int, 
         alpha_left: sympy.Expr, beta_left: sympy.Expr, 
         n_dps: int = 33) -> np.ndarray:
@@ -698,8 +698,8 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
             alpha_mp = mp.mpf(str(alpha.evalf(n_dps)))
             beta_mp = mp.mpf(str(beta.evalf(n_dps)))
         root_result = special.roots_jacobi_mp(int(quad_N), alpha_mp, beta_mp, n_dps=n_dps)
-        xi_quad = utils.to_gpmy2_f(root_result.xi, dps=n_dps) 
-        wt_quad = utils.to_gpmy2_f(root_result.wt, dps=n_dps)
+        xi_quad = utils.to_gmpy2_f(root_result.xi, dps=n_dps) 
+        wt_quad = utils.to_gmpy2_f(root_result.wt, dps=n_dps)
         
         # Pre-computation
         _, target_prec = utils.transform_dps_prec(dps=n_dps)
@@ -725,7 +725,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
                 return M_in.astype(np.complex128)
         elif output == "gmpy2":
             # print(M_in)
-            return utils.to_gpmy2_c(np.array(M_in), **kwargs)
+            return utils.to_gmpy2_c(np.array(M_in), **kwargs)
         elif output == "none":
             return M_in
         else:

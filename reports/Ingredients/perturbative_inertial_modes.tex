@@ -1,0 +1,843 @@
+\section{Governing equations}
+
+Incompressible, inviscid and electrically conductive fluid in a rotating frame, exhibiting small oscillations under the influence of a weak background magnetic field. The governing equations are Navier-Stokes equation and magnetic induction equation, linearized around a zero background velocity field:
+%
+\begin{equation}
+\begin{aligned}
+    &\lambda \mathbf{u} + 2 \hat{\mathbf{z}} \times \mathbf{u} + \nabla p = \mathrm{Le} \left[(\nabla\times \mathbf{b}) \times \mathbf{B}_0 + (\nabla\times \mathbf{B}_0) \times \mathbf{b} \right] \\ 
+    &\lambda \mathbf{b} = \mathrm{Le} \nabla\times (\mathbf{u}\times \mathbf{B}_0) + \mathrm{E}_\eta \nabla^2 \mathbf{b},
+\end{aligned}
+\end{equation}
+%
+where the incompressible velocity field satisfies the constraint $\nabla\cdot \mathbf{u} = 0$. Defining linear operators,
+\begin{equation}
+    \mathcal{C} \mathbf{u} = 2 \hat{\mathbf{z}} \times \mathbf{u}, \quad 
+    \mathcal{L} \mathbf{b} = (\nabla\times \mathbf{b}) \times \mathbf{B}_0 + (\nabla\times \mathbf{B}_0) \times \mathbf{b}, \quad 
+    \mathcal{I} \mathbf{u} = \nabla\times (\mathbf{u}\times \mathbf{B}_0),
+\end{equation}
+the governing equations can be rewritten as
+%
+\begin{equation}
+    \begin{aligned}
+        &\lambda \mathbf{u} + \mathcal{C} \mathbf{u} + \nabla p = \mathrm{Le} \mathcal{L}\mathbf{b} \\ 
+        &\lambda \mathbf{b} = \mathrm{Le} \mathcal{I} \mathbf{u} + \mathrm{E}_\eta \nabla^2 \mathbf{b}.
+    \end{aligned}
+\end{equation}
+%
+
+\section{Equations of perturbations}
+
+Note that a rescaling of the magnetic field $\mathbf{b} = \mathrm{Le} \tilde{\mathbf{b}}$ cancels out $\mathrm{Le}$ in the magnetic induction equation 
+%
+\begin{equation}
+    \begin{aligned}
+        &\lambda \mathbf{u} + \mathcal{C} \mathbf{u} + \nabla p = \mathrm{Le}^2 \mathcal{L} \tilde{\mathbf{b}} \\ 
+        &\lambda \tilde{\mathbf{b}} = \mathcal{I} \mathbf{u} + \mathrm{E}_\eta \nabla^2 \tilde{\mathbf{b}}.
+    \end{aligned}
+\end{equation}
+%
+we assume that the variables $\mathbf{u}$, $\tilde{\mathbf{b}}$ and $p$ as well as the eigenvalue $\lambda$ can all be expanded in a Taylor series of $\mathrm{Le}^2$, or a Taylor series with \textbf{only even powers} of $\mathrm{Le}$
+%
+\begin{equation}
+    \mathbf{u} = \sum_{k=0}^{+\infty} \mathrm{Le}^{2k} \mathbf{u}^{(2k)}, \quad 
+    \tilde{\mathbf{b}} = \sum_{k=0}^{+\infty} \mathrm{Le}^{2k} \tilde{\mathbf{b}}^{(2k)}, \quad 
+    p = \sum_{k=0}^{+\infty} \mathrm{Le}^{2k} p^{(2k)}, \quad 
+    \lambda = \sum_{k=0}^{+\infty} \mathrm{Le}^{2k} \lambda^{(2k)}
+\end{equation}
+%
+which means the original $\mathbf{b}$ variable can be expanded \textbf{in odd powers} of $\mathrm{Le}$,
+%
+\begin{equation}
+    \mathbf{b} = \mathrm{Le} \tilde{\mathbf{b}} = \sum_{k=0}^{+\infty} \mathrm{Le}^{2k+1} \mathbf{b}^{(2k+1)}.
+\end{equation}
+%
+Therefore, the magnetic field perturbation is always order $O(\mathrm{Le})$ different from the rest perturbations, creating a staggered pattern. Expanding the governing equation using these series representations and keeping up to the fourth order, we have for the momentum equation
+%
+\begin{equation}
+    \begin{aligned}
+        & \left\{\lambda^{(0)} \mathbf{u}^{(0)} + \mathcal{C} \mathbf{u}^{(0)} + \nabla p^{(0)}\right\} & & \mathbf{0} \\
+        + \mathrm{Le}^2 & \left\{\lambda^{(2)} \mathbf{u}^{(0)} + \lambda^{(0)} \mathbf{u}^{(2)} + \mathcal{C} \mathbf{u}^{(2)} + \nabla p^{(2)}\right\} & +&\mathrm{Le}^2 \mathcal{L} \mathbf{b}^{(1)} \\
+        + \mathrm{Le}^4 & \left\{\lambda^{(4)} \mathbf{u}^{(0)} + \lambda^{(2)} \mathbf{u}^{(4)} + \lambda^{(0)} \mathbf{u}^{(4)} + \mathcal{C} \mathbf{u}^{(4)} + \nabla p^{(4)}\right\} + O\left(\mathrm{Le}^6\right) & =+& \mathrm{Le}^4\mathcal{L}\mathbf{b}^{(3)} + O\left(\mathrm{Le}^6\right) \\ 
+    \end{aligned}
+\end{equation}
+%
+and for the magnetic induction equation
+%
+\begin{equation}
+\begin{aligned}
+    &\mathrm{Le}\left\{\lambda^{(0)} \mathbf{b}^{(1)}\right\} & & \mathrm{Le} \left\{\mathcal{I} \mathbf{u}^{(0)} + \mathrm{E}_\eta \nabla^2 \mathbf{b}^{(1)}\right\} \\
+    + &\mathrm{Le}^3 \left\{\lambda^{(0)} \mathbf{b}^{(3)} + \lambda^{(2)} \mathbf{b}^{(1)}\right\} + O\left(\mathrm{Le}^5\right) & = + & \mathrm{Le}^3 \left\{\mathcal{I} \mathbf{u}^{(2)} + \mathrm{E}_\eta \nabla^2 \mathbf{b}^{(3)}\right\} + O\left(\mathrm{Le}^5\right).
+\end{aligned}
+\end{equation}
+%
+Collecting equations of the same order, we have the ground-state system
+%
+\begin{equation}
+    \lambda^{(0)} \mathbf{u}^{(0)} + \mathcal{C} \mathbf{u}^{(0)} + \nabla p^{(0)} = \mathbf{0}.
+\end{equation}
+%
+Under the incompressible conduction and the non-penetration boundary conditions, the solution is the inertial modes, which we denote as $\lambda^{(0)} = \lambda_\alpha$ and $(\mathbf{u}^{(0)}, p^{(0)}) = (\mathbf{u}_{\alpha}, p_{\alpha})$, where the subscript $\alpha$ is a multi-index of the mode. Meanwhile, the ground-state magnetic field is $\mathbf{b}^{(0)} = \mathbf{0}$.
+\textbf{Hereinafter I will refer to the first non-trivial perturbation to the ground state as first order, and so on so forth.} Therefore $\lambda^{(2)}, \mathbf{u}^{(2)}, \mathbf{b}^{(1)}, p^{(2)}$ will be referred to as first-order perturbations, and $\lambda^{(4)}, \mathbf{u}^{(4)}, \mathbf{b}^{(3)}, p^{(4)}$ second-order perturbations.
+For the first order quantities $\mathbf{b}^{(1)}$ and $\mathbf{u}^{(2)}$, these satisfy the equations
+%
+\begin{equation}
+\begin{aligned}
+    &\lambda^{(0)} \mathbf{b}^{(1)} = \mathcal{I} \mathbf{u}^{(0)} + \mathrm{E}_\eta \nabla^2 \mathbf{b}^{(1)} \\
+    &\lambda^{(2)} \mathbf{u}^{(0)} + \lambda^{(0)} \mathbf{u}^{(2)} + \mathcal{C} \mathbf{u}^{(2)} + \nabla p^{(2)} = \mathcal{L} \mathbf{b}^{(1)}.
+\end{aligned}
+\end{equation}
+%
+The first-order magnetic perturbation $\mathbf{b}^{(1)}$ is therefore a result of magnetic induction from the background field and the inertial mode. This then modifies the eigenvalue and the eigenmode by introducing the first-order perturbations $\lambda^{(2)}$ and $\mathbf{u}^{(2)}$ via the effects of the Lorentz force.
+Similarly, the second order quantities $\mathbf{b}^{(3)}$ and $\mathbf{u}^{(4)}$ satisfy the equations 
+%
+\begin{equation}
+    \begin{aligned}
+        &\lambda^{(0)} \mathbf{b}^{(3)} + \lambda^{(2)} \mathbf{b}^{(1)} = \mathcal{I} \mathbf{u}^{(2)} + \mathrm{E}_\eta \nabla^2 \mathbf{b}^{(3)} \\
+        &\lambda^{(4)} \mathbf{u}^{(0)} + \lambda^{(2)} \mathbf{u}^{(2)} + \lambda^{(0)} \mathbf{u}^{(4)} + \mathcal{C} \mathbf{u}^{(4)} + \nabla p^{(4)} = \mathcal{L} \mathbf{b}^{(3)}.
+    \end{aligned}
+\end{equation}
+%
+Solutions to these system provide perturbation to the ground-state inertial modes up to order $\mathrm{Le}^4$. In general, at an arbitrary order $k \geq 1$, we have
+%
+\begin{equation}\label{perturb-sys-arb-k}
+\begin{aligned}
+    & \sum_{k'=0}^{k-1} \lambda^{(2k')} \mathbf{b}^{(2(k-k')-1)} = \mathcal{I} \mathbf{u}^{(2(k-1))} + \mathrm{E}_\eta \nabla^2 \mathbf{b}^{(2k-1)} \\
+    & \sum_{k'=0}^k \lambda^{(2k')} \mathbf{u}^{(2(k-k'))} + \mathcal{C} \mathbf{u}^{(2k)} + \nabla p^{(2k)} = \mathcal{L} \mathbf{b}^{(2k-1)}
+\end{aligned}
+\end{equation}
+%
+From this system one can solve for $\mathbf{b}^{(2k-1)}$, and then $\lambda^{(2k)}, \mathbf{u}^{(2k)}, p^{(2k)}$; these allow the solutions to the perturbed system to be constructed, accurate up to order $\mathrm{Le}^{2k}$.
+
+
+\section{A uniform background field}
+
+For analytical development we consider a background field $\mathbf{B}_0 = \hat{\mathbf{z}}$. Such design unifies to some extent the form of the magnetic effects and the Coriolis effects, enabling simplifications that would otherwise be impossible. For instance, the induction term
+%
+\begin{equation}
+    \mathcal{I} \mathbf{u} = \nabla\times (\mathbf{u}\times \mathbf{B}_0) = -\nabla\times (\hat{\mathbf{z}}\times \mathbf{u}) = - \frac{1}{2} \nabla\times \mathcal{C} \mathbf{u}
+\end{equation}
+%
+and the Lorentz force can also be simplified as the uniform background field has zero spatial derivatives.
+%
+\begin{equation}
+    \mathcal{L} \mathbf{b} = (\nabla\times \mathbf{b})\times \hat{\mathbf{z}} = - \frac{1}{2} \mathcal{C} (\nabla\times \mathbf{b}).
+\end{equation}
+%
+
+
+\section{First-order perturbations}
+
+Reinstate the system for the first-order perturbational quantities
+%
+\begin{equation}
+    \begin{aligned}
+        &\lambda^{(2)} \mathbf{u}^{(0)} + \lambda^{(0)} \mathbf{u}^{(2)} + \mathcal{C} \mathbf{u}^{(2)} + \nabla p^{(2)} = \mathcal{L} \mathbf{b}^{(1)} \\
+        &\left(\lambda^{(0)} - \mathrm{E}_\eta \nabla^2 \right) \mathbf{b}^{(1)} = \mathcal{I} \mathbf{u}^{(0)}.
+    \end{aligned}
+\end{equation}
+%
+The first-order system can be solved by first solving the magnetic induction equation, whose solution can be denoted schematically as
+%
+\begin{equation}
+    \mathbf{b}^{(1)} = (\lambda^{(0)} - \mathrm{E}_\eta \nabla^2)^{-1} \mathcal{I} \mathbf{u}^{(0)}.
+\end{equation}
+%
+In the second step, the momentum equation can be solved by expanding the unknown velocity quantity $\mathbf{u}^{(2)}$ in inertial modes, which individually satisfy incompressibility and the non-penetration BC,
+%
+\begin{equation}
+    \mathbf{u}^{(2)} = \sum_\alpha \mu_\alpha^{(2)} \mathbf{u}_\alpha.
+\end{equation}
+%
+The target is therefore to solve for $\lambda^{(2)}$ and the coefficients $(\mu_\alpha^{(2)})$. Since the ground state is an inertial mode by itself, we use the subscript $\alpha_0$ as the index for the ground-state inertial mode. The momentum equation then reads
+%
+\begin{equation}
+    \lambda^{(2)} \mathbf{u}_{\alpha_0} + \lambda_{\alpha_0} \sum_\alpha \mu_\alpha^{(2)} \mathbf{u}_\alpha + \sum_\alpha \mu_\alpha^{(2)} \mathcal{C} \mathbf{u}_{\alpha} + \nabla p^{(2)} = \mathcal{L} \mathbf{b}^{(1)}.
+\end{equation}
+%
+Note that for each inertial mode, we have
+%
+\begin{equation}
+    \lambda_\alpha \mathbf{u}_\alpha + \mathcal{C} \mathbf{u}_\alpha + \nabla p_\alpha = 0
+\end{equation}
+%
+This allows us to avoid the Coriolis operator altogether on the LHS by replacing it with $- \lambda_\alpha \mathbf{u}_\alpha - \nabla p_\alpha$,
+%
+\begin{equation}
+    \lambda^{(2)} \mathbf{u}_{\alpha_0} + \sum_\alpha \mu_\alpha^{(2)} \left(\lambda_{\alpha_0} - \lambda_{\alpha}\right) \mathbf{u}_\alpha + \nabla \left(p^{(2)} - \sum_\alpha \mu_\alpha^{(2)} p_\alpha \right) = \mathcal{L} \mathbf{b}^{(1)}.
+\end{equation}
+%
+It would seem that we are just complicating the situation and furthermore, we have no representation for the pressure perturbation $p^{(2)}$. However, we will soon see the pressure term no longer poses a problem as soon as we use the weak form by taking the inner product with another inertial mode $\mathbf{u}_{\beta}$. The inner product is defined as 
+%
+\begin{equation}
+    \langle \mathbf{f}, \mathbf{g} \rangle = \int_\mathcal{V} \mathbf{f}^* \cdot \mathbf{g} \, dV
+\end{equation}
+%
+where $\mathcal{V}$ is the volume within the sphere. $\forall \mathbf{f}$ divergence-free and satisfying non-penetration boundary condition, its inner product with any gradient $\varphi$ vanishes
+%
+\begin{equation}
+    \langle \mathbf{f}, \nabla \varphi \rangle = \int_{\mathcal{V}} \mathbf{f}^*\cdot \nabla \varphi \, dV = \int_{\mathcal{V}} \nabla\cdot (\varphi \mathbf{f}^*) \, dV = \oint_{\partial \mathcal{V}} \varphi \mathbf{f}^* \cdot \hat{\mathbf{n}} \, d\Sigma = 0.
+\end{equation}
+%
+Due to the same reason, any potential force does not do work to an incompressible fluid bounded within fixed boundaries. It then follows that, by taking inner product of the momentum equation with an inertial mode $\mathbf{u}_{\beta}$, the last term on the LHS vanishes,
+%
+\begin{equation}
+    \left\langle \mathbf{u}_{\beta}, \nabla \left(p^{(2)} - \sum_\alpha \mu_\alpha^{(2)} p_\alpha \right) \right\rangle = 0
+\end{equation}
+%
+leaving us with 
+%
+\begin{equation}
+    \lambda^{(2)} \langle \mathbf{u}_{\beta}, \mathbf{u}_{\alpha_0} \rangle + \sum_\alpha \mu_\alpha^{(2)} \left(\lambda_{\alpha_0} - \lambda_{\alpha}\right) \langle \mathbf{u}_{\beta}, \mathbf{u}_\alpha \rangle = \langle \mathbf{u}_{\beta}, \mathcal{L} \mathbf{b}^{(1)} \rangle.
+\end{equation}
+%
+Using the orthogonality of inertial modes under the defined inner product, we have $\forall \mathbf{u}_\beta$,
+%
+\begin{equation}
+    \lambda^{(2)} \| \mathbf{u}_{\alpha_0} \|_2^2 \delta_{\alpha_0 \beta} + \mu_\beta^{(2)} \left(\lambda_{\alpha_0} - \lambda_{\beta}\right) \| \mathbf{u}_{\beta} \|_2^2 = \langle \mathbf{u}_{\beta}, \mathcal{L} \mathbf{b}^{(1)} \rangle.
+\end{equation}
+%
+Choosing $\beta = \alpha_0$, we have the expression for the first-order perturbation of the eigenvalue
+%
+\begin{equation}
+    % \color{blue}
+    \lambda^{(2)} = \frac{\left\langle \mathbf{u}_{\alpha_0}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\|\mathbf{u}_{\alpha_0}\|_2^2} = \frac{\left\langle \mathbf{u}_{\alpha_0}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\langle \mathbf{u}_{\alpha_0}, \mathbf{u}_{\alpha_0} \rangle}
+\end{equation}
+%
+and this is simply caused by the Lorentz force at the first-order. The expansion coefficients for any $\beta \neq \alpha_0$ can be extracted by the relation
+%
+\begin{equation}
+    % \color{blue}
+    \mu_\beta^{(2)} = \frac{\left\langle \mathbf{u}_{\beta}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\left(\lambda_{\alpha_0} - \lambda_\beta\right)\|\mathbf{u}_{\beta}\|_2^2} = \frac{1}{\lambda_{\alpha_0} - \lambda_\beta} \frac{\left\langle \mathbf{u}_{\beta}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\langle \mathbf{u}_{\beta}, \mathbf{u}_{\beta} \rangle}
+\end{equation}
+%
+determining the component of first-order perturbation $\mathbf{u}^{(2)}$ orthogonal to $\mathbf{u}^{(0)} = \mathbf{u}_{\alpha_0}$. The parallel component lives in the nullspace of the 1st-order momentum equation, hence cannot be uniquely determined. This is a common situation for similar perturbative problems \citep[e.g.][]{maitra_waves_2023}.
+
+At this point all the available solutions to the first-order system have been derived, either in closed form or in a schematic manner. They are summarized as follows.
+%
+\begin{mdframed}[style=HighlightBox, frametitle={General formulae for first-order perturbations}]
+\begin{gather*}
+    \mathbf{b}^{(1)} = \left(\lambda_{\alpha_0} - \mathrm{E}_\eta \nabla^2\right)^{-1} \mathcal{I} \mathbf{u}_{\alpha_0}
+    \\
+    \lambda^{(2)} = \frac{\left\langle \mathbf{u}_{\alpha_0}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\|\mathbf{u}_{\alpha_0}\|_2^2} = \frac{\left\langle \mathbf{u}_{\alpha_0}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\langle \mathbf{u}_{\alpha_0}, \mathbf{u}_{\alpha_0} \rangle}
+    \\
+    \mathbf{u}^{(2)}_{\alpha_0 \perp} = \sum_{\alpha \neq \alpha_0} \mu_\alpha^{(2)} \mathbf{u}_{\alpha},\quad \text{where} \quad 
+    \mu_\alpha^{(2)} = \frac{\left\langle \mathbf{u}_{\alpha}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\left(\lambda_{\alpha_0} - \lambda_\alpha\right)\|\mathbf{u}_{\alpha}\|_2^2} = \frac{1}{\lambda_{\alpha_0} - \lambda_\alpha} \frac{\left\langle \mathbf{u}_{\alpha}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\langle \mathbf{u}_{\alpha}, \mathbf{u}_{\alpha} \rangle}
+\end{gather*}
+\end{mdframed}
+
+\subsection{Specialization: under a uniform background field and neglecting magnetic diffusion}
+
+The general formula first relies on a solution $\mathbf{b}^{(1)}$ to the magnetic induction equation given the induction term, i.e. inverting the decay operator $\lambda_{\alpha_0} - \mathrm{E}_\eta \nabla^2$. This schematic device makes further analytical developments inconvenient. Furthermore, the induction term given arbitrary background field is unlikely to have a closed-form expression. In general, the solution of $\mathbf{b}^{(1)}$ has to resort to numerical calculation.
+
+To further the analytical developments, let us make two additional assumptions. First, let us take a uniform background magnetic field. As stated in the previous section, we have
+%
+\begin{gather}
+    \mathcal{I} \mathbf{u}_{\alpha_0} = - \frac{1}{2} \nabla\times \mathcal{C} \mathbf{u}_{\alpha_0} \\
+    \mathcal{L} \mathbf{b}^{(1)} = - \frac{1}{2} \mathcal{C} (\nabla\times \mathbf{b}^{(1)}).
+\end{gather}
+%
+Substituting $\mathcal{C} \mathbf{u}_{\alpha_0}$, again using the zeroth-order equation, the induction term can be written as 
+%
+\begin{equation}
+    \mathcal{I} \mathbf{u}_{\alpha_0} = - \frac{1}{2} \nabla\times \left(-\lambda_{\alpha_0} \mathbf{u}_{\alpha_0} - \nabla p_{\alpha_0}\right) = \frac{1}{2} \lambda_{\alpha_0} \nabla\times \mathbf{u}_{\alpha_0},
+\end{equation}
+%
+thus giving a simple closed-form representation of the induction term. Next, let us assume that magnetic diffusion is negligible at the time scale of interest, thus effectively setting $\mathrm{E}_\eta \rightarrow 0$, making the inverse of the decay operator a simple division over the zeroth-order eigenvalue. This allows the magnetic perturbation at the first order to be written as 
+%
+\begin{equation}
+    \mathbf{b}^{(1)} = \frac{1}{2} \nabla\times \mathbf{u}_{\alpha_0}
+\end{equation}
+%
+i.e. simply half the vorticity of the ground-state inertial mode. Consequently, the Lorentz force term is
+%
+\begin{equation}
+    \mathcal{L} \mathbf{b}^{(1)} = - \frac{1}{2} \mathcal{C} \left(\frac{1}{2} \nabla \times \nabla\times \mathbf{u}_{\alpha_0} \right) = \frac{1}{4} \mathcal{C} \nabla^2 \mathbf{u}_{\alpha_0} = \frac{1}{4} \nabla^2 \mathcal{C} \mathbf{u}_{\alpha_0}
+\end{equation}
+%
+The last equality uses the fact that the scalar differential operator $\nabla^2$ commutes with the constant vectorial operator $\mathcal{C}$. Replacing the Coriolis term again using the inertial mode equation, we arrive at
+%
+\begin{equation}\label{eqn:Lorentz-order1-ideal}
+    \mathcal{L} \mathbf{b}^{(1)} = \frac{1}{4} \nabla^2 \mathcal{C} \mathbf{u}_{\alpha_0} = \frac{1}{4} \nabla^2 \left(- \lambda_{\alpha_0} \mathbf{u}_{\alpha_0} - \nabla p_{\alpha_0}\right) = - \frac{1}{4} \left(\lambda_{\alpha_0} \nabla^2 \mathbf{u}_{\alpha_0} + \nabla \nabla^2 p_{\alpha_0}\right)
+\end{equation}
+%
+Note that the second term is a gradient of a scalar, hence has zero inner product with any solenoidal vector field satisfying non-penetration boundary condition. Its inner product with any inertial mode is
+%
+\begin{equation}
+    \langle \mathbf{u}_{\alpha}, \mathcal{L} \mathbf{b}^{(1)} \rangle = - \frac{1}{4} \lambda_{\alpha_0} \langle  \mathbf{u}_{\alpha}, \nabla^2 \mathbf{u}_{\alpha_0} \rangle
+\end{equation}
+%
+hence the first-order perturbations to the eigenvalue and the velocity field are given by
+%
+\begin{align}
+    &\lambda^{(2)} = -\frac{\lambda_{\alpha_0}}{4} \frac{\langle \mathbf{u}_{\alpha_0}, \nabla^2 \mathbf{u}_{\alpha_0} \rangle}{\langle \mathbf{u}_{\alpha_0}, \mathbf{u}_{\alpha_0} \rangle}
+    \\
+    &\mu_\alpha^{(2)} = \frac{\lambda_{\alpha_0}}{4(\lambda_\alpha - \lambda_{\alpha_0})} \frac{\left\langle \mathbf{u}_{\alpha}, \nabla^2 \mathbf{u}_{\alpha_0} \right\rangle}{\langle \mathbf{u}_{\alpha}, \mathbf{u}_{\alpha} \rangle},\quad \forall \alpha \neq \alpha_0
+\end{align}
+%
+The inner product $\langle \mathbf{u}_\beta, \nabla^2 \mathbf{u}_\alpha \rangle$, also referred to as the dissipation integral \citep{zhang_theory_2017}, vanishes for certain combinations of $\alpha$ and $\beta$. In fact, for all $\alpha$ and $\beta$ modes whose polynomial degrees satisfy $\mathrm{deg} (\mathbf{u}_\alpha) \leq \mathrm{deg} (\mathbf{u}_\beta) + 1$ \citep[inertial modes are all band-limited polynomials, ][]{zhang_theory_2017}, this inner product evaluates to zero \citep{ivers_enumeration_2015,zhang_theory_2017}. A special case is of course $\beta = \alpha$, in which case we have
+%
+\begin{equation}
+    \langle \mathbf{u}_{\alpha}, \nabla^2 \mathbf{u}_{\alpha} \rangle = 0, \quad \forall \alpha
+\end{equation}
+%
+This result leads to the surprising conclusion that $\lambda^{(2)} = 0$ (?!). There is no first-order ($\mathrm{Le}^2$-order) perturbation to the eigenvalue (frequency or decay rate) under a uniform background field and no magnetic diffusion (?!). 
+Meanwhile, the perturbations to the velocity field introduce to first order new components $\mathbf{u}_\alpha$ whose polynomial degree is lower than $\mathbf{u}_{\alpha_0}$ with coefficients $\mu_\alpha^{(2)}$ as stated above. These are summarized as follows.
+%
+\begin{mdframed}[style=HighlightBox, frametitle={First-order perturbations under uniform background field, neglect magnetic diffusion}]
+    \begin{align*}
+        &\lambda^{(2)} = 0
+        \\
+        &\mathbf{b}^{(1)} = \frac{1}{2} \nabla\times \mathbf{u}_{\alpha_0} 
+        \\
+        &\mu_\alpha^{(2)} = \left\{\begin{aligned}
+            \frac{\lambda_{\alpha_0}}{4(\lambda_\alpha - \lambda_{\alpha_0})} \frac{\left\langle \mathbf{u}_{\alpha}, \nabla^2 \mathbf{u}_{\alpha_0} \right\rangle}{\langle \mathbf{u}_{\alpha}, \mathbf{u}_{\alpha} \rangle},\quad \forall \alpha: \mathrm{deg}(\mathbf{u}_\alpha) < \mathrm{deg}(\mathbf{u}_{\alpha_0}) - 1 \\ 
+            0,\quad \forall \alpha: \alpha \neq \alpha_0 \quad \& \quad \mathrm{deg}(\mathbf{u}_\alpha) \geq \mathrm{deg}(\mathbf{u}_{\alpha_0}) - 1
+        \end{aligned}\right.
+    \end{align*}
+\end{mdframed}
+
+In retrospect, this result is somewhat understandable. The additional forcing in the 1st-order perturbed system is the Lorentz force, which, under our approximations in this section, unfortunately takes the form (\ref{eqn:Lorentz-order1-ideal}). The second term is purely balanced by additional pressure gradient, and requires no perturbation to the flow or the eigenvalue. The first term is spread to a series of inertial modes whose degree is lower than $\mathbf{u}_{\alpha_0}$ itself, but has no effect on nor requirement for the $\lambda^{(2)} \mathbf{u}^{(0)}$ term. 
+
+The phenomenon that $\lambda^{(2)} = 0$ is also not representative of the general case, as the situation will change as soon as the background field $\mathbf{B}_0$ is not a uniform field $\hat{\mathbf{z}}$, but a spatial varying field, adding additional polynomial degrees to the Lorentz force term.
+
+\subsection{Specialization: uniform background field, weak damping, regular perturbation}
+
+Note that we have neglected magnetic diffusion in the previous subsection. Is it possible to get non-trivial eigenvalue shift when we re-introduce magnetic diffusion? In this part let us consider this possibility by introducing a weak damping, i.e. $\mathrm{E}_\eta \ll 1$. It is perhaps more beneficial if we have $\mathrm{E}_\eta \sim o\left(\mathrm{Le}^2\right)$. Either way, under this assumption, we can consider $\mathrm{E}_\eta$ as a small parameter, and approximate $\mathbf{b}^{(1)}$ to the first order of $\mathrm{E}_\eta$ as
+%
+\begin{equation}
+    \mathbf{b}^{(1)} = \left(\lambda_{\alpha_0} - \mathrm{E}_\eta\nabla^2 \right)^{-1} \mathcal{I} \mathbf{u}_{\alpha_0} \approx \lambda_{\alpha_0}^{-1} \left(1 + \lambda_{\alpha_0}^{-1} \mathrm{E}_\eta \nabla^2\right) \mathcal{I} \mathbf{u}_{\alpha_0} + O(\mathrm{E}_\eta^2)
+\end{equation}
+%
+Schematically it can be obtained simply by taking the Taylor series at $\mathrm{E}_\eta=0$, but it can also be equivalently achieved by using a perturbative approach on solving this equation, using $\mathrm{E}_\eta$ as the expansion parameter. Substituting in the expression for the induction term we have
+%
+\begin{equation}
+    \mathbf{b}^{(1)} = \frac{1}{2} \left(\nabla\times \mathbf{u}_{\alpha_0} + \lambda_{\alpha_0}^{-1} \mathrm{E}_\eta \nabla\times \nabla^2 \mathbf{u}_{\alpha_0}\right)
+\end{equation}
+%
+And the Lorentz force term takes the form
+%
+\begin{equation}
+\begin{aligned}
+    \mathcal{L} \mathbf{b}^{(1)} &= - \frac{1}{2} \mathcal{C} \left(\nabla\times \mathbf{b}^{(1)}\right) = \frac{1}{4} \mathcal{C} \left(\nabla^2 \mathbf{u}_{\alpha_0} + \lambda_{\alpha_0}^{-1} \mathrm{E}_\eta \nabla^4 \mathbf{u}_{\alpha_0}\right) = \frac{1}{4} \left(\nabla^2 \mathcal{C} \mathbf{u}_{\alpha_0} + \lambda_{\alpha_0}^{-1} \mathrm{E}_\eta \nabla^4 \mathcal{C} \mathbf{u}_{\alpha_0}\right) \\
+    &= - \frac{1}{4} \left[ \left(\lambda_{\alpha_0} \nabla^2 \mathbf{u}_{\alpha_0} + \mathrm{E}_\eta \nabla^4 \mathbf{u}_{\alpha_0}\right) + \nabla \left(\nabla^2 p_{\alpha_0} + \lambda_{\alpha_0}^{-1} \mathrm{E}_\eta \nabla^4 p_{\alpha_0}\right) \right].
+\end{aligned}
+\end{equation}
+%
+At this point, we can already see that adding damping is a lost cause for making $\lambda^{(2)}$ non-zero. The pressure term will still be balanced by a pressure gradient, introducing no perturbation to the flow or the eigenvalue. Same as in the previous diffusionless scenario, $\nabla^2 \mathbf{u}_{\alpha_0}$ will generate perturbations in $\mathbf{u}_\alpha$ components where $\mathrm{deg}(\mathbf{u}_\alpha) \leq \mathrm{deg}(\mathbf{u}_{\alpha_0}) - 2$. The additional $\nabla^4 \mathbf{u}_{\alpha_0}$ is of even lower polynomial degree, and will generate perturbations in $\mathbf{u}_\alpha$ components where $\mathrm{deg}(\mathbf{u}_\alpha) \leq \mathrm{deg}(\mathbf{u}_{\alpha_0}) - 4$. None of these terms have non-zero overlapping integral with $\mathbf{u}_{\alpha_0}$ itself, and hence still does not concern the $\lambda^{(2)} \mathbf{u}_{\alpha_0}$ term. The results are summarized as follows.
+%
+\begin{mdframed}[style=HighlightBox, frametitle={First-order perturbations under uniform background field, weak magnetic diffusion}]
+    \begin{align*}
+        &\lambda^{(2)} = 0
+        \\
+        &\mathbf{b}^{(1)} = \frac{1}{2} \left(\nabla\times \mathbf{u}_{\alpha_0} + \lambda_{\alpha_0}^{-1} \mathrm{E}_\eta \nabla\times \nabla^2 \mathbf{u}_{\alpha_0}\right)
+        \\
+        &\mu_\alpha^{(2)} = \left\{\begin{aligned}
+            \frac{\lambda_{\alpha_0} \left\langle \mathbf{u}_{\alpha}, \nabla^2 \mathbf{u}_{\alpha_0} \right\rangle + \mathrm{E}_\eta \left\langle \mathbf{u}_{\alpha}, \nabla^4 \mathbf{u}_{\alpha_0} \right\rangle}{4(\lambda_\alpha - \lambda_{\alpha_0}) \langle \mathbf{u}_{\alpha}, \mathbf{u}_{\alpha} \rangle},\quad \forall \alpha: \mathrm{deg}(\mathbf{u}_\alpha) < \mathrm{deg}(\mathbf{u}_{\alpha_0}) - 1 \\ 
+            0,\quad \forall \alpha: \alpha \neq \alpha_0 \quad \& \quad \mathrm{deg}(\mathbf{u}_\alpha) \geq \mathrm{deg}(\mathbf{u}_{\alpha_0}) - 1
+        \end{aligned}\right.
+    \end{align*}
+\end{mdframed}
+
+
+\section{Second-order perturbations}
+
+Do we at least have some modification to the eigenvalue at second order?
+
+Reinstate the system for the second-order perturbational quantities
+%
+\begin{equation}
+    \begin{aligned}
+        & \left(\lambda^{(0)} - \mathrm{E}_\eta \nabla^2\right) \mathbf{b}^{(3)} = \mathcal{I} \mathbf{u}^{(2)} - \lambda^{(2)} \mathbf{b}^{(1)} \\
+        &\lambda^{(4)} \mathbf{u}^{(0)} + \lambda^{(0)} \mathbf{u}^{(4)} + \mathcal{C} \mathbf{u}^{(4)} + \nabla p^{(4)} = \mathcal{L} \mathbf{b}^{(3)} - \lambda^{(2)} \mathbf{u}^{(2)}.
+    \end{aligned}
+\end{equation}
+%
+The solution of this system is schematically almost identical to that of the first-order system. Again the magnetic perturbation can be solves formally as 
+%
+\begin{equation}
+    \mathbf{b}^{(3)} = \left(\lambda^{(0)} - \mathrm{E}_\eta \nabla^2\right)^{-1} \left(\mathcal{I} \mathbf{u}^{(2)} - \lambda^{(2)} \mathbf{b}^{(1)}\right).
+\end{equation}
+%
+Expanding $\mathbf{u}^{(4)}$ in inertial modes,
+%
+\begin{equation}
+    \mathbf{u}^{(4)} = \sum_\alpha \mu_{\alpha}^{(4)} \mathbf{u}_\alpha
+\end{equation}
+%
+and using the same trick by substituting the Coriolis term with inertial mode equation and then taking the inner product, we end up with 
+%
+\begin{equation}
+    \lambda^{(4)} \langle \mathbf{u}_\beta, \mathbf{u}_{\alpha_0} \rangle + \sum_\alpha \mu_{\alpha}^{(4)} \left(\lambda_{\alpha_0} - \lambda_\alpha\right) \langle \mathbf{u}_\beta, \mathbf{u}_\alpha \rangle = \left\langle \mathbf{u}_\beta, \mathcal{L} \mathbf{b}^{(3)} - \lambda^{(2)} \mathbf{u}^{(2)} \right\rangle
+\end{equation}
+%
+which yields 
+%
+\begin{equation}
+    \lambda^{(4)} = \frac{\left\langle \mathbf{u}_{\alpha_0}, \mathcal{L} \mathbf{b}^{(3)} - \lambda^{(2)} \mathbf{u}^{(2)} \right\rangle}{\langle \mathbf{u}_{\alpha_0}, \mathbf{u}_{\alpha_0} \rangle}
+\end{equation}
+%
+for $\beta = \alpha_0$, and
+%
+\begin{equation}
+    \mu_{\alpha}^{(4)} = \frac{\left\langle \mathbf{u}_{\alpha}, \mathcal{L} \mathbf{b}^{(3)} - \lambda^{(2)} \mathbf{u}^{(2)} \right\rangle}{(\lambda_{\alpha_0} - \lambda_\alpha) \langle \mathbf{u}_{\alpha}, \mathbf{u}_{\alpha} \rangle}
+\end{equation}
+%
+for $\beta = \alpha \neq \alpha_0$. This can be summarized as
+%
+\begin{mdframed}[style=HighlightBox, frametitle={General formulae for second-order perturbations}]
+    \begin{gather*}
+        \mathbf{b}^{(3)} = \left(\lambda_{\alpha_0} - \mathrm{E}_\eta \nabla^2\right)^{-1} \left(\mathcal{I} \mathbf{u}^{(2)} - \lambda^{(2)} \mathbf{b}^{(1)}\right)
+        \\
+        \lambda^{(4)} = \frac{\left\langle \mathbf{u}_{\alpha_0}, \mathcal{L} \mathbf{b}^{(3)} - \lambda^{(2)} \mathbf{u}^{(2)} \right\rangle}{\langle \mathbf{u}_{\alpha_0}, \mathbf{u}_{\alpha_0} \rangle}
+        \\
+        \mathbf{u}^{(4)}_{\alpha_0 \perp} = \sum_{\alpha \neq \alpha_0} \mu_\alpha^{(4)} \mathbf{u}_{\alpha},\quad \text{where} \quad 
+        \mu_\alpha^{(4)} = \frac{\left\langle \mathbf{u}_{\alpha}, \mathcal{L} \mathbf{b}^{(3)} - \lambda^{(2)} \mathbf{u}^{(2)} \right\rangle}{(\lambda_{\alpha_0} - \lambda_\alpha) \langle \mathbf{u}_{\alpha}, \mathbf{u}_{\alpha} \rangle}
+    \end{gather*}
+\end{mdframed}
+
+\subsection{Specialization: uniform background field, weak damping, regular perturbation}
+
+Let us again take $\mathbf{B}_0 = \hat{\mathbf{z}}$, and use the small $\mathrm{E}_\eta$ formulation (because why not, the first-order approximation is quite simple). Let us further assume the correctness of the first-order perturbations, and hence $\lambda^{(2)} = 0$. The magnetic field can then be approximated as
+%
+\begin{equation}
+\begin{aligned}
+    \mathbf{b}^{(3)} &= \lambda_{\alpha_0}^{-1} \left(1 + \lambda_{\alpha_0}^{-1} \mathrm{E}_\eta \nabla^2\right) \mathcal{I} \mathbf{u}^{(2)} \\ 
+    &= \frac{1}{2} \sum_\beta \mu_{\beta}^{(2)} \frac{\lambda_\beta}{\lambda_{\alpha_0}} \left(1 + \lambda_{\alpha_0}^{-1} \mathrm{E}_\eta \nabla^2\right) (\nabla\times \mathbf{u}_\beta).
+\end{aligned}
+\end{equation}
+%
+According to the last section, $\mu_\beta^{(2)}$ is zero for any $\mathbf{u}_\beta$ with polynomial degree higher than that of $\mathbf{u}_{\alpha_0}$. The result is the summation $\sum_\beta$ is no longer an infinite series, but a finite sum over $\mathrm{deg}(\mathbf{u}_\beta) \leq \mathrm{deg}(\mathbf{u}_{\alpha_0})$, which I shall denote as $\sum_\beta^{\mathrm{deg}\alpha_0}$ hereinafter.
+The resulting Lorentz force reads
+%
+\begin{equation}
+    \mathcal{L} \mathbf{b}^{(3)} = - \frac{1}{4} \sum_{\beta}^{\mathrm{deg}\alpha_0} \mu_\beta^{(2)} \frac{\lambda_\beta}{\lambda_{\alpha_0}} \left[\left(\lambda_\beta \nabla^2 \mathbf{u}_\beta + \frac{\lambda_\beta}{\lambda_{\alpha_0}}\mathrm{E}_\eta \nabla^4 \mathbf{u}_\beta\right) + \nabla \left(\nabla^2 p_\beta + \lambda_{\alpha_0}^{-1} \mathrm{E}_\eta \nabla^4 p_\beta\right)\right]
+\end{equation}
+%
+which only has nonzero overlapping integral with $\mathbf{u}_{\alpha}$ whose degree is at least two degrees lower than $\mathbf{u}_{\alpha_0}$. In other words,
+%
+\begin{equation}
+    \left\langle \mathbf{u}_{\alpha}, \mathcal{L} \mathbf{b}^{(3)} \right\rangle = 0, \quad \forall \mathrm{deg}(\mathbf{u}_\alpha) \geq \mathrm{deg}(\mathbf{u}_{\alpha_0})-1
+\end{equation}
+%
+The consequence is that the Lorentz force will again only perturb inertial mode components whose degree are no greater than $\mathrm{deg}(\mathbf{u}_{\alpha_0})-2$, whereas the eigenvalue is again untouched (?!). 
+% What is happening? Did I make an algebraic mistake somewhere, or some steps are wrong even conceptually?
+
+
+\section{Arbitrary order regular perturbation under uniform background}
+
+Let us look at the perturbational system under a uniform background field for an arbitrary order $k\geq 1$. {\todoremark \textbf{Hypothesis 1:} $\lambda^{(2k')} = 0$, $\forall 0 < k' < k$}. Relying on {\todoremark \textbf{Proposition 1}: eq.~(\ref{perturb-sys-arb-k}) is correct}, the perturbational system reads
+%
+\begin{equation}
+    \begin{aligned}
+        & \left(\lambda^{(0)} - \mathrm{E}_\eta \nabla^2\right) \mathbf{b}^{(2k-1)} = \mathcal{I} \mathbf{u}^{(2k-2)} = - \frac{1}{2} \nabla\times \mathcal{C} \mathbf{u}^{(2k-2)} \\
+        & \lambda^{(2k)} \mathbf{u}^{(0)} + \lambda^{(0)} \mathbf{u}^{(2k)} + \mathcal{C} \mathbf{u}^{(2k)} + \nabla p^{(2k)} = \mathcal{L} \mathbf{b}^{(2k-1)} = -\frac{1}{2} \mathcal{C} \left(\nabla\times \mathbf{b}^{(2k-1)}\right)
+    \end{aligned}
+\end{equation}
+%
+Note the induction term and the Lorentz force term have already been rewritten in the form of Coriolis operator, using $\mathbf{B}_0 = \hat{\mathbf{z}}$. Following \citet{ivers_enumeration_2015}, let us introduce vector space of 3-D polynomials of maximum degree $N$
+%
+\begin{equation}
+    \mathcal{P}_N^3 = \mathrm{span} \left\{x^i y^j z^k \, \Big| \, i + j + k \leq N\right\}
+\end{equation}
+%
+and the vector space of 3-D polynomial vectors of maximum degree $N$
+%
+\begin{equation}
+    \boldsymbol{\mathcal{P}}_N = \left\{\mathbf{v} \, \Big| \, v_i \in \mathcal{P}_N^3, i \in \{1, 2, 3\}\right\}
+\end{equation}
+%
+and its two subspaces $\boldsymbol{\mathcal{P}}_N^u(V) \subset \boldsymbol{\mathcal{P}}_N^b(V) \subset \boldsymbol{\mathcal{P}}_N$
+%
+\begin{align}
+    \boldsymbol{\mathcal{P}}_N^b(V) &= \left\{\mathbf{v} \in \boldsymbol{\mathcal{P}}_N \, \Big| \, (\nabla\cdot \mathbf{v})|_{V} = 0\right\},
+    \\
+    \boldsymbol{\mathcal{P}}_N^u(V) &= \left\{\mathbf{v} \in \boldsymbol{\mathcal{P}}_N \, \Big| \, (\nabla\cdot \mathbf{v})|_{V} = 0 \; \text{and} \; (\hat{\mathbf{n}}\cdot \mathbf{v})|_{\partial V} = 0\right\}.
+\end{align}
+%
+These subspaces are linear spaces of polynomial vectors that are solenoidal, and solenoidal as well as non-penetrating at the boundary, respectively. The superscripts are chosen to be $b$ and $u$ because of solenoidal nature of $\mathbf{b}$ (neglecting further boundary conditions) and the solenoidal and non-penetrating nature of $\mathbf{u}$. Now let us assume that the flow from the previous order is band-limited in polynomials, i.e. {\todoremark \textbf{Hypothesis 2:} $\mathbf{u}^{(2k-2)} \in \boldsymbol{\mathcal{P}}_{N_0}^u(V)$ and $N_0 = \mathrm{deg}(\mathbf{u}_{\alpha_0})$}. As a result, the induction term
+%
+\begin{equation}
+    \mathcal{I} \mathbf{u}^{(2k-2)} = - \frac{1}{2} \nabla\times \mathcal{C} \mathbf{u}^{(2k-2)} \in \boldsymbol{\mathcal{P}}_{N_0 - 1}^b(V)
+\end{equation}
+%
+The next step is crucial, as it would be central to the entire generalization. I further make the proposition that since the RHS of the magnetic induction equation is band-limited, so is the solution. In other words, {\todoremark \textbf{Proposition 2}: if $(\lambda^{(0)} - \mathrm{E}_\eta\nabla^2) \mathbf{b}^{(2k-1)} = \mathbf{g} \in \boldsymbol{\mathcal{P}}_{N_0-1}^b(V)$, and $\lambda^{(0)}$ is not an eigenvalue of $\nabla^2$, then $\mathbf{b}^{(2k-1)} \in \boldsymbol{\mathcal{P}}_{N_0-1}^b(V)$}. 
+It certainly is consistent with the approximations obtained in the previous sections, when an expansion in the small quantity $\mathrm{E}_\eta$ is made. In fact, the perturbative solutions to the induction equation to arbitrary order of $\mathrm{E}_\eta$ would satisfy this proposition. 
+However, in this process, boundary conditions are never respected. Will things change if we actually enforce the boundary conditions for the solution?
+
+Another problem is that the proposition clearly breaks down when $\lambda^{(0)}$ lies within the spectrum of $\nabla^2$. If $\lambda^{(0)}$ happens to be a free-decay frequency, for instance, one can take $\mathbf{b}^{(2k-1)}$ to be a polynomial plus the free-decay mode, which has spherical Bessel function in the radial direction and not polynomial. 
+If we consider the spectrum $\sigma(\nabla^2)$ under the dynamo conditions \citep{roberts_803_2015}, then the free-decay modes and the inertial modes have no overlap in eigenspectra, as free-decay eigenvalues are purely real, and inertial mode eigenvalues are purely imaginery.
+However, the spectrum of operators would actually depend on the boundary conditions. As we are not imposing boundary conditions on $\mathbf{b}$ here, does it mean that $\sigma(\nabla^2)$ will be a bigger set, potentially clashing with the inertial mode eigenvalues?
+
+Assuming proposition is true, however, the consequence is that now the $\mathbf{b}$ can be written as the curl of a vector potential $\mathbf{b} = \nabla\times \mathbf{A}$, which is also a band-limited field $\mathbf{A} \in \boldsymbol{\mathcal{P}}_{N_0}^b(V)$. Using the same trick as in \citet{ivers_enumeration_2015}, $\mathbf{A}$ can be expanded in inertial modes $\mathbf{u}_{\alpha} \in \boldsymbol{\mathcal{P}}_{N_0}^u(V)$ and another potential field, which vanishes anyway after taking the curl. By using a series of commutations and substitutions of the inertial mode equation, the end result is that 
+%
+\begin{equation}
+\begin{aligned}
+    \mathcal{L} \mathbf{b}^{(2k-1)} &= -\frac{1}{2} \mathcal{C} \left(\nabla\times \nabla\times \sum_{\alpha}^{N_0} \mu_\alpha \mathbf{u}_{\alpha}\right) = \frac{1}{2} \sum_{\alpha}^{N_0} \mu_\alpha \mathcal{C} \left(\nabla^2  \mathbf{u}_{\alpha}\right)
+    \\
+    &= \frac{1}{2} \sum_{\alpha}^{N_0} \mu_\alpha \nabla^2 \left(\mathcal{C} \mathbf{u}_{\alpha}\right) = \frac{1}{2} \sum_{\alpha}^{N_0} \mu_\alpha \nabla^2 \left(-\lambda_\alpha \mathbf{u}_{\alpha} - \nabla p_\alpha \right) \\ 
+    &= - \frac{1}{2} \sum_{\alpha}^{N_0} \mu_\alpha \left(\lambda_\alpha \nabla^2 \mathbf{u}_{\alpha} + \nabla \nabla^2 p_\alpha \right)
+\end{aligned}
+\end{equation}
+%
+where $\sum_{\alpha}^{N}$ indicates summation over inertial mode indices $\alpha$ where $\mathbf{u}_\alpha \in \boldsymbol{\mathcal{P}}_{N}^u(V)$, i.e. summation over polynomial-degree truncated inertial modes. In other words, the Lorentz term has the decomposition
+%
+\begin{equation}
+    \mathcal{L}\mathbf{b}^{(2k-1)} = \mathbf{f} + \nabla p',\quad \text{where} \; \mathbf{f} \in \boldsymbol{\mathcal{P}}_{N_0-2}^u(V).
+\end{equation}
+%
+Now in the last stage, we expand the perturbed flow in inertial modes as 
+%
+\begin{equation}
+    \mathbf{u}^{(2k)} = \sum_\beta \mu_{\beta}^{(2k)} \mathbf{u}
+\end{equation}
+%
+and insert it in the momentum equation
+%
+\begin{equation}
+    \lambda^{(2k)} \mathbf{u}_{\alpha_0} + \sum_\beta \mu_{\beta}^{(2k)} (\lambda_{\alpha_0} - \lambda_\beta) \mathbf{u}_{\beta} + \nabla \tilde{p} = \mathbf{f}
+\end{equation}
+%
+where $\tilde{p}$ is a collection of all potential forces / gradient terms. The weak form hence reads
+%
+\begin{equation}
+    \lambda^{(2k)} \langle \mathbf{u}_\alpha, \mathbf{u}_{\alpha_0} \rangle + \sum_\beta \mu_{\alpha}^{(2k)} (\lambda_{\alpha_0} - \lambda_\beta) \langle \mathbf{u}_\alpha, \mathbf{u}_{\beta} \rangle = \langle \mathbf{u}_{\alpha}, \mathbf{f} \rangle
+\end{equation}
+%
+Using the orthogonality of inertial modes, 
+%
+\begin{align}
+    \lambda^{(2k)} &= \frac{\langle \mathbf{u}_{\alpha_0}, \mathbf{f} \rangle}{\langle \mathbf{u}_{\alpha_0}, \mathbf{u}_{\alpha_0} \rangle} 
+    \\ 
+    \mu_{\alpha}^{(2k)} &= \frac{1}{\lambda_{\alpha_0} - \lambda_\alpha}\frac{\left\langle \mathbf{u}_{\alpha}, \mathbf{f} \right\rangle}{\langle \mathbf{u}_{\alpha}, \mathbf{u}_{\alpha} \rangle},\quad \alpha \neq \alpha_0
+\end{align}
+%
+Recall that $\mathbf{f} \in \boldsymbol{\mathcal{P}}_{N_0-2}^u(V)$, it will have zero overlapping integral with $\mathbf{u}_{\alpha_0}$, as $\mathrm{deg}(\mathbf{u}_{\alpha_0}) = N_0$. In fact, it will have zero overlapping integral with any $\mathbf{u}_\alpha$ where $\mathrm{deg}(\mathbf{u}_{\alpha}) \geq N_0 - 1$. We therefore have
+
+{\todoremark \textbf{Result 1}: $\lambda^{(2k)} = 0$}, and
+
+{\todoremark \textbf{Result 2}: $\mathbf{u}^{(2k)} \in \boldsymbol{\mathcal{P}}_{N_0}^{u}(V)$}. We have now used the two induction hypothesis at $k-1$ to push to the same result at $k$, relying on the validity of the two propositions. Now at $k=1$, the two hypotheses are already satisfied. Therefore it seems that $\lambda^{2k}$ will always be zero for any $k \geq 1$ (?!), and the perturbation will always be band-limited, with polynomial degree bounded by the initial $\mathbf{u}_{\alpha_0}$.
+
+
+
+\section{Magnetic boundary layer correction}
+
+The previous attempt seems to show that there is no correction to the eigenfrequency of an inertial mode modified by Lorentz force. This is however on contrary to numerical results. A distinctive feature in the numerical calculation is the imposed magnetic field boundary conditions, which is untouched in the previous derivation.
+
+When magnetic boundary conditions are imposed (as they should be), a magnetic boundary layer needs to be introduced to account for the discrepancy between the perturbative solution at the boundary and the boundary conditions. In this case, the solution at weak damping (small $\mathrm{E}_\eta$) is typically no longer related to the diffusionless limit via regular perturbation theory, but via singular one. In other words, the diffusionless scenario is no longer a regular limit, but a singular limit. The derivation above hence breaks down precisely at the step where the approximate solution to the magnetic induction equation is developed, hence {\todoremark proposition 2} in the previous section no longer holds.
+
+Let us now revert back to the first-order perturbation, where we have the induction equation
+%
+\begin{equation}
+    \left(\lambda^{(0)} - \mathrm{E}_\eta \nabla^2\right) \mathbf{b}^{(1)} = \mathcal{I} \mathbf{u}^{(0)}
+\end{equation}
+%
+This time subject to a magnetic boundary condition 
+%
+\begin{equation}
+    \left[\mathcal{F}_H \mathbf{b}^{(1)}_H + \mathcal{F}_r b_r^{(1)}\right]_{r=1} = 0
+\end{equation}
+%
+where $\mathcal{F}_H$ and $\mathcal{F}_r$ are linear functionals of the horizontal and radial components of the magnetic fields. This expression is general enough to encompass several different boundary conditions, such as the vacuum exterior condition, as well as the pseudo-vacuum condition. In both of these cases, $\mathcal{F}_H$ is actually invertible, and the condition can be explicitly written as
+%
+\begin{equation}
+    \mathbf{b}_H^{(1)}|_{r=1} = \mathcal{F}_H^{-1} \mathcal{F}_r b_r^{(1)}|_{r=1} = \mathcal{F}_B b_r^{(1)}|_{r=1}.
+\end{equation}
+%
+In pseudo-vacuum boundary condition, the RHS simply vanishes, yielding $\mathbf{b}_H^{(1)} = 0$ at the boundary, a local condition similar to the no-slip boundary condition for the flow. 
+% As we focus on solving this particular problem, let us for now drop the superscripts from the $\mathrm{Le}^2$ expansion
+
+As in other boundary layer theories \citep[][among others]{greenspan_theory_1968,kerswell_tidal_1994,zhang_theory_2017}, let us divide the solution into an interior (marked by hat) and a boundary part (marked by tilde):
+%
+\begin{equation}
+    \mathbf{b}^{(1)} = \widehat{\mathbf{b}}^{(1)} + \widetilde{\mathbf{b}}^{(1)}
+\end{equation}
+%
+The two parts of ths solution has the following properties. The interior part is considered to be a solution with support in the entire interior; it varies smoothly in space, essentially constant across the thin boundary layer, and does not develop singularity as $\mathrm{E}_\eta$ decreases. On the other hand, the boundary part typically decays exponentially fast away from the boundary, hence only has support in the boundary layer; its structure is also increasing singular as $\mathrm{E}_\eta$ decreases.
+
+Due to the smoothness of the interior solution and the polynomial nature of $\mathcal{I} \mathbf{u}^{(0)}$, we can write out the interior solution in one go:
+%
+\begin{equation}
+    \widehat{\mathbf{b}}^{(1)} = \sum_{k=0}^{+\infty} \frac{1}{\lambda^{(0)}} \left(\frac{\mathrm{E}_\eta}{\lambda^{(0)}}\right)^k \nabla^{2k} \mathcal{I}\mathbf{u}^{(0)} = \sum_{k=0}^{+\infty} \mathrm{E}_\eta^k \, \widehat{\mathbf{b}}^{(1,k)}
+\end{equation}
+%
+where $\widehat{\mathbf{b}}^{(1,k)} = (\lambda^{(0)})^{-k} \nabla^{2k} \mathcal{I} \mathbf{u}^{(0)}$. The second superscript of $\mathbf{b}$ is used to denote the order in $\mathrm{E}_\eta$.
+The series has uniform absolute convergence as long as the derivatives of $\mathcal{I} \mathbf{u}^{(0)}$ are bounded by the sequence $(\lambda^{(0)}/\mathrm{E}_\eta)^{k/2}$, a very lenient criterion given the smallness of $\mathrm{E}_\eta$. In this specific context, $\mathcal{I}\mathbf{u}^{(0)}$ is actually a polynomial, and the function series is actually truncated rather than infinite anyways.
+
+Note that this won't work if singularity can develop in the solution, and that's why this formulation works and only works for the interior solution. For instance, if we have a boundary layer with a factor $\exp\{-(1-r)/\sqrt{\mathrm{E}_\eta}\}$, then the series shown above will lose the absolute convergence and actually has terms that do not even converge to zero. 
+
+The importance of devising this interior solution is that it homogenizes the equation(s),
+%
+\begin{equation}
+\begin{aligned}
+    \left(\lambda^{(0)} - \mathrm{E}_\eta \nabla^2\right) \widehat{\mathbf{b}}^{(1)} &= \sum_{k=0}^{+\infty} \left(\frac{\mathrm{E}_\eta}{\lambda^{(0)}}\right)^k \nabla^{2k} \mathcal{I}\mathbf{u}^{(0)} - \sum_{k=0}^{+\infty} \frac{\mathrm{E}_\eta}{\lambda^{(0)}} \left(\frac{\mathrm{E}_\eta}{\lambda^{(0)}}\right)^k \nabla^{2k+2} \mathcal{I}\mathbf{u}^{(0)} \\ 
+    &= \sum_{k=0}^{+\infty} \left(\frac{\mathrm{E}_\eta}{\lambda^{(0)}}\right)^k \nabla^{2k} \mathcal{I}\mathbf{u}^{(0)} - \sum_{k=1}^{+\infty} \left(\frac{\mathrm{E}_\eta}{\lambda^{(0)}}\right)^k \nabla^{2k} \mathcal{I}\mathbf{u}^{(0)} \\
+    &= \left(\frac{\mathrm{E}_\eta}{\lambda^{(0)}}\right)^0 \nabla^{0} \mathcal{I}\mathbf{u}^{(0)} = \mathcal{I} \mathbf{u}^{(0)} \\ 
+    \nabla\cdot \widehat{\mathbf{b}}^{(1)} &= 0
+\end{aligned}
+\end{equation}
+%
+which leaves only a homogeneous (=unforced) system for the remanent $\widetilde{\mathbf{b}}^{(1)} = \mathbf{b}^{(1)} - \widehat{\mathbf{b}}^{(1)}$,
+%
+\begin{equation}
+\begin{aligned}
+    \left(\lambda^{(0)} - \mathrm{E}_\eta \nabla^2\right) \widetilde{\mathbf{b}}^{(1)} &= 0 \\ 
+    \nabla\cdot \widetilde{\mathbf{b}}^{(1)} &= 0.
+\end{aligned}
+\end{equation}
+%
+The role of the boundary layer is instead purely to fit the boundary conditions. Upon homogenizing the system with the interior solution, the solution injects new terms into the boundary condition, making the boundary condition for the boundary layer non-homogeneous, in the form of
+%
+\begin{equation}
+    \left[\mathcal{F}_H \widetilde{\mathbf{b}}^{(1)}_H + \mathcal{F}_r \widetilde{b}_r^{(1)}\right]_{r=1} = - \left[\mathcal{F}_H \widehat{\mathbf{b}}^{(1)}_H + \mathcal{F}_r \widehat{b}_r^{(1)}\right]_{r=1}
+\end{equation}
+%
+or in the cases where an explicit form is possible,
+%
+\begin{equation}
+    \widetilde{\mathbf{b}}_H^{(1)}|_{r=1} = \left[\mathcal{F}_B \widetilde{b}_r^{(1)} + \mathcal{F}_B \widehat{b}_r^{(1)} - \widehat{\mathbf{b}}_H^{(1)}\right]_{r=1}.
+\end{equation}
+%
+These equations now complete the system for the boundary layer magnetic field that corrects for the magnetic boundary conditions. Here I present two approaches to solve this system.
+
+
+\subsection{Boundary layer solution}
+
+Following Stefano's document, let us introduce stretched variable
+%
+\begin{equation}
+    \xi = \frac{1 - r}{\sqrt{\mathrm{E}_\eta}} = \mathrm{E}_\eta^{-1/2} (1 - r)
+\end{equation}
+%
+In this case we have
+%
+\[
+    r = 1 - \mathrm{E}_\eta^{1/2} \xi,\quad 
+    \partial_r = - \mathrm{E}_\eta^{-1/2} \partial_\xi,\quad 
+    \partial_r^2 = \mathrm{E}_\eta^{-1} \partial_\xi^2
+\]
+%
+Let us expand $\widetilde{\mathbf{b}}^{(1)}$ in terms of $\mathrm{E}_\eta^{1/2}$, i.e. 
+%
+\begin{equation}
+    \widetilde{\mathbf{b}}^{(1)} = \sum_{k=0}^{+\infty} \mathrm{E}_\eta^{k/2} \, \widetilde{\mathbf{b}}^{\left(1,\frac{k}{2}\right)}
+\end{equation}
+%
+Substituting into the system of equations, and sorting the powers of $\mathrm{E}_\eta$, we obtain the induction equation
+%
+\begin{equation}
+    \left[\left(\lambda^{(0)} - \partial_\xi^2\right) \widetilde{\mathbf{b}}^{(1,0)}\right] + \mathrm{E}_\eta^{1/2} \left[\left(\lambda^{(0)} - \partial_\xi^2\right) \widetilde{\mathbf{b}}^{(1,\frac{1}{2})} + \frac{2}{r} \widetilde{\mathbf{b}}^{(1,0)}\right] + O(\mathrm{E}_\eta) = 0
+\end{equation}
+%
+and the divergence-free condition
+%
+\begin{align}
+    \mathrm{E}_\eta^{-1/2} \left[\partial_\xi \widetilde{b_r}^{(1,0)}\right] + \left[\partial_\xi \widetilde{b_r}^{(1,\frac{1}{2})} - \frac{2}{r} \widetilde{b}_r^{(1,0)} - \frac{1}{r} \nabla_H\cdot \widetilde{\mathbf{b}}_H^{(1,0)}\right] & \\
+    + \mathrm{E}_\eta^{1/2} \left[\partial_\xi \widetilde{b_r}^{(1,1)} - \frac{2}{r} \widetilde{b}_r^{(1,\frac{1}{2})} - \frac{1}{r} \nabla_H\cdot \widetilde{\mathbf{b}}_H^{(1,\frac{1}{2})}\right]& + O(\mathrm{E}_\eta) = 0
+\end{align}
+%
+The boundary conditions of each $\mathrm{E}_\eta^{k/2}$ terms are given by
+%
+\begin{equation}
+\left\{\begin{aligned}
+        &\widetilde{\mathbf{b}}_H^{(1,k)}|_{\xi=0} = \mathcal{F}_B \widetilde{b}_r^{(1,k)}|_{\xi=0} + \left[\mathcal{F}_B \widehat{b}_r^{(1,k)} - \widehat{\mathbf{b}}_H^{(1,k)}\right]_{r=1}, \\ 
+        &\widetilde{\mathbf{b}}_H^{(1,k+\frac{1}{2})}|_{\xi=0} = \mathcal{F}_B \widetilde{b}_r^{(1,k+\frac{1}{2})}|_{\xi=0}.
+\end{aligned}\right.
+\end{equation}
+%
+Note that the half-integer order ($\mathrm{E}_\eta^{k+1/2}$) boundary layer terms do not couple the interior solution in its boundary condition; this is because the interior solution only occupies the integer order, but is absent at half-integer orders. For our purpose, we are mostly interested in the two lowest order solutions. Collecting equations at the lowest order, we have the boundary layer system for the order $\mathrm{E}_\eta^{0}$ term:
+%
+\begin{equation}
+\begin{aligned}
+    \left(\lambda^{(0)} - \partial_\xi^2 \right) \widetilde{\mathbf{b}}^{(1,0)} &= 0 \\ 
+    \partial_\xi \widetilde{b}_r^{(1,0)} &= 0 \\ 
+    \text{s.t. BCs} \quad \widetilde{\mathbf{b}}_H^{(1,0)}|_{\xi=0} &= \mathcal{F}_B \widetilde{b}_r^{(1,0)}|_{\xi=0} + \left[\mathcal{F}_B \widehat{b}_r^{(1,0)} - \widehat{\mathbf{b}}_H^{(1,0)}\right]_{r=1} \\ 
+    \widetilde{\mathbf{b}}^{(1,0)}|_{\xi\rightarrow +\infty} &= \mathbf{0}.
+\end{aligned}
+\end{equation}
+%
+Now we are essentially dealing with ordinary differential equations (ODE). The first ODE, coming from the induction equation, admits general solution in the form of exponential functions. Combining with the natural boundary condition at $\xi\rightarrow +\infty$, we have
+%
+\begin{equation}
+    \widetilde{\mathbf{b}}^{(1,0)} = \mathbf{A}^{(1,0)} e^{-\alpha\xi},\quad \text{where} \, \alpha = \sqrt{\lambda^{(0)}} = \sqrt{i\omega^{(0)}} = (1 + i) \sqrt{\frac{\omega^{(0)}}{2}}
+\end{equation}
+%
+If we restore the stretched coordinate, then the expression can be written as 
+%
+\begin{equation}
+    \widetilde{\mathbf{b}}^{(1,0)} = \mathbf{A}^{(1,0)} \exp\left(- (1 + i) \sqrt{\frac{\omega^{(0)}}{2\mathrm{E}_\eta}} (1-r)\right)
+\end{equation}
+%
+indicating a purely magnetic boundary layer with a thickness of 
+%
+\begin{equation}
+    \delta_{\mathrm{BL}} = \sqrt{\frac{2\mathrm{E}_\eta}{\omega^{(0)}}}.
+\end{equation}
+%
+We next use the boundary conditions and solenoidal condition to fix the amplitude vector $\mathbf{A}^{(1,0)}$. The solenoidal condition requires that the radial component remains constant throughout the boundary, which can only occur when the radial component is trivial. On ther other hand, the surface-tangent / horizontal components are required by the interior solution
+%
+\begin{equation}
+    \mathbf{A}_H^{(1,0)} = \left[\mathcal{F}_B \widehat{b}_r^{(1,0)} - \widehat{\mathbf{b}}_H^{(1,0)}\right]_{r=1}.
+\end{equation}
+%
+
+The next boundary layer, the half-order quantity $\widetilde{\mathbf{b}}^{(1, \frac{1}{2})}$ is determined by the system 
+%
+\begin{equation}
+\begin{aligned}
+    \left(\lambda^{(0)} - \partial_\xi^2 \right) \widetilde{\mathbf{b}}^{(1,\frac{1}{2})} &= - \frac{2}{1 - \mathrm{E}_\eta^{1/2}\xi} \partial_\xi \widetilde{\mathbf{b}}^{(1,0)} \\ 
+    \partial_\xi \widetilde{b}_r^{(1,\frac{1}{2})} &= \frac{2}{1 - \mathrm{E}_\eta^{1/2}\xi} \widetilde{b}_r^{(1,0)} + \frac{1}{1 - \mathrm{E}_\eta^{1/2}\xi} \nabla_H\cdot \widetilde{\mathbf{b}}_H^{(1,0)} \\[5pt] 
+    \text{s.t. BCs} \quad \widetilde{\mathbf{b}}_H^{(1,\frac{1}{2})}|_{\xi=0} &= \mathcal{F}_B \widetilde{b}_r^{(1,\frac{1}{2})}|_{\xi=0} \\ 
+    \widetilde{\mathbf{b}}^{(1,\frac{1}{2})}|_{\xi\rightarrow +\infty} &= \mathbf{0}.
+\end{aligned}
+\end{equation}
+%
+At leading order of $\mathrm{E}_\eta^{1/2}$, $1/(1 - \mathrm{E}_\eta^{1/2}\xi) \approx 1$ (particularly considering that the boundary layer solution should have compact support within the boundary layer, i.e. $\xi \sim O(1)$). As a result, the two equations reduce to 
+%
+\begin{equation}
+\begin{aligned}
+    \left(\lambda^{(0)} - \partial_\xi^2 \right) \widetilde{\mathbf{b}}^{(1,\frac{1}{2})} &= - 2 \partial_\xi \widetilde{\mathbf{b}}^{(1,0)} = 2 \alpha \mathbf{A}^{(1,0)} e^{-\alpha \xi} \\ 
+    \partial_\xi \widetilde{b}_r^{(1,\frac{1}{2})} &= \nabla_H\cdot \widetilde{\mathbf{b}}_H^{(1,0)} = \nabla_H\cdot \mathbf{A}_H^{(1,0)} e^{-\alpha \xi}
+\end{aligned}
+\end{equation}
+%
+Since $\mathbf{A}^{(1,0)}$ has no radial components, the radial induction equation at this order is unforced,
+%
+\begin{equation}
+    \left(\lambda^{(0)} - \partial_\xi^2 \right) \widetilde{b}_r^{(1,\frac{1}{2})} = 0,\quad \partial_\xi \widetilde{b}_r^{(1,\frac{1}{2})} = \nabla_H\cdot \mathbf{A}_H^{(1,0)} e^{-\alpha \xi}
+\end{equation}
+%
+The solution (that also satisfies natural boundary condition at infinity) read
+%
+\begin{equation}
+    \widetilde{b}_r^{(1,\frac{1}{2})} = -\alpha^{-1} \nabla_H\cdot \mathbf{A}_H^{(1,0)} e^{-\alpha \xi}
+\end{equation}
+%
+For the surface-tangent components, we solve it via variation of constants since it is forced by the zeroth-order boundary layer in the induction equation; taking into account the BCs, the solution reads
+%
+\begin{equation}
+    \widetilde{\mathbf{b}}_H^{(1,\frac{1}{2})} = \left(\mathbf{A}^{(1,0)}\xi + \mathbf{A}^{(1,\frac{1}{2})}\right) e^{-\alpha \xi}
+\end{equation}
+%
+where the constant vector $\mathbf{A}^{(1,\frac{1}{2})}$ is fixed by the boundary condition at $\xi=0$. The results can be summarized as follows.
+
+\begin{mdframed}[style=HighlightBox, frametitle={Magnetic boundary layer solution up to $E_\eta^{1/2}$}]
+\begin{equation}
+\begin{aligned}
+    \widetilde{\mathbf{b}}^{(1)} &= \left\{\mathbf{A}_H^{(1,0)} + \mathrm{E}_\eta^{\frac{1}{2}} \left[-\alpha^{-1} \left(\nabla_H\cdot \mathbf{A}_H^{(1,0)}\right) \hat{\mathbf{r}} + \left(\mathbf{A}_H^{(1,0)}\xi + \mathbf{A}_H^{(1,\frac{1}{2})}\right)\right]\right\} e^{-\alpha \xi} + O\left(\mathrm{E}_\eta\right) \\ 
+    &= \left\{\mathbf{A}_H^{(1,0)} + \mathrm{E}_\eta^{\frac{1}{2}} \left[-\alpha^{-1} \left(\nabla_H\cdot \mathbf{A}_H^{(1,0)}\right) \hat{\mathbf{r}} + \left(\mathbf{A}_H^{(1,0)}\xi + \mathbf{A}_H^{(1,\frac{1}{2})}\right)\right]\right\} e^{-(1 + i)\frac{1 - r}{\delta_\mathrm{BL}}} + O\left(\mathrm{E}_\eta\right)
+\end{aligned}
+\end{equation}
+where the constant amplitude vectors are given by
+\begin{equation}
+\begin{aligned}
+    \mathbf{A}_H^{(1,0)} &= \left[\mathcal{F}_B \widehat{b}_r^{(1,0)} - \widehat{\mathbf{b}}_H^{(1,0)}\right]_{r=1}, \\
+    \mathbf{A}_H^{(1,\frac{1}{2})} &= - \alpha^{-1} \mathcal{F}_B \left(\nabla_H\cdot \mathbf{A}_H^{(1,0)}\right)
+\end{aligned}
+\end{equation}
+\end{mdframed}
+
+
+\subsection{Boundary layer correction to eigenvalues}
+
+Recall that the order $O(\mathrm{Le}^2)$ correction to the eigenvalue is given by
+%
+\begin{equation}
+    \lambda^{(2)} = \frac{\left\langle \mathbf{u}_{\alpha_0}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\|\mathbf{u}_{\alpha_0}\|_2^2} = \frac{\left\langle \mathbf{u}_{\alpha_0}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\langle \mathbf{u}_{\alpha_0}, \mathbf{u}_{\alpha_0} \rangle}
+    % \\
+    % \mathbf{u}^{(2)}_{\alpha_0 \perp} = \sum_{\alpha \neq \alpha_0} \mu_\alpha^{(2)} \mathbf{u}_{\alpha},\quad \text{where} \quad 
+    % \mu_\alpha^{(2)} = \frac{\left\langle \mathbf{u}_{\alpha}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\left(\lambda_{\alpha_0} - \lambda_\alpha\right)\|\mathbf{u}_{\alpha}\|_2^2} = \frac{1}{\lambda_{\alpha_0} - \lambda_\alpha} \frac{\left\langle \mathbf{u}_{\alpha}, \mathcal{L} \mathbf{b}^{(1)} \right\rangle}{\langle \mathbf{u}_{\alpha}, \mathbf{u}_{\alpha} \rangle}
+\end{equation}
+%
+and noting the interior-boundary-layer decomposition we have now,
+\begin{equation}
+\begin{aligned}
+    \lambda^{(2)} &= \frac{\left\langle \mathbf{u}_{\alpha_0}, \mathcal{L} \widehat{\mathbf{b}}^{(1)} \right\rangle + \left\langle \mathbf{u}_{\alpha_0}, \mathcal{L} \widetilde{\mathbf{b}}^{(1)} \right\rangle}{\langle \mathbf{u}_{\alpha_0}, \mathbf{u}_{\alpha_0} \rangle} \\ 
+    &= \frac{1}{\|\mathbf{u}_{\alpha_0}\|_2^2} \left[\sum_{k=0}^{+\infty} \mathrm{E}_\eta^k \left\langle \mathbf{u}_{\alpha_0}, \mathcal{L}\widehat{\mathbf{b}}^{(1,k)} \right\rangle + \sum_{k=0}^{+\infty} \mathrm{E}_\eta^{k/2} \left\langle \mathbf{u}_{\alpha_0}, \mathcal{L}\widetilde{\mathbf{b}}^{(1,\frac{k}{2})} \right\rangle \right]
+\end{aligned}
+\end{equation}
+%
+The interior solution can be assumed to have isotropic length scale, and $\mathcal{L} \widehat{\mathbf{b}} \sim O(1)$ in all its components. The boundary layer solution is different. Since all of them share the common radial dependence $e^{-\alpha \xi} = e^{-(1 + i)\frac{1-r}{\delta_{\mathrm{BL}}}}$, we have
+%
+\begin{equation}
+\begin{aligned}
+    \nabla\times \widetilde{\mathbf{b}} &= \frac{1}{r\sin\theta} \left[\partial_\theta(\sin\theta \widetilde{b}_\phi) - \partial_\phi \widetilde{b}_\theta\right] \hat{\mathbf{e}}_r 
+    + \frac{1}{r} \left[\frac{1}{\sin\theta}\partial_\phi \widetilde{b}_r - \partial_r(r\widetilde{b}_\phi)\right] \hat{\mathbf{e}}_\theta
+    + \frac{1}{r} \left[\partial_r(r \widetilde{b}_\theta) - \partial_\theta \widetilde{b}_r\right] \hat{\mathbf{e}}_\phi \\ 
+    &= \left[\mathrm{E}_\eta^{-1/2} \alpha \left(-\widetilde{b}_{\phi b} \hat{\mathbf{e}}_\theta + \widetilde{b}_{\theta b} \hat{\mathbf{e}}_\phi\right) + \frac{\hat{\mathbf{e}}_r}{r}\Lambda_H\cdot \widetilde{\mathbf{b}}_{Hb} + \frac{\hat{\mathbf{e}}_\theta}{r} \left(\frac{\partial_\phi \widetilde{b}_{rb}}{\sin\theta} - \widetilde{b}_{\phi b}\right) + \frac{\hat{\mathbf{e}}_\phi}{r} \left(\widetilde{b}_{\theta b} - \partial_\theta \widetilde{b}_{rb}\right)\right] e^{-\alpha \xi} \\ 
+    &= \left[\mathrm{E}_\eta^{-1/2} \alpha \hat{\mathbf{e}}_r \times \widetilde{\mathbf{b}}_{Hb} + \frac{\hat{\mathbf{e}}_r}{r}\Lambda_H\cdot \widetilde{\mathbf{b}}_{Hb} + \frac{\hat{\mathbf{e}}_\theta}{r} \left(\frac{\partial_\phi \widetilde{b}_{rb}}{\sin\theta} - \widetilde{b}_{\phi b}\right) + \frac{\hat{\mathbf{e}}_\phi}{r} \left(\widetilde{b}_{\theta b} - \partial_\theta \widetilde{b}_{rb}\right)\right] e^{-\alpha \xi}
+\end{aligned}
+\end{equation}
+%
+where the $b$ subscript in $\widetilde{b}_{ib}$ indicates the value at the boundary, hence $\widetilde{\mathbf{b}}_{b}(\theta, \phi)$ is just a function of $\theta$ and $\phi$. $\Lambda_H$ is the surface curl operator, introduced as in \citet{backus_poloidal_1986}. The Lorentz force generated by the magnetic boundary layer hence reads
+%
+\begin{equation}
+\begin{aligned}
+    \mathcal{L} \widetilde{\mathbf{b}} &= (\nabla\times \widetilde{\mathbf{b}}) \times \mathbf{B}_0 + (\nabla\times \mathbf{B}_0) \times \widetilde{\mathbf{b}} \\
+    &= \mathrm{E}_\eta^{-\frac{1}{2}} \left[(\hat{\mathbf{e}}_r \times \widetilde{\mathbf{b}}_{Hb}) \times \mathbf{B}_0\right] \alpha e^{-\alpha \xi}  + \left[(\nabla\times \widetilde{\mathbf{b}}_b) \times \mathbf{B}_0 + (\nabla\times \mathbf{B}_0)\times \widetilde{\mathbf{b}}_b\right] e^{-\alpha \xi} \\ 
+    &= \mathrm{E}_\eta^{-\frac{1}{2}} \left[(\hat{\mathbf{e}}_r \times \widetilde{\mathbf{b}}_{Hb}) \times \mathbf{B}_0\right] \alpha e^{-\alpha \xi} + \left(\mathcal{L} \widetilde{\mathbf{b}}_b\right) e^{-\alpha \xi}
+\end{aligned}
+\end{equation}
+%
+Since $\mathcal{L} \widetilde{\mathbf{b}}_b$ is now void of radial derivatives, and since the underlying assumption is that the horizontal derivatives are order 1, we can safely assert that $|\mathcal{L}\widetilde{\mathbf{b}}_b| \sim O(1)$. The eigenvalue perturbation now requires an adjustment, into the form
+%
+\begin{mdframed}[style=HighlightBox, frametitle={$\mathrm{Le}^2$ perturbations to the eigenvalue}]
+\begin{equation}
+\begin{aligned}
+    \lambda^{(2)} = \frac{1}{\|\mathbf{u}_{\alpha_0}\|_2^2} \Bigg[&\sum_{k=0}^{+\infty} \mathrm{E}_\eta^k \left\langle \mathbf{u}_{\alpha_0}, \mathcal{L}\widehat{\mathbf{b}}^{(1,k)} \right\rangle \\
+    + &\mathrm{E}_\eta^{-\frac{1}{2}} \left\langle \mathbf{u}_{\alpha_0}, \alpha(\hat{\mathbf{e}}_r \times \widetilde{\mathbf{b}}_{Hb}^{(1,0)}) \times \mathbf{B}_0 e^{-\alpha \xi} \right\rangle \\
+    + &\sum_{k=0}^{+\infty} \mathrm{E}_\eta^{k/2} \left\langle \mathbf{u}_{\alpha_0}, \left(\alpha(\hat{\mathbf{e}}_r \times \widetilde{\mathbf{b}}_{Hb}^{(1,\frac{k+1}{2})}) \times \mathbf{B}_0 + \mathcal{L}\widetilde{\mathbf{b}}_b^{(1,\frac{k}{2})}\right) e^{-\alpha \xi} \right\rangle \bigg]
+\end{aligned}
+\end{equation}
+\end{mdframed}
+%
+Unlike many of the boundary layer literatures \citep[e.g.][among others]{kerswell_tidal_1994}, for now I do not rewrite the boundary layer integral into an integral only concerning the boundary values. While this approximation is justified for the lowest order term, the residue is not decaying exponentially fast but only algebraically with $\mathrm{E}_\eta^{1/2}$; hence such residue from $O(\mathrm{E}_\eta^{-1/2})$ term will be the same order as the $O(1)$ term, and the residue from $O(1)$ will be the same order as the $O(\mathrm{E}_\eta)$ term, so on so forth. This is a pitfull if one wishes to evaluate to higher orders. Nevertheless, this does not affect the estimation of the magnitude of each term. Since
+%
+\[
+    \left|\alpha(\hat{\mathbf{e}}_r \times \widetilde{\mathbf{b}}_{Hb}^{(1,\frac{k}{2})}) \times \mathbf{B}_0 \right| \sim O(1),\quad \left|\mathcal{L}\widetilde{\mathbf{b}}_b^{(1,\frac{k}{2})}\right| \sim O(1)
+\]
+%
+and the fact that the ground state $\mathbf{u}_{\alpha_0}$ is slow varying in the boundary layer with amplitude $O(1)$, we have
+%
+\begin{equation}
+\begin{gathered}
+    \left\langle \mathbf{u}_{\alpha_0}, \alpha(\hat{\mathbf{e}}_r \times \widetilde{\mathbf{b}}_{Hb}^{(1,0)}) \times \mathbf{B}_0 e^{-\alpha \xi} \right\rangle \sim \int_0^1 O(1) e^{-(1+i) \frac{1-r}{\delta_{\mathrm{BL}}}} dr \sim O(\delta_{\mathrm{BL}}) \sim O\left(\mathrm{E}_\eta^{\frac{1}{2}}\left(\omega^{(0)}\right)^{-\frac{1}{2}}\right) \\
+    \left\langle \mathbf{u}_{\alpha_0}, \left(\alpha(\hat{\mathbf{e}}_r \times \widetilde{\mathbf{b}}_{Hb}^{(1,\frac{k+1}{2})}) \times \mathbf{B}_0 + \mathcal{L}\widetilde{\mathbf{b}}_b^{(1,\frac{k}{2})}\right) e^{-\alpha \xi} \right\rangle \sim O(\delta_{\mathrm{BL}}) \sim O\left(\mathrm{E}_\eta^{\frac{1}{2}}\left(\omega^{(0)}\right)^{-\frac{1}{2}}\right).
+\end{gathered}
+\end{equation}
+%
+The lowest correction from the boundary term is hence $O(1)$, and decreases by $\mathrm{E}_\eta^{1/2}$ at each order.
+At leading order in both $\mathrm{Le}$ ($\mathrm{Le}^2$) and $\mathrm{E}_\eta$ ($\mathrm{E}_\eta^0$), we can write 
+%
+\begin{equation}
+\begin{aligned}
+    \lambda^{(2)} &= \frac{\mathrm{E}_\eta^{-\frac{1}{2}}}{\|\mathbf{u}_{\alpha_0}\|_2^2} \left\langle \mathbf{u}_{\alpha_0}, \alpha(\hat{\mathbf{e}}_r \times \widetilde{\mathbf{b}}_{Hb}^{(1,0)}) \times \mathbf{B}_0 e^{-\alpha \xi} \right\rangle + O\left(\mathrm{E}_\eta^{\frac{1}{2}}\right) \\
+    &= \frac{\alpha \mathrm{E}_\eta^{-\frac{1}{2}}}{\|\mathbf{u}_{\alpha_0}\|_2^2} \left\langle \mathbf{u}_{\alpha_0}, \left[- \hat{\mathbf{e}}_r (\mathbf{B}_0 \cdot \widetilde{\mathbf{b}}_{Hb}^{(1,0)}) + \widetilde{\mathbf{b}}_{Hb}^{(1,0)} \left(\mathbf{B}_0 \cdot \hat{\mathbf{e}}_r\right)\right] e^{-\alpha \mathrm{E}_\eta^{-1/2} (1 - r)} \right\rangle + O\left(\mathrm{E}_\eta^{\frac{1}{2}}\right) \\ 
+    &= \frac{1}{\|\mathbf{u}_{\alpha_0}\|_2^2} \left\langle \mathbf{u}_{\alpha_0}, \left[- \hat{\mathbf{e}}_r (\mathbf{B}_0 \cdot \widetilde{\mathbf{b}}_{Hb}^{(1,0)}) + \widetilde{\mathbf{b}}_{Hb}^{(1,0)} \left(\mathbf{B}_0 \cdot \hat{\mathbf{e}}_r\right)\right] \right\rangle _{\partial V} + O\left(\mathrm{E}_\eta^{\frac{1}{2}}\right) \\ 
+    &= \frac{1}{\|\mathbf{u}_{\alpha_0}\|_2^2} \left\langle \mathbf{u}_{\alpha_0}, B_{0r} \widetilde{\mathbf{b}}_{Hb}^{(1,0)} \right\rangle _{\partial V} + O\left(\mathrm{E}_\eta^{\frac{1}{2}}\right) = \frac{1}{\|\mathbf{u}_{\alpha_0}\|_2^2} \int_{\partial V} \mathbf{u}_{\alpha 0}^* \cdot \widetilde{\mathbf{b}}_{Hb}^{(1,0)} B_{0r} dS + O\left(\mathrm{E}_\eta^{\frac{1}{2}}\right)
+\end{aligned}
+\end{equation}
+%
+where we used the leading order behaviour of the fast-decaying exponential to convert the volumetric integral into a surface integral, and in the second last step we used the non-penetration property of the flow at the boundary.
+
+
+\subsection{Exact solution using Bessel function}
+
+Using Tor-Pol, the general solution reads
+%
+\begin{equation}
+\begin{aligned}
+    T(r) &= \sum_{l,m} t_{lm} j_l(kr) Y_l^m(\theta, \phi), \\
+    P(r) &= \sum_{l,m} p_{lm} j_l(kr) Y_l^m(\theta, \phi)
+\end{aligned}
+\end{equation}
+%
+where $k$ is given by
+%
+\begin{equation}
+    k = \pm \sqrt{-\lambda^{(0)}} = \pm (1 - i) \sqrt{\frac{\omega^{(0)}}{2\mathrm{E}_\eta}}
+\end{equation}
+%
+which makes the radial function spherical Bessel functions with complex arguments.
+
+
+

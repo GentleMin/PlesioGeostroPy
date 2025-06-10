@@ -1,0 +1,90 @@
+
+A magnetic boundary condition typically used for dynamo simulations (in a rotating spherical geometry) is that the magnetic field matches a potetial field in the exterior of the domain. It has been formulated in the following three ways \citep{roberts_803_2015}:
+
+\begin{enumerate}
+    \item The magnetic field in the exterior is the solution to Laplace equation that is bounded at infinity (no external sources).
+    \item The magnetic field in the exterior decays as $O(r^{-3})$ towards $r\rightarrow +\infty$.
+    \item Under the toroidal-poloidal representation of the magnetic field in the modelled domain,
+    \begin{equation}
+        \mathbf{B} = \nabla\times T\mathbf{r} + \nabla\times \nabla\times P\mathbf{r}
+    \end{equation}
+    and the spherical harmonic expansion of the scalars
+    \begin{equation}
+        T = \sum_{l,m} t_{lm}(r) Y_l^m(\theta, \phi),\quad 
+        P = \sum_{l,m} p_{lm}(r) Y_l^m(\theta, \phi)
+    \end{equation}
+    the radial functions of $T$ and $P$, i.e. $t_{lm}(r)$, $p_{lm}(r)$, satisfies
+    \begin{equation} 
+        t_{lm}(r)|_{r=a} = 0, \quad \left[\frac{dp_{lm}(r)}{dr} + \frac{l+1}{r} p_{lm}(r)\right]_{r=a} = 0.
+    \end{equation}
+\end{enumerate}
+
+The 3rd form is technically a stronger form compared to the 1st and 2nd forms, because it relies on the additional condition that the magnetic field is continuous across the boundary, hence the solution in the domain matches to that in the exterior in its value.
+
+For developing boundary layer solutions, these boundary conditions are inconvenient as they either require a solution for the magnetic field in the infinite space outside the sphere (1st and 2nd form), or are "global" and posed only in the spectral domain (3rd form). Here I write out the local form of this boundary condition.
+
+The toroidal-poloidal representation of the magnetic field can be written in surface operators
+%
+\begin{equation}
+\begin{aligned}
+    \mathbf{B} &= \nabla\times T\mathbf{r} + \nabla\times \nabla\times P\mathbf{r} \\ 
+    &= - \hat{\mathbf{r}} \nabla_s^2 \frac{P}{r} + \nabla_s \left(\frac{1}{r} \frac{\partial (rP)}{\partial r}\right) + \nabla_s T \times \hat{\mathbf{r}} \\ 
+    &= - \hat{\mathbf{r}} \nabla_s^2 \frac{P}{r} + \nabla_s \left(\frac{1}{r} \frac{\partial (rP)}{\partial r}\right) - \Lambda_s T
+\end{aligned}
+\end{equation}
+%
+where $\nabla_s = r \nabla - \mathbf{r}\partial_r$ is the dimensionless surface gradient, $\nabla_s^2 = r^2 \nabla^2 - \partial_r (r^2 \partial_r)$ the dimensionless surface Laplacian, and $\Lambda_s$ is the dimensionless surface curl operator \citep{backus_poloidal_1986}. These surface operators all commute with functions of $r$ as well as derivatives with respect to $r$.
+Explicit spherical harmonic expansion of the respective scalars leads to the expression
+%
+\begin{equation}
+    \mathbf{B} = \sum_{l,m} \frac{l(l+1)}{r} p_{lm} Y_l^m \hat{\mathbf{r}} + \sum_{l,m} \frac{1}{r}\frac{d\left(r p_{lm}\right)}{dr} \nabla_s Y_l^m - \sum_{l,m} t_{lm} \Lambda_s Y_l^m
+\end{equation}
+%
+where we used the property that $Y_l^m$ is an eigenfunction of operator $\nabla_s^2$, i.e. $\nabla_s^2 Y_l^m = -l(l+1) Y_l^m$.
+
+To obtain the first boundary condition corresponding to the condition on toroidal scalar, let us take the surface curl of the expression. Noting that $\Lambda_s\cdot $ commutes with all radial functions and radial derivatives, and using the properties \citep[see e.g.][]{backus_poloidal_1986}:
+%
+\begin{equation}
+    \Lambda_s \cdot (A_r \hat{\mathbf{r}}) = 0,\quad 
+    \Lambda_s \cdot \nabla_s \equiv 0,\quad 
+    \Lambda_s \cdot \Lambda_s = \nabla_s\cdot \nabla_s = \nabla_s^2
+\end{equation}
+%
+Then the poloidal contribution identical vanishes, leaving only the toroidal term
+%
+\begin{equation}
+\begin{aligned}
+    \Lambda_s\cdot \mathbf{B} = - \sum_{l,m} t_{lm} \nabla_s^2 Y_l^m = \sum_{l,m} l(l+1) t_{lm}(r) Y_l^m(\theta, \phi)
+\end{aligned}
+\end{equation}
+%
+Since $l(l+1) > 0$, we have hence obtained an \textit{equivalent} condition for the toroidal boundary condition,
+%
+\begin{mdframed}[style=HighlightBox, frametitle={Vacuum exterior boundary condition I, equivalent to the toroidal condition}]
+    \begin{equation}
+        \begin{aligned}
+        t_{lm}(r)|_{r=a} = 0, \forall l,m \qquad &\Longleftrightarrow \qquad 
+        \Lambda_s\cdot \mathbf{B}|_{r=a} = \mathbf{r}\cdot \nabla\times \mathbf{B}|_{r=a} = 0 \\
+        &\Longleftrightarrow \qquad \hat{\mathbf{r}} \cdot \mathbf{j}|_{r=a} = 0.
+        \end{aligned}
+    \end{equation}
+\end{mdframed}
+%
+The second line is yielded by the (pre-)Maxwell's equations, or more specifically the Ampère's circuital law. The physical image of this condition is very clear; a toroidal scalar vanishing at the boundary is shown to be equivalent to a non-penetrating condition of the electric current at the boundary, consistent with the vacuum exterior. In fact, the non-penetrating condition for $\mathbf{j}$ at any boundary, not just in a spherical domain, can be derived independent of the spectral expansion given: (i) absence of electric currents in the exterior, (ii) no accumulation of electric charges at the boundary, and (iii) no infinitely thin current sheet at the boundary (which is also required when the continuity of $\mathbf{B}$ is imposed, an assumption underlying the original form 3 of boundary condition). This condition is therefore likely to be general for other geometries.
+
+For the second boundary condition corresponding to the condition on the poloidal scalar, we need to take a linear combination of the radial component and the surface divergence. Noting that surface divergence $\nabla_s\cdot$ commutes with radial functions and radial derivatives and using the properties \citep[see e.g.][]{backus_poloidal_1986}
+%
+\begin{equation}
+    \nabla_s \cdot \Lambda_s = 0,\quad \nabla_s\cdot \nabla_s = \nabla_s^2
+\end{equation}
+%
+Then the surface divergence of the surface-parallel components reads
+%
+\begin{equation}
+\begin{aligned}
+    \nabla_s\cdot \mathbf{B}_H &= \sum_{l,m} \frac{1}{r}\frac{d(rp_{lm})}{dr} \nabla_s^2 Y_l^m = - \sum_{l,m} \frac{l(l+1)}{r} \frac{d(rp_{lm})}{dr} Y_l^m \\ 
+    &= - \sum_{l,m} l(l+1) \left(\frac{dp_{lm}}{dr} + \frac{p_{lm}}{r}\right) Y_l^m.
+\end{aligned}
+\end{equation}
+%
+

@@ -18,15 +18,15 @@ terms may be combined into one single dynamical variable, etc.
 """
 
 
-from typing import Any, List, Optional, Union, Callable, TextIO
 import sympy
 from sympy import Rational, jacobi
+import numpy as np
 
 from . import base
 from .core import s, H, H_s
-import numpy as np
 
 import json
+from typing import Any, List, Optional, Union, Callable, TextIO
 
 
 
