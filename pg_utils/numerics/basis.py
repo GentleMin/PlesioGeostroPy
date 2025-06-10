@@ -106,7 +106,6 @@ class JacobiPolar_2side(SpectralBasisSpace1D):
     def quadrature_grid(cls, N_quad, a, b, mode='jacobi', prec=None):
         """ Generate quadrature grid for the two-sided polar Jacobi polynomial
         """
-        
         if mode == 'jacobi':
             a_quad, b_quad = a, b
             # x_quad, wt_quad = specfun.roots_jacobi(N_quad, a_quad, b_quad)

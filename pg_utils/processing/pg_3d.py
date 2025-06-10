@@ -6,13 +6,15 @@ Jingtao Min @ ETH-EPM, 10.2024
 """
 
 
-from ..pg_model import base
+from ..pg_model import base, core, base_utils
 from ..pg_model import expansion as xpd
-from ..numerics import symparser, basis
+from ..numerics import symparser, basis, matrices, special
 from .. import tools
 import numpy as np
+import sympy as sym
 from typing import Optional, List, Literal
 from dataclasses import dataclass
+from scipy import linalg
 
 
 def moments_3d(
@@ -100,6 +102,17 @@ def moments_int_pg(
     return out_field
 
 
+def f_int_pg(f_arr: np.ndarray, z_coord: np.ndarray, wt: np.ndarray, axis: int = -1, type_: Literal['sym', 'antisym'] = 'sym'):
+    """Axial integration of arbitrary array
+    """
+    if type_ == 'sym':
+        f_int = np.nansum(wt*f_arr, axis=axis)
+    else:
+        sign_z = np.sign(z_coord)
+        f_int = np.nansum(sign_z*wt*f_arr, axis=axis)
+    return f_int
+
+
 def recipe_basis_2_polar_jacobi(recipe: xpd.ExpansionRecipe) -> base.LabeledCollection:
     """Parse spectral expansion basis to two-sided polar Jacobi
     """
@@ -172,11 +185,163 @@ def generate_spec_transforms(recipe: xpd.ExpansionRecipe, res_3d: ResolutionCont
     basis_fun = base.LabeledCollection(
         basis_sym._field_names,
         **{
-            key: symparser.basis_evaluator(basis_sym[key].subs(m_sub), res_target, qmode='lowest', dealias=1.1, prec=None)
+            key: symparser.basis_sym_to_evaluator(basis_sym[key].subs(m_sub), res_target, qmode='lowest', dealias=1.1, prec=None)
             for key in basis_sym._field_names
         }
     )
     return basis_fun
+
+
+def velocity_z_ave(
+    u_field: VectorFieldSingleM,
+    s_grid: np.ndarray, Nz: int
+):
+    z_grid, wt_z = specfun.roots_legendre(Nz)
+    H_grid = np.sqrt(1 - s_grid**2)
+    z_quad = np.outer(z_grid, H_grid)
+    s_quad = np.ones_like(z_quad)*s_grid
+    
+    r_pts, t_pts, p_pts = nutils.coord_cart2sph(s_quad.flatten(), np.array(0.), z_quad.flatten())
+    u_val = u_field.evaluate(r_pts, t_pts, 0.)
+    u_val = nutils.vector_sph2cyl(u_val['r'], u_val['theta'], u_val['phi'], r_pts, t_pts, p_pts)[:3]
+    
+    u_s_mean = np.nansum((u_val[0].reshape(z_quad.shape).T)*wt_z, axis=-1)/2
+    u_p_mean = np.nansum((u_val[1].reshape(z_quad.shape).T)*wt_z, axis=-1)/2
+    u_z_mean = np.nansum((u_val[2].reshape(z_quad.shape).T)*wt_z, axis=-1)/2
+    
+    return u_s_mean, u_p_mean, u_z_mean
+
+
+def pg_phys_psi_f_vs_mean(
+    u_field: VectorFieldSingleM,
+    s_grid: np.ndarray, Nz: int, m_val: float,
+    out_field: Optional[base.LabeledCollection] = None
+):
+    """Calculate streamfunction psi solely from s-component of the vertically-averaged velocity field
+    using :math:`u_s = \\frac{im}{sH}\\psi`
+    """
+    z_grid, wt_z = specfun.roots_legendre(Nz)
+    H_grid = np.sqrt(1 - s_grid**2)
+    z_quad = np.outer(z_grid, H_grid)
+    s_quad = np.ones_like(z_quad)*s_grid
+    
+    r_pts, t_pts, p_pts = nutils.coord_cart2sph(s_quad.flatten(), np.array(0.), z_quad.flatten())
+    u_val = u_field.evaluate(r_pts, t_pts, 0.)
+    u_val = nutils.vector_sph2cyl(u_val['r'], u_val['theta'], u_val['phi'], r_pts, t_pts, p_pts)[:3]
+    
+    u_s = u_val[0].reshape(z_quad.shape)
+    u_s_zmean = np.nansum((u_s.T)*wt_z, axis=-1)/2
+    psi_est = (s_grid*H_grid/(1j*m_val))*u_s_zmean
+    
+    if out_field is None:
+        return psi_est
+    
+    out_field.Psi = psi_est
+    return out_field
+
+
+def pg_spec_psi_vmean_lsq(
+    u_field: VectorFieldSingleM,
+    pg_recipe: xpd.ExpansionRecipe,
+    Nz: int, m_val: float,
+    Ns: int, s_grid: np.ndarray, wt_s: np.ndarray,
+    RMS_misfit: bool = False
+):
+    """Calculate streamfunction psi spectrum directly from solving least squares problem of
+    z-averaged velocity field
+    """
+    psi_pg = pg_recipe.base_expr[pg_recipe.rad_xpd.bases.Psi]*pg_recipe.fourier_xpd.bases
+    u_s_pg = base_utils.slope_subs(core.U_pg[0].subs({core.pgvar.Psi: psi_pg}).doit())
+    u_p_pg = base_utils.slope_subs(core.U_pg[1].subs({core.pgvar.Psi: psi_pg}).doit())
+    u_s_pg = u_s_pg.subs({core.t: 0, core.p: 0, xpd.m: m_val}).xreplace({xpd.xi_s: xpd.xi})
+    u_p_pg = u_p_pg.subs({core.t: 0, core.p: 0, xpd.m: m_val}).xreplace({xpd.xi_s: xpd.xi})
+    lambdify_modules = [{'jacobi': special.eval_jacobi_recur}, 'scipy', 'numpy']
+    u_s_func = sym.lambdify([xpd.xi, core.s, core.H, xpd.n_trial], u_s_pg, modules=lambdify_modules)
+    u_p_func = sym.lambdify([xpd.xi, core.s, core.H, xpd.n_trial], u_p_pg, modules=lambdify_modules)
+    
+    N_mesh, S_mesh = np.meshgrid(np.arange(Ns), s_grid, indexing='ij')
+    X_mesh = 2*S_mesh**2 - 1
+    H_mesh = np.sqrt(1 - S_mesh**2)
+    Phi_s = u_s_func(X_mesh, S_mesh, H_mesh, N_mesh).T
+    Phi_p = u_p_func(X_mesh, S_mesh, H_mesh, N_mesh).T
+    Phi = (Phi_s.conj().T*wt_s) @ Phi_s + (Phi_p.conj().T*wt_s) @ Phi_p
+    
+    u_s_zmean, u_p_zmean, _ = velocity_z_ave(u_field, s_grid, Nz)
+    b = (Phi_s.conj().T*wt_s) @ u_s_zmean + (Phi_p.conj().T*wt_s) @ u_p_zmean
+    spec_psi = linalg.solve(Phi, b, assume_a='pos')
+    
+    if RMS_misfit:
+        u_s_mod = Phi_s @ spec_psi
+        u_p_mod = Phi_p @ spec_psi
+        res_2 = np.sum(wt_s*(np.abs(u_s_mod - u_s_zmean)**2 + np.abs(u_p_mod - u_p_zmean)**2))
+        norm_2 = np.sum(wt_s*(np.abs(u_s_zmean)**2 + np.abs(u_p_zmean)**2))
+        return spec_psi, np.sqrt(res_2/norm_2)
+    else:
+        return spec_psi
+
+
+def pg_spec_psi_vbulk_lsq(
+    u_field: VectorFieldSingleM,
+    pg_recipe: xpd.ExpansionRecipe,
+    Nz: int, m_val: float,
+    Ns: int, s_grid: np.ndarray, wt_s: np.ndarray,
+    RMS_misfit: bool = False
+):
+    """Calculate streamfunction psi spectrum directly from solving least squares problem of
+    3-component velocity field in the volume
+    """
+    psi_pg = pg_recipe.base_expr[pg_recipe.rad_xpd.bases.Psi]*pg_recipe.fourier_xpd.bases
+    u_s_pg = base_utils.slope_subs(core.U_pg[0].subs({core.pgvar.Psi: psi_pg}).doit())
+    u_p_pg = base_utils.slope_subs(core.U_pg[1].subs({core.pgvar.Psi: psi_pg}).doit())
+    u_z_lin = base_utils.slope_subs((core.U_pg[2]/core.z).subs({core.pgvar.Psi: psi_pg}).doit())
+    
+    u_s_pg = u_s_pg.subs({core.t: 0, core.p: 0, xpd.m: m_val}).xreplace({xpd.xi_s: xpd.xi})
+    u_p_pg = u_p_pg.subs({core.t: 0, core.p: 0, xpd.m: m_val}).xreplace({xpd.xi_s: xpd.xi})
+    u_z_lin = u_z_lin.subs({core.t: 0, core.p: 0, xpd.m: m_val}).xreplace({xpd.xi_s: xpd.xi})
+    
+    lambdify_modules = [{'jacobi': special.eval_jacobi_recur}, 'scipy', 'numpy']
+    u_s_func = sym.lambdify([xpd.xi, core.s, core.H, xpd.n_trial], u_s_pg, modules=lambdify_modules)
+    u_p_func = sym.lambdify([xpd.xi, core.s, core.H, xpd.n_trial], u_p_pg, modules=lambdify_modules)
+    u_z_func_lin = sym.lambdify([xpd.xi, core.s, core.H, xpd.n_trial], u_z_lin, modules=lambdify_modules)
+    
+    N_mesh, S_mesh = np.meshgrid(np.arange(Ns), s_grid, indexing='ij')
+    X_mesh = 2*S_mesh**2 - 1
+    H_mesh = np.sqrt(1 - S_mesh**2)
+    
+    z_grid, wt_z = specfun.roots_legendre(Nz)
+    H_grid = np.sqrt(1 - s_grid**2)
+    z_quad = np.outer(z_grid, H_grid)
+    s_quad = np.ones_like(z_quad)*s_grid
+    
+    r_pts, t_pts, p_pts = nutils.coord_cart2sph(s_quad.flatten(), np.array(0.), z_quad.flatten())
+    u_val = u_field.evaluate(r_pts, t_pts, 0.)
+    u_val = nutils.vector_sph2cyl(u_val['r'], u_val['theta'], u_val['phi'], r_pts, t_pts, p_pts)[:3]
+    u_val = [u_comp.reshape(z_quad.shape) for u_comp in u_val]
+    
+    u_s_zmean = u_val[0].T @ wt_z / 2
+    u_p_zmean = u_val[1].T @ wt_z / 2
+    # zu_z_zmean = np.nansum(u_val[2].T*(z_grid*wt_z), axis=-1)/2
+    zu_z_zmean = (z_quad*u_val[2]).T @ wt_z / 2
+    
+    Phi_s = u_s_func(X_mesh, S_mesh, H_mesh, N_mesh).T
+    Phi_p = u_p_func(X_mesh, S_mesh, H_mesh, N_mesh).T
+    Phi_z_lin = u_z_func_lin(X_mesh, S_mesh, H_mesh, N_mesh).T
+    z2_zmean = z_quad.T**2 @ wt_z / 2
+    
+    wt_sH = wt_s*H_grid
+    Phi = (Phi_s.conj().T*wt_sH) @ Phi_s + (Phi_p.conj().T*wt_sH) @ Phi_p + (Phi_z_lin.conj().T*(z2_zmean*wt_sH)) @ Phi_z_lin
+    b = (Phi_s.conj().T*wt_sH) @ u_s_zmean + (Phi_p.conj().T*wt_sH) @ u_p_zmean + (Phi_z_lin.conj().T*wt_sH) @ zu_z_zmean
+    spec_psi = linalg.solve(Phi, b, assume_a='pos')
+    
+    if RMS_misfit:
+        u_s_res = u_val[0] - Phi_s @ spec_psi
+        u_p_res = u_val[1] - Phi_p @ spec_psi
+        u_z_res = u_val[2] - z_quad*(Phi_z_lin @ spec_psi)
+        res_2 = wt_z @ ((np.abs(u_s_res)**2 + np.abs(u_p_res)**2 + np.abs(u_z_res)**2) @ wt_sH)
+        norm_2 = wt_z @ ((np.abs(u_val[0])**2 + np.abs(u_val[1])**2 + np.abs(u_val[2])**2) @ wt_sH)
+        return spec_psi, np.sqrt(res_2/norm_2)
+    else:
+        return spec_psi
 
 
 def pg_phys_moments_lin_zint(
@@ -277,6 +442,7 @@ def project_3d_to_conj(
     res_3d: ResolutionContext3D_cstM,
     tgt_recipe: xpd.ExpansionRecipe,
     tgt_res: dict,
+    psi_estimator: Literal['u_s', 'lsq_zmean', 'lsq_volume', 'none'] = 'u_s',
     timer: Optional[tools.ProcTimer] = None,
     verbose: bool = False,
 ):
@@ -299,6 +465,21 @@ def project_3d_to_conj(
     Nz = np.round(1.2*max([res_3d.N, res_3d.L // 2]))
     eqpg_3d = base.CollectionPG()
     
+    if psi_estimator == 'u_s':
+        xi_grid_psi = func_basis.Psi.grid
+        s_grid_psi = np.sqrt((1 + xi_grid_psi)/2)
+        eqpg_3d = pg_phys_psi_f_vs_mean(u_field, s_grid_psi, Nz, res_3d.m_val, out_field=eqpg_3d)
+    
+    if psi_estimator == 'lsq_zmean':
+        v_transform = basis.JacobiPolar_2side(
+            tgt_res['Psi'], 0, np.abs(np.abs(res_3d.m_val) - 1), 1/2, np.abs(np.abs(res_3d.m_val) - 1), qmode='lowest', dealias=1.2)
+        xi_grid_v = v_transform.grid
+        s_grid_v = np.sqrt((1 + xi_grid_v)/2)
+        w_quad_v = v_transform.wt_quad
+        spec_psi = pg_spec_psi_vmean_lsq(u_field, tgt_recipe, Nz, res_3d.m_val, tgt_res['Psi'], s_grid_v, w_quad_v)
+    
+    timer.flag(loginfo='Estimation of stream function complete.', print_str=verbose, mode='0+')
+    
     eqpg_3d = pg_phys_moments_lin_zint(B_field, b_field, s_grid_mag, Nz, out_field=eqpg_3d)
     timer.flag(loginfo='Evaluation of quadratic moments complete.', print_str=verbose, mode='0+')
     
@@ -309,12 +490,20 @@ def project_3d_to_conj(
     timer.flag(loginfo='Evaluation of boundary fields complete.', print_str=verbose, mode='0+')
     
     eqcg_3d = pproc.arr_pg_2_conj(eqpg_3d)
+    
     evec_cg = np.concatenate([
         func_basis[key].integrate(eqcg_3d[key])[:tgt_res[key]]
         if eqcg_3d[key] is not None else np.zeros(tgt_res[key])
-        for key in eqcg_3d._field_names if key != 'Br_b'
+        for key in eqcg_3d._field_names if key in tgt_res
     ])
     timer.flag(loginfo='Spectral transform complete.', print_str=verbose, mode='0+')
+    
+    block_names = [key for key in eqcg_3d._field_names if key in tgt_res]
+    block_range = [tgt_res[key] for key in block_names]
+    evec_cg = matrices.LabeledBlockArray(evec_cg, block_names, block_range)
+    
+    if psi_estimator in ('lsq_zmean', 'lsq_volume'):
+        evec_cg['Psi'] = spec_psi
     
     return evec_cg
     
