@@ -1,0 +1,33 @@
+\newpage
+\section{Spectral expansion for the boundary magnetic fields}
+
+Assuming the magnetic field is analytic (we certainly hope so!), then its components can be described by their respective converging Taylor series. In cylindrical coordinates, constraining the behaviour of the fields on the axis, we have for the canonical components
+%
+\begin{equation}
+    B_\alpha = \sum_{m=-\infty}^{+\infty} e^{im\phi} s^{|m+M_\alpha|} \sum_{n=0}^{+\infty} p^\alpha_{mn}(s^2) z^n
+\end{equation}
+%
+where $\alpha \in \{+, -, z\}$, and $M_+ = +1, M_- = -1, M_z = 0$. Functions $p^\alpha_{mn}(s^2)$ are coefficients in the $z$-Taylor series, and are themselves analytic functions of $s^2$. The vector magnetic field reads
+%
+\[
+    \mathbf{B} = B_+ \hat{\mathbf{e}}_+ + B_- \hat{\mathbf{e}}_- + B_z \hat{\mathbf{e}}_z.
+\]
+%
+Now the regularity condition at the pole / axis puts strong constraint on the dependence of $B_\alpha$ on the polar radius $s$, forcing all coefficients to have even parities, and under the analytic assumption, analytic not only in $s$ but also in $s^2$. However, we do not have any constraints on the $z$-dependency. It is just a plain Cartesian coordinate, and any monomial term can exist in the expansion. Therefore, if we then constrain the field to the upper or lower boundary, we have
+%
+\begin{equation}
+    B_\alpha^{\pm} \equiv B_\alpha|_{z=\pm H} = \sum_{m=-\infty}^{+\infty} e^{im\phi} s^{|m+M_\alpha|} \sum_{n=0}^{+\infty} (\pm 1)^n p^\alpha_{mn}(s^2) H^n
+\end{equation}
+%
+Considering $H^2 = (1 - s^2)$, and for simplicity assuming uniform absolute convergence such that the summation can be reordered however we want,
+%
+\begin{equation}
+\begin{aligned}
+    B_\alpha^{\pm} &= \sum_{m=-\infty}^{+\infty} e^{im\phi} s^{|m+M_\alpha|} \left[\sum_{k=0}^{+\infty} p^\alpha_{m,2k}(s^2) H^{2k} \pm \sum_{k=0}^{+\infty} p_{m, 2k+1}^\alpha (s^2) H^{2k+1} \right] \\ 
+    &= \sum_{m=-\infty}^{+\infty} e^{im\phi} s^{|m+M_\alpha|} \left[\sum_{k=0}^{+\infty} p^\alpha_{m,2k}(s^2) H^{2k} \pm H \sum_{k=0}^{+\infty} p_{m, 2k+1}^\alpha (s^2) H^{2k} \right] \\ 
+    &= \sum_{m=-\infty}^{+\infty} e^{im\phi} s^{|m+M_\alpha|} \left[\sum_{k=0}^{+\infty} a^\alpha_{mk} s^{2k} \pm H \sum_{k=0}^{+\infty} b_{mk}^\alpha s^{2k} \right].
+\end{aligned}
+\end{equation}
+%
+It then creates a problem for spectral expansion: now $B_\alpha^\pm$ is not necessarily analytic in $s$, not also does not necessarily have the endpoint singularity (a branch point) described by the $H$ prefactor! We now have a field that has a "mixed" singularity. 
+If we use a spectral expansion in the form of $s^{|m + M_\alpha|} P_n^{(\alpha, \beta)}(2s^2 - 1)$ in the radial direction, then the convergence will be problematic for the terms with an $H$ prefactor. On the other hand, if we use $H s^{|m + M_\alpha|} P_n^{(\alpha, \beta)}(2s^2 - 1)$ a spectral basis, then the convergence will be problematic for the terms without this prefactor (actually will lose convergence as soon as the function does not vanish at the equator).
