@@ -24,6 +24,8 @@ import numpy as np
 
 from . import base
 from .core import s, H, H_s
+from ..sympy_supp import functions as fsupp
+from ..sympy_supp import parse_expr_custom
 
 import json
 from typing import Any, List, Optional, Union, Callable, TextIO
@@ -728,15 +730,15 @@ class SystemMatrix:
     def load_serialized_element(element: Union[dict, str]) -> sympy.Expr:
         if isinstance(element, dict):
             return InnerProduct1D(
-                sympy.parse_expr(element["opd_A"]), 
-                sympy.parse_expr(element["opd_B"]), 
-                sympy.parse_expr(element["wt"]), 
-                sympy.parse_expr(element["int_var"]), 
-                sympy.parse_expr(element["lower"]), 
-                sympy.parse_expr(element["upper"])
+                parse_expr_custom(element["opd_A"]), 
+                parse_expr_custom(element["opd_B"]), 
+                parse_expr_custom(element["wt"]), 
+                parse_expr_custom(element["int_var"]), 
+                parse_expr_custom(element["lower"]), 
+                parse_expr_custom(element["upper"])
             )
         elif isinstance(element, str):
-            return sympy.parse_expr(element)
+            return parse_expr_custom(element)
     
     @staticmethod
     def deserialize(matrix_obj: List[List]) -> "SystemMatrix":
@@ -773,7 +775,6 @@ def placeholder_collection(names, notation: str, *vars) -> base.LabeledCollectio
 
 def jacobi_1_side(
     k: Union[sympy.Integer, int], 
-    n: Union[sympy.Integer, int], 
     alpha: sympy.Expr,
     beta: sympy.Expr,
     f_arg: sympy.Expr = s
@@ -788,12 +789,12 @@ def jacobi_2_side(
     k2: Union[sympy.Integer, int],
     alpha: sympy.Expr,
     beta: sympy.Expr,
-    f1_arg: sympy.Expr = H_s,
+    f1_arg: sympy.Expr = H,
     f2_arg: sympy.Expr = s
 ):
     """Two-sided Jacobi polynomial
     """
-    return f1_arg**k1*f2_arg**k2*jacobi(n, alpha, beta, xi_s.subs({s: f2_arg}))
+    return f1_arg**k1*f2_arg**k2*fsupp.jacobi_u(n, alpha, beta, xi_s.subs({s: f2_arg}))
 
 
 def orth_pref_jacobi(pow_H: Union[sympy.Expr, int], 
@@ -812,21 +813,31 @@ def orth_pref_jacobi(pow_H: Union[sympy.Expr, int],
 pgvar_s = base.CollectionPG(
     # Stream function
     Psi = sympy.Function(r"\Psi^{m}")(s),
+    
     # Integrated magnetic moments
     Mss = sympy.Function(r"\overline{M_{ss}}^{m}")(s),
     Mpp = sympy.Function(r"\overline{M_{\phi\phi}}^{m}")(s),
     Msp = sympy.Function(r"\overline{M_{s\phi}}^{m}")(s),
-    Msz = sympy.Function(r"\widetilde{M_{sz}}^{m}")(s),
-    Mpz = sympy.Function(r"\widetilde{M_{\phi z}}^{m}")(s),
-    zMss = sympy.Function(r"\widetilde{zM_{ss}}^{m}")(s),
-    zMpp = sympy.Function(r"\widetilde{zM_{\phi\phi}}^{m}")(s),
-    zMsp = sympy.Function(r"\widetilde{zM_{\phi s}}^{m}")(s),
-    # Magnetic fields in equatorial plane
-    Bs_e = sympy.Function(r"B_{s}^{em}")(s),
-    Bp_e = sympy.Function(r"B_{\phi}^{em}")(s),
-    Bz_e = sympy.Function(r"B_{z}^{em}")(s),
-    dBs_dz_e = sympy.Function(r"B_{s, z}^{em}")(s),
-    dBp_dz_e = sympy.Function(r"B_{\phi, z}^{em}")(s),
+    Mzz = sympy.Function(r"\overline{M_{zz}}^m")(s),
+    zMsz = sympy.Function(r"\overline{zM_{sz}}^m")(s),
+    zMpz = sympy.Function(r"\overline{zM_{\phi z}}^m")(s),
+    z2Mss = sympy.Function(r"\overline{z^2M_{ss}}^m")(s),
+    z2Msp = sympy.Function(r"\overline{z^2M_{s\phi}}^m")(s),
+    z2Mpp = sympy.Function(r"\overline{z^2M_{\phi\phi}}^m")(s),
+    
+    # Msz = sympy.Function(r"\widetilde{M_{sz}}^{m}")(s),
+    # Mpz = sympy.Function(r"\widetilde{M_{\phi z}}^{m}")(s),
+    # zMss = sympy.Function(r"\widetilde{zM_{ss}}^{m}")(s),
+    # zMpp = sympy.Function(r"\widetilde{zM_{\phi\phi}}^{m}")(s),
+    # zMsp = sympy.Function(r"\widetilde{zM_{\phi s}}^{m}")(s),
+    
+    # # Magnetic fields in equatorial plane
+    # Bs_e = sympy.Function(r"B_{s}^{em}")(s),
+    # Bp_e = sympy.Function(r"B_{\phi}^{em}")(s),
+    # Bz_e = sympy.Function(r"B_{z}^{em}")(s),
+    # dBs_dz_e = sympy.Function(r"B_{s, z}^{em}")(s),
+    # dBp_dz_e = sympy.Function(r"B_{\phi, z}^{em}")(s),
+    
     # Magnetic fields at the boundary
     # Note here Br_b is not in 2-D disk, hence there is no 
     # radial (in cylindrical coordinates) function for it
@@ -849,19 +860,28 @@ cgvar_s = base.CollectionConjugate(
     Psi = pgvar_s.Psi,
     # Conjugate variables for magnetic moments
     M_1 = sympy.Function(r"\overline{M_1}^m")(s),
-    M_p = sympy.Function(r"\overline{M_+}^m")(s),
-    M_m = sympy.Function(r"\overline{M_-}^m")(s),
-    M_zp = sympy.Function(r"\widetilde{M_{z+}}^m")(s),
-    M_zm = sympy.Function(r"\widetilde{M_{z-}}^m")(s),
-    zM_1 = sympy.Function(r"\widetilde{zM_1}^m")(s),
-    zM_p = sympy.Function(r"\widetilde{zM_+}^m")(s),
-    zM_m = sympy.Function(r"\widetilde{zM_-}^m")(s),
-    # Conjugate variables for magnetic fields in equatorial plane
-    B_ep = sympy.Function(r"B_{+}^{em}")(s),
-    B_em = sympy.Function(r"B_{-}^{em}")(s),
-    Bz_e = pgvar_s.Bz_e,
-    dB_dz_ep = sympy.Function(r"B_{+, z}^{em}")(s),
-    dB_dz_em = sympy.Function(r"B_{-, z}^{em}")(s),
+    M_p = sympy.Function(r"\overline{M_{++}}^m")(s),
+    M_m = sympy.Function(r"\overline{M_{--}}^m")(s),
+    Mzz = pgvar_s.Mzz,
+    zM_zp = sympy.Function(r"\overline{zM_{z+}}^m")(s),
+    zM_zm = sympy.Function(r"\overline{zM_{z-}}^m")(s),
+    z2M_1 = sympy.Function(r"\overline{z^2M_1}^m")(s),
+    z2M_p = sympy.Function(r"\overline{z^2M_{++}}^m")(s),
+    z2M_m = sympy.Function(r"\overline{z^2M_{--}}^m")(s),
+    
+    # M_zp = sympy.Function(r"\widetilde{M_{z+}}^m")(s),
+    # M_zm = sympy.Function(r"\widetilde{M_{z-}}^m")(s),
+    # zM_1 = sympy.Function(r"\widetilde{zM_1}^m")(s),
+    # zM_p = sympy.Function(r"\widetilde{zM_+}^m")(s),
+    # zM_m = sympy.Function(r"\widetilde{zM_-}^m")(s),
+    
+    # # Conjugate variables for magnetic fields in equatorial plane
+    # B_ep = sympy.Function(r"B_{+}^{em}")(s),
+    # B_em = sympy.Function(r"B_{-}^{em}")(s),
+    # Bz_e = pgvar_s.Bz_e,
+    # dB_dz_ep = sympy.Function(r"B_{+, z}^{em}")(s),
+    # dB_dz_em = sympy.Function(r"B_{-, z}^{em}")(s),
+    
     # Magnetic field at the boundary
     Br_b = pgvar_s.Br_b,
     B_pp = sympy.Function(r"B_+^{+m}")(s),

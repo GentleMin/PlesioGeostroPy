@@ -49,12 +49,20 @@ def field_to_moment(B_field):
     Mss = integrate_sym(B_field[0]*B_field[0])
     Mpp = integrate_sym(B_field[1]*B_field[1])
     Msp = integrate_sym(B_field[0]*B_field[1])
-    Msz = integrate_asym(B_field[0]*B_field[2])
-    Mpz = integrate_asym(B_field[1]*B_field[2])
-    zMss = integrate_asym(z*B_field[0]*B_field[0])
-    zMpp = integrate_asym(z*B_field[1]*B_field[1])
-    zMsp = integrate_asym(z*B_field[0]*B_field[1])
-    return Mss, Mpp, Msp, Msz, Mpz, zMss, zMpp, zMsp
+    Mzz = integrate_sym(B_field[2]*B_field[2])
+    zMsz = integrate_sym(z*B_field[0]*B_field[2])
+    zMpz = integrate_sym(z*B_field[1]*B_field[2])
+    z2Mss = integrate_sym(z**2*B_field[0]*B_field[0])
+    z2Mpp = integrate_sym(z**2*B_field[1]*B_field[1])
+    z2Msp = integrate_sym(z**2*B_field[0]*B_field[1])
+    return Mss, Mpp, Msp, Mzz, zMsz, zMpz, z2Mss, z2Mpp, z2Msp
+    
+    # Msz = integrate_asym(B_field[0]*B_field[2])
+    # Mpz = integrate_asym(B_field[1]*B_field[2])
+    # zMss = integrate_asym(z*B_field[0]*B_field[0])
+    # zMpp = integrate_asym(z*B_field[1]*B_field[1])
+    # zMsp = integrate_asym(z*B_field[0]*B_field[1])
+    # return Mss, Mpp, Msp, Msz, Mpz, zMss, zMpp, zMsp
 
 
 def assemble_background(B0, Psi0=None, mode="PG", sub_H=False):
@@ -89,21 +97,31 @@ def assemble_background(B0, Psi0=None, mode="PG", sub_H=False):
     pg_background = base.CollectionPG(
         # Vorticity
         Psi = Psi0 if Psi0 is not None else sympy.S.Zero,
+        
         # Magnetic moments
         Mss = moments_bg[0],
         Mpp = moments_bg[1],
         Msp = moments_bg[2],
-        Msz = moments_bg[3],
-        Mpz = moments_bg[4],
-        zMss = moments_bg[5],
-        zMpp = moments_bg[6],
-        zMsp = moments_bg[7],
-        # Magnetic field in the equatorial plane
-        Bs_e = B0[0].subs({z: 0}),
-        Bp_e = B0[1].subs({z: 0}),
-        Bz_e = B0[2].subs({z: 0}),
-        dBs_dz_e = diff(B0[0], z).doit().subs({z: 0}),
-        dBp_dz_e = diff(B0[1], z).doit().subs({z: 0}),
+        Mzz = moments_bg[3],
+        zMsz = moments_bg[4],
+        zMpz = moments_bg[5],
+        z2Mss = moments_bg[6],
+        z2Mpp = moments_bg[7],
+        z2Msp = moments_bg[8],
+        
+        # Msz = moments_bg[3],
+        # Mpz = moments_bg[4],
+        # zMss = moments_bg[5],
+        # zMpp = moments_bg[6],
+        # zMsp = moments_bg[7],
+        
+        # # Magnetic field in the equatorial plane
+        # Bs_e = B0[0].subs({z: 0}),
+        # Bp_e = B0[1].subs({z: 0}),
+        # Bz_e = B0[2].subs({z: 0}),
+        # dBs_dz_e = diff(B0[0], z).doit().subs({z: 0}),
+        # dBp_dz_e = diff(B0[1], z).doit().subs({z: 0}),
+        
         # Magnetic field at the boundary
         Br_b = s*B0[0] + z*B0[2],
         Bs_p = B0[0].subs({z: +H}),
@@ -115,7 +133,7 @@ def assemble_background(B0, Psi0=None, mode="PG", sub_H=False):
     )
     if sub_H:
         pg_background.apply(
-            lambda x: x.subs({H: H_s}) if isinstance(x, sympy.Expr) else x,
+            lambda x: x.subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}) if isinstance(x, sympy.Expr) else x,
             inplace=True
         )
     if mode.lower() == "pg":
