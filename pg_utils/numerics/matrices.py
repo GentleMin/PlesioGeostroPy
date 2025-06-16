@@ -96,8 +96,15 @@ def quad_matrix_scipy(operand_A: sympy.Expr, operand_B: sympy.Expr,
     
     :returns: output matrix in np.ndarray
     """
-    f_A = sympy.lambdify([n_test, xi, *pc_vars], operand_A, modules=["scipy", "numpy"])
-    f_B = sympy.lambdify([n_trial, xi, *pc_vars], operand_B, modules=["scipy", "numpy"])
+    lambdify_modules = [
+        {
+            "jacobi": special.eval_jacobi_recur, 
+            "jacobi_u": special.eval_jacobi_recur
+        }, 
+        "scipy", "numpy"
+    ]
+    f_A = sympy.lambdify([n_test, xi, *pc_vars], operand_A, modules=lambdify_modules)
+    f_B = sympy.lambdify([n_trial, xi, *pc_vars], operand_B, modules=lambdify_modules)
     
     Ntest, Xi_test = np.meshgrid(nrange_A, xi_quad, indexing='ij')
     pc_vals_test = [np.meshgrid(nrange_A, pc_arr, indexing='ij')[1] for pc_arr in pc_vals]
@@ -144,6 +151,7 @@ def quad_matrix_mpmath(operand_A: sympy.Expr, operand_B: sympy.Expr,
     """
     lambdify_modules = [{
         "jacobi": functools.partial(special.eval_jacobi_recur_mp, dps=n_dps, backend="mpmath"), 
+        "jacobi_u": functools.partial(special.eval_jacobi_recur_mp, dps=n_dps, backend="mpmath"), 
         **symparser.v_functions_mpmath}, 
         "mpmath"
     ]
@@ -199,6 +207,7 @@ def quad_matrix_gmpy2(operand_A: sympy.Expr, operand_B: sympy.Expr,
     """
     lambdify_funcs = [{
         "jacobi": functools.partial(special.eval_jacobi_recur_mp, dps=n_dps, backend="gmpy2"), 
+        "jacobi_u": functools.partial(special.eval_jacobi_recur_mp, dps=n_dps, backend="gmpy2"), 
         **symparser.v_functions_gmpy2
     }]
     gmpy2_printer=symparser.Gmpy2Printer(settings={
@@ -210,6 +219,7 @@ def quad_matrix_gmpy2(operand_A: sympy.Expr, operand_B: sympy.Expr,
     
     f_A = sympy.lambdify([n_test, xi, *pc_vars], operand_A, 
         modules=lambdify_funcs, printer=gmpy2_printer)
+    # print(f_A.__doc__)
     f_B = sympy.lambdify([n_trial, xi, *pc_vars], operand_B, 
         modules=lambdify_funcs, printer=gmpy2_printer)
     
@@ -309,7 +319,7 @@ class InnerQuad_GaussJacobi(InnerQuad_Rule):
                 self.translate_mode = ('auth', 'precomp')
                 sym_p, sym_q = prefactors[0], prefactors[1]
                 self.a_left, self.b_left, powerN_left = self.get_powers_pq(
-                    sym_p, sym_q, self.int_var, self.inner_prod.opd_A
+                    sym_p, sym_q, self.int_var, (self.inner_prod.wt*self.inner_prod.opd_A).expand()
                 )
                 self.a_right, self.b_right, powerN_right = self.get_powers_pq(
                     sym_p, sym_q, self.int_var, self.inner_prod.opd_B

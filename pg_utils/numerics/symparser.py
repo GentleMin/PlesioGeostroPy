@@ -203,7 +203,10 @@ def basis_2_jacobi_polar(expr: sympy.Expr, p: sympy.Expr = core.H, q: sympy.Expr
     else:
         # expr = sympy.radsimp(expr.subs(dummy_mapping_fwd)).subs(dummy_mapping_bwd)
         expr = expr.subs(dummy_mapping_fwd).doit().subs(dummy_mapping_bwd)
-        jacobi = list(expr.atoms(sympy.jacobi))[0]
+        jacobi = list(expr.atoms(sympy.jacobi))
+        if not jacobi:
+            jacobi = list(expr.atoms(supp_f.jacobi_u))
+        jacobi = jacobi[0]
         n, a, b, _ = jacobi.args
         k1, k2 = leading_powers_of(expr, p, q)
         return supp_f.jacobi_polar(n, k1, k2, a, b, q)

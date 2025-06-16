@@ -189,7 +189,7 @@ class JacobiPolar_2side(SpectralBasisSpace1D):
         else:
             return self.jacobi_matrix(grid=grid)
         
-    def inner(self):
+    def norm_sq(self):
         
         if self.prec is None:
             n_arr = np.arange(1, self.N)
@@ -215,12 +215,12 @@ class JacobiPolar_2side(SpectralBasisSpace1D):
         
         if self.prec is None:
             pref = np.power(np.sqrt((1 - self.grid)/2), self.k1)*np.power(np.sqrt((1 + self.grid)/2), self.k2)
-            d = self.inner()
+            d = self.norm_sq()
             Phi = ((Phi*(pref*self.wt_quad)).T/d).T
         else:
             with gp.local_context(gp.context(), precision=self.prec):
                 pref = gp_f.sqrt((1 - self.grid)/2)**self.k1*gp_f.sqrt((1 + self.grid)/2)**self.k2
-                d = self.inner()
+                d = self.norm_sq()
                 Phi = ((Phi*(pref*self.wt_quad)).T/d).T
         return Phi
     
@@ -230,12 +230,12 @@ class JacobiPolar_2side(SpectralBasisSpace1D):
         
         if self.prec is None:
             pref = np.power(np.sqrt((1 - self.grid)/2), self.k1)*np.power(np.sqrt((1 + self.grid)/2), self.k2)
-            d = self.inner()
+            d = self.norm_sq()
             coeffs = (Phi @ (pref*self.wt_quad*values))/d
         else:
             with gp.local_context(gp.context(), precision=self.prec):
                 pref = gp_f.sqrt((1 - self.grid)/2)**self.k1*gp_f.sqrt((1 + self.grid)/2)**self.k2
-                d = self.inner()
+                d = self.norm_sq()
                 coeffs = (Phi @ (pref*self.wt_quad*values))/d
         return coeffs
     
