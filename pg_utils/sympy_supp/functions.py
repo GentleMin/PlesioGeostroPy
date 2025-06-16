@@ -13,6 +13,29 @@ def check_integer(n: sym.Expr):
     return isinstance(n, sym.Integer) or (n.is_integer is not False)
 
 
+class jacobi_u(sym.jacobi):
+    """
+    Unevaluated Jacobi polynomial
+    """
+    @classmethod
+    def eval(cls, n, a, b, x):
+        pass
+    
+    def fdiff(self, argindex=4):
+        if argindex != 4:
+            raise ArgumentIndexError
+        n, a, b, x = self.args
+        return (n + a + b + 1)/2*jacobi_u(n-1, a+1, b+1, x)
+        
+    def _latex(self, printer, exp=None):
+        _n, _a, _b, _x = map(printer._print, self.args)
+        o_str = r'P_{%s}^{(%s,%s)}(%s)' % (_n, _a, _b, _x)
+        if exp is None:
+            return o_str
+        else:
+            return r'\left(%s\right)^2' % o_str
+
+
 class jacobi_2side(sym.Function):
     r"""
     Two-sided Jacobi polynomial 
