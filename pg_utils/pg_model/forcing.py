@@ -31,11 +31,14 @@ Ls_sym = sympy.Function(r"\overline{L_s}")(s, p, t)
 #: Placeholder: symmetric integral of the azimuthal Lorentz force
 Lp_sym = sympy.Function(r"\overline{L_\phi}")(s, p, t)
 
-#: Placeholder: antisymmetric integral of the axial Lorentz force
-Lz_asym = sympy.Function(r"\widetilde{L_z}")(s, p, t)
+#: Placeholder: symmetric integral of z times the axial Lorentz force
+zLz_sym = sympy.Function(r"\overline{zL_z}")(s, p, t)
 
-#: Placeholder: the azimuthal Lorentz force in the equatorial plane
-Le_p = sympy.Function(r"L_{\phi}^e")(s, p, t)
+# #: Placeholder: antisymmetric integral of the axial Lorentz force
+# Lz_asym = sympy.Function(r"\widetilde{L_z}")(s, p, t)
+
+# #: Placeholder: the azimuthal Lorentz force in the equatorial plane
+# Le_p = sympy.Function(r"L_{\phi}^e")(s, p, t)
 
 # Explicit expressions for Lorentz force
 
@@ -50,13 +53,18 @@ Lp_sym_expr = 1/s*diff(s*pgvar.Msp, s) + 1/s*diff(pgvar.Mpp, p) + pgvar.Msp/s \
     + s/H*(pgvar.Bs_p*pgvar.Bp_p + pgvar.Bs_m*pgvar.Bp_m)
 
 #: Expression: antisymmetric integral of the axial Lorentz force
-Lz_asym_expr = 1/s*diff(s*pgvar.Msz, s) + 1/s*diff(pgvar.Mpz, p) \
-    + (pgvar.Bz_p*pgvar.Bz_p + pgvar.Bz_m*pgvar.Bz_m - 2*pgvar.Bz_e*pgvar.Bz_e) \
-    + s/H*(pgvar.Bs_p*pgvar.Bz_p - pgvar.Bs_m*pgvar.Bz_m)
+zLz_sym_expr = 1/s*diff(s*pgvar.zMsz, s) + 1/s*diff(pgvar.zMpz, p) - pgvar.Mzz \
+    + H*(pgvar.Bz_p*pgvar.Bz_p + pgvar.Bz_m*pgvar.Bz_m) \
+    - H*diff(H, s)*(pgvar.Bs_p*pgvar.Bz_p - pgvar.Bs_m*pgvar.Bz_m)
 
-#: Expression: the azimuthal Lorentz force in the equatorial plane
-Le_p_expr = pgvar.Bs_e*diff(pgvar.Bp_e, s) + 1/s*pgvar.Bp_e*diff(pgvar.Bp_e, p) \
-    + pgvar.Bz_e*pgvar.dBp_dz_e + 1/s*pgvar.Bs_e*pgvar.Bp_e
+# #: Expression: antisymmetric integral of the axial Lorentz force
+# Lz_asym_expr = 1/s*diff(s*pgvar.Msz, s) + 1/s*diff(pgvar.Mpz, p) \
+#     + (pgvar.Bz_p*pgvar.Bz_p + pgvar.Bz_m*pgvar.Bz_m - 2*pgvar.Bz_e*pgvar.Bz_e) \
+#     + s/H*(pgvar.Bs_p*pgvar.Bz_p - pgvar.Bs_m*pgvar.Bz_m)
+
+# #: Expression: the azimuthal Lorentz force in the equatorial plane
+# Le_p_expr = pgvar.Bs_e*diff(pgvar.Bp_e, s) + 1/s*pgvar.Bp_e*diff(pgvar.Bp_e, p) \
+#     + pgvar.Bz_e*pgvar.dBp_dz_e + 1/s*pgvar.Bs_e*pgvar.Bp_e
 
 # Convert to conjugate quantities
 pg_cg_map = map_pg_to_conjugate(pgvar, cgvar)
@@ -64,25 +72,26 @@ pg_cg_map = map_pg_to_conjugate(pgvar, cgvar)
 Ls_sym_cg = Ls_sym_expr.subs(pg_cg_map)
 #: Expression: symmetric integral of the azimuthal Lorentz force in conjugate vars
 Lp_sym_cg = Lp_sym_expr.subs(pg_cg_map)
-#: Expression: antisymmetric integral of the axial Lorentz force in conjugate vars
-Lz_asym_cg = Lz_asym_expr.subs(pg_cg_map)
-#: Expression: the azimuthal Lorentz force in the equatorial plane in conjugate vars
-Le_p_cg = Le_p_expr.subs(pg_cg_map)
+#: Expression: symmetric integral of the axial Lorentz force in conjugate vars
+zLz_sym_cg = zLz_sym_expr.subs(pg_cg_map)
+
+# #: Expression: the azimuthal Lorentz force in the equatorial plane in conjugate vars
+# Le_p_cg = Le_p_expr.subs(pg_cg_map)
 
 #: Mapping: placeholder symbols -> explicit exprs for PG vars
 force_explicit = {
     Ls_sym: Ls_sym_expr,
     Lp_sym: Lp_sym_expr,
-    Lz_asym: Lz_asym_expr,
-    Le_p: Le_p_expr
+    zLz_sym: zLz_sym_expr,
+    # Le_p: Le_p_expr
 }
 
 #: Mapping: placeholder symbols -> explicit exprs for conjugate vars
 force_explicit_cg = {
     Ls_sym: Ls_sym_cg,
     Lp_sym: Lp_sym_cg,
-    Lz_asym: Lz_asym_cg,
-    Le_p: Le_p_cg
+    zLz_sym: zLz_sym_cg,
+    # Le_p: Le_p_cg
 }
 
 
@@ -94,8 +103,8 @@ force_explicit_cg = {
 # $L_{e\phi}$ is quadratic in the magnetic field components in the equatorial plane.
 # Linearized form involves cross terms 
 # between background and perturbational magnetic fields.
-#: Linearized form of azimuthal Lorentz force in the equatorial plane
-Le_p_lin = linearize(Le_p_expr, pg_linmap, perturb_var=eps)
+# #: Linearized form of azimuthal Lorentz force in the equatorial plane
+# Le_p_lin = linearize(Le_p_expr, pg_linmap, perturb_var=eps)
 
 # For the integrated quantities, the Lorentz force IS a linear function 
 # of magnetic moments. Essentially no linearization required.
@@ -109,7 +118,7 @@ Ls_sym_lin = linearize(Ls_sym_expr, pg_linmap, perturb_var=eps)
 Lp_sym_lin = linearize(Lp_sym_expr, pg_linmap, perturb_var=eps)
 
 #: Linearized form of :math:`\widetilde{L_z}`
-Lz_asym_lin = linearize(Lz_asym_expr, pg_linmap, perturb_var=eps)
+zLz_sym_lin = linearize(zLz_sym_expr, pg_linmap, perturb_var=eps)
 
 # Curl of horizontal components $\nabla \times \mathbf{L}_e$
 # Curl is linear, linearize (curl (field)) = curl (linearize (field))
@@ -122,25 +131,25 @@ Ls_sym_lin_cg = linearize(Ls_sym_cg, cg_linmap, perturb_var=eps)
 #: Linearized form of :math:`\overline{L_{\phi}}` in conjugate vars
 Lp_sym_lin_cg = linearize(Lp_sym_cg, cg_linmap, perturb_var=eps)
 #: Linearized form of :math:`\widetilde{L_z}` in conjugate vars
-Lz_asym_lin_cg = linearize(Lz_asym_cg, cg_linmap, perturb_var=eps)
-#: Linearized form of :math:`L_{\phi}^e` in conjugate vars
-Le_p_lin_cg = linearize(Le_p_cg, cg_linmap, perturb_var=eps)
+zLz_sym_lin_cg = linearize(zLz_sym_cg, cg_linmap, perturb_var=eps)
+# #: Linearized form of :math:`L_{\phi}^e` in conjugate vars
+# Le_p_lin_cg = linearize(Le_p_cg, cg_linmap, perturb_var=eps)
 
 
 #: Mapping: placeholder symbols -> linearized explicit exprs for PG vars
 force_explicit_lin = {
     Ls_sym: Ls_sym_lin,
     Lp_sym: Lp_sym_lin,
-    Lz_asym: Lz_asym_lin,
-    Le_p: Le_p_lin
+    zLz_sym: zLz_sym_lin,
+    # Le_p: Le_p_lin
 }
 
 #: Mapping: placeholder symbols -> linearized explicit exprs for conjugate vars
 force_explicit_lin_cg = {
     Ls_sym: Ls_sym_lin_cg,
     Lp_sym: Lp_sym_lin_cg,
-    Lz_asym: Lz_asym_lin_cg,
-    Le_p: Le_p_lin_cg
+    zLz_sym: zLz_sym_lin_cg,
+    # Le_p: Le_p_lin_cg
 }
 
 

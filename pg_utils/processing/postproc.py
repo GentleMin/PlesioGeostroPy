@@ -10,6 +10,7 @@ import os, h5py
 
 from typing import Optional, List, Callable, Tuple
 from sympy import S, diff, lambdify
+from scipy import special as specfun
 
 from ..pg_model import *
 from ..pg_model import base, core, expansion
@@ -61,7 +62,7 @@ def get_eigen_field_function(xpd_recipe: xpd.ExpansionRecipe,
     field_f.apply(
         lambda expr: lambdify(
             (s, p, z, xpd.n_trial, *[cf for cf in xpd_recipe.rad_xpd.coeffs]), 
-            expr, modules=["scipy", "numpy"]
+            expr, modules=[{'jacobi_u': specfun.eval_jacobi}, "scipy", "numpy"]
         ), 
         inplace=True, metadata=False
     )
@@ -117,7 +118,7 @@ def eigen_func_from_conjugate(xpd_recipe: xpd.ExpansionRecipe,
     field_f.apply(
         lambda expr: lambdify(
             (s, p, z, xpd.n_trial, *[cf for cf in xpd_recipe.rad_xpd.coeffs]), 
-            expr, modules=["scipy", "numpy"]
+            expr, modules=[{'jacobi_u': specfun.eval_jacobi}, "scipy", "numpy"]
         ), 
         inplace=True, metadata=False
     )
@@ -169,7 +170,7 @@ def eigen_func_from_reduced(xpd_recipe: xpd.ExpansionRecipe,
     field_f.apply(
         lambda expr: lambdify(
             (s, p, z, xpd.n_trial, *[cf for cf in xpd_recipe.rad_xpd.coeffs]), 
-            expr, modules=["scipy", "numpy"]
+            expr, modules=[{'jacobi_u': specfun.eval_jacobi}, "scipy", "numpy"]
         ), 
         inplace=True, metadata=False
     )
@@ -267,9 +268,10 @@ def arr_pg_2_conj(pg_comp: base.CollectionPG) -> base.CollectionConjugate:
     # No conversion
     cg_comp.Psi = pg_comp.Psi
     cg_comp.Br_b = pg_comp.Br_b
-    cg_comp.Bz_e = pg_comp.Bz_e
+    # cg_comp.Bz_e = pg_comp.Bz_e
     cg_comp.Bz_p = pg_comp.Bz_p
     cg_comp.Bz_m = pg_comp.Bz_m
+    cg_comp.Mzz = pg_comp.Mzz
     
     # Moments
     if (pg_comp.Mss is not None) and (pg_comp.Mpp is not None) and (pg_comp.Msp is not None):
@@ -277,28 +279,39 @@ def arr_pg_2_conj(pg_comp: base.CollectionPG) -> base.CollectionConjugate:
         cg_comp.M_1 = M_1
         cg_comp.M_p = M_p
         cg_comp.M_m = M_m
+
+    if (pg_comp.zMsz is not None) and (pg_comp.zMpz is not None):
+        zM_zp, zM_zm = arr_cyl_2_canonical(pg_comp.zMsz, pg_comp.zMpz, rank=1)
+        cg_comp.zM_zp = zM_zp
+        cg_comp.zM_zm = zM_zm
     
-    if (pg_comp.Msz is not None) and (pg_comp.Mpz is not None):
-        M_zp, M_zm = arr_cyl_2_canonical(pg_comp.Msz, pg_comp.Mpz, rank=1)
-        cg_comp.M_zp = M_zp
-        cg_comp.M_zm = M_zm
+    if (pg_comp.z2Mss is not None) and (pg_comp.z2Mpp is not None) and (pg_comp.z2Msp is not None):
+        z2M_p, z2M_m, z2M_1 = arr_cyl_2_canonical(pg_comp.z2Mss, pg_comp.z2Mpp, pg_comp.z2Msp, rank=2, sym=True)
+        cg_comp.z2M_1 = z2M_1
+        cg_comp.z2M_p = z2M_p
+        cg_comp.z2M_m = z2M_m
     
-    if (pg_comp.zMss is not None) and (pg_comp.zMpp is not None) and (pg_comp.zMsp is not None):
-        zM_p, zM_m, zM_1 = arr_cyl_2_canonical(pg_comp.zMss, pg_comp.zMpp, pg_comp.zMsp, rank=2, sym=True)
-        cg_comp.zM_1 = zM_1
-        cg_comp.zM_p = zM_p
-        cg_comp.zM_m = zM_m
+    # if (pg_comp.Msz is not None) and (pg_comp.Mpz is not None):
+    #     M_zp, M_zm = arr_cyl_2_canonical(pg_comp.Msz, pg_comp.Mpz, rank=1)
+    #     cg_comp.M_zp = M_zp
+    #     cg_comp.M_zm = M_zm
     
-    # Equatorial fields
-    if (pg_comp.Bs_e is not None) and (pg_comp.Bp_e is not None):
-        B_ep, B_em = arr_cyl_2_canonical(pg_comp.Bs_e, pg_comp.Bp_e, rank=1)
-        cg_comp.B_ep = B_ep
-        cg_comp.B_em = B_em
+    # if (pg_comp.zMss is not None) and (pg_comp.zMpp is not None) and (pg_comp.zMsp is not None):
+    #     zM_p, zM_m, zM_1 = arr_cyl_2_canonical(pg_comp.zMss, pg_comp.zMpp, pg_comp.zMsp, rank=2, sym=True)
+    #     cg_comp.zM_1 = zM_1
+    #     cg_comp.zM_p = zM_p
+    #     cg_comp.zM_m = zM_m
     
-    if (pg_comp.dBs_dz_e is not None) and (pg_comp.dBp_dz_e is not None):
-        dB_dz_ep, dB_dz_em = arr_cyl_2_canonical(pg_comp.dBs_dz_e, pg_comp.dBp_dz_e, rank=1)
-        cg_comp.dB_dz_ep = dB_dz_ep
-        cg_comp.dB_dz_em = dB_dz_em
+    # # Equatorial fields
+    # if (pg_comp.Bs_e is not None) and (pg_comp.Bp_e is not None):
+    #     B_ep, B_em = arr_cyl_2_canonical(pg_comp.Bs_e, pg_comp.Bp_e, rank=1)
+    #     cg_comp.B_ep = B_ep
+    #     cg_comp.B_em = B_em
+    
+    # if (pg_comp.dBs_dz_e is not None) and (pg_comp.dBp_dz_e is not None):
+    #     dB_dz_ep, dB_dz_em = arr_cyl_2_canonical(pg_comp.dBs_dz_e, pg_comp.dBp_dz_e, rank=1)
+    #     cg_comp.dB_dz_ep = dB_dz_ep
+    #     cg_comp.dB_dz_em = dB_dz_em
     
     # Boundary terms
     if (pg_comp.Bs_p is not None) and (pg_comp.Bp_p is not None):
@@ -325,9 +338,10 @@ def arr_conj_2_pg(cg_comp: base.CollectionConjugate) -> base.CollectionPG:
     # No conversion
     pg_comp.Psi = cg_comp.Psi
     pg_comp.Br_b = cg_comp.Br_b
-    pg_comp.Bz_e = cg_comp.Bz_e
+    # pg_comp.Bz_e = cg_comp.Bz_e
     pg_comp.Bz_p = cg_comp.Bz_p
     pg_comp.Bz_m = cg_comp.Bz_m
+    pg_comp.Mzz = cg_comp.Mzz
     
     # Moments
     if (cg_comp.M_1 is not None) and (cg_comp.M_p is not None) and (cg_comp.M_m is not None):
@@ -335,28 +349,39 @@ def arr_conj_2_pg(cg_comp: base.CollectionConjugate) -> base.CollectionPG:
         pg_comp.Mss = Mss
         pg_comp.Mpp = Mpp
         pg_comp.Msp = Msp
+
+    if (cg_comp.zM_zp is not None) and (cg_comp.zM_zm is not None):
+        zMsz, zMpz = arr_canonical_2_cyl(cg_comp.zM_zp, cg_comp.zM_zm, rank=1)
+        pg_comp.zMsz = zMsz
+        pg_comp.zMpz = zMpz
     
-    if (cg_comp.M_zp is not None) and (cg_comp.M_zm is not None):
-        Msz, Mpz = arr_canonical_2_cyl(cg_comp.M_zp, cg_comp.M_zm, rank=1)
-        pg_comp.Msz = Msz
-        pg_comp.Mpz = Mpz
+    if (cg_comp.z2M_p is not None) and (cg_comp.z2M_m is not None) and (cg_comp.z2M_1 is not None):
+        z2Mss, z2Mpp, z2Msp = arr_canonical_2_cyl(cg_comp.z2M_p, cg_comp.z2M_m, cg_comp.z2M_1, rank=2, sym=True)
+        pg_comp.z2Mss = z2Mss
+        pg_comp.z2Mpp = z2Mpp
+        pg_comp.z2Msp = z2Msp
+        
+    # if (cg_comp.M_zp is not None) and (cg_comp.M_zm is not None):
+    #     Msz, Mpz = arr_canonical_2_cyl(cg_comp.M_zp, cg_comp.M_zm, rank=1)
+    #     pg_comp.Msz = Msz
+    #     pg_comp.Mpz = Mpz
     
-    if (cg_comp.zM_p is not None) and (cg_comp.zM_m is not None) and (cg_comp.zM_1 is not None):
-        zMss, zMpp, zMsp = arr_canonical_2_cyl(cg_comp.zM_p, cg_comp.zM_m, cg_comp.zM_1, rank=2, sym=True)
-        pg_comp.zMss = zMss
-        pg_comp.zMpp = zMpp
-        pg_comp.zMsp = zMsp
+    # if (cg_comp.zM_p is not None) and (cg_comp.zM_m is not None) and (cg_comp.zM_1 is not None):
+    #     zMss, zMpp, zMsp = arr_canonical_2_cyl(cg_comp.zM_p, cg_comp.zM_m, cg_comp.zM_1, rank=2, sym=True)
+    #     pg_comp.zMss = zMss
+    #     pg_comp.zMpp = zMpp
+    #     pg_comp.zMsp = zMsp
     
-    # Equatorial fields
-    if (cg_comp.B_ep is not None) and (cg_comp.B_em is not None):
-        Bs_e, Bp_e = arr_canonical_2_cyl(cg_comp.B_ep, cg_comp.B_em, rank=1)
-        pg_comp.Bs_e = Bs_e
-        pg_comp.Bp_e = Bp_e
+    # # Equatorial fields
+    # if (cg_comp.B_ep is not None) and (cg_comp.B_em is not None):
+    #     Bs_e, Bp_e = arr_canonical_2_cyl(cg_comp.B_ep, cg_comp.B_em, rank=1)
+    #     pg_comp.Bs_e = Bs_e
+    #     pg_comp.Bp_e = Bp_e
     
-    if (cg_comp.dB_dz_ep is not None) and (cg_comp.dB_dz_em is not None):
-        dBs_dz_e, dBp_dz_e = arr_canonical_2_cyl(cg_comp.dB_dz_ep, cg_comp.dB_dz_em, rank=1)
-        pg_comp.dBs_dz_e = dBs_dz_e
-        pg_comp.dBp_dz_e = dBp_dz_e
+    # if (cg_comp.dB_dz_ep is not None) and (cg_comp.dB_dz_em is not None):
+    #     dBs_dz_e, dBp_dz_e = arr_canonical_2_cyl(cg_comp.dB_dz_ep, cg_comp.dB_dz_em, rank=1)
+    #     pg_comp.dBs_dz_e = dBs_dz_e
+    #     pg_comp.dBp_dz_e = dBp_dz_e
     
     # Boundary terms
     if (cg_comp.B_pp is not None) and (cg_comp.B_pm is not None):

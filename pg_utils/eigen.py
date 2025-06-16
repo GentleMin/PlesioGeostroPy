@@ -15,6 +15,7 @@ from .pg_model import base_utils as pgutils
 from .pg_model import expansion as xpd
 from .pg_model.expansion import omega, xi, m
 from .sympy_supp import simplify as simp_supp
+from .sympy_supp import functions as fsupp
 
 from .numerics import matrices as nmatrix
 from .numerics import io as num_io
@@ -25,7 +26,12 @@ from . import tools
 
 import numpy as np
 import gmpy2
+import functools
 from scipy.sparse import coo_array
+
+
+func_dict = {'jacobi_u': fsupp.jacobi_u}
+parse_expr_custom = functools.partial(parse_expr, local_dict=func_dict)
 
 
 """Equation derivation and deduction utilities"""
@@ -60,7 +66,8 @@ def assemble_forcing(eqs: base.LabeledCollection, *args: str,
     
     # Initiate new copy
     eqs_new = eqs.copy()
-    fe_p = fs_sym = fp_sym = fz_asym = S.Zero
+    # fe_p = fs_sym = fp_sym = fz_asym = S.Zero
+    fs_sym = fp_sym = zfz_sym = S.Zero
 
     # Choose prefactors based on time scale
     if verbose > 0:
@@ -79,10 +86,11 @@ def assemble_forcing(eqs: base.LabeledCollection, *args: str,
             print("Collecting %s..." % (components,))
         if comp == "lorentz":
             assert "Psi" in eqs._field_names and eqs.Psi is not None
-            fe_p += prefactor_lorentz*forcing.Le_p
+            # fe_p += prefactor_lorentz*forcing.Le_p
             fs_sym += prefactor_lorentz*forcing.Ls_sym
             fp_sym += prefactor_lorentz*forcing.Lp_sym
-            fz_asym += prefactor_lorentz*forcing.Lz_asym
+            zfz_sym += prefactor_lorentz*forcing.zLz_sym
+            # fz_asym += prefactor_lorentz*forcing.Lz_asym
             par_list.append(params.Le)
         else:
             raise TypeError
@@ -95,8 +103,9 @@ def assemble_forcing(eqs: base.LabeledCollection, *args: str,
         term_coriolis = term_body_force = S.Zero
         for term in eqs.Psi.rhs.expand().args:
             funcs = term.atoms(Function)
-            if core.fe_p in funcs or core.fs_sym in funcs \
-                or core.fp_sym in funcs or core.fz_asym in funcs:
+            # if core.fe_p in funcs or core.fs_sym in funcs \
+            #     or core.fp_sym in funcs or core.fz_asym in funcs:
+            if core.fs_sym in funcs or core.fp_sym in funcs or core.zfz_sym in funcs:
                 term_body_force += term
             else:
                 term_coriolis += term
@@ -105,8 +114,11 @@ def assemble_forcing(eqs: base.LabeledCollection, *args: str,
             eqs.Psi.lhs, 
             prefactor_coriolis*term_coriolis 
             + term_body_force.subs({
-                core.fe_p: fe_p, core.fs_sym: fs_sym, 
-                core.fp_sym: fp_sym, core.fz_asym: fz_asym}).expand())
+                # core.fe_p: fe_p, 
+                core.fs_sym: fs_sym, 
+                core.fp_sym: fp_sym, 
+                core.zfz_sym: zfz_sym
+            }).expand())
     
     par_list = list(set(par_list))
     return eqs_new, par_list
@@ -138,8 +150,8 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
         if fname == "Psi":
             # new_lhs = eq.lhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}).expand()
             # new_rhs = eq.rhs.subs(bg_map).subs({H: H_s}).doit().subs({H_s: H, H_s**2: H**2}).expand()
-            new_lhs = pgutils.slope_subs(eq.lhs.subs(bg_map)).simplify()
-            new_rhs = pgutils.slope_subs(eq.rhs.subs(bg_map)).simplify()
+            new_lhs = pgutils.slope_subs(eq.lhs.subs(bg_map)).simplify().expand()
+            new_rhs = pgutils.slope_subs(eq.rhs.subs(bg_map)).simplify().expand()
         # For other equations: try to simplify for visual simplicity
         # !!!!! ==================================================== Note ===========
         # If the code is not used interactively, perhaps all simplify can be skipped?
@@ -164,8 +176,8 @@ def apply_bg_to_eq(fname: str, eq: Eq, bg_map: dict, mode: str = "PG",
             new_rhs = new_rhs.subs({z: +H}).doit().simplify()
         elif fname in fnames[-3:]:
             new_rhs = new_rhs.subs({z: -H}).doit().simplify()
-        elif fname in fnames[-11:-6]:
-            new_rhs = new_rhs.subs({z: S.Zero}).doit().simplify()
+        # elif fname in fnames[-11:-6]:
+        #     new_rhs = new_rhs.subs({z: S.Zero}).doit().simplify()
         new_lhs = new_lhs.subs({H_s: H, H_s**2: H**2}).expand()
         new_rhs = new_rhs.subs({H_s: H, H_s**2: H**2}).expand()
         
@@ -190,7 +202,7 @@ def apply_bg_to_set(eqs: base.LabeledCollection, bg: bg_fields.BackgroundFieldMH
     if verbose > 0:
         print("========== Applying background field ==========")
     # Building the background field map
-    f0_val = pgutils.assemble_background(B0=bg.B0_val, mode=mode)
+    f0_val = pgutils.assemble_background(B0=bg.B0_val, mode=mode, sub_H=sub_H)
     bg_sub = {u_comp: bg.U0_val[i_c] for i_c, u_comp in enumerate(core.U0_vec)}
     bg_sub.update({b_comp: bg.B0_val[i_c] for i_c, b_comp in enumerate(core.B0_vec)})
     if mode.lower() == "pg":
@@ -227,7 +239,9 @@ def reduce_eqsys_to_force_form(eqsys_old: base.LabeledCollection,
     if verbose > 1:
         print("Extracting body forces...")
     psi_term = f_term = S.Zero
-    for term in eqsys_old.Psi.rhs.expand().args:
+    term_list = eqsys_old.Psi.rhs.expand()
+    term_list = term_list.args if isinstance(term_list, Add) else [term_list,]
+    for term in term_list:
         is_dynamic_var = False
         for func in term.atoms(Function):
             if func in dynamic_vars:
@@ -243,11 +257,12 @@ def reduce_eqsys_to_force_form(eqsys_old: base.LabeledCollection,
     dynamic_subs = {eqsys_old[fname].lhs: eqsys_old[fname].rhs
         for fname in eqsys_old._field_names if fname != "Psi"}
     f_term = diff(f_term, t).doit().subs(dynamic_subs).doit()
+    term_list = f_term.args if isinstance(f_term, Add) else [f_term,]
     f_term = Add(*[term.subs({H: H_s}).doit().subs({H_s: H}).expand()
-        for term in f_term.args])
+        for term in term_list])
     eqsys_new = base.LabeledCollection(
         ["Psi", "F_ext"], 
-        Psi = Eq(eqsys_old.Psi.lhs, psi_term + core.reduced_var.F_ext),
+        Psi = Eq(eqsys_old.Psi.lhs.expand(), psi_term + core.reduced_var.F_ext),
         F_ext = Eq(diff(core.reduced_var.F_ext, t), f_term)
     )
     return eqsys_new
@@ -402,6 +417,8 @@ def process_rational_jacobi(element: Any, map_trial: dict, map_test: dict) -> An
         summands.append(Mul(*cf_factors_new)*basis)
         
     opd_B = Add(*summands, evaluate=False)
+    if opd_B == S.Zero:
+        return S.Zero
     
     element = xpd.InnerProduct1D(opd_A, opd_B, wt, xpd.xi, -S.One, +S.One)
     return element
@@ -507,9 +524,11 @@ INPUT_MODES = {
 }
 EQS_FILES = {
     # "pg": "./out/symbolic/eqs_pg_lin.json",
-    'pg': './out/symbolic/eqs-pg__boundIE-Bcyl__lin.json',
+    # 'pg': './out/symbolic/eqs-pg__boundIE-Bcyl__lin.json',
+    'pg': './out/symbolic/eqs-psg__boundIE-Bcyl__lin.json',
     # "cg": "./out/symbolic/eqs_cg_lin.json",
-    'cg': './out/symbolic/eqs-cg__boundIE-Bcyl__lin.json'
+    # 'cg': './out/symbolic/eqs-cg__boundIE-Bcyl__lin.json'
+    'cg': './out/symbolic/eqs-cpsg__boundIE-Bcyl__lin.json'
 }
 FORCING_TERMS = {
     "pg": forcing.force_explicit_lin,
@@ -555,7 +574,7 @@ def form_equations(
     
     # Input
     with open(EQS_FILES[i_mode], 'r') as fread:
-        eqs = base.LabeledCollection.load_json(fread, parser=parse_expr)
+        eqs = base.LabeledCollection.load_json(fread, parser=parse_expr_custom)
     
     for idx in deactivate:
         eqs[idx] = Eq(eqs[idx].lhs, S.Zero)
@@ -637,7 +656,7 @@ def reduce_dimensions(
         with open(read_from, 'r') as fread:
             load_array = json.load(fread)
             eqs = base.LabeledCollection.deserialize(
-                load_array["equations"], parser=parse_expr)
+                load_array["equations"], parser=parse_expr_custom)
             par_list = [parse_expr(par) for par in load_array["params"]]
     elif isinstance(read_from, tuple):
         assert len(read_from) == 2 and isinstance(read_from[0], base.LabeledCollection)
@@ -705,7 +724,7 @@ def collect_matrix_elements(
         with open(read_from, 'r') as fread:
             load_array = json.load(fread)
             eqs = base.LabeledCollection.deserialize(
-                load_array["equations"], parser=parse_expr)
+                load_array["equations"], parser=parse_expr_custom)
             par_list = [parse_expr(par) for par in load_array["params"]]
     elif isinstance(read_from, tuple):
         assert len(read_from) == 2 and isinstance(read_from[0], base.LabeledCollection)

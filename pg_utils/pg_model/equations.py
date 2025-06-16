@@ -13,7 +13,7 @@ from .base import CollectionPG, CollectionConjugate
 from .core import *
 from .base_utils import linearize
 
-
+beta = diff(H, s)/H
 
 #: Plesio-Geostrophy equations
 eqs_pg = CollectionPG()
@@ -21,12 +21,17 @@ eqs_pg = CollectionPG()
 # Vorticity equation
 eqs_pg.Psi = sympy.Eq(
     diff_u(s/H*diff(pgvar.Psi, t, s), s)
-    + (1/(s*H) - 1/(2*H**2)*diff(H, s))*diff(pgvar.Psi, t, (p, 2)), 
-    -2/H**2*diff(H, s)*diff(pgvar.Psi, p)
-    + diff(H, s)*(s/H*fe_p + 1/(2*H)*diff(fz_asym, p)) 
-    - s/(2*H)*cyl.curl((fs_sym, fp_sym, 0))[2])
+    + (1/(s*H) - 1/(3*H**2)*diff(H, s))*diff(pgvar.Psi, t, (p, 2)), 
+    # -2/H**2*diff(H, s)*diff(pgvar.Psi, p)
+    # + diff(H, s)*(s/H*fe_p + 1/(2*H)*diff(fz_asym, p)) 
+    - 2/H**2*diff(H, s)*diff(pgvar.Psi, p)
+    - s/(2*H)*cyl.curl((fs_sym, fp_sym, 0))[2]
+    - s**2/(2*H**3)*fp_sym
+    - s/(2*H**3)*diff_u(zfz_sym, p)
+)
 
 # Induction equations for magnetic moments
+
 eqs_pg.Mss = sympy.Eq(
     diff_u(pgvar.Mss, t), 
     - H*v3d.dot(v_e, cyl.grad(pgvar.Mss/H, evaluate=False))
@@ -45,70 +50,54 @@ eqs_pg.Msp = sympy.Eq(
     + s*diff_u(U_vec.p/s, s)*pgvar.Mss
     + 1/s*diff_u(U_vec.s, p)*pgvar.Mpp)
 
-eqs_pg.Msz = sympy.Eq(
-    diff_u(pgvar.Msz, t), 
-    - v3d.dot(v_e, cyl.grad(pgvar.Msz, evaluate=False))
-    + (diff_u(U_vec.s, s) + 2*diff_u(U_vec.z, z))*pgvar.Msz
-    + 1/s*diff_u(U_vec.s, p)*pgvar.Mpz
-    + diff_u(U_vec.s/H*diff_u(H, s), s)*pgvar.zMss
-    + 1/(s*H)*diff_u(H, s)*diff_u(U_vec.s, p)*pgvar.zMsp)
+eqs_pg.Mzz = sympy.Eq(
+    diff_u(pgvar.Mzz, t),
+    - v3d.dot(v_e, cyl.grad(pgvar.Mzz, evaluate=False))
+    + 3/H*diff(H, s)*U_vec.s*pgvar.Mzz
+    + 2*diff_u(diff(U_vec.z, z), s)*pgvar.zMsz
+    + 2*diff(diff(U_vec.z, z), p)/s*pgvar.zMpz
+)
 
-eqs_pg.Mpz = sympy.Eq(
-    diff_u(pgvar.Mpz, t), 
-    - v3d.dot(v_e, cyl.grad(pgvar.Mpz, evaluate=False))
-    + (diff(U_vec.z, z) - diff(U_vec.s, s))*pgvar.Mpz
-    + s*diff_u(U_vec.p/s, s)*pgvar.Msz
-    + diff_u(U_vec.s/H*diff(H, s), s)*pgvar.zMsp
-    + 1/(s*H)*diff(H, s)*diff(U_vec.s, p)*pgvar.zMpp)
+eqs_pg.zMsz = sympy.Eq(
+    diff_u(pgvar.zMsz, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.zMsz, evaluate=False))
+    + (diff_u(U_vec.s, s) + 3*diff(U_vec.z, z))*pgvar.zMsz
+    + 1/s*diff(U_vec.s, p)*pgvar.zMpz
+    + diff_u(U_vec.s/H*diff(H, s), s)*pgvar.z2Mss
+    + 1/(s*H)*diff_u(H, s)*diff(U_vec.s, p)*pgvar.z2Msp
+)
 
-eqs_pg.zMss = sympy.Eq(
-    diff_u(pgvar.zMss, t), 
-    - v3d.dot(v_e, cyl.grad(pgvar.zMss, evaluate=False))
-    + 2*(diff(U_vec.s, s) + diff(U_vec.z, z))*pgvar.zMss
-    + 2/s*diff(U_vec.s, p)*pgvar.zMsp)
+eqs_pg.zMpz = sympy.Eq(
+    diff_u(pgvar.zMpz, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.zMpz, evaluate=False))
+    + (2*diff(U_vec.z, z) - diff_u(U_vec.s, s))*pgvar.zMpz
+    + s*diff_u(U_vec.p/s, s)*pgvar.zMsz
+    + diff_u(U_vec.s/H*diff(H, s), s)*pgvar.z2Msp
+    + 1/(s*H)*diff(H, s)*diff(U_vec.s, p)*pgvar.z2Mpp
+)
 
-eqs_pg.zMpp = sympy.Eq(
-    diff_u(pgvar.zMpp, t), 
-    - v3d.dot(v_e, cyl.grad(pgvar.zMpp, evaluate=False))
-    - 2*diff(U_vec.s, s)*pgvar.zMpp
-    + 2*s*diff_u(U_vec.p/s, s)*pgvar.zMsp)
+eqs_pg.z2Mss = sympy.Eq(
+    diff_u(pgvar.z2Mss, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.z2Mss, evaluate=False))
+    + (2*diff_u(U_vec.s, s) + 3*diff(U_vec.z, z))*pgvar.z2Mss
+    + 2/s*diff(U_vec.s, p)*pgvar.z2Msp
+)
 
-eqs_pg.zMsp = sympy.Eq(
-    diff_u(pgvar.zMsp, t), 
-    - v3d.dot(v_e, cyl.grad(pgvar.zMsp, evaluate=False))
-    + diff(U_vec.z, z)*pgvar.zMsp
-    + s*diff_u(U_vec.p/s, s)*pgvar.zMss
-    + 1/s*diff(U_vec.s, p)*pgvar.zMpp)
+eqs_pg.z2Mpp = sympy.Eq(
+    diff_u(pgvar.z2Mpp, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.z2Mpp, evaluate=False))
+    + (diff(U_vec.z, z) - 2*diff_u(U_vec.s, s))*pgvar.z2Mpp
+    + 2*s*diff_u(U_vec.p/s, s)*pgvar.z2Msp
+)
 
-# Induction equation for magnetic field in the equatorial plane
-eqs_pg.Bs_e = sympy.Eq(
-    diff(pgvar.Bs_e, t),
-    + pgvar.Bs_e*diff(U_vec.s, s) + 1/s*pgvar.Bp_e*diff(U_vec.s, p)
-    - U_vec.s*diff(pgvar.Bs_e, s) - 1/s*U_vec.p*diff(pgvar.Bs_e, p))
+eqs_pg.z2Msp = sympy.Eq(
+    diff_u(pgvar.z2Msp, t), 
+    - v3d.dot(v_e, cyl.grad(pgvar.z2Msp, evaluate=False))
+    + 2*diff(U_vec.z, z)*pgvar.z2Msp
+    + s*diff_u(U_vec.p/s, s)*pgvar.z2Mss
+    + 1/s*diff(U_vec.s, p)*pgvar.z2Mpp
+)
 
-eqs_pg.Bp_e = sympy.Eq(
-    diff(pgvar.Bp_e, t), 
-    + pgvar.Bs_e*diff(U_vec.p, s) + 1/s*pgvar.Bp_e*diff(U_vec.p, p)
-    - U_vec.s*diff(pgvar.Bp_e, s) - 1/s*U_vec.p*diff(pgvar.Bp_e, p)
-    + (pgvar.Bp_e*U_vec.s - U_vec.p*pgvar.Bs_e)/s)
-
-eqs_pg.Bz_e = sympy.Eq(
-    diff(pgvar.Bz_e, t), 
-    - U_vec.s*diff(pgvar.Bz_e, s) - 1/s*U_vec.p*diff(pgvar.Bz_e, p)
-    + diff(U_vec.z, z)*pgvar.Bz_e)
-
-eqs_pg.dBs_dz_e = sympy.Eq(
-    diff(pgvar.dBs_dz_e, t),
-    + pgvar.dBs_dz_e*diff(U_vec.s, s) + 1/s*pgvar.dBp_dz_e*diff(U_vec.s, p)
-    - U_vec.s*diff(pgvar.dBs_dz_e, s) - 1/s*U_vec.p*diff(pgvar.dBs_dz_e, p)
-    - diff(U_vec.z, z)*pgvar.dBs_dz_e)
-
-eqs_pg.dBp_dz_e = sympy.Eq(
-    diff(pgvar.dBp_dz_e, t),
-    + pgvar.dBs_dz_e*diff(U_vec.p, s) + 1/s*pgvar.dBp_dz_e*diff(U_vec.p, p)
-    - U_vec.s*diff(pgvar.dBp_dz_e, s) - 1/s*U_vec.p*diff(pgvar.dBp_dz_e, p)
-    + (pgvar.dBp_dz_e*U_vec.s - U_vec.p*pgvar.dBs_dz_e)/s
-    - diff(U_vec.z, z)*pgvar.dBp_dz_e)
 
 # Induction: boundary stirring
 # In non-linearized form, boundary induction equation 

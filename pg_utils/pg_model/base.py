@@ -57,7 +57,7 @@ class LabeledCollection:
         """
         for field_key in fields:
             if field_key not in self._field_names:
-                raise TypeError
+                raise KeyError('%s not a valid field name!' % (field_key,))
   
     @property
     def iter_name(self):
@@ -464,8 +464,9 @@ class CollectionPG(LabeledCollection):
     """
     pg_field_names = [
         "Psi", 
-        "Mss", "Mpp", "Msp", "Msz", "Mpz", "zMss", "zMpp", "zMsp", 
-        "Bs_e", "Bp_e", "Bz_e", "dBs_dz_e", "dBp_dz_e", 
+        # "Mss", "Mpp", "Msp", "Msz", "Mpz", "zMss", "zMpp", "zMsp", 
+        # "Bs_e", "Bp_e", "Bz_e", "dBs_dz_e", "dBp_dz_e", 
+        "Mss", "Mpp", "Msp", "Mzz", "zMsz", "zMpz", "z2Mss", "z2Mpp", "z2Msp", 
         "Br_b", "Bs_p", "Bp_p", "Bz_p", "Bs_m", "Bp_m", "Bz_m"]
     
     def __init__(self, **fields) -> None:
@@ -563,8 +564,9 @@ class CollectionConjugate(LabeledCollection):
     """
     cg_field_names = [
         "Psi", 
-        "M_1", "M_p", "M_m", "M_zp", "M_zm", "zM_1", "zM_p", "zM_m", 
-        "B_ep", "B_em", "Bz_e", "dB_dz_ep", "dB_dz_em", 
+        # "M_1", "M_p", "M_m", "M_zp", "M_zm", "zM_1", "zM_p", "zM_m", 
+        # "B_ep", "B_em", "Bz_e", "dB_dz_ep", "dB_dz_em", 
+        "M_1", "M_p", "M_m", "Mzz", "zM_zp", "zM_zm", "z2M_1", "z2M_p", "z2M_m", 
         "Br_b", "B_pp", "B_pm", "Bz_p", "B_mp", "B_mm", "Bz_m"]
     
     def __init__(self, **fields) -> None:
