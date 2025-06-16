@@ -24,7 +24,114 @@ Analytical references
 """
 
 
-def eigenfreq_psi_op(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
+import sympy as sym
+from ..pg_model.core import s, r, theta, p, z
+
+m, N, i, j = sym.symbols('m,N,i,j', integer=True)
+sigma = sym.Symbol(r'\sigma')
+omega = sym.Symbol(r'\omega')
+elamb = sym.Symbol(r'\lambda')
+
+
+eigenfreq_poly_terms = {
+    's': (
+        (-1)**j*sym.factorial(2*(2*N + m - j))
+        /(sym.factorial(j)*sym.factorial(2*N + m - j)*sym.factorial(2*(N-j)))
+        *((2*N + m - 2*j)*sigma - 2*(N - j))*sigma**(2*(N - j)-1)
+    ),
+    'a': (
+        (-1)**j*sym.factorial(2*(2*N + m - j + 1))
+        /(sym.factorial(j)*sym.factorial(2*N + m - j + 1)*sym.factorial(2*(N-j) + 1))
+        *((2*N + m - 2*j + 1)*sigma - (2*(N - j) + 1))*sigma**(2*(N - j))
+    )
+}
+eigenfreq_polys = {
+    's': sym.Sum(eigenfreq_poly_terms['s'], (j, 0, N)),
+    'a': sym.Sum(eigenfreq_poly_terms['a'], (j, 0, N)),
+}
+
+
+mode_poly_cfs = {
+    's': (
+        (-1)**(i + j)*sym.factorial2(2*(N + m + i + j) - 1)
+        /(2**(j + 1)*sym.factorial2(2*i - 1))
+        /(sym.factorial(N - i - j)*sym.factorial(i)*sym.factorial(j)*sym.factorial(m + j))
+    ),
+    'a': (
+        (-1)**(i + j)*sym.factorial2(2*(N + m + i + j) + 1)
+        /(2**(j + 1)*sym.factorial2(2*i + 1))
+        /(sym.factorial(N - i - j)*sym.factorial(i)*sym.factorial(j)*sym.factorial(m + j))
+    )
+}
+mode_poly_terms_cyl = {
+    's': [
+        (m + (2*j + m)*sigma)*sigma**(2*i) * (1 - sigma**2)**(j - 1) * s**(m + 2*j - 1) * z**(2*i),
+        (m + 2*j + m*sigma)*sigma**(2*i) * (1 - sigma**2)**(j - 1) * s**(m + 2*j - 1) * z**(2*i),
+        2*i*sigma**(2*i - 1) * (1 - sigma**2)**j * s**(m + 2*j) * z**(2*i - 1),
+    ]
+}
+
+
+def eigenfreq_inviscid(N_val, m_val, parity='s', sort=True, **solve_kwargs):
+    """Calculate eigenfrequencies of the inviscid inertial modes in unit sphere
+    """
+    poly = eigenfreq_polys[parity]
+    poly = poly.subs({N: N_val, m: m_val}).doit()
+    roots = sym.nroots(poly, **solve_kwargs)
+    eigenfreqs = 2*np.array(roots)
+    eigenfreqs = eigenfreqs[np.argsort(np.abs(eigenfreqs))]
+    return eigenfreqs
+
+
+def which_eigenfreq(freq_0, Ns, ms):
+    """
+    """
+    if isinstance(Ns, int):
+        Ns = np.arange(1, Ns)
+    Ns = np.atleast_1d(np.asarray(Ns))
+    ms = np.atleast_1d(np.asarray(ms))
+    m, n, k = 0, 0, 0
+    parity = 's'
+    freq = 0.
+    r_diff = 100.
+    
+    for m_tmp in ms:
+        for n_tmp in Ns:
+            for par in ['s', 'a']:
+                
+                freqs = eigenfreq_inviscid(n_tmp, m_tmp, parity=par)
+                r_diff_tmp = np.abs(freqs - freq_0)/np.abs(freq_0)
+                k_tmp = np.argmin(r_diff_tmp)
+                r_diff_tmp = r_diff_tmp[k_tmp]
+                
+                if r_diff_tmp >= r_diff:
+                    continue
+                
+                r_diff = r_diff_tmp
+                m, n, k = m_tmp, n_tmp, k_tmp
+                parity = par
+                freq = freqs[k_tmp]
+    
+    return m, n, k, parity, freq
+
+
+def eigenmode_poly_inviscid(N_val, parity='s'):
+    u_s = -sym.I*sym.Add(*[
+        (mode_poly_cfs[parity]*mode_poly_terms_cyl[parity][0]).subs({N: N_val, i: i_val, j: j_val}) 
+        for i_val in range(N_val + 1) for j_val in range(N_val - i_val + 1)
+    ])
+    u_p = sym.Add(*[
+        (mode_poly_cfs[parity]*mode_poly_terms_cyl[parity][1]).subs({N: N_val, i: i_val, j: j_val}) 
+        for i_val in range(N_val + 1) for j_val in range(N_val - i_val + 1)
+    ])
+    u_z = +sym.I*sym.Add(*[
+        (mode_poly_cfs[parity]*mode_poly_terms_cyl[parity][2]).subs({N: N_val, i: i_val, j: j_val}) 
+        for i_val in range(N_val + 1) for j_val in range(N_val - i_val + 1)
+    ])
+    return u_s, u_p, u_z
+
+
+def eigenfreq_psi_op_pg1(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
     prec: Optional[int]=None) -> Union[float, np.ndarray]:
     """Analytic eigenfrequency for the self-adjoint operator
     for stream function Psi in the vorticity equation
@@ -38,11 +145,32 @@ def eigenfreq_psi_op(m: Union[int, np.ndarray], n: Union[int, np.ndarray],
         return -m/(n*(2*n + 2*m + 1) + m/2 + m**2/4)
     else:
         with gp.local_context(gp.context(), precision=prec):
-            return -m/(n*(2*n + 2*m + 1) + m/2 + m**2/4)
+            m_gp = to_gmpy2_f(m)
+            n_gp = to_gmpy2_f(n)
+            return -m_gp/(n_gp*(2*n_gp + 2*m_gp + 1) + m_gp/2 + m_gp**2/4)
 
 
-def eigenfreq_inertial3d(m: Union[int, np.ndarray], n: Union[int, np.ndarray]):
-    """Analytic eigenfrequency for the 3D inertial modes
+def eigenfreq_psi_op(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
+    prec: Optional[int]=None) -> Union[float, np.ndarray]:
+    """Analytic eigenfrequency for the self-adjoint operator
+    for stream function Psi in the vorticity equation
+    
+    .. math:: \\omega = - \\frac{m}{n(2n + 2m + 1) + \\frac{m}{2} + \\frac{m^2}{4}}
+    
+    .. note:: If `prec` is specified other than None, then the input must be
+        consistently in gmpy2 form in order to properly compute in multi-precision.
+    """
+    if prec is None:
+        return -m/(n*(2*n + 2*m + 1) + m/2 + m**2/6)
+    else:
+        with gp.local_context(gp.context(), precision=prec):
+            m_gp = to_gmpy2_f(m)
+            n_gp = to_gmpy2_f(n)
+            return -m_gp/(n_gp*(2*n_gp + 2*m_gp + 1) + m_gp/2 + m_gp**2/6)
+
+
+def eigenfreq_inertial3d_columnar_approx(m: Union[int, np.ndarray], n: Union[int, np.ndarray]):
+    """Analytic eigenfrequency for the 3D inertial modes, approximated for columnar modes
     
     .. math:: 
     
@@ -52,12 +180,38 @@ def eigenfreq_inertial3d(m: Union[int, np.ndarray], n: Union[int, np.ndarray]):
     return -2/(m+2)*(np.sqrt(1 + m*(m+2)/n/(2*n+2*m+1)) - 1)
 
 
-def eigenfreq_Malkus_pg(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
-    Le: Union[float, gp.mpfr], mode: str="all", timescale: str="spin", prec: Optional[int] = None):
+def eigenfreq_inertial3d_columnar(m: Union[int, np.ndarray], n: Union[int, np.ndarray],
+    prec: Optional[int] = None) -> Union[float, np.ndarray]:
+    """Analytic eigenfrequency for the 3D columnar inertial modes
+    """
+    dps = 18 if prec is None else transform_dps_prec(prec=prec)[0] + 3
+    
+    if isinstance(m, int) and isinstance(n, int):
+        freqs = eigenfreq_inviscid(n, m, parity='s', n=dps)[0]
+    else:
+        n_mesh = n*np.ones_like(m)
+        shape = n_mesh.shape
+        n_arr = np.ravel(n_mesh)
+        m_arr = np.ravel(m*np.ones_like(n))
+        freqs = np.array([
+            eigenfreq_inviscid(n_arr[i], m_arr[i], parity='s', n=dps)[0]
+            for i in range(n_arr.size)
+        ]).reshape(shape)
+    
+    if prec is None:
+        return to_numpy_f(freqs)
+    else:
+        return to_gmpy2_f(freqs, prec=prec)
+
+
+def eigenfreq_Rossby_to_Malkus(
+    m, omega_0, Le: Union[float, gp.mpfr], 
+    timescale: str="spin", prec: Optional[int] = None
+):
     """Analytic eigenfrequency for the PG model with Malkus bg field
     
     :param Union[int, np.ndarray] m: azimuthal wavenumber
-    :param Union[int, np.ndarray] n: order of the eigenmode
+    :param omega_0: inertial mode eigenfrequencies
     :param float Le: Lehnert number (see also :data:`~pg_utils.pg_model.params.Le` )
     :param str mode: fast or slow, default to "all"
     :param str timescale: characteristic timescale, default to "spin", 
@@ -83,82 +237,61 @@ def eigenfreq_Malkus_pg(m: Union[int, np.ndarray], n: Union[int, np.ndarray],
             \\omega = \\frac{\\omega_0}{2\\mathrm{Le}} 
             \\left(1 \\pm \\sqrt{\\mathrm{Le}^2 \\frac{4m(m - \\omega_0)}{\\omega_0^2}}\\right)
         
-        where :math:`\\omega_0` is the inertial mode eigenfrequency for the PG model,
-        see :func:`eigenfreq_psi_op` for details. The plus sign gives the fast mode,
-        and the minus sign gives the slow mode.
+        where :math:`\\omega_0` is the inertial mode eigenfrequency. 
+        The plus sign gives the fast mode, and the minus sign gives the slow mode.
     """
-    omega0 = eigenfreq_psi_op(m, n, prec=prec)
     if prec is None:
         if timescale.lower() == "spin":
-            prefactor = omega0/2
+            prefactor = omega_0/2
         elif timescale.lower() == "alfven":
-            prefactor = omega0/2/Le
+            prefactor = omega_0/2/Le
         else:
             raise AttributeError
-        bg_field_mod = np.sqrt(1 + Le**2*(4*m*(m - omega0))/(omega0**2))
+        bg_field_mod = np.sqrt(1 + Le**2*(4*m*(m - omega_0))/(omega_0**2))
         return prefactor*(1 + bg_field_mod), prefactor*(1 - bg_field_mod)
     else:
         with gp.local_context(gp.context(), precision=prec):
             if timescale.lower() == "spin":
-                prefactor = omega0/2
+                prefactor = omega_0/2
             elif timescale.lower() == "alfven":
-                prefactor = omega0/2/Le
+                prefactor = omega_0/2/Le
             else:
                 raise AttributeError
-            bg_field_mod = 1 + Le**2*(4*m*(m - omega0))/(omega0**2)
+            bg_field_mod = 1 + Le**2*(4*m*(m - omega_0))/(omega_0**2)
             bg_field_mod = np.vectorize(gp.sqrt, otypes=(object,))(bg_field_mod)
             return prefactor*(1 + bg_field_mod), prefactor*(1 - bg_field_mod)
 
 
-def eigenfreq_Malkus_3d(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
-    Le: float, mode: str="all", timescale: str="spin"):
-    """Analytic eigenfrequency for 3D eigemodes with Malkus bg field
-    
-    :param Union[int, np.ndarray] m: azimuthal wavenumber
-    :param Union[int, np.ndarray] n: order of the eigenmode
-    :param float Le: Lehnert number (see also :data:`~pg_utils.pg_model.params.Le` )
-    :param str mode: fast or slow, default to "all"
-    :param str timescale: characteristic timescale, default to "spin", 
-        alternative: "alfven". See note below for more details.
-    
-    :returns: eigenfrequency array(s)
-    
-    .. note::
-    
-        When using spin rate for characteristic time scale, i.e. :math:`\\tau=\\Omega^{-1}`
-        
-        .. math::
-
-            \\omega = \\frac{\\omega_0}{2} 
-            \\left(1 \\pm \\sqrt{\\mathrm{Le}^2 \\frac{4m(m - \\omega_0)}{\\omega_0^2}}\\right)
-        
-        When using Alfven time scale, i.e. :math:`\\tau=\\frac{\\sqrt{\\rho\mu_0}L}{B}`
-        
-        .. math::
-        
-            \\omega = \\frac{\\omega_0}{2\\mathrm{Le}} 
-            \\left(1 \\pm \\sqrt{\\mathrm{Le}^2 \\frac{4m(m - \\omega_0)}{\\omega_0^2}}\\right)
-        
-        where :math:`\\omega_0` is the inertial mode eigenfrequency in 3-D,
-        see :func:`eigenfreq_inertial3d` for details. The plus sign gives the fast mode,
-        and the minus sign gives the slow mode.
+def eigenfreq_Malkus_pg1(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
+    Le: Union[float, gp.mpfr], timescale: str="spin", prec: Optional[int] = None):
+    """Analytic eigenfrequency for the old PG model with Malkus bg field
     """
-    omega0 = eigenfreq_inertial3d(m, n)
-    bg_field_mod = Le**2*(4*m*(m - omega0))/(omega0**2)
-    if timescale.lower() == "spin":
-        prefactor = omega0/2
-    elif timescale.lower() == "alfven":
-        prefactor = omega0/2/Le
-    else:
-        raise AttributeError
-    if mode == "fast":
-        return prefactor*(1 + np.sqrt(1 + bg_field_mod))
-    elif mode == "slow":
-        return prefactor*(1 - np.sqrt(1 + bg_field_mod))
-    else:
-        return prefactor*(1 + np.sqrt(1 + bg_field_mod)), \
-            prefactor*(1 - np.sqrt(1 + bg_field_mod))
+    omega0 = eigenfreq_psi_op_pg1(m, n, prec=prec)
+    return eigenfreq_Rossby_to_Malkus(m, omega0, Le, timescale=timescale, prec=prec)
 
+
+def eigenfreq_Malkus_pg(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
+    Le: Union[float, gp.mpfr, np.ndarray], timescale: str="spin", prec: Optional[int] = None):
+    """Analytic eigenfrequency for the PG model with Malkus bg field
+    """
+    omega0 = eigenfreq_psi_op(m, n, prec=prec)
+    return eigenfreq_Rossby_to_Malkus(m, omega0, Le, timescale=timescale, prec=prec)
+
+
+def eigenfreq_Malkus_3d(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
+    Le: Union[float, gp.mpfr], timescale: str="spin", prec: Optional[int] = None):
+    """Analytic eigenfrequency for 3D eigemodes with Malkus bg field
+    """
+    omega0 = eigenfreq_inertial3d_columnar(m, n, prec=prec)
+    return eigenfreq_Rossby_to_Malkus(m, omega0, Le, timescale=timescale, prec=None)
+
+
+def eigenfreq_Malkus_3d_approx(m: Union[int, np.ndarray], n: Union[int, np.ndarray], 
+    Le: float, timescale: str="spin"):
+    """Analytic eigenfrequency for 3D eigemodes with Malkus bg field
+    """
+    omega0 = eigenfreq_inertial3d_columnar_approx(m, n)
+    return eigenfreq_Rossby_to_Malkus(m, omega0, Le, timescale=timescale, prec=None)
 
 """
 ------------------------------
@@ -810,6 +943,21 @@ def eigenvalue_tracing(*eigenvalues: np.ndarray, init_threshold: float = 1e+4,
     traced_indices = np.full((np.sum(idx_bool_tmp), len(eigenvalues)))
     traced_indices[:, 0] = np.arange(len(eigenvalues[0]))[idx_bool_tmp]
     traced_indices[:, 1] = nearest_idx
+
+
+def eigenvec_similarity(evec_base: np.ndarray, evec_comp: np.ndarray):
+    """Compute max similarity between eigenvectors
+    """
+    dim = min([evec_base.shape[0], evec_comp.shape[0]])
+    # evec_base_pad = np.pad(evec_base, ((0,dim-evec_base.shape[0]), (0,0)), mode='constant', constant_values=0.)
+    # evec_comp_pad = np.pad(evec_comp, ((0,dim-evec_comp.shape[0]), (0,0)), mode='constant', constant_values=0.)
+    kernel = evec_base[:dim].conj().T @ evec_comp[:dim]
+    norm_base = np.linalg.norm(evec_base, axis=0)**2
+    norm_comp = np.linalg.norm(evec_comp, axis=0)**2
+    similarity = np.abs(kernel)**2/np.outer(norm_base, norm_comp)
+    most_similar_idx = np.argmax(similarity, axis=1)
+    max_similarity = np.max(similarity, axis=1)
+    return max_similarity, most_similar_idx
 
 
 def val_tracing_nearest(seeds: np.ndarray, *values: np.ndarray, 
